@@ -1,8 +1,0 @@
-#labels Phase-Implementation
-<b>Elipse 처음 사용자를 위한 가이드</b>
-
-도움말 보기
-
-자바 API, 안드로이드 API 설명을 소스에서 간편하게 볼수 있는 방법
-
-<b>Shift + F2</b>
