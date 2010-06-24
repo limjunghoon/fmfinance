@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Elipse 처음 사용자를 위한 가이드
 #labels Phase-Implementation
 
 = Introduction =
@@ -13,6 +13,4 @@
 자바 API, 안드로이드 API 설명을 소스에서 간편하게 볼수 있는 방법
 
 Shift + F2
-
-
 
