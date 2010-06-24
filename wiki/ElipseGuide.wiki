@@ -8,9 +8,30 @@
 
 = Details =
 
+단축키 
+
+<b>Shift + F2</b>
+
 도움말 보기
+ : 자바 API, 안드로이드 API 설명을 소스에서 간편하게 볼수 있는 방법
 
-자바 API, 안드로이드 API 설명을 소스에서 간편하게 볼수 있는 방법
 
-Shift + F2
+<b>F5</b>
 
+Step Into
+
+
+<b>F8</b>
+
+Step Over
+
+
+<b>F7</b>
+
+Step Return
+
+
+<b>Ctrl+Shift+O</b>
+
+import문 정리
+ : 쓰이지 않은 import문들을 모두제거하고, 패키지가 아직 import되지 않은 클래스들이 있으면 적절한 import문을 자동으로 추가한다.
