@@ -12,12 +12,12 @@
 
 </LinearLayout><LinearLayout android:id="@+id/LinearLayout03" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="5">
 
-<Button android:text="@+id/Button01" android:id="@+id/Button01" android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="fill_parent"></Button>
-<Button android:text="@+id/Button02" android:id="@+id/Button02" android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="fill_parent"></Button>
+<Button android:layout_weight="1" android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/BtnInputIncome" android:text="@string/input_income_btn_name" android:textSize="20pt" android:gravity="center"></Button>
+<Button android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/BtnInputExpense" android:text="@string/input_expense_btn_name" android:layout_width="fill_parent" android:textSize="20pt" android:gravity="center"></Button>
 
 </LinearLayout><LinearLayout android:id="@+id/LinearLayout04" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="7"></LinearLayout></LinearLayout>
 
-<LinearLayout android:id="@+id/LinearLayout05" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="7">
+<LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="7" android:id="@+id/MainMenuLayout">
 
 
 
@@ -25,8 +25,8 @@
 
 
 
-<Button android:text="@+id/Button03" android:id="@+id/Button03" android:layout_width="wrap_content" android:layout_height="fill_parent"></Button>
-<Button android:text="@+id/Button04" android:id="@+id/Button04" android:layout_width="wrap_content" android:layout_height="fill_parent"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="fill_parent" android:id="@+id/BtnMenuHome" android:text="@string/main_memu_home"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="fill_parent" android:text="@string/main_memu_assets_liability" android:id="@+id/BtnAssetsLiability"></Button>
 
 
 
@@ -36,6 +36,7 @@
 
 
 
+<Button android:layout_width="wrap_content" android:id="@+id/BtnReport" android:text="@string/main_memu_report" android:layout_height="fill_parent"></Button>
 </LinearLayout>
 
 

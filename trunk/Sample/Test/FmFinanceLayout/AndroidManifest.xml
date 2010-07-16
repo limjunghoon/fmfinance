@@ -12,7 +12,11 @@
             </intent-filter>
         </activity>
 
-    </application>
+    
+
+		<activity android:name=".InputExpenseLayout" android:label="지출입력"></activity>
+		<activity android:name=".InputIncomeLayout" android:label="수입입력"></activity>
+</application>
 
 
 </manifest> 
