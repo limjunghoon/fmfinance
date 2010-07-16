@@ -8,7 +8,7 @@
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="20pt">
 		<TextView android:layout_width="35pt" android:id="@+id/TVExpenseDate" android:text="@string/input_expense_date_name" android:layout_height="wrap_content" android:textSize="7pt" android:padding="2pt" android:gravity="center">
 		</TextView>
-		<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnExpenseDate" android:textSize="7pt">
+		<Button android:layout_height="wrap_content" android:id="@+id/BtnExpenseDate" android:textSize="7pt" android:layout_width="fill_parent">
 		</Button>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
