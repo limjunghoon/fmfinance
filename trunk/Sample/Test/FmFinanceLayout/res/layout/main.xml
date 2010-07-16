@@ -5,5 +5,38 @@
     android:layout_height="fill_parent"
     >
 
-<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="wrap_content" android:layout_height="wrap_content"></LinearLayout>
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:orientation="vertical"><LinearLayout android:id="@+id/LinearLayout02" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="7">
+
+
+
+
+</LinearLayout><LinearLayout android:id="@+id/LinearLayout03" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="5">
+
+<Button android:text="@+id/Button01" android:id="@+id/Button01" android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="fill_parent"></Button>
+<Button android:text="@+id/Button02" android:id="@+id/Button02" android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="fill_parent"></Button>
+
+</LinearLayout><LinearLayout android:id="@+id/LinearLayout04" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="7"></LinearLayout></LinearLayout>
+
+<LinearLayout android:id="@+id/LinearLayout05" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="7">
+
+
+
+
+
+
+
+<Button android:text="@+id/Button03" android:id="@+id/Button03" android:layout_width="wrap_content" android:layout_height="fill_parent"></Button>
+<Button android:text="@+id/Button04" android:id="@+id/Button04" android:layout_width="wrap_content" android:layout_height="fill_parent"></Button>
+
+
+
+
+
+
+
+
+
+</LinearLayout>
+
+
 </LinearLayout>
