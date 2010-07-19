@@ -16,6 +16,10 @@
 
 		<activity android:name=".InputExpenseLayout" android:label="지출입력"></activity>
 		<activity android:name=".InputIncomeLayout" android:label="수입입력"></activity>
+
+<activity android:name=".InputAssetsLayout"></activity>
+<activity android:name=".InputLiabilityLayout"></activity>
+<activity android:name=".InputAssetsOrLiability"></activity>
 </application>
 
 
