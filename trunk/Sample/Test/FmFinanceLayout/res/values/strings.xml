@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="input_assets_btn_name">자산</string>
+	<string name="input_assets_tab_name">자산</string>
     <string name="input_assets_date_name">날짜</string>
     <string name="input_assets_category_name">분류</string>
     <string name="input_assets_amount_name">금액</string>
     <string name="input_assets_title_name">제목</string>
     <string name="input_assets_btn_save">저장</string>
     <string name="input_liability_btn_name">부채</string>
+    <string name="input_liability_tab_name">부채</string>
     <string name="input_liability_date_name">날짜</string>
     <string name="input_liability_category_name">분류</string>
     <string name="input_liability_amount_name">금액</string>

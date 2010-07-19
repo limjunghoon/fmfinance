@@ -30,5 +30,14 @@ public class FmFinanceLayout extends Activity {
 				startActivity(intent);
 			}
         });
+        
+        Button runInputAssetsLiability = (Button)findViewById(R.id.BtnAssetsLiability);
+        runInputAssetsLiability.setOnClickListener(new Button.OnClickListener() {
+
+			public void onClick(View v) {
+				Intent intent = new Intent(FmFinanceLayout.this, InputAssetsOrLiability.class);
+				startActivity(intent);
+			}
+        });
     }
 }
