@@ -17,9 +17,14 @@
 		<activity android:name=".InputExpenseLayout" android:label="지출입력"></activity>
 		<activity android:name=".InputIncomeLayout" android:label="수입입력"></activity>
 
-<activity android:name=".InputAssetsLayout"></activity>
-<activity android:name=".InputLiabilityLayout"></activity>
+<activity android:name=".InputAssetsLayout" android:label="자산입력"></activity>
+<activity android:name=".InputLiabilityLayout" android:label="부채입력"></activity>
 <activity android:name=".InputAssetsOrLiability"></activity>
+<activity android:name=".MainReportLayout" android:label="목록보기"></activity>
+<activity android:name=".ReportAssetsLayout" android:label="자산내역"></activity>
+<activity android:name=".ReportExpenseLayout" android:label="지출내역"></activity>
+<activity android:name=".ReportIncomeLayout" android:label="수입내역"></activity>
+<activity android:name=".ReportLiabilityLayout" android:label="부채내역"></activity>
 </application>
 
 

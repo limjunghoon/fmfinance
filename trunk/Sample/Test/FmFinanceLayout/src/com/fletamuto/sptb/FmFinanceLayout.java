@@ -13,31 +13,62 @@ public class FmFinanceLayout extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        Button runInputExpense = (Button)findViewById(R.id.BtnInputExpense);
-        runInputExpense.setOnClickListener(new Button.OnClickListener() {
+        SetBtnClickListener();
+       
+    }
+    
+    protected void SetBtnClickListener() {
+    	SetExpenseBtnClickListener();
+    	SetIncomeBtnClickListener();
+    	SetAssetsLiabilityBtnClickListener();
+    	SetReportBtnClickListener();
+    }
+    
+    protected void SetExpenseBtnClickListener() {
+    	
+    	 Button runInputExpense = (Button)findViewById(R.id.BtnInputExpense);
+         runInputExpense.setOnClickListener(new Button.OnClickListener() {
 
-			public void onClick(View v) {
-				Intent intent = new Intent(FmFinanceLayout.this, InputExpenseLayout.class);
-				startActivity(intent);
-			}
-        });
-        
-        Button runInputIncome = (Button)findViewById(R.id.BtnInputIncome);
-        runInputIncome.setOnClickListener(new Button.OnClickListener() {
-
+ 			public void onClick(View v) {
+ 				Intent intent = new Intent(FmFinanceLayout.this, InputExpenseLayout.class);
+ 				startActivity(intent);
+ 			}
+         });
+    }
+    
+    protected void SetIncomeBtnClickListener() {
+    	
+		Button runInputIncome = (Button)findViewById(R.id.BtnInputIncome);
+		runInputIncome.setOnClickListener(new Button.OnClickListener() {
+		
 			public void onClick(View v) {
 				Intent intent = new Intent(FmFinanceLayout.this, InputIncomeLayout.class);
 				startActivity(intent);
 			}
-        });
-        
-        Button runInputAssetsLiability = (Button)findViewById(R.id.BtnAssetsLiability);
-        runInputAssetsLiability.setOnClickListener(new Button.OnClickListener() {
-
+		 });
+   }
+    
+    protected void SetReportBtnClickListener() {
+    	
+		Button runInputAssetsLiability = (Button)findViewById(R.id.BtnAssetsLiability);
+		runInputAssetsLiability.setOnClickListener(new Button.OnClickListener() {
+		
 			public void onClick(View v) {
 				Intent intent = new Intent(FmFinanceLayout.this, InputAssetsOrLiability.class);
 				startActivity(intent);
 			}
-        });
-    }
+		 });
+   }
+    
+    protected void SetAssetsLiabilityBtnClickListener() {
+    	
+		Button runReport = (Button)findViewById(R.id.BtnReport);
+		runReport.setOnClickListener(new Button.OnClickListener() {
+		
+			public void onClick(View v) {
+				Intent intent = new Intent(FmFinanceLayout.this, MainReportLayout.class);
+				startActivity(intent);
+			}
+		 });
+	   }
 }
