@@ -1,21 +1,29 @@
 package com.fletamuto.sptb;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 
-public class InputExpenseLayout extends Activity {
+
+public class InputExpenseLayout extends InputBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_expense);
         
-        Button inputDate = (Button)findViewById(R.id.BtnExpenseDate);
-        
-        Date createDate = new Date();
-        SimpleDateFormat createDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        inputDate.setText(createDateFormat.format(createDate));
+        updateDate();
+        SetDateBtnClickListener(R.id.BtnExpenseDate);
+        SetAmountBtnClickListener(R.id.BtnExpenseAmount);
+        SetSaveBtnClickListener(R.id.BtnExpenseSave);
     }
+    
+    protected void updateDate() {
+    	updateBtnDateText(R.id.BtnExpenseDate);
+    } 
+    
+    protected void saveData() {
+    	
+    	Intent intent = new Intent(InputExpenseLayout.this, ReportExpenseLayout.class);
+		startActivity(intent);
+    }
+    
+    
 }

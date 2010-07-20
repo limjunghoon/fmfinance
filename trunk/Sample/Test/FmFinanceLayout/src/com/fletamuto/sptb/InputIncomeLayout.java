@@ -1,21 +1,26 @@
 package com.fletamuto.sptb;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 
-public class InputIncomeLayout extends Activity {
+public class InputIncomeLayout extends InputBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_income);
         
-        Button inputDate = (Button)findViewById(R.id.BtnIncomeDate);
-        
-        Date createDate = new Date();
-        SimpleDateFormat createDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        inputDate.setText(createDateFormat.format(createDate));
+        updateDate();
+        SetDateBtnClickListener(R.id.BtnIncomeDate); 
+        SetAmountBtnClickListener(R.id.BtnIncomeAmount);
+        SetSaveBtnClickListener(R.id.BtnIncomeSave);
     }
+  
+    protected void updateDate() {
+    	updateBtnDateText(R.id.BtnIncomeDate);
+    }
+    
+    protected void saveData() {
+    	Intent intent = new Intent(InputIncomeLayout.this, ReportIncomeLayout.class);
+		startActivity(intent);
+    }
+    
 }

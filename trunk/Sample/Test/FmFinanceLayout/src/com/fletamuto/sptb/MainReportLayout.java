@@ -1,8 +1,6 @@
 package com.fletamuto.sptb;
 
 import java.util.ArrayList;
-import java.util.Map;
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,20 +10,18 @@ import android.widget.ListView;
 
 public class MainReportLayout extends ListActivity {
 	
-	private ArrayList<Class<?>> reportList;
+	private ArrayList<Class<?>> reportList = new ArrayList<Class<?>>();
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       
-        
         ArrayAdapter<CharSequence> adapter;
         adapter = ArrayAdapter.createFromResource(this, R.array.report_list, android.R.layout.simple_list_item_1);
        
         setListAdapter(adapter);
     
-        reportList = new ArrayList<Class<?>>();
         reportList.add(ReportExpenseLayout.class);
         reportList.add(ReportIncomeLayout.class);
         reportList.add(ReportAssetsLayout.class);
