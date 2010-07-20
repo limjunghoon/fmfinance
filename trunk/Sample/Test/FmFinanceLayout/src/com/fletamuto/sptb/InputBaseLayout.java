@@ -12,8 +12,8 @@ import android.widget.DatePicker;
 
 public abstract class InputBaseLayout extends Activity {
 	
-	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-	Calendar dateCalendar = Calendar.getInstance();
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+	private Calendar dateCalendar = Calendar.getInstance();
 	
 	protected abstract void updateDate();
 	protected abstract void saveData();
@@ -67,6 +67,10 @@ public abstract class InputBaseLayout extends Activity {
 				saveData();			
 			}
 		 });
+    }
+    
+    public Calendar getCreateDate() {
+    	return dateCalendar;
     }
    
  
