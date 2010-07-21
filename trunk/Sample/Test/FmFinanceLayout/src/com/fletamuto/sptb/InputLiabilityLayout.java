@@ -1,5 +1,6 @@
 package com.fletamuto.sptb;
 
+import com.fletamuto.sptb.data.InfoLiability;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -22,4 +23,15 @@ public class InputLiabilityLayout extends InputBaseLayout {
     	Intent intent = new Intent(InputLiabilityLayout.this, ReportLiabilityLayout.class);
 		startActivity(intent);
     }
+
+    @Override
+	protected void updateAmount(Long amount) {
+		super.updateAmount(amount);
+		updateBtnAmountText(R.id.BtnLiabilityAmount);
+	}
+
+	@Override
+	protected void createInfoDataInstance() {
+		dataInfo = new InfoLiability();
+	}
 }

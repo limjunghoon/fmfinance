@@ -1,5 +1,6 @@
 package com.fletamuto.sptb;
 
+import com.fletamuto.sptb.data.InfoAssets;
 import com.fletamuto.sptb.data.InfoIncome;
 
 import android.content.Intent;
@@ -23,13 +24,23 @@ public class InputIncomeLayout extends InputBaseLayout {
     
     protected void saveData() {
     	
-    	InfoIncome infoIncome = new InfoIncome();
-    	infoIncome.setCreateDate(getCreateDate());
+    	dataInfo.setCreateDate(getCreateDate());
     	String memo = ((EditText)findViewById(R.id.ETIncomeMemo)).getText().toString();
-    	infoIncome.setMemo(memo);
+    	dataInfo.setMemo(memo);
     	
     	Intent intent = new Intent(InputIncomeLayout.this, ReportIncomeLayout.class);
 		startActivity(intent);
     }
+    
+    @Override
+	protected void updateAmount(Long amount) {
+		super.updateAmount(amount);
+		updateBtnAmountText(R.id.BtnIncomeAmount);
+	}
+
+	@Override
+	protected void createInfoDataInstance() {
+		dataInfo = new InfoIncome();
+	}
     
 }

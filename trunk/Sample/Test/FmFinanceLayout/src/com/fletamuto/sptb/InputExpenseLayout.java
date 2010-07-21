@@ -1,5 +1,6 @@
 package com.fletamuto.sptb;
 
+import com.fletamuto.sptb.data.InfoExpense;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -24,6 +25,15 @@ public class InputExpenseLayout extends InputBaseLayout {
     	Intent intent = new Intent(InputExpenseLayout.this, ReportExpenseLayout.class);
 		startActivity(intent);
     }
-    
-    
+
+    @Override
+	protected void updateAmount(Long amount) {
+		super.updateAmount(amount);
+		updateBtnAmountText(R.id.BtnExpenseAmount);
+	}
+
+	@Override
+	protected void createInfoDataInstance() {
+		dataInfo = new InfoExpense();
+	}
 }

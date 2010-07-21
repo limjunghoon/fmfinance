@@ -1,5 +1,7 @@
 package com.fletamuto.sptb;
 
+import com.fletamuto.sptb.data.InfoAssets;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -22,4 +24,15 @@ public class InputAssetsLayout extends InputBaseLayout {
     	Intent intent = new Intent(InputAssetsLayout.this, ReportAssetsLayout.class);
 		startActivity(intent);
     }
+
+    @Override
+	protected void updateAmount(Long amount) {
+		super.updateAmount(amount);
+		updateBtnAmountText(R.id.BtnAssetsAmount);
+	}
+    
+	@Override
+	protected void createInfoDataInstance() {
+		dataInfo = new InfoAssets();
+	}
 }
