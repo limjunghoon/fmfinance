@@ -1,8 +1,6 @@
 package com.fletamuto.sptb;
 
-import com.fletamuto.sptb.data.InfoAssets;
 import com.fletamuto.sptb.data.InfoIncome;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
