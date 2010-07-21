@@ -13,6 +13,7 @@ public class InputLiabilityLayout extends InputBaseLayout {
         SetDateBtnClickListener(R.id.BtnLiabilityDate); 
         SetAmountBtnClickListener(R.id.BtnLiabilityAmount);
         SetSaveBtnClickListener(R.id.BtnLiabilitySave);
+        SetCategoryClickListener(R.id.BtnLiabilityCategory);
     }
     
     protected void updateDate() {
@@ -33,5 +34,11 @@ public class InputLiabilityLayout extends InputBaseLayout {
 	@Override
 	protected void createInfoDataInstance() {
 		dataInfo = new InfoLiability();
+	}
+	
+	@Override
+	protected void onCategoryClick() {
+		Intent intent = new Intent(InputLiabilityLayout.this, CategoryLiabilityLayout.class);
+		startActivity(intent);
 	}
 }

@@ -14,6 +14,7 @@ public class InputIncomeLayout extends InputBaseLayout {
         SetDateBtnClickListener(R.id.BtnIncomeDate); 
         SetAmountBtnClickListener(R.id.BtnIncomeAmount);
         SetSaveBtnClickListener(R.id.BtnIncomeSave);
+        SetCategoryClickListener(R.id.BtnIncomeCategory);
     }
   
     protected void updateDate() {
@@ -39,6 +40,12 @@ public class InputIncomeLayout extends InputBaseLayout {
 	@Override
 	protected void createInfoDataInstance() {
 		dataInfo = new InfoIncome();
+	}
+
+	@Override
+	protected void onCategoryClick() {
+		Intent intent = new Intent(InputIncomeLayout.this, CategoryIncomeLayout.class);
+		startActivity(intent);
 	}
     
 }

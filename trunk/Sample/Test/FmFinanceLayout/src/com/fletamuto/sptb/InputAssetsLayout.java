@@ -14,6 +14,7 @@ public class InputAssetsLayout extends InputBaseLayout {
         SetDateBtnClickListener(R.id.BtnAssetsDate); 
         SetAmountBtnClickListener(R.id.BtnAssetsAmount);
         SetSaveBtnClickListener(R.id.BtnAssetsSave);
+        SetCategoryClickListener(R.id.BtnAssetsCategory);
     }
     
     protected void updateDate() {
@@ -34,5 +35,11 @@ public class InputAssetsLayout extends InputBaseLayout {
 	@Override
 	protected void createInfoDataInstance() {
 		dataInfo = new InfoAssets();
+	}
+
+	@Override
+	protected void onCategoryClick() {
+    	Intent intent = new Intent(InputAssetsLayout.this, CategoryAssetsLayout.class);
+		startActivity(intent);
 	}
 }

@@ -21,6 +21,7 @@ public abstract class InputBaseLayout extends Activity {
 	protected abstract void updateDate();
 	protected abstract void saveData();
 	protected abstract void createInfoDataInstance();
+	protected abstract void onCategoryClick();
 	
 	DatePickerDialog.OnDateSetListener dateDlg = new DatePickerDialog.OnDateSetListener() {
 		
@@ -86,6 +87,16 @@ public abstract class InputBaseLayout extends Activity {
 		 });
     }
     
+    protected void SetCategoryClickListener(int btnID) {
+    	((Button)findViewById(btnID)).setOnClickListener(new Button.OnClickListener() {
+    		
+    		public void onClick(View v) {
+    			onCategoryClick();
+    		}
+        });    
+    }    
+    
+    
     public Calendar getCreateDate() {
     	return dataInfo.getCreateDate();
     }
@@ -100,5 +111,7 @@ public abstract class InputBaseLayout extends Activity {
     		
     	}
     }
+    
+       
  
 }
