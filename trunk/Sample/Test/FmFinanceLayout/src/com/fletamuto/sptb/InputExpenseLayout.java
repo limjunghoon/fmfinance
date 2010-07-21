@@ -14,6 +14,7 @@ public class InputExpenseLayout extends InputBaseLayout {
         SetDateBtnClickListener(R.id.BtnExpenseDate);
         SetAmountBtnClickListener(R.id.BtnExpenseAmount);
         SetSaveBtnClickListener(R.id.BtnExpenseSave);
+        SetCategoryClickListener(R.id.BtnExpenseCategory);
     }
     
     protected void updateDate() {
@@ -35,5 +36,11 @@ public class InputExpenseLayout extends InputBaseLayout {
 	@Override
 	protected void createInfoDataInstance() {
 		dataInfo = new InfoExpense();
+	}
+
+	@Override
+	protected void onCategoryClick() {
+		Intent intent = new Intent(InputExpenseLayout.this, CategoryExpenseLayout.class);
+		startActivity(intent);
 	}
 }

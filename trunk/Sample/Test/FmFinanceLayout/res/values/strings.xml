@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="btn_back">BACK</string>	
+    <string name="btn_edit">EDIT</string>
+    <string name="btn_favo">Favo</string>
+    <string name="btn_category">분류</string>
+    <string name="btn_save">저장</string>
 	<string name="input_amount_remove_all">전체지움</string>
 	<string name="input_amount_remove">지움</string>
 	<string name="input_assets_btn_name">자산</string>
