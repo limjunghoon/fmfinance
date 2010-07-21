@@ -25,7 +25,7 @@
 <activity android:name=".ReportExpenseLayout" android:label="지출내역"></activity>
 <activity android:name=".ReportIncomeLayout" android:label="수입내역"></activity>
 <activity android:name=".ReportLiabilityLayout" android:label="부채내역"></activity>
-<activity android:name=".InputAmountDialog" android:label="금액입력" android:theme="@android:style/Theme.Dialog"></activity>
+<activity android:name=".InputAmountDialog" android:theme="@android:style/Theme.Dialog" android:label="금액입력"></activity>
 </application>
 
 

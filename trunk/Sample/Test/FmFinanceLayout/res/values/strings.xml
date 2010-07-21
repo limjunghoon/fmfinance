@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<string name="input_amount_remove_all">전체지움</string>
+	<string name="input_amount_remove">지움</string>
 	<string name="input_assets_btn_name">자산</string>
 	<string name="input_assets_tab_name">자산</string>
     <string name="input_assets_date_name">날짜</string>

@@ -5,7 +5,7 @@ import java.util.Calendar;
 public abstract class InfoFinance {
 	private String title;
 	private String memo;
-	private Calendar createDate;
+	private Calendar createDate = Calendar.getInstance();
 	private long amount;
 	
 	private FinanceCategory category;
