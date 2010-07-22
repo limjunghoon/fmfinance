@@ -1,11 +1,15 @@
 package com.fletamuto.sptb;
 
+
 import com.fletamuto.sptb.data.InfoExpense;
+import com.fletamuto.sptb.db.DBMgr;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 
 public class InputExpenseLayout extends InputBaseLayout {
+	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_expense);
@@ -22,6 +26,15 @@ public class InputExpenseLayout extends InputBaseLayout {
     } 
     
     protected void saveData() {
+    	String memo = ((TextView)findViewById(R.id.ETExpenseMemo)).getText().toString();
+    	getData().setMemo(memo);
+    	
+    	if (DBMgr.getInstance().addExpenseInfo((InfoExpense)dataInfo) == true) {
+    		
+    	}
+    	else {
+    		
+    	}
     	
     	Intent intent = new Intent(InputExpenseLayout.this, ReportExpenseLayout.class);
 		startActivity(intent);

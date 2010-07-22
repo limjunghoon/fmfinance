@@ -40,6 +40,14 @@ public abstract class InputBaseLayout extends Activity {
         
         createInfoDataInstance();
     }
+	
+	public InfoFinance getData() {
+		return dataInfo;
+	}
+	
+	protected SimpleDateFormat getDateFormat() {
+		return dateFormat;
+	}
     
     protected void updateBtnDateText(int btnID) {				
     	((Button)findViewById(btnID)).setText(dateFormat.format(dataInfo.getCreateDate().getTime()));
@@ -82,7 +90,9 @@ public abstract class InputBaseLayout extends Activity {
 		 btnIncomeDate.setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
-				saveData();			
+				saveData();		
+				
+				finish();
 			}
 		 });
     }
