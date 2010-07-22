@@ -16,6 +16,7 @@ public class CategoryAssetsLayout extends CategoryBaseLayout {
 			public void onClick(View v) {
 				Intent intent = new Intent(CategoryAssetsLayout.this, InputIncomeLayout.class);
 				startActivity(intent);
+				
 			}
         });
         
