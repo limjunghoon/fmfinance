@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
+
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="20pt">
+		<TextView android:layout_width="35pt" android:id="@+id/TVAssetsDate" android:text="@string/input_assets_date_name" android:layout_height="wrap_content" android:textSize="7pt" android:padding="2pt" android:gravity="center">
+		</TextView>
+		<Button android:layout_height="wrap_content" android:id="@+id/BtnAssetsDate" android:textSize="7pt" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:layout_width="35pt" android:id="@+id/TVAssetsCategory" android:layout_height="wrap_content" android:textSize="7pt" android:padding="2pt" android:gravity="center" android:text="@string/input_assets_category_name">
+		</TextView>
+		<Button android:id="@+id/BtnAssetsCategory" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:layout_width="35pt" android:id="@+id/TVAssetsAmount" android:layout_height="wrap_content" android:textSize="7pt" android:padding="2pt" android:gravity="center" android:text="@string/input_assets_amount_name">
+		</TextView>
+		<Button android:id="@+id/BtnAssetsAmount" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:layout_width="35pt" android:id="@+id/TVAssetsMemo" android:layout_height="wrap_content" android:textSize="7pt" android:padding="2pt" android:gravity="center" android:text="@string/input_assets_title_name">
+		</TextView>
+		<EditText android:id="@+id/ETAssetsMemo" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</EditText>
+	</LinearLayout>
+	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnAssetsSave" android:text="@string/input_assets_btn_save" android:layout_marginTop="10pt">
+	</Button>
+
+</LinearLayout>
