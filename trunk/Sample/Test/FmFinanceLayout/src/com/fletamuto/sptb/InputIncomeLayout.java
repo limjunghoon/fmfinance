@@ -1,9 +1,12 @@
 package com.fletamuto.sptb;
 
+
 import com.fletamuto.sptb.data.InfoIncome;
+import com.fletamuto.sptb.db.DBMgr;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.EditText;
+import android.widget.TextView;
 
 public class InputIncomeLayout extends InputBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
@@ -22,10 +25,15 @@ public class InputIncomeLayout extends InputBaseLayout {
     }
     
     protected void saveData() {
+    	String memo = ((TextView)findViewById(R.id.ETIncomeMemo)).getText().toString();
+    	getData().setMemo(memo);
     	
-    	dataInfo.setCreateDate(getCreateDate());
-    	String memo = ((EditText)findViewById(R.id.ETIncomeMemo)).getText().toString();
-    	dataInfo.setMemo(memo);
+    	if (DBMgr.getInstance().addIncomeInfo((InfoIncome)dataInfo) == true) {
+    		
+    	}
+    	else {
+    		
+    	}
     	
     	Intent intent = new Intent(InputIncomeLayout.this, ReportIncomeLayout.class);
 		startActivity(intent);
