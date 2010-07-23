@@ -2,6 +2,8 @@ package com.fletamuto.sptb;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.InfoFinance;
 import android.app.Activity;
 import android.app.DatePickerDialog;
