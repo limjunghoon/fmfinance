@@ -1,4 +1,8 @@
-package com.fletamuto.sptb;
+package com.fletamuto.common.control;
+
+import com.fletamuto.sptb.R;
+import com.fletamuto.sptb.R.id;
+import com.fletamuto.sptb.R.layout;
 
 import android.app.Activity;
 import android.content.Intent;
