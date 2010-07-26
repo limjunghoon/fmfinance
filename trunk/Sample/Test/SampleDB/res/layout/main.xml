@@ -4,9 +4,9 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
+
+<Button android:layout_height="wrap_content" android:id="@+id/BtnInsert" android:text="Insert" android:layout_width="fill_parent" android:layout_marginTop="50dp"></Button>
+<Button android:layout_height="wrap_content" android:id="@+id/BtnDelete" android:text="Delete" android:layout_width="fill_parent"></Button>
+<Button android:layout_height="wrap_content" android:id="@+id/Update" android:text="Update" android:layout_width="fill_parent"></Button>
+<Button android:layout_height="wrap_content" android:id="@+id/BtnSelect" android:text="Select" android:layout_width="fill_parent"></Button>
 </LinearLayout>
