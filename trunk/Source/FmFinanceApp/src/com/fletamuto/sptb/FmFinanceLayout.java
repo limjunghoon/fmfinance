@@ -30,7 +30,7 @@ public class FmFinanceLayout extends Activity {
     	((Button)findViewById(id)).setOnClickListener(new ChangeActivity());
     }
     
-    class ChangeActivity implements android.view.View.OnClickListener {
+    class ChangeActivity implements View.OnClickListener {
 
 		public void onClick(View arg0) {
 			changeActivity(arg0.getId());
