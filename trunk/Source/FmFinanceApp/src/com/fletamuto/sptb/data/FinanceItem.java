@@ -2,7 +2,7 @@ package com.fletamuto.sptb.data;
 
 import java.util.Calendar;
 
-public abstract class InfoFinance {
+public abstract class FinanceItem {
 	private String title;
 	private String memo;
 	private Calendar createDate = Calendar.getInstance();

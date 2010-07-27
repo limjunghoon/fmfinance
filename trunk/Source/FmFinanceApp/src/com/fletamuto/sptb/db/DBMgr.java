@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.fletamuto.sptb.data.InfoExpense;
-import com.fletamuto.sptb.data.InfoIncome;
+import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.IncomeInfo;
 
 import android.content.Context;
 
@@ -29,7 +29,7 @@ public class DBMgr {
 		dbConnect.connectDB(context);
 	}
 	
-	public boolean addExpenseInfo(InfoExpense infoExpense) {
+	public boolean addExpenseInfo(ExpenseItem infoExpense) {
 		String date = dateFormat.format(infoExpense.getCreateDate().getTime());
 		date = String.format("날짜 : %s", date);
         String amount = String.format("%,d", infoExpense.getAmount());
@@ -43,7 +43,7 @@ public class DBMgr {
 		return true;
 	}
 	
-	public boolean addIncomeInfo(InfoIncome infoIncome) {
+	public boolean addIncomeInfo(IncomeInfo infoIncome) {
 		String date = dateFormat.format(infoIncome.getCreateDate().getTime());
 		date = String.format("날짜 : %s", date);
         String amount = String.format("%,d", infoIncome.getAmount());

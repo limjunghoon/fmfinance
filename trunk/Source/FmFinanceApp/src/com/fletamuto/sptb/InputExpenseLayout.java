@@ -1,7 +1,7 @@
 package com.fletamuto.sptb;
 
 
-import com.fletamuto.sptb.data.InfoExpense;
+import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.db.DBMgr;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +29,7 @@ public class InputExpenseLayout extends InputBaseLayout {
     	String memo = ((TextView)findViewById(R.id.ETExpenseMemo)).getText().toString();
     	getData().setMemo(memo);
     	
-    	if (DBMgr.getInstance().addExpenseInfo((InfoExpense)dataInfo) == true) {
+    	if (DBMgr.getInstance().addExpenseInfo((ExpenseItem)dataInfo) == true) {
     		
     	}
     	else {
@@ -48,7 +48,7 @@ public class InputExpenseLayout extends InputBaseLayout {
 
 	@Override
 	protected void createInfoDataInstance() {
-		dataInfo = new InfoExpense();
+		dataInfo = new ExpenseItem();
 	}
 
 	@Override

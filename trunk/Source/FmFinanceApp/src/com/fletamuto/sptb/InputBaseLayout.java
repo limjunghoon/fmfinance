@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.fletamuto.common.control.InputAmountDialog;
-import com.fletamuto.sptb.data.InfoFinance;
+import com.fletamuto.sptb.data.FinanceItem;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -16,7 +16,7 @@ import android.widget.DatePicker;
 public abstract class InputBaseLayout extends Activity {
 	
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-	protected InfoFinance dataInfo;
+	protected FinanceItem dataInfo;
 	
 	final static int ACT_AMOUNT = 0;
 	
@@ -43,7 +43,7 @@ public abstract class InputBaseLayout extends Activity {
         createInfoDataInstance();
     }
 	
-	public InfoFinance getData() {
+	public FinanceItem getData() {
 		return dataInfo;
 	}
 	
