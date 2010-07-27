@@ -1,14 +1,28 @@
 package com.fletamuto.sptb.data;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public abstract class FinanceItem {
 	private String title;
 	private String memo;
 	private Calendar createDate = Calendar.getInstance();
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 	private long amount;
+	private int	id;
+	
 	
 	private FinanceCategory category;
+	
+	public abstract int getType();
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
+	}
 	
 	public void setTitle(String title) {
 		this.title = title;
@@ -50,5 +64,23 @@ public abstract class FinanceItem {
 		return amount;
 	}
 	
+	public String getDateString() {
+		return dateFormat.format(createDate.getTime());
+	}
 	
+	public void setCreateDate(int year, int month, int day) {
+		createDate.set(year, month, day);
+	}
+	
+	public int getCreateYear() {
+		return createDate.get(Calendar.YEAR);
+	}
+	
+	public int getCreateMonth() {
+		return createDate.get(Calendar.MONTH);
+	}
+	
+	public int getCreateDay() {
+		return createDate.get(Calendar.DAY_OF_MONTH);
+	}
 }

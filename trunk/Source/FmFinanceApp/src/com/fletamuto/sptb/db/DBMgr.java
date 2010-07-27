@@ -1,22 +1,18 @@
 package com.fletamuto.sptb.db;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import com.fletamuto.sptb.data.ExpenseItem;
-import com.fletamuto.sptb.data.IncomeItem;
 
 import android.content.Context;
+import com.fletamuto.sptb.data.FinanceItem;
 
 public class DBMgr {
 	private static DBMgr instance = null;
-	private DBConnect dbConnect = new DBConnect();
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-	private static int INCOME = 1;
-	private static int EXPENSE = 2;
+	private DBConnector dbConnector = new DBConnector();
+	private static FinanceDBHelper DBHelper = null; 
+	public static final String DB_TAG = "db_tag"; 
 	
-	private DBMgr() {}
+	private DBMgr() {
+	}
 	
 	public static DBMgr getInstance() {
 		if (instance == null) {
@@ -26,19 +22,33 @@ public class DBMgr {
 	}
 	
 	public void initialize(Context context) {
-		dbConnect.connectDB(context);
+		DBHelper = new FinanceDBHelper(context);
+		DBHelper.getWritableDatabase();
 	}
 	
-	public boolean addExpenseInfo(ExpenseItem infoExpense) {
-		String date = dateFormat.format(infoExpense.getCreateDate().getTime());
+	public boolean addFinanceItem(FinanceItem item) {
+		dbConnector.AddFinanceItem(item);
+		return true;
+	}
+	
+	public ArrayList<FinanceItem> getAllItems(int itemType) {
+		return dbConnector.getFinanceAllItems(itemType);
+	}
+	
+	public FinanceDBHelper getDBHelper() {
+		return DBHelper;
+	}
+	
+	/*public boolean addExpenseInfo(ExpenseItem itemExpense) {
+		String date = itemExpense.getDateString();
 		date = String.format("날짜 : %s", date);
-        String amount = String.format("%,d", infoExpense.getAmount());
+        String amount = String.format("%,d", itemExpense.getAmount());
         amount = String.format("금액 :  %s 원", amount);
-        String memo = infoExpense.getMemo();
+        String memo = itemExpense.getMemo();
         memo = String.format("메모 : %s", memo);
         String _type = "분류 : ";
         
-		dbConnect.setData_DATE_TYPE_MUCH_MEMO(date ,_type,amount,memo,EXPENSE);
+//		dbConnect.setData_DATE_TYPE_MUCH_MEMO(date ,_type,amount,memo,EXPENSE);
 		
 		return true;
 	}
@@ -56,7 +66,9 @@ public class DBMgr {
 		
 		return true;
 	}
+	*/
 	
+	/*
 	public ArrayList<HashMap<String,String>> getExpenseInfo() {
 		ArrayList<HashMap<String,String>> expenseItems = new ArrayList<HashMap<String,String>>();
 		dbConnect.getExpenseDataAll(expenseItems);
@@ -68,4 +80,6 @@ public class DBMgr {
 		dbConnect.getIncomeDataAll(expenseItems);
 		return expenseItems;
 	}
+	
+	*/
 }

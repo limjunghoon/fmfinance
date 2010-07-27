@@ -14,7 +14,7 @@ public class ReportIncomeLayout extends ReportBaseListLayout {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+/*
         ArrayList<HashMap<String,String>> incomeItems = DBMgr.getInstance().getIncomeInfo();
     	
         SimpleAdapter adapter2 = new SimpleAdapter( 
@@ -24,6 +24,7 @@ public class ReportIncomeLayout extends ReportBaseListLayout {
 				new String[] { "_date","_type","_much","_memo" },
 				new int[] { R.id.TVReportListDate, R.id.TVReportListCategory, R.id.TVReportListAmount,R.id.TVReportListMemo }  );
 		this.setListAdapter(adapter2); 
+		*/
     }
     
     protected void onListItemClick(ListView l, View v, int position, long id) {
