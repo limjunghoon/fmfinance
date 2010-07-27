@@ -1,21 +1,49 @@
 
 package com.fletamuto.sptb.db;
 
-
-
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.LiabilityItem;
 
 
-public class DBConnect {
+public class DBConnector {
+	private IncomeDBConnector incomeDB = new IncomeDBConnector();
+	private ExpenseDBConnector expenseDB = new ExpenseDBConnector();
+	private AssetsDBConnector assetsDB = new AssetsDBConnector();
+	private LiabilityDBConnector liabilityDB = new LiabilityDBConnector();
 	  
+	public boolean AddFinanceItem(FinanceItem item) {
+		if (item.getType() == IncomeItem.TYPE) {
+			incomeDB.AddItem((IncomeItem)item);
+		}
+		else if (item.getType() == ExpenseItem.TYPE) {
+			expenseDB.AddItem((ExpenseItem)item);
+		}
+		else if (item.getType() == AssetsItem.TYPE) {
+			assetsDB.AddItem((AssetsItem)item);
+		}
+		else if (item.getType() == LiabilityItem.TYPE) {
+			liabilityDB.AddItem((LiabilityItem)item);
+		}
+		else {
+			Log.e(DBMgr.DB_TAG, "== invaild finance item " + item.getType());
+			return false;
+		}
+
+		return true;
+	}
 	
+	public ArrayList<FinanceItem> getFinanceAllItems(int itemType) {
+		return expenseDB.getAllItems();
+	}
+	
+	/*
 	private static SQLiteDatabase mDb;
 	Cursor mCursor;
 	private static Context context;
@@ -155,7 +183,7 @@ public void  getIncomeDataAll(ArrayList<HashMap<String,String>> myArray){
 		}
 		
 	}	
-
+*/
 }
 
 

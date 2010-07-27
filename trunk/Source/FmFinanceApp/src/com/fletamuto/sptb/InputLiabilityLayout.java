@@ -1,6 +1,8 @@
 package com.fletamuto.sptb;
 
 import com.fletamuto.sptb.data.LiabilityItem;
+import com.fletamuto.sptb.db.DBMgr;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -21,6 +23,12 @@ public class InputLiabilityLayout extends InputBaseLayout {
     } 
     
     protected void saveData() {
+    	if (DBMgr.getInstance().addFinanceItem(dataInfo) == true) {
+    		
+    	}
+    	else {
+    		
+    	}
     	Intent intent = new Intent(InputLiabilityLayout.this, ReportLiabilityLayout.class);
 		startActivity(intent);
     }

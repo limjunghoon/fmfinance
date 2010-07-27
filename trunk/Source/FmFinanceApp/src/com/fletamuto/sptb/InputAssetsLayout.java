@@ -1,6 +1,7 @@
 package com.fletamuto.sptb;
 
 import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.db.DBMgr;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +23,13 @@ public class InputAssetsLayout extends InputBaseLayout {
     } 
     
     protected void saveData() {
+    	if (DBMgr.getInstance().addFinanceItem(dataInfo) == true) {
+    		
+    	}
+    	else {
+    		
+    	}
+    	
     	Intent intent = new Intent(InputAssetsLayout.this, ReportAssetsLayout.class);
 		startActivity(intent);
     }

@@ -28,7 +28,7 @@ public class InputIncomeLayout extends InputBaseLayout {
     	String memo = ((TextView)findViewById(R.id.ETIncomeMemo)).getText().toString();
     	getData().setMemo(memo);
     	
-    	if (DBMgr.getInstance().addIncomeInfo((IncomeItem)dataInfo) == true) {
+    	if (DBMgr.getInstance().addFinanceItem(dataInfo) == true) {
     		
     	}
     	else {

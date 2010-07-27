@@ -29,7 +29,7 @@ public class InputExpenseLayout extends InputBaseLayout {
     	String memo = ((TextView)findViewById(R.id.ETExpenseMemo)).getText().toString();
     	getData().setMemo(memo);
     	
-    	if (DBMgr.getInstance().addExpenseInfo((ExpenseItem)dataInfo) == true) {
+    	if (DBMgr.getInstance().addFinanceItem(dataInfo) == true) {
     		
     	}
     	else {
