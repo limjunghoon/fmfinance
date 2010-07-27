@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.fletamuto.sptb.data.ExpenseItem;
-import com.fletamuto.sptb.data.IncomeInfo;
+import com.fletamuto.sptb.data.IncomeItem;
 
 import android.content.Context;
 
@@ -43,7 +43,7 @@ public class DBMgr {
 		return true;
 	}
 	
-	public boolean addIncomeInfo(IncomeInfo infoIncome) {
+	public boolean addIncomeInfo(IncomeItem infoIncome) {
 		String date = dateFormat.format(infoIncome.getCreateDate().getTime());
 		date = String.format("³¯Â¥ : %s", date);
         String amount = String.format("%,d", infoIncome.getAmount());

@@ -1,7 +1,7 @@
 package com.fletamuto.sptb;
 
 
-import com.fletamuto.sptb.data.IncomeInfo;
+import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 import android.content.Intent;
@@ -28,7 +28,7 @@ public class InputIncomeLayout extends InputBaseLayout {
     	String memo = ((TextView)findViewById(R.id.ETIncomeMemo)).getText().toString();
     	getData().setMemo(memo);
     	
-    	if (DBMgr.getInstance().addIncomeInfo((IncomeInfo)dataInfo) == true) {
+    	if (DBMgr.getInstance().addIncomeInfo((IncomeItem)dataInfo) == true) {
     		
     	}
     	else {
@@ -47,7 +47,7 @@ public class InputIncomeLayout extends InputBaseLayout {
 
 	@Override
 	protected void createInfoDataInstance() {
-		dataInfo = new IncomeInfo();
+		dataInfo = new IncomeItem();
 	}
 
 	@Override
