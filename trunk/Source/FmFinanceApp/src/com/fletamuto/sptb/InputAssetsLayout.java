@@ -1,6 +1,6 @@
 package com.fletamuto.sptb;
 
-import com.fletamuto.sptb.data.InfoAssets;
+import com.fletamuto.sptb.data.AssetsItem;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,7 +34,7 @@ public class InputAssetsLayout extends InputBaseLayout {
     
 	@Override
 	protected void createInfoDataInstance() {
-		dataInfo = new InfoAssets();
+		dataInfo = new AssetsItem();
 	}
 
 	@Override

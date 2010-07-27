@@ -1,6 +1,6 @@
 package com.fletamuto.sptb;
 
-import com.fletamuto.sptb.data.InfoLiability;
+import com.fletamuto.sptb.data.LiabilityItem;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -33,7 +33,7 @@ public class InputLiabilityLayout extends InputBaseLayout {
 
 	@Override
 	protected void createInfoDataInstance() {
-		dataInfo = new InfoLiability();
+		dataInfo = new LiabilityItem();
 	}
 	
 	@Override
