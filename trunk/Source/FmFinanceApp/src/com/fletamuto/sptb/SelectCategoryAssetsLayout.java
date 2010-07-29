@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.ExpenseItem;
 
 public class SelectCategoryAssetsLayout extends SelectCategoryBaseLayout {
 	protected final static int ACT_SUB_CATEGORY = 1;

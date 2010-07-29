@@ -2,10 +2,6 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 
-import com.fletamuto.sptb.SelectCategoryBaseLayout.CategoryButtonAdpter;
-import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.db.DBMgr;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+
+import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.db.DBMgr;
 
 public class SelectSubCategoryLayout extends Activity {
 	private int mainCagegoryId;

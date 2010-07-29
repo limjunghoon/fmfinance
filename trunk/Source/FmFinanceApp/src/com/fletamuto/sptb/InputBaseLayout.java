@@ -3,8 +3,6 @@ package com.fletamuto.sptb;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import com.fletamuto.common.control.InputAmountDialog;
-import com.fletamuto.sptb.data.FinanceItem;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -12,6 +10,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+
+import com.fletamuto.common.control.InputAmountDialog;
+import com.fletamuto.sptb.data.FinanceItem;
 
 public abstract class InputBaseLayout extends Activity {
 	

@@ -1,15 +1,13 @@
 package com.fletamuto.common.control;
 
-import com.fletamuto.sptb.R;
-import com.fletamuto.sptb.R.id;
-import com.fletamuto.sptb.R.layout;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.fletamuto.sptb.R;
 
 public class InputAmountDialog extends Activity {
 	private Long Amount = 0L;

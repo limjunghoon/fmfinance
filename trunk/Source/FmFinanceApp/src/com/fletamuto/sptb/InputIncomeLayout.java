@@ -1,13 +1,13 @@
 package com.fletamuto.sptb;
 
 
-import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.IncomeItem;
-import com.fletamuto.sptb.db.DBMgr;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.db.DBMgr;
 
 public class InputIncomeLayout extends InputBaseLayout {
     public void onCreate(Bundle savedInstanceState) {

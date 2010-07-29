@@ -1,12 +1,12 @@
 package com.fletamuto.sptb;
 
-import com.fletamuto.sptb.db.DBMgr;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.fletamuto.sptb.db.DBMgr;
 
 /**
  * 메인 레이아웃 클레스
