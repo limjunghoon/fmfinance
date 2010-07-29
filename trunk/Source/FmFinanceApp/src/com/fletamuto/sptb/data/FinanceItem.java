@@ -11,8 +11,7 @@ public abstract class FinanceItem {
 	private long amount;
 	private int	id;
 	
-	
-	private FinanceCategory category;
+	private Category category = null;
 	
 	public abstract int getType();
 	
@@ -40,11 +39,11 @@ public abstract class FinanceItem {
 		return memo;
 	}
 	
-	public void setCategory(FinanceCategory category) {
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 	
-	public FinanceCategory getCategory() {
+	public Category getCategory() {
 		return category;
 	}
 

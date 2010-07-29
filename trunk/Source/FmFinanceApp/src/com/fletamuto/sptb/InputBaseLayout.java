@@ -16,11 +16,13 @@ import android.widget.DatePicker;
 public abstract class InputBaseLayout extends Activity {
 	
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-	protected FinanceItem dataInfo;
+	protected FinanceItem item;
 	
-	final static int ACT_AMOUNT = 0;
+	protected final static int ACT_AMOUNT = 0;
+	protected final static int ACT_CATEGORY = 1;
 	
 	protected abstract void updateDate();
+	protected abstract void updateCategory(int id, String name);
 	protected abstract void saveData();
 	protected abstract void createInfoDataInstance();
 	protected abstract void onCategoryClick();
@@ -30,9 +32,9 @@ public abstract class InputBaseLayout extends Activity {
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
 				int dayOfMonth) {
 
-			dataInfo.getCreateDate().set(Calendar.YEAR, year);
-			dataInfo.getCreateDate().set(Calendar.MONTH, monthOfYear);
-			dataInfo.getCreateDate().set(Calendar.DAY_OF_MONTH, dayOfMonth);
+			item.getCreateDate().set(Calendar.YEAR, year);
+			item.getCreateDate().set(Calendar.MONTH, monthOfYear);
+			item.getCreateDate().set(Calendar.DAY_OF_MONTH, dayOfMonth);
 			updateDate();
 		}
 	};
@@ -43,8 +45,8 @@ public abstract class InputBaseLayout extends Activity {
         createInfoDataInstance();
     }
 	
-	public FinanceItem getData() {
-		return dataInfo;
+	public FinanceItem getItem() {
+		return item;
 	}
 	
 	protected SimpleDateFormat getDateFormat() {
@@ -52,15 +54,19 @@ public abstract class InputBaseLayout extends Activity {
 	}
     
     protected void updateBtnDateText(int btnID) {				
-    	((Button)findViewById(btnID)).setText(dateFormat.format(dataInfo.getCreateDate().getTime()));
+    	((Button)findViewById(btnID)).setText(dateFormat.format(item.getCreateDate().getTime()));
     }
     
     protected void updateBtnAmountText(int btnID) {
-    	((Button)findViewById(btnID)).setText(String.format("%,d¿ø", dataInfo.getAmount()));
+    	((Button)findViewById(btnID)).setText(String.format("%,d¿ø", item.getAmount()));
+    }
+    
+    protected void updateBtnCategoryText(int btnID) {
+    	((Button)findViewById(btnID)).setText(item.getCategory().getName());
     }
     
     protected void updateAmount(Long amount) {
-    	dataInfo.setAmount(amount);
+    	item.setAmount(amount);
     }
     
     protected void SetDateBtnClickListener(int btnID) {
@@ -69,9 +75,9 @@ public abstract class InputBaseLayout extends Activity {
 		
 			public void onClick(View v) {
 				new DatePickerDialog(InputBaseLayout.this, dateDlg, 
-						dataInfo.getCreateDate().get(Calendar.YEAR),
-						dataInfo.getCreateDate().get(Calendar.MONTH), 
-						dataInfo.getCreateDate().get(Calendar.DAY_OF_MONTH)).show(); 				
+						item.getCreateDate().get(Calendar.YEAR),
+						item.getCreateDate().get(Calendar.MONTH), 
+						item.getCreateDate().get(Calendar.DAY_OF_MONTH)).show(); 				
 			}
 		 });
     }
@@ -110,7 +116,7 @@ public abstract class InputBaseLayout extends Activity {
     
     
     public Calendar getCreateDate() {
-    	return dataInfo.getCreateDate();
+    	return item.getCreateDate();
     }
     
     @Override
@@ -120,10 +126,13 @@ public abstract class InputBaseLayout extends Activity {
     		if (resultCode == RESULT_OK) {
     			updateAmount(data.getLongExtra("AMOUNT", 0L));
     		}
-    		
     	}
+    	else if (requestCode == ACT_CATEGORY) {
+    		if (resultCode == RESULT_OK) {
+    			updateCategory(data.getIntExtra("CATEGORY_ID", 0), data.getStringExtra("CATEGORY_NAME"));
+    		}
+    	}
+    	
+    	super.onActivityResult(requestCode, resultCode, data);
     }
-    
-       
- 
 }

@@ -8,9 +8,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * 메인 레이아웃 클레스
+ * @author yongbban
+ * @version  1.0.0.1
+ */
 public class FmFinanceLayout extends Activity {  	
     /** Called when the activity is first created. */
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
@@ -18,7 +22,7 @@ public class FmFinanceLayout extends Activity {
         DBMgr.getInstance().initialize(getApplicationContext());	
         setBtnClickListener();
     }
-    
+
     protected void setBtnClickListener() {
     	setChangeActivityBtnClickListener(R.id.BtnInputExpense);
     	setChangeActivityBtnClickListener(R.id.BtnInputIncome);
