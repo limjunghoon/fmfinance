@@ -1,12 +1,12 @@
 package com.fletamuto.sptb;
 
-import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.LiabilityItem;
-import com.fletamuto.sptb.db.DBMgr;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.LiabilityItem;
+import com.fletamuto.sptb.db.DBMgr;
 
 public class InputLiabilityLayout extends InputBaseLayout {
     public void onCreate(Bundle savedInstanceState) {

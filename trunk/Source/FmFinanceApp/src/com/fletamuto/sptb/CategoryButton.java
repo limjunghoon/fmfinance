@@ -1,9 +1,9 @@
 package com.fletamuto.sptb;
 
-import com.fletamuto.sptb.data.Category;
-
 import android.content.Context;
 import android.widget.Button;
+
+import com.fletamuto.sptb.data.Category;
 
 public class CategoryButton extends Button {
 	private Category category;

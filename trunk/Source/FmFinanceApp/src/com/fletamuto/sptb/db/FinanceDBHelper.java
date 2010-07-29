@@ -2,12 +2,12 @@ package com.fletamuto.sptb.db;
 
 import java.util.ArrayList;
 
-import com.fletamuto.sptb.R;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.fletamuto.sptb.R;
 
 public class FinanceDBHelper extends SQLiteOpenHelper {
 	private Context context;
