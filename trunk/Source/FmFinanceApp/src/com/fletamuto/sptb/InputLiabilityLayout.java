@@ -1,10 +1,12 @@
 package com.fletamuto.sptb;
 
+import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 public class InputLiabilityLayout extends InputBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
@@ -23,7 +25,10 @@ public class InputLiabilityLayout extends InputBaseLayout {
     } 
     
     protected void saveData() {
-    	if (DBMgr.getInstance().addFinanceItem(dataInfo) == true) {
+    	String title = ((TextView)findViewById(R.id.ETLiabilityTitle)).getText().toString();
+    	getItem().setTitle(title);
+    	
+    	if (DBMgr.getInstance().addFinanceItem(item) == true) {
     		
     	}
     	else {
@@ -41,12 +46,19 @@ public class InputLiabilityLayout extends InputBaseLayout {
 
 	@Override
 	protected void createInfoDataInstance() {
-		dataInfo = new LiabilityItem();
+		item = new LiabilityItem();
 	}
 	
 	@Override
 	protected void onCategoryClick() {
-		Intent intent = new Intent(InputLiabilityLayout.this, CategoryLiabilityLayout.class);
-		startActivity(intent);
+		Intent intent = new Intent(InputLiabilityLayout.this, SelectCategoryLiabilityLayout.class);
+		startActivityForResult(intent, ACT_CATEGORY);
+	}
+
+	@Override
+	protected void updateCategory(int id, String name) {
+		// TODO Auto-generated method stub
+		item.setCategory(new Category(id, name));
+		updateBtnCategoryText(R.id.BtnLiabilityCategory);
 	}
 }

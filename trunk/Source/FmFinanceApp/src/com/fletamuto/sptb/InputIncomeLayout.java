@@ -1,6 +1,7 @@
 package com.fletamuto.sptb;
 
 
+import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -26,9 +27,9 @@ public class InputIncomeLayout extends InputBaseLayout {
     
     protected void saveData() {
     	String memo = ((TextView)findViewById(R.id.ETIncomeMemo)).getText().toString();
-    	getData().setMemo(memo);
+    	getItem().setMemo(memo);
     	
-    	if (DBMgr.getInstance().addFinanceItem(dataInfo) == true) {
+    	if (DBMgr.getInstance().addFinanceItem(item) == true) {
     		
     	}
     	else {
@@ -47,13 +48,20 @@ public class InputIncomeLayout extends InputBaseLayout {
 
 	@Override
 	protected void createInfoDataInstance() {
-		dataInfo = new IncomeItem();
+		item = new IncomeItem();
 	}
 
 	@Override
 	protected void onCategoryClick() {
-		Intent intent = new Intent(InputIncomeLayout.this, CategoryIncomeLayout.class);
-		startActivity(intent);
+		Intent intent = new Intent(InputIncomeLayout.this, SelectCategoryIncomeLayout.class);
+		startActivityForResult(intent, ACT_CATEGORY);
+	}
+	
+	@Override
+	protected void updateCategory(int id, String name) {
+		// TODO Auto-generated method stub
+		item.setCategory(new Category(id, name));
+		updateBtnCategoryText(R.id.BtnIncomeCategory);
 	}
     
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+	<TextView android:layout_width="fill_parent" android:id="@+id/TVExpenseReportListDate" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:text="날짜"/>
+	<TextView android:layout_width="fill_parent" android:id="@+id/TVExpenseReportListCategory" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:text="분류"/>
+	<TextView android:layout_width="fill_parent" android:id="@+id/TVExpenseReportListAmount" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:text=""/>
+	<TextView android:layout_width="fill_parent" android:id="@+id/TVExpenseReportListMemo" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:text=""/>	        
+
+</LinearLayout>

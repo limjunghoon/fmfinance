@@ -3,6 +3,8 @@ package com.fletamuto.sptb.db;
 import java.util.ArrayList;
 
 import android.content.Context;
+
+import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 
 public class DBMgr {
@@ -39,47 +41,11 @@ public class DBMgr {
 		return DBHelper;
 	}
 	
-	/*public boolean addExpenseInfo(ExpenseItem itemExpense) {
-		String date = itemExpense.getDateString();
-		date = String.format("날짜 : %s", date);
-        String amount = String.format("%,d", itemExpense.getAmount());
-        amount = String.format("금액 :  %s 원", amount);
-        String memo = itemExpense.getMemo();
-        memo = String.format("메모 : %s", memo);
-        String _type = "분류 : ";
-        
-//		dbConnect.setData_DATE_TYPE_MUCH_MEMO(date ,_type,amount,memo,EXPENSE);
-		
-		return true;
+	public ArrayList<Category> getCategory(int itemType) {
+		return dbConnector.getCategory(itemType);
 	}
 	
-	public boolean addIncomeInfo(IncomeItem infoIncome) {
-		String date = dateFormat.format(infoIncome.getCreateDate().getTime());
-		date = String.format("날짜 : %s", date);
-        String amount = String.format("%,d", infoIncome.getAmount());
-        amount = String.format("금액 :  %s 원", amount);
-        String memo = infoIncome.getMemo();
-        memo = String.format("메모 : %s", memo);
-        String _type = "분류 : ";
-        
-		dbConnect.setData_DATE_TYPE_MUCH_MEMO(date ,_type,amount,memo,INCOME);
-		
-		return true;
+	public ArrayList<Category> getSubCategory(int itemType, int mainCategoryId) {
+		return dbConnector.getSubCategory(itemType, mainCategoryId);
 	}
-	*/
-	
-	/*
-	public ArrayList<HashMap<String,String>> getExpenseInfo() {
-		ArrayList<HashMap<String,String>> expenseItems = new ArrayList<HashMap<String,String>>();
-		dbConnect.getExpenseDataAll(expenseItems);
-		return expenseItems;
-	}
-	
-	public ArrayList<HashMap<String,String>> getIncomeInfo() {
-		ArrayList<HashMap<String,String>> expenseItems = new ArrayList<HashMap<String,String>>();
-		dbConnect.getIncomeDataAll(expenseItems);
-		return expenseItems;
-	}
-	
-	*/
 }
