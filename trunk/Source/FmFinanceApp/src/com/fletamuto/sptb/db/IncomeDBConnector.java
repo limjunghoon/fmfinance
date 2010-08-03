@@ -23,7 +23,9 @@ public class IncomeDBConnector extends BaseDBConnector {
 		rowItem.put("day", item.getCreateDay());
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("memo", item.getMemo());
-		rowItem.put("main_category", item.getCategory().getId());
+		if (item.getCategory() != null) {
+			rowItem.put("main_category", item.getCategory().getId());
+		}
 		
 		db.insert("income", null, rowItem);
 		db.close();
