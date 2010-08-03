@@ -23,7 +23,9 @@ public class LiabilityDBConnector extends BaseDBConnector {
 		rowItem.put("day", item.getCreateDay());
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
-		rowItem.put("main_category", item.getCategory().getId());
+		if (item.getCategory() != null) {
+			rowItem.put("main_category", item.getCategory().getId());
+		}
 		
 		db.insert("liability", null, rowItem);
 		db.close();

@@ -24,8 +24,12 @@ public class ExpenseDBConnector extends BaseDBConnector {
 		rowItem.put("day", item.getCreateDay());
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("memo", item.getMemo());
-		rowItem.put("main_category", item.getCategory().getId());
-		rowItem.put("sub_category", item.getSubCategory().getId());
+		if (item.getCategory() != null) {
+			rowItem.put("main_category", item.getCategory().getId());
+		}
+		if (item.getSubCategory() != null) {
+			rowItem.put("sub_category", item.getSubCategory().getId());
+		}
 		
 		db.insert("expense", null, rowItem);
 		db.close();
