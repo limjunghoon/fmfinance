@@ -2,99 +2,76 @@
 package com.fletamuto.sptb.db;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.util.Log;
-
-import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.IncomeItem;
-import com.fletamuto.sptb.data.LiabilityItem;
 
-
+/**
+ * DB와 연동하여 데이타를 관리한다.
+ * @author yongbban
+ * @version 1.0.0.1
+ */
 public class DBConnector {
-	private IncomeDBConnector incomeDB = new IncomeDBConnector();
-	private ExpenseDBConnector expenseDB = new ExpenseDBConnector();
-	private AssetsDBConnector assetsDB = new AssetsDBConnector();
-	private LiabilityDBConnector liabilityDB = new LiabilityDBConnector();
+	private BaseDBConnector[] dbConnector = {
+			new IncomeDBConnector(), 
+			new ExpenseDBConnector(), 
+			new AssetsDBConnector(), 
+			new LiabilityDBConnector()};
+	
+	protected BaseDBConnector getDBInstance(int itemType){
+		if (itemType >= dbConnector.length) {
+			Log.e(DBMgr.DB_TAG, "== invaild finance item " + itemType);
+			return null;
+		}
+		return dbConnector[itemType];
+	}
 	  
 	public boolean AddFinanceItem(FinanceItem item) {
-		if (item.getType() == IncomeItem.TYPE) {
-			incomeDB.AddItem((IncomeItem)item);
-		}
-		else if (item.getType() == ExpenseItem.TYPE) {
-			expenseDB.AddItem((ExpenseItem)item);
-		}
-		else if (item.getType() == AssetsItem.TYPE) {
-			assetsDB.AddItem((AssetsItem)item);
-		}
-		else if (item.getType() == LiabilityItem.TYPE) {
-			liabilityDB.AddItem((LiabilityItem)item);
-		}
-		else {
+		Log.i(DBMgr.DB_TAG, "== DBConnector AddFinanceItem ");
+		if (item.getType() >= dbConnector.length) {
 			Log.e(DBMgr.DB_TAG, "== invaild finance item " + item.getType());
 			return false;
 		}
-
+		getDBInstance(item.getType()).AddItem(item);
 		return true;
 	}
 	
+	public long getTotalAmount(int itemType) {
+		Log.i(DBMgr.DB_TAG, "== DBConnector getTotalAmount ");
+		return getDBInstance(itemType).getTotalAmount();
+	}
+	
+	public long getTotalAmountDay(int itemType, Calendar calendar) {
+		Log.i(DBMgr.DB_TAG, "== DBConnector getTotalAmountDay ");
+		return getDBInstance(itemType).getTotalAmountDay(calendar);
+	}
+	
 	public ArrayList<FinanceItem> getFinanceAllItems(int itemType) {
-		if (itemType == IncomeItem.TYPE) {
-			return incomeDB.getAllItems();
-		}
-		else if (itemType == ExpenseItem.TYPE) {
-			return expenseDB.getAllItems();
-		}
-		else if (itemType == AssetsItem.TYPE) {
-			return assetsDB.getAllItems();
-		}
-		else if (itemType == LiabilityItem.TYPE) {
-			return liabilityDB.getAllItems();
-		}
-		else {
-			Log.e(DBMgr.DB_TAG, "== invaild finance item " + itemType);
-			return null;
-		}
+		Log.i(DBMgr.DB_TAG, "== DBConnector getFinanceAllItems ");
+		return getDBInstance(itemType).getAllItems();
 	}
 	
 	public ArrayList<Category> getCategory(int itemType) {
-		if (itemType == IncomeItem.TYPE) {
-			return incomeDB.getCategory();
-		}
-		else if (itemType == ExpenseItem.TYPE) {
-			return expenseDB.getCategory();
-		}
-		else if (itemType == AssetsItem.TYPE) {
-			return assetsDB.getCategory();
-		}
-		else if (itemType == LiabilityItem.TYPE) {
-			return liabilityDB.getCategory();
-		}
-		else {
-			Log.e(DBMgr.DB_TAG, "== invaild finance item " + itemType);
-			return null;
-		}
+		Log.i(DBMgr.DB_TAG, "== DBConnector getCategory ");
+		return getDBInstance(itemType).getCategory();
 	}
 
 	public ArrayList<Category> getSubCategory(int itemType, int mainCategoryId) {
-		if (itemType == IncomeItem.TYPE) {
-			return null;
-		}
-		else if (itemType == ExpenseItem.TYPE) {
-			return expenseDB.getSubCategory(mainCategoryId);
-		}
-		else if (itemType == AssetsItem.TYPE) {
-			return assetsDB.getSubCategory(mainCategoryId);
-		}
-		else if (itemType == LiabilityItem.TYPE) {
-			return null;
-		}
-		else {
-			Log.e(DBMgr.DB_TAG, "== invaild finance item " + itemType);
-			return null;
-		}
+		Log.i(DBMgr.DB_TAG, "== DBConnector getSubCategory ");
+		return getDBInstance(itemType).getSubCategory(mainCategoryId);
+	}
+	
+
+	public int getItemCount(int itemType, Calendar calendar) {
+		Log.i(DBMgr.DB_TAG, "== DBConnector getItemCount ");
+		return getDBInstance(itemType).getItemCount(calendar);
+	}
+
+	public ArrayList<FinanceItem> getItems(int itemType, Calendar calendar) {
+		Log.i(DBMgr.DB_TAG, "== DBConnector getItems ");
+		return getDBInstance(itemType).getItems(calendar);
 	}
 
 }

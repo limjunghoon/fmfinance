@@ -1,6 +1,7 @@
 package com.fletamuto.sptb.db;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -13,7 +14,8 @@ import com.fletamuto.sptb.data.FinanceItem;
 
 public class ExpenseDBConnector extends BaseDBConnector {
 	
-	public boolean AddItem(ExpenseItem item) {
+	public boolean AddItem(FinanceItem financeItem) {
+		ExpenseItem item = (ExpenseItem)financeItem;
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues rowItem = new ContentValues();
 		
@@ -49,11 +51,33 @@ public class ExpenseDBConnector extends BaseDBConnector {
 		return expenseItems;
 	}
 	
+	@Override
+	public ArrayList<FinanceItem> getItems(Calendar calendar) {
+		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)), 
+				String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
+		
+		queryBilder.setTables("expense, expense_main_category, expense_sub_category");
+		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id ");
+		Cursor c = queryBilder.query(db, null, "year=? AND month=? AND day=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				expenseItems.add(CreateExpenseItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return expenseItems;
+	}
+	
 	public ExpenseItem CreateExpenseItem(Cursor c) {
 		ExpenseItem item = new ExpenseItem();
 		item.setId(c.getInt(0));
 		item.setCreateDate(c.getInt(1), c.getInt(2), c.getInt(3));
-		item.setAmount(c.getInt(4));
+		item.setAmount(c.getLong(4));
 		item.setMemo(c.getString(6));
 		item.setCategory(new Category(c.getInt(9), c.getString(10)));
 		item.setSubCategory(new Category(c.getInt(11), c.getString(12)));
@@ -91,5 +115,54 @@ public class ExpenseDBConnector extends BaseDBConnector {
 		c.close();
 		db.close();
 		return subCategory;
+	}
+	
+	@Override
+	public long getTotalAmount() {
+		long amount = 0L;
+		SQLiteDatabase db = getReadableDatabase();
+		String query = "SELECT SUM(amount) FROM expense";
+		Cursor c = db.rawQuery(query, null);
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		db.close();
+		return amount;
+	}
+	
+	@Override
+	public long getTotalAmountDay(Calendar calendar) {
+		long amount = 0L;
+		SQLiteDatabase db = getReadableDatabase();
+		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)), 
+				String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
+		String query = "SELECT SUM(amount) FROM expense WHERE year=? AND month=? AND day=?";
+		Cursor c = db.rawQuery(query, params);
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		db.close();
+		return amount;
+	}
+
+	@Override
+	public int getItemCount(Calendar calendar) {
+		int count = 0;
+		SQLiteDatabase db = getReadableDatabase();
+		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)), 
+				String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
+		String query = "SELECT COUNT(*) FROM expense WHERE year=? AND month=? AND day=?";
+		Cursor c = db.rawQuery(query, params);
+		
+		if (c.moveToFirst() != false) {
+			count = c.getInt(0);
+		}
+		c.close();
+		db.close();
+		return count;
 	}
 }

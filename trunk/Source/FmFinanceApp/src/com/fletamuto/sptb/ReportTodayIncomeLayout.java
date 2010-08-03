@@ -2,6 +2,7 @@ package com.fletamuto.sptb;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -19,17 +20,19 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class ReportIncomeLayout extends ListActivity {
+public class ReportTodayIncomeLayout extends ListActivity {
+	
+	
     /** Called when the activity is first created. */
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        ArrayList<FinanceItem> items = DBMgr.getInstance().getAllItems(IncomeItem.TYPE);
+        ArrayList<FinanceItem> items = DBMgr.getInstance().getItems(IncomeItem.TYPE, Calendar.getInstance());
         if (items == null) return;
-
+        
         IncomeItemAdapter adapter = new IncomeItemAdapter(this, R.layout.report_list_income, items);
 		setListAdapter(adapter); 
+        
     }
     
     protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -62,11 +65,10 @@ public class ReportIncomeLayout extends ListActivity {
 			}
 			
 			((TextView)IncomeListView.findViewById(R.id.TVIncomeReportListDate)).setText(item.getDateString());			
-			((TextView)IncomeListView.findViewById(R.id.TVIncomeReportListAmount)).setText(String.format("%,d¿ø", item.getAmount()));
+			((TextView)IncomeListView.findViewById(R.id.TVIncomeReportListAmount)).setText(String.valueOf(item.getAmount()));
 			((TextView)IncomeListView.findViewById(R.id.TVIncomeReportListMemo)).setText(item.getMemo());
 			((TextView)IncomeListView.findViewById(R.id.TVIncomeReportListCategory)).setText(item.getCategory().getName());
 			return IncomeListView;
 		}
     }
-
 }

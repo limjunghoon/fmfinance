@@ -64,7 +64,7 @@ public class ReportExpenseLayout extends ListActivity {
 			}
 			
 			((TextView)expenseListView.findViewById(R.id.TVExpenseReportListDate)).setText(item.getDateString());			
-			((TextView)expenseListView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.valueOf(item.getAmount()));
+			((TextView)expenseListView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("%,d¿ø", item.getAmount()));
 			((TextView)expenseListView.findViewById(R.id.TVExpenseReportListMemo)).setText(item.getMemo());
 			String categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
 			((TextView)expenseListView.findViewById(R.id.TVExpenseReportListCategory)).setText(categoryText);

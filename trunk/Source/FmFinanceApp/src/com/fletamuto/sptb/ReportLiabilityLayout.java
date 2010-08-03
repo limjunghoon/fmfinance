@@ -63,7 +63,7 @@ public class ReportLiabilityLayout extends ListActivity {
 			
 			((TextView)LiabilityListView.findViewById(R.id.TVLiabilityReportListTitle)).setText(item.getTitle());
 			((TextView)LiabilityListView.findViewById(R.id.TVLiabilityReportListDate)).setText(item.getDateString());			
-			((TextView)LiabilityListView.findViewById(R.id.TVLiabilityReportListAmount)).setText(String.valueOf(item.getAmount()));
+			((TextView)LiabilityListView.findViewById(R.id.TVLiabilityReportListAmount)).setText(String.format("%,d¿ø", item.getAmount()));
 			((TextView)LiabilityListView.findViewById(R.id.TVLiabilityReportListCategory)).setText(item.getCategory().getName());
 			return LiabilityListView;
 		}
