@@ -2,6 +2,7 @@ package com.fletamuto.sptb;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -15,31 +16,33 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class ReportAssetsLayout extends ListActivity {
+public class ReportTodayExpenseLayout extends ListActivity {
+	
+	
     /** Called when the activity is first created. */
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ArrayList<FinanceItem> items = DBMgr.getInstance().getAllItems(AssetsItem.TYPE);
+        
+        ArrayList<FinanceItem> items = DBMgr.getInstance().getItems(ExpenseItem.TYPE, Calendar.getInstance());
         if (items == null) return;
         
-        AssetsItemAdapter adapter = new AssetsItemAdapter(this, R.layout.report_list_assets, items);
+        ExpenseItemAdapter adapter = new ExpenseItemAdapter(this, R.layout.report_list_expense, items);
 		setListAdapter(adapter); 
+        
     }
     
     protected void onListItemClick(ListView l, View v, int position, long id) {
 
     }
-
-    public class AssetsItemAdapter extends ArrayAdapter<FinanceItem> {
+    
+    public class ExpenseItemAdapter extends ArrayAdapter<FinanceItem> {
     	int resource;
 
-		public AssetsItemAdapter(Context context, int resource,
+		public ExpenseItemAdapter(Context context, int resource,
 				 List<FinanceItem> objects) {
 			super(context, resource, objects);
 			this.resource = resource;
@@ -47,26 +50,26 @@ public class ReportAssetsLayout extends ListActivity {
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			LinearLayout AssetsListView;
-			AssetsItem item = (AssetsItem)getItem(position);
+			LinearLayout expenseListView;
+			ExpenseItem item = (ExpenseItem)getItem(position);
 			
 			if (convertView == null) {
-				AssetsListView = new LinearLayout(getContext());
+				expenseListView = new LinearLayout(getContext());
 				String inflater = Context.LAYOUT_INFLATER_SERVICE;
 				LayoutInflater li;
 				li = (LayoutInflater)getContext().getSystemService(inflater);
-				li.inflate(resource, AssetsListView, true);
+				li.inflate(resource, expenseListView, true);
 			}
 			else {
-				AssetsListView = (LinearLayout)convertView;
+				expenseListView = (LinearLayout)convertView;
 			}
 			
-			((TextView)AssetsListView.findViewById(R.id.TVAssetsReportListTitle)).setText(item.getTitle());
-			((TextView)AssetsListView.findViewById(R.id.TVAssetsReportListDate)).setText(item.getDateString());			
-			((TextView)AssetsListView.findViewById(R.id.TVAssetsReportListAmount)).setText(String.format("%,d¿ø", item.getAmount()));
+			((TextView)expenseListView.findViewById(R.id.TVExpenseReportListDate)).setText(item.getDateString());			
+			((TextView)expenseListView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.valueOf(item.getAmount()));
+			((TextView)expenseListView.findViewById(R.id.TVExpenseReportListMemo)).setText(item.getMemo());
 			String categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
-			((TextView)AssetsListView.findViewById(R.id.TVAssetsReportListCategory)).setText(categoryText);
-			return AssetsListView;
+			((TextView)expenseListView.findViewById(R.id.TVExpenseReportListCategory)).setText(categoryText);
+			return expenseListView;
 		}
     }
 }

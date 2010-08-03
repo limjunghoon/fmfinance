@@ -1,7 +1,7 @@
 package com.fletamuto.sptb.data;
 
 public class ExpenseItem extends FinanceItem {
-	public final static int TYPE = 2;
+	public final static int TYPE = 1;
 	
 	private Category subCategory = null;
 	@Override
