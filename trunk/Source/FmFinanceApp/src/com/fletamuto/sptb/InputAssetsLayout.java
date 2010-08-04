@@ -19,7 +19,7 @@ public class InputAssetsLayout extends InputBaseLayout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_assets);
         
-        updateDate();
+        updateChildView();
         SetDateBtnClickListener(R.id.BtnAssetsDate); 
         SetAmountBtnClickListener(R.id.BtnAssetsAmount);
         SetSaveBtnClickListener(R.id.BtnAssetsSave);
@@ -31,14 +31,8 @@ public class InputAssetsLayout extends InputBaseLayout {
     } 
     
     protected void saveData() {
-    	String title = ((TextView)findViewById(R.id.ETAssetsTitle)).getText().toString();
-    	getItem().setTitle(title);
-    	
-    	if (DBMgr.getInstance().addFinanceItem(item) == true) {
-    		
-    	}
-    	else {
-    		
+    	if (DBMgr.getInstance().addFinanceItem(item) == false) {
+    		return;
     	}
     	
     	Intent intent = new Intent(InputAssetsLayout.this, ReportAssetsLayout.class);
@@ -70,9 +64,12 @@ public class InputAssetsLayout extends InputBaseLayout {
 	}
 	
 	protected void updateBtnCategoryText(int btnID) {
+		String categoryText = getResources().getString(R.string.input_select_category);
 		AssetsItem assetsItem = (AssetsItem)item;
-		String categoryText = String.format("%s - %s", assetsItem.getCategory().getName(), assetsItem.getSubCategory().getName());
-    	((Button)findViewById(btnID)).setText(categoryText);
+		if (assetsItem.getCategory() != null && assetsItem.getSubCategory()!= null) {
+			categoryText = String.format("%s - %s", assetsItem.getCategory().getName(), assetsItem.getSubCategory().getName());
+		}
+		((Button)findViewById(btnID)).setText(categoryText);
     }
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -82,5 +79,18 @@ public class InputAssetsLayout extends InputBaseLayout {
     		}
     	}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	protected void updateChildView() {
+		updateDate();
+		updateBtnCategoryText(R.id.BtnAssetsCategory);
+		updateBtnAmountText(R.id.BtnAssetsAmount);
+	}
+
+	@Override
+	protected void updateData() {
+		String title = ((TextView)findViewById(R.id.ETAssetsTitle)).getText().toString();
+    	getItem().setTitle(title);
 	}
 }

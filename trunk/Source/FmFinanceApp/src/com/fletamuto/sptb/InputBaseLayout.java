@@ -1,10 +1,11 @@
 package com.fletamuto.sptb;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +17,6 @@ import com.fletamuto.sptb.data.FinanceItem;
 
 public abstract class InputBaseLayout extends Activity {
 	
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 	protected FinanceItem item;
 	
 	protected final static int ACT_AMOUNT = 0;
@@ -25,8 +25,10 @@ public abstract class InputBaseLayout extends Activity {
 	protected abstract void updateDate();
 	protected abstract void updateCategory(int id, String name);
 	protected abstract void saveData();
+	protected abstract void updateData();
 	protected abstract void createInfoDataInstance();
 	protected abstract void onCategoryClick();
+	protected abstract void updateChildView();
 	
 	DatePickerDialog.OnDateSetListener dateDlg = new DatePickerDialog.OnDateSetListener() {
 		
@@ -49,13 +51,9 @@ public abstract class InputBaseLayout extends Activity {
 	public FinanceItem getItem() {
 		return item;
 	}
-	
-	protected SimpleDateFormat getDateFormat() {
-		return dateFormat;
-	}
     
-    protected void updateBtnDateText(int btnID) {				
-    	((Button)findViewById(btnID)).setText(dateFormat.format(item.getCreateDate().getTime()));
+    protected void updateBtnDateText(int btnID) {	
+    	((Button)findViewById(btnID)).setText(item.getDateString());
     }
     
     protected void updateBtnAmountText(int btnID) {
@@ -63,7 +61,11 @@ public abstract class InputBaseLayout extends Activity {
     }
     
     protected void updateBtnCategoryText(int btnID) {
-    	((Button)findViewById(btnID)).setText(item.getCategory().getName());
+    	String categoryText = getResources().getString(R.string.input_select_category);
+    	if (item.getCategory() != null) {
+    		categoryText = item.getCategory().getName();
+    	}
+    	((Button)findViewById(btnID)).setText(categoryText);
     }
     
     protected void updateAmount(Long amount) {
@@ -99,9 +101,12 @@ public abstract class InputBaseLayout extends Activity {
 		 btnIncomeDate.setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
-				saveData();		
+				updateData();
 				
-				finish();
+				if (checkInputData() == true) {
+					saveData();		
+					finish();
+		    	}
 			}
 		 });
     }
@@ -115,9 +120,35 @@ public abstract class InputBaseLayout extends Activity {
         });    
     }    
     
-    
     public Calendar getCreateDate() {
     	return item.getCreateDate();
+    }
+    
+    public boolean checkInputData() {
+    	if (item.getCategory() == null) {
+    		displayAlertMessage(getResources().getString(R.string.input_warning_msg_not_category));
+    		return false;
+    	}
+    	
+    	if (item.getAmount() == 0L) {
+    		displayAlertMessage(getResources().getString(R.string.input_warning_msg_not_amount));
+    		return false;
+    	}
+    	
+    	return true;
+    }
+    
+    public void displayAlertMessage(String msg) {
+    	AlertDialog.Builder alert = new AlertDialog.Builder(InputBaseLayout.this);
+    	alert.setMessage(msg);
+    	alert.setPositiveButton("´Ý±â", new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+    	alert.show();
     }
     
     @Override

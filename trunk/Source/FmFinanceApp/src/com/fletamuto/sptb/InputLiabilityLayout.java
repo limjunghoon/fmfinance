@@ -13,7 +13,7 @@ public class InputLiabilityLayout extends InputBaseLayout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_liability);
         
-        updateDate();
+        updateChildView();
         SetDateBtnClickListener(R.id.BtnLiabilityDate); 
         SetAmountBtnClickListener(R.id.BtnLiabilityAmount);
         SetSaveBtnClickListener(R.id.BtnLiabilitySave);
@@ -25,14 +25,8 @@ public class InputLiabilityLayout extends InputBaseLayout {
     } 
     
     protected void saveData() {
-    	String title = ((TextView)findViewById(R.id.ETLiabilityTitle)).getText().toString();
-    	getItem().setTitle(title);
-    	
-    	if (DBMgr.getInstance().addFinanceItem(item) == true) {
-    		
-    	}
-    	else {
-    		
+    	if (DBMgr.getInstance().addFinanceItem(item) == false) {
+    		return;
     	}
     	Intent intent = new Intent(InputLiabilityLayout.this, ReportLiabilityLayout.class);
 		startActivity(intent);
@@ -60,5 +54,18 @@ public class InputLiabilityLayout extends InputBaseLayout {
 		// TODO Auto-generated method stub
 		item.setCategory(new Category(id, name));
 		updateBtnCategoryText(R.id.BtnLiabilityCategory);
+	}
+
+	@Override
+	protected void updateChildView() {
+		updateDate();
+		updateBtnCategoryText(R.id.BtnLiabilityCategory);
+		updateBtnAmountText(R.id.BtnLiabilityAmount);
+	}
+
+	@Override
+	protected void updateData() {
+		String title = ((TextView)findViewById(R.id.ETLiabilityTitle)).getText().toString();
+    	getItem().setTitle(title);
 	}
 }
