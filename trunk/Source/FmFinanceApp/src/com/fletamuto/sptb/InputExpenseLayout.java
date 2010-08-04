@@ -17,7 +17,7 @@ public class InputExpenseLayout extends InputBaseLayout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_expense);
         
-        updateDate();
+        updateChildView();
         SetDateBtnClickListener(R.id.BtnExpenseDate);
         SetAmountBtnClickListener(R.id.BtnExpenseAmount);
         SetSaveBtnClickListener(R.id.BtnExpenseSave);
@@ -29,14 +29,8 @@ public class InputExpenseLayout extends InputBaseLayout {
     } 
     
     protected void saveData() {
-    	String memo = ((TextView)findViewById(R.id.ETExpenseMemo)).getText().toString();
-    	getItem().setMemo(memo);
-    	
-    	if (DBMgr.getInstance().addFinanceItem(item) == true) {
-    		
-    	}
-    	else {
-    		
+    	if (DBMgr.getInstance().addFinanceItem(item) == false) {
+    		return;
     	}
     	
     	Intent intent = new Intent(InputExpenseLayout.this, ReportExpenseLayout.class);
@@ -68,8 +62,12 @@ public class InputExpenseLayout extends InputBaseLayout {
 	}
 	
 	protected void updateBtnCategoryText(int btnID) {
+		String categoryText = getResources().getString(R.string.input_select_category);
 		ExpenseItem expenseItem = (ExpenseItem)item;
-		String categoryText = String.format("%s - %s", expenseItem.getCategory().getName(), expenseItem.getSubCategory().getName());
+		if (expenseItem.getCategory() != null && expenseItem.getSubCategory()!= null) {
+			categoryText = String.format("%s - %s", expenseItem.getCategory().getName(), expenseItem.getSubCategory().getName());
+		}
+		 
     	((Button)findViewById(btnID)).setText(categoryText);
     }
 	
@@ -80,5 +78,18 @@ public class InputExpenseLayout extends InputBaseLayout {
     		}
     	}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	protected void updateChildView() {
+		updateDate();
+		updateBtnCategoryText(R.id.BtnExpenseCategory);
+		updateBtnAmountText(R.id.BtnExpenseAmount);
+	}
+
+	@Override
+	protected void updateData() {
+		String memo = ((TextView)findViewById(R.id.ETExpenseMemo)).getText().toString();
+    	getItem().setMemo(memo);
 	}
 }

@@ -48,7 +48,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"amount INTEGER NOT NULL," +
 					"title TEXT," +
 					"memo TEXT," +
-					"main_category INTEGER);");
+					"main_category INTEGER NOT NULL);");
 		}
 		
 		private void createExpenseTable(SQLiteDatabase db) {
@@ -60,8 +60,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"amount INTEGER NOT NULL," +
 					"title TEXT," +
 					"memo TEXT," +
-					"main_category INTEGER," +
-					"sub_category INTEGER);");
+					"main_category INTEGER NOT NULL," +
+					"sub_category INTEGER NOT NULL);");
 		}
 		
 		private void createAssetsTable(SQLiteDatabase db) {
@@ -73,8 +73,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"amount INTEGER NOT NULL," +
 					"title TEXT," +
 					"memo TEXT," +
-					"main_category INTEGER," +
-					"sub_category INTEGER);");
+					"main_category INTEGER NOT NULL," +
+					"sub_category INTEGER NOT NULL);");
 		}
 		
 		private void createLiabilityTable(SQLiteDatabase db) {
@@ -86,7 +86,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"amount INTEGER NOT NULL," +
 					"title TEXT," +
 					"memo TEXT," +
-					"main_category INTEGER);");
+					"main_category INTEGER NOT NULL);");
 		}
 		
 		private void createCategoryTable(SQLiteDatabase db) {

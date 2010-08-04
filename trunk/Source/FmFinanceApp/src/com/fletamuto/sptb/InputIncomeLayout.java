@@ -14,7 +14,7 @@ public class InputIncomeLayout extends InputBaseLayout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_income);
         
-        updateDate();
+        updateChildView();
         SetDateBtnClickListener(R.id.BtnIncomeDate); 
         SetAmountBtnClickListener(R.id.BtnIncomeAmount);
         SetSaveBtnClickListener(R.id.BtnIncomeSave);
@@ -26,14 +26,8 @@ public class InputIncomeLayout extends InputBaseLayout {
     }
     
     protected void saveData() {
-    	String memo = ((TextView)findViewById(R.id.ETIncomeMemo)).getText().toString();
-    	getItem().setMemo(memo);
-    	
-    	if (DBMgr.getInstance().addFinanceItem(item) == true) {
-    		
-    	}
-    	else {
-    		
+    	if (DBMgr.getInstance().addFinanceItem(item) == false) {
+    		return;
     	}
     	
     	Intent intent = new Intent(InputIncomeLayout.this, ReportIncomeLayout.class);
@@ -59,9 +53,21 @@ public class InputIncomeLayout extends InputBaseLayout {
 	
 	@Override
 	protected void updateCategory(int id, String name) {
-		// TODO Auto-generated method stub
 		item.setCategory(new Category(id, name));
 		updateBtnCategoryText(R.id.BtnIncomeCategory);
+	}
+
+	@Override
+	protected void updateChildView() {
+		updateDate();
+		updateBtnCategoryText(R.id.BtnIncomeCategory);
+		updateBtnAmountText(R.id.BtnIncomeAmount);
+	}
+
+	@Override
+	protected void updateData() {
+    	String memo = ((TextView)findViewById(R.id.ETIncomeMemo)).getText().toString();
+    	getItem().setMemo(memo);
 	}
     
 }
