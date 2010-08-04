@@ -169,5 +169,14 @@ public class AssetsDBConnector extends BaseDBConnector {
 		return count;
 	}
 
+	@Override
+	public int deleteItem(int id) {
+		int result = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		result = db.delete("assets", "_id=?", new String[] {String.valueOf(id)});
+		db.close();
+		return result;
+	}
+
 	
 }

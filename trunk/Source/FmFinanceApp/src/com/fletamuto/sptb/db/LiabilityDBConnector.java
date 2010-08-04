@@ -51,6 +51,28 @@ public class LiabilityDBConnector extends BaseDBConnector {
 		return LiabilityItems;
 	}
 	
+	@Override
+	public ArrayList<FinanceItem> getItems(Calendar calendar) {
+		ArrayList<FinanceItem> LiabilityItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)), 
+				String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
+		
+		queryBilder.setTables("liability, liability_main_category");
+		queryBilder.appendWhere("liability.main_category=liability_main_category._id");
+		Cursor c = queryBilder.query(db, null, "year=? AND month=? AND day=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				LiabilityItems.add(CreateLiabilityItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return LiabilityItems;
+	}
+	
 	public LiabilityItem CreateLiabilityItem(Cursor c) {
 		LiabilityItem item = new LiabilityItem();
 		item.setId(c.getInt(0));
@@ -128,9 +150,13 @@ public class LiabilityDBConnector extends BaseDBConnector {
 		return count;
 	}
 
+
 	@Override
-	public ArrayList<FinanceItem> getItems(Calendar calendar) {
-		// TODO Auto-generated method stub
-		return null;
+	public int deleteItem(int id) {
+		int result = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		result = db.delete("liability", "_id=?", new String[] {String.valueOf(id)});
+		db.close();
+		return result;
 	}
 }
