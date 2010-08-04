@@ -28,8 +28,11 @@ public abstract class BaseDBConnector {
 	public abstract long getTotalAmountDay(Calendar calendar);
 	public abstract int getItemCount(Calendar calendar);
 	public abstract ArrayList<FinanceItem> getItems(Calendar calendar);
+	public abstract int deleteItem(int id);
 
 	public ArrayList<Category> getSubCategory(int mainCategoryId) {
 		return null;
 	}
+
+	
 }

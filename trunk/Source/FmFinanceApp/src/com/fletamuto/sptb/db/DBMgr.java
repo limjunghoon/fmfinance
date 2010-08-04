@@ -70,8 +70,18 @@ public class DBMgr {
 	}
 	
 	/**
+	 * DB에 입력된 수입, 주출, 자순, 부채 중 해당하는 아이디를 지운다.
+	 * @param itemType 수입, 지출, 자산, 부채 타입
+	 * @param id 삭제할 아이디]
+	 * @return 삭제된 아이템 수
+	 */
+	public int deleteItem(int itemType, int id) {
+		return dbConnector.deleteItem(itemType, id);
+	}
+	
+	/**
 	 * DB에 입력된 수입, 지출, 자산, 부채 중 하나의 총 액수를 얻는다.
-	 * @param itemType 가져올 수입, 지출, 자산, 부채 타입
+	 * @param itemType 수입, 지출, 자산, 부채 타입
 	 * @return long 총 액수
 	 */
 	public long getTotalAmount(int itemType) {
@@ -80,7 +90,7 @@ public class DBMgr {
 	
 	/**
 	 * DB에 입력된 수입, 지출, 자산, 부채 중 해당 날짜의 총 액수를 얻는다.
-	 * @param itemType 가져올 수입, 지출, 자산, 부채 타입
+	 * @param itemType 수입, 지출, 자산, 부채 타입
 	 * @param calendar 가져올 날짜
 	 * @return long 총 액수
 	 */
@@ -90,7 +100,7 @@ public class DBMgr {
 	
 	/**
 	 * DB에 입력된 수입, 지출, 자산, 부채 중 해당 날짜의 입력된 아이템 갯수를 얻는다.
-	 * @param itemType 가져올 수입, 지출, 자산, 부채 타입
+	 * @param itemType  수입, 지출, 자산, 부채 타입
 	 * @param calendar 가져올 날짜
 	 * @return 아이템 갯수
 	 */
@@ -108,7 +118,7 @@ public class DBMgr {
 	
 	/**
 	 * DB에 입력된 수입, 지출, 자산, 부채 의 분류 리스트를 가져온다.
-	 * @param itemType 가져올 수입, 지출, 자산, 부채 타입
+	 * @param itemType 수입, 지출, 자산, 부채 타입
 	 * @return 분류 리스트
 	 */
 	public ArrayList<Category> getCategory(int itemType) {
@@ -117,7 +127,7 @@ public class DBMgr {
 	
 	/**
 	 * DB에 입력된 지출, 자산 의 분류의 하위 분류 리스트를 가져온다. 
-	 * @param itemType itemType 가져올 지출, 자산  타입
+	 * @param itemType 지출, 자산  타입
 	 * @param mainCategoryId 상위 분류
 	 * @return 하위 분류 리스트
 	 */

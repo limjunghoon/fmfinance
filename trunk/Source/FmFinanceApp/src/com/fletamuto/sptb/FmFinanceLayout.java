@@ -103,7 +103,7 @@ public class FmFinanceLayout extends Activity {
     	int count = DBMgr.getInstance().getItemCount(IncomeItem.TYPE, Calendar.getInstance());
     	long amount = DBMgr.getInstance().getTotalAmountDay(IncomeItem.TYPE, Calendar.getInstance());
     	Button incomeToday = (Button)findViewById(R.id.BtnTodayIncome);
-    	incomeToday.setText(String.format("수입(%d권) \t\t\t\t\t %,d원", count, amount));
+    	incomeToday.setText(String.format("수입(%d건) \t\t\t\t\t %,d원", count, amount));
 	}
     
     /** 오늘 지출 정보갱신 */
@@ -111,7 +111,7 @@ public class FmFinanceLayout extends Activity {
     	int count = DBMgr.getInstance().getItemCount(ExpenseItem.TYPE, Calendar.getInstance());
     	long amount = DBMgr.getInstance().getTotalAmountDay(ExpenseItem.TYPE, Calendar.getInstance());
     	Button expenseToday = (Button)findViewById(R.id.BtnTodayExpense);
-    	expenseToday.setText(String.format("지출(%d권) \t\t\t\t\t %,d원", count, amount));
+    	expenseToday.setText(String.format("지출(%d건) \t\t\t\t\t %,d원", count, amount));
 	}
     
     /**

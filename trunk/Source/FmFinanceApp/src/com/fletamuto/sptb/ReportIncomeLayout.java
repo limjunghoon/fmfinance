@@ -7,10 +7,12 @@ import java.util.List;
 import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,16 +22,28 @@ import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportIncomeLayout extends ListActivity {
+	ArrayList<FinanceItem> items = null;
+	IncomeItemAdapter adapter = null;
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        ArrayList<FinanceItem> items = DBMgr.getInstance().getAllItems(IncomeItem.TYPE);
-        if (items == null) return;
+        if (getItemsFromDB() == false) {
+        	return;
+        }
 
-        IncomeItemAdapter adapter = new IncomeItemAdapter(this, R.layout.report_list_income, items);
+        adapter = new IncomeItemAdapter(this, R.layout.report_list_income, items);
 		setListAdapter(adapter); 
+    }
+    
+    protected boolean getItemsFromDB() {
+    	items = DBMgr.getInstance().getAllItems(IncomeItem.TYPE);
+        if (items == null) {
+        	return false;
+        }
+        return true;
     }
     
     protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -47,26 +61,46 @@ public class ReportIncomeLayout extends ListActivity {
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			LinearLayout IncomeListView;
+			LinearLayout incomeListView;
 			IncomeItem item = (IncomeItem)getItem(position);
 			
 			if (convertView == null) {
-				IncomeListView = new LinearLayout(getContext());
+				incomeListView = new LinearLayout(getContext());
 				String inflater = Context.LAYOUT_INFLATER_SERVICE;
 				LayoutInflater li;
 				li = (LayoutInflater)getContext().getSystemService(inflater);
-				li.inflate(resource, IncomeListView, true);
+				li.inflate(resource, incomeListView, true);
 			}
 			else {
-				IncomeListView = (LinearLayout)convertView;
+				incomeListView = (LinearLayout)convertView;
 			}
 			
-			((TextView)IncomeListView.findViewById(R.id.TVIncomeReportListDate)).setText(item.getDateString());			
-			((TextView)IncomeListView.findViewById(R.id.TVIncomeReportListAmount)).setText(String.format("%,d원", item.getAmount()));
-			((TextView)IncomeListView.findViewById(R.id.TVIncomeReportListMemo)).setText(item.getMemo());
-			((TextView)IncomeListView.findViewById(R.id.TVIncomeReportListCategory)).setText(item.getCategory().getName());
-			return IncomeListView;
+			((TextView)incomeListView.findViewById(R.id.TVIncomeReportListDate)).setText("날짜 : " + item.getDateString());			
+			((TextView)incomeListView.findViewById(R.id.TVIncomeReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
+			((TextView)incomeListView.findViewById(R.id.TVIncomeReportListMemo)).setText("메모 : " + item.getMemo());
+			((TextView)incomeListView.findViewById(R.id.TVIncomeReportListCategory)).setText("분류 : " + item.getCategory().getName());
+			
+			Button btn = (Button)incomeListView.findViewById(R.id.BtnReportIncomeDelete);
+			btn.setTag(R.id.delete_id, new Integer(item.getId()));
+			btn.setTag(R.id.delete_position, new Integer(position));
+			btn.setOnClickListener(deleteBtn);
+			
+			return incomeListView;
 		}
     }
-
+    
+    Button.OnClickListener deleteBtn = new  Button.OnClickListener(){
+    	
+		public void onClick(View arg0) {
+			Integer position = (Integer)arg0.getTag(R.id.delete_position);
+			Integer id = (Integer)arg0.getTag(R.id.delete_id);
+			if (DBMgr.getInstance().deleteItem(IncomeItem.TYPE, id) == 0) {
+				Log.e(LogTag.LAYOUT, "== noting delete id : " + id);
+			}
+			else {
+				items.remove(position.intValue());
+				adapter.notifyDataSetChanged();
+			}
+		}
+	};
 }

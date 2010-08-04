@@ -169,4 +169,13 @@ public class ExpenseDBConnector extends BaseDBConnector {
 		db.close();
 		return count;
 	}
+
+	@Override
+	public int deleteItem(int id) {
+		int result = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		result = db.delete("expense", "_id=?", new String[] {String.valueOf(id)});
+		db.close();
+		return result;
+	}
 }
