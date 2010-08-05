@@ -8,8 +8,8 @@ public abstract class FinanceItem {
 	private String memo;
 	private Calendar createDate = Calendar.getInstance();
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-	private long amount;
-	private int	id;
+	private long amount = 0L;
+	private int	id = -1;
 	
 	private Category category = null;
 	

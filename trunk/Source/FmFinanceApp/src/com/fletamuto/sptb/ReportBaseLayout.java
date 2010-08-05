@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,11 +15,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
+import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public abstract class ReportBaseLayout extends ListActivity {
+	protected static final int ACT_ITEM_EDIT = 0;
+	
 	ArrayList<FinanceItem> items = null;
 	ReportItemAdapter adapter = null;
 	
@@ -28,6 +33,9 @@ public abstract class ReportBaseLayout extends ListActivity {
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+	protected void onListItemClick(ListView l, View v, int position, long id) {
 
     }
 	
@@ -98,5 +106,24 @@ public abstract class ReportBaseLayout extends ListActivity {
 			}
 		}
 	};
+	
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    
+    	if (requestCode == ACT_ITEM_EDIT) {
+    		if (resultCode == RESULT_OK) {
+    			
+    			// 해당 방식을 리스트가 많을경우 느려지는 문제가 있어 변경 요망
+    			items.clear();
+    			if (getItemsFromDB(ExpenseItem.TYPE) == false) {
+    				return;
+    			}
+            
+    			setListAdapter(R.layout.report_list_expense);
+    		}
+    	}
+    	
+    	super.onActivityResult(requestCode, resultCode, data);
+    }
 	
 }

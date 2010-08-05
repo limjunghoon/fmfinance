@@ -39,8 +39,15 @@ public class InputLiabilityLayout extends InputBaseLayout {
 	}
 
 	@Override
-	protected void createInfoDataInstance() {
+	protected void createItemInstance() {
 		item = new LiabilityItem();
+	}
+	
+	@Override
+	protected boolean getItemInstance(int id) {
+		item = DBMgr.getInstance().getItem(LiabilityItem.TYPE, id);
+		if (item == null) return false;
+		return true;
 	}
 	
 	@Override

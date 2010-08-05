@@ -25,7 +25,6 @@ public class ReportAssetsLayout extends ReportBaseLayout {
         setListAdapter(R.layout.report_list_assets);
     }
     
-    
     protected void onListItemClick(ListView l, View v, int position, long id) {
 
     }
