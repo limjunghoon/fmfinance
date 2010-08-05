@@ -13,7 +13,7 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 
 public class IncomeDBConnector extends BaseDBConnector {
-	public boolean AddItem(FinanceItem financeItem) {
+	public boolean addItem(FinanceItem financeItem) {
 		IncomeItem item = (IncomeItem)financeItem;
 		SQLiteDatabase db = getWritableDatabase();
 		
@@ -28,6 +28,26 @@ public class IncomeDBConnector extends BaseDBConnector {
 		}
 		
 		db.insert("income", null, rowItem);
+		db.close();
+		return true;
+	}
+	
+	@Override
+	public boolean updateItem(FinanceItem financeItem) {
+		IncomeItem item = (IncomeItem)financeItem;
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("year", item.getCreateYear());
+		rowItem.put("month", item.getCreateMonth());
+		rowItem.put("day", item.getCreateDay());
+		rowItem.put("amount", item.getAmount());
+		rowItem.put("memo", item.getMemo());
+		if (item.getCategory() != null) {
+			rowItem.put("main_category", item.getCategory().getId());
+		}
+		
+		db.update("income", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getId())});
 		db.close();
 		return true;
 	}
@@ -71,6 +91,20 @@ public class IncomeDBConnector extends BaseDBConnector {
 		c.close();
 		db.close();
 		return incomeItems;
+	}
+	
+	@Override
+	public FinanceItem getItem(int id) {
+		FinanceItem item = null;
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor c = db.query("income", null, "_id=?", new String[]{String.valueOf(id)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			item = CreateIncomeItem(c);
+		}
+		c.close();
+		db.close();
+		return item;
 	}
 	
 	public IncomeItem CreateIncomeItem(Cursor c) {

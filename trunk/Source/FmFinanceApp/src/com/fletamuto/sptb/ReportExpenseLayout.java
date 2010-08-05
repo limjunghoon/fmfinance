@@ -1,6 +1,7 @@
 package com.fletamuto.sptb;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportExpenseLayout extends ReportBaseLayout {
+    
     
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -25,16 +27,20 @@ public class ReportExpenseLayout extends ReportBaseLayout {
     }
     
     protected void onListItemClick(ListView l, View v, int position, long id) {
+    	Intent intent = new Intent(ReportExpenseLayout.this, InputExpenseLayout.class);
+    	FinanceItem item = (FinanceItem)adapter.getItem(position);
+    	intent.putExtra("EDIT_ITEM_ID", item.getId());
+    	startActivityForResult(intent, ACT_ITEM_EDIT);
     }
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	ExpenseItem item = (ExpenseItem)financeItem;
 		
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListDate)).setText(item.getDateString());			
+		((TextView)convertView.findViewById(R.id.TVExpenseReportListDate)).setText("날짜 : " + item.getDateString());			
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListMemo)).setText(item.getMemo());
+		((TextView)convertView.findViewById(R.id.TVExpenseReportListMemo)).setText("메모 : " + item.getMemo());
 		String categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText(categoryText);
+		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText("분류 : " + categoryText);
 	}
     
     protected void setDeleteBtnListener(View convertView, int itemId, int position) {

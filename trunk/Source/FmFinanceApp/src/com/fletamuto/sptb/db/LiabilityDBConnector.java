@@ -13,7 +13,7 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.LiabilityItem;
 
 public class LiabilityDBConnector extends BaseDBConnector {
-	public boolean AddItem(FinanceItem financeItem) {
+	public boolean addItem(FinanceItem financeItem) {
 		LiabilityItem item = (LiabilityItem)financeItem;
 		SQLiteDatabase db = getWritableDatabase();
 		
@@ -28,6 +28,26 @@ public class LiabilityDBConnector extends BaseDBConnector {
 		}
 		
 		db.insert("liability", null, rowItem);
+		db.close();
+		return true;
+	}
+	
+	@Override
+	public boolean updateItem(FinanceItem financeItem) {
+		LiabilityItem item = (LiabilityItem)financeItem;
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("year", item.getCreateYear());
+		rowItem.put("month", item.getCreateMonth());
+		rowItem.put("day", item.getCreateDay());
+		rowItem.put("amount", item.getAmount());
+		rowItem.put("title", item.getTitle());
+		if (item.getCategory() != null) {
+			rowItem.put("main_category", item.getCategory().getId());
+		}
+		
+		db.update("liability", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getId())});
 		db.close();
 		return true;
 	}
@@ -71,6 +91,20 @@ public class LiabilityDBConnector extends BaseDBConnector {
 		c.close();
 		db.close();
 		return LiabilityItems;
+	}
+	
+	@Override
+	public FinanceItem getItem(int id) {
+		FinanceItem item = null;
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor c = db.query("liability", null, "_id=?", new String[]{String.valueOf(id)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			item = CreateLiabilityItem(c);
+		}
+		c.close();
+		db.close();
+		return item;
 	}
 	
 	public LiabilityItem CreateLiabilityItem(Cursor c) {

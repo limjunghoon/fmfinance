@@ -41,8 +41,15 @@ public class InputIncomeLayout extends InputBaseLayout {
 	}
 
 	@Override
-	protected void createInfoDataInstance() {
+	protected void createItemInstance() {
 		item = new IncomeItem();
+	}
+	
+	@Override
+	protected boolean getItemInstance(int id) {
+		item = DBMgr.getInstance().getItem(IncomeItem.TYPE, id);
+		if (item == null) return false;
+		return true;
 	}
 
 	@Override

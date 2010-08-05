@@ -30,14 +30,27 @@ public class DBConnector {
 		return dbConnector[itemType];
 	}
 	  
-	public boolean AddFinanceItem(FinanceItem item) {
+	public boolean addFinanceItem(FinanceItem item) {
 		Log.i(DBMgr.DB_TAG, "== DBConnector AddFinanceItem type : " + item.getType());
 		if (item.getType() >= dbConnector.length) {
 			Log.e(DBMgr.DB_TAG, "== invaild finance item " + item.getType());
 			return false;
 		}
-		getDBInstance(item.getType()).AddItem(item);
-		return true;
+		return getDBInstance(item.getType()).addItem(item);
+	}
+	
+	public boolean updateFinanceItem(FinanceItem item) {
+		Log.i(DBMgr.DB_TAG, "== DBConnector updateFinanceItem type : " + item.getType());
+		if (item.getType() >= dbConnector.length) {
+			Log.e(DBMgr.DB_TAG, "== invaild finance item " + item.getType());
+			return false;
+		}
+		return getDBInstance(item.getType()).updateItem(item);
+	}
+	
+	public FinanceItem getItem(int itemType, int id) {
+		Log.i(DBMgr.DB_TAG, "== DBConnector getItem type : " + itemType);
+		return getDBInstance(itemType).getItem(id);
 	}
 	
 	public long getTotalAmount(int itemType) {
@@ -83,6 +96,10 @@ public class DBConnector {
 		}
 		return result;
 	}
+
+	
+
+	
 
 }
 

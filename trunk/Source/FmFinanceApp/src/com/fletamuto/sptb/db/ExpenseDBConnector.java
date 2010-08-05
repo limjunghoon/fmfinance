@@ -14,7 +14,7 @@ import com.fletamuto.sptb.data.FinanceItem;
 
 public class ExpenseDBConnector extends BaseDBConnector {
 	
-	public boolean AddItem(FinanceItem financeItem) {
+	public boolean addItem(FinanceItem financeItem) {
 		ExpenseItem item = (ExpenseItem)financeItem;
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues rowItem = new ContentValues();
@@ -32,6 +32,29 @@ public class ExpenseDBConnector extends BaseDBConnector {
 		}
 		
 		db.insert("expense", null, rowItem);
+		db.close();
+		return true;
+	}
+	
+	@Override
+	public boolean updateItem(FinanceItem financeItem) {
+		ExpenseItem item = (ExpenseItem)financeItem;
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("year", item.getCreateYear());
+		rowItem.put("month", item.getCreateMonth());
+		rowItem.put("day", item.getCreateDay());
+		rowItem.put("amount", item.getAmount());
+		rowItem.put("memo", item.getMemo());
+		if (item.getCategory() != null) {
+			rowItem.put("main_category", item.getCategory().getId());
+		}
+		if (item.getSubCategory() != null) {
+			rowItem.put("sub_category", item.getSubCategory().getId());
+		}
+		
+		db.update("expense", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getId())});
 		db.close();
 		return true;
 	}
@@ -75,6 +98,25 @@ public class ExpenseDBConnector extends BaseDBConnector {
 		c.close();
 		db.close();
 		return expenseItems;
+	}
+	
+	@Override
+	public FinanceItem getItem(int id) {
+		FinanceItem item = null;
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.valueOf(id)};
+		
+		queryBilder.setTables("expense, expense_main_category, expense_sub_category");
+		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id ");
+		Cursor c = queryBilder.query(db, null, "expense._id=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+				item = CreateExpenseItem(c);
+		}
+		c.close();
+		db.close();
+		return item;
 	}
 	
 	public ExpenseItem CreateExpenseItem(Cursor c) {

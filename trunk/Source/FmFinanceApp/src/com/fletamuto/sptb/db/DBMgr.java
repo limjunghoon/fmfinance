@@ -46,8 +46,16 @@ public class DBMgr {
 	 * @return 성공이면 true 실패면 false
 	 */
 	public boolean addFinanceItem(FinanceItem item) {
-		dbConnector.AddFinanceItem(item);
-		return true;
+		return dbConnector.addFinanceItem(item);
+	}
+	
+	/**
+	 * DB에 아이템을  갱신한다.
+	 * @param item 수입, 지출, 자산, 부채 객체
+	 * @return 성공이면 true 실패면 false
+	 */
+	public boolean updateFinanceItem(FinanceItem item) {
+		return dbConnector.updateFinanceItem(item);
 	}
 	
 	/**
@@ -61,12 +69,22 @@ public class DBMgr {
 	
 	/**
 	 * DB에 입력된 수입, 지출, 자산, 부채 해당 날짜의 아이템을 가져온다.
-	 * @param itemType itemType 가져올 수입, 지출, 자산, 부채 타입
+	 * @param itemType 가져올 수입, 지출, 자산, 부채 타입
 	 * @param calendar 가져올 날짜
 	 * @return ArrayList<FinanceItem> 아이템 리스트
 	 */
 	public ArrayList<FinanceItem> getItems(int itemType, Calendar calendar) {
 		return dbConnector.getItems(itemType, calendar);
+	}
+	
+	/**
+	 * DB에 입력된 수입, 지출, 자산, 부채 중 해당 ID의 아이템을 가져온다.
+	 * @param itemType 가져올 수입, 지출, 자산, 부채 타입
+	 * @param id 가져올 ID
+	 * @return 성공시 아이템 실패시 null
+	 */
+	public FinanceItem getItem(int itemType, int id) {
+		return dbConnector.getItem(itemType, id);
 	}
 	
 	/**

@@ -29,12 +29,23 @@ public class InputExpenseLayout extends InputBaseLayout {
     } 
     
     protected void saveData() {
-    	if (DBMgr.getInstance().addFinanceItem(item) == false) {
-    		return;
+    	if (inputMode == InputMode.ADD_MODE) {
+    		if (DBMgr.getInstance().addFinanceItem(item) == false) {
+        		return;
+        	}
+        	
+        	Intent intent = new Intent(InputExpenseLayout.this, ReportExpenseLayout.class);
+    		startActivity(intent);
+    	}
+    	else if (inputMode == InputMode.EDIT_MODE){
+    		if (DBMgr.getInstance().updateFinanceItem(item) == false) {
+        		return;
+        	}
+    		
+    		setResult(RESULT_OK, new Intent());
+    		finish();
     	}
     	
-    	Intent intent = new Intent(InputExpenseLayout.this, ReportExpenseLayout.class);
-		startActivity(intent);
     }
 
     @Override
@@ -44,8 +55,15 @@ public class InputExpenseLayout extends InputBaseLayout {
 	}
 
 	@Override
-	protected void createInfoDataInstance() {
+	protected void createItemInstance() {
 		item = new ExpenseItem();
+	}
+	
+	@Override
+	protected boolean getItemInstance(int id) {
+		item = DBMgr.getInstance().getItem(ExpenseItem.TYPE, id);
+		if (item == null) return false;
+		return true;
 	}
 
 	@Override
@@ -56,7 +74,6 @@ public class InputExpenseLayout extends InputBaseLayout {
 	
 	@Override
 	protected void updateCategory(int id, String name) {
-		// TODO Auto-generated method stub
 		item.setCategory(new Category(id, name));
 		updateBtnCategoryText(R.id.BtnExpenseCategory);
 	}
@@ -85,6 +102,7 @@ public class InputExpenseLayout extends InputBaseLayout {
 		updateDate();
 		updateBtnCategoryText(R.id.BtnExpenseCategory);
 		updateBtnAmountText(R.id.BtnExpenseAmount);
+		updateEditMemoText(R.id.ETExpenseMemo);
 	}
 
 	@Override
