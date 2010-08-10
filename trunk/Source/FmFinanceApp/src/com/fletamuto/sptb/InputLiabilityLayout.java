@@ -24,12 +24,13 @@ public class InputLiabilityLayout extends InputBaseLayout {
     	updateBtnDateText(R.id.BtnLiabilityDate);
     } 
     
-    protected void saveData() {
-    	if (DBMgr.getInstance().addFinanceItem(item) == false) {
-    		return;
+    protected void saveItem() {
+    	if (inputMode == InputMode.ADD_MODE) {
+    		saveNewItem(ReportLiabilityLayout.class);
     	}
-    	Intent intent = new Intent(InputLiabilityLayout.this, ReportLiabilityLayout.class);
-		startActivity(intent);
+    	else if (inputMode == InputMode.EDIT_MODE){
+    		saveUpdateItem();
+    	}
     }
 
     @Override
@@ -68,10 +69,11 @@ public class InputLiabilityLayout extends InputBaseLayout {
 		updateDate();
 		updateBtnCategoryText(R.id.BtnLiabilityCategory);
 		updateBtnAmountText(R.id.BtnLiabilityAmount);
+		updateEditTitleText(R.id.ETLiabilityTitle);
 	}
 
 	@Override
-	protected void updateData() {
+	protected void updateItem() {
 		String title = ((TextView)findViewById(R.id.ETLiabilityTitle)).getText().toString();
     	getItem().setTitle(title);
 	}

@@ -25,13 +25,13 @@ public class InputIncomeLayout extends InputBaseLayout {
     	updateBtnDateText(R.id.BtnIncomeDate);
     }
     
-    protected void saveData() {
-    	if (DBMgr.getInstance().addFinanceItem(item) == false) {
-    		return;
+    protected void saveItem() {
+    	if (inputMode == InputMode.ADD_MODE) {
+    		saveNewItem(ReportIncomeLayout.class);
     	}
-    	
-    	Intent intent = new Intent(InputIncomeLayout.this, ReportIncomeLayout.class);
-		startActivity(intent);
+    	else if (inputMode == InputMode.EDIT_MODE){
+    		saveUpdateItem();
+    	}
     }
     
     @Override
@@ -69,10 +69,11 @@ public class InputIncomeLayout extends InputBaseLayout {
 		updateDate();
 		updateBtnCategoryText(R.id.BtnIncomeCategory);
 		updateBtnAmountText(R.id.BtnIncomeAmount);
+		updateEditMemoText(R.id.ETIncomeMemo);
 	}
 
 	@Override
-	protected void updateData() {
+	protected void updateItem() {
     	String memo = ((TextView)findViewById(R.id.ETIncomeMemo)).getText().toString();
     	getItem().setMemo(memo);
 	}

@@ -33,7 +33,7 @@ public class DBMgr {
 	}
 	
 	/**
-	 * DB초기화 몇 뷰와 연동한다.
+	 * DB초기화 및 뷰와 연동한다.
 	 * @param context 연동할 뷰 객체 컨텍스트
 	 */
 	public void initialize(Context context) {

@@ -137,8 +137,7 @@ public class FmFinanceLayout extends Activity {
 			else if (id == R.id.BtnReport) changeClass = MainReportLayout.class;
 			else if (id == R.id.BtnTodayExpense) changeClass = ReportTodayExpenseLayout.class;
 			else if (id == R.id.BtnTodayIncome) changeClass = ReportTodayIncomeLayout.class;
-			else
-			{
+			else {
 				Log.e(LogTag.LAYOUT, "== unregistered event hander ");
 				return;
 			}

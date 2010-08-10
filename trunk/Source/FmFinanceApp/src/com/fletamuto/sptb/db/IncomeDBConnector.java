@@ -97,7 +97,12 @@ public class IncomeDBConnector extends BaseDBConnector {
 	public FinanceItem getItem(int id) {
 		FinanceItem item = null;
 		SQLiteDatabase db = getReadableDatabase();
-		Cursor c = db.query("income", null, "_id=?", new String[]{String.valueOf(id)}, null, null, null);
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.valueOf(id)};
+		
+		queryBilder.setTables("income, income_main_category");
+		queryBilder.appendWhere("income.main_category=income_main_category._id");
+		Cursor c = queryBilder.query(db, null, "income._id=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			item = CreateIncomeItem(c);
