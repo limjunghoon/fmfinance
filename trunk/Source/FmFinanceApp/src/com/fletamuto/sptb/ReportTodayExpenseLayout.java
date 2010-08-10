@@ -35,11 +35,11 @@ public class ReportTodayExpenseLayout extends ReportBaseLayout {
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	ExpenseItem item = (ExpenseItem)financeItem;
 		
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListDate)).setText(item.getDateString());			
+		((TextView)convertView.findViewById(R.id.TVExpenseReportListDate)).setText("날짜 : " + item.getDateString());			
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListMemo)).setText(item.getMemo());
+		((TextView)convertView.findViewById(R.id.TVExpenseReportListMemo)).setText("메모 : " + item.getMemo());
 		String categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText(categoryText);
+		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText("분류 : " + categoryText);
 	}
     
     protected void setDeleteBtnListener(View convertView, int itemId, int position) {
