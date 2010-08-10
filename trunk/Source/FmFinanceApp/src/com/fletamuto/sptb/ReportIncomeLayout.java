@@ -26,7 +26,9 @@ public class ReportIncomeLayout extends ReportBaseLayout {
     
     
     protected void onListItemClick(ListView l, View v, int position, long id) {
-
+    	FinanceItem item = (FinanceItem)adapter.getItem(position);
+    	startEditInputActivity(InputIncomeLayout.class, item.getId());
+    	super.onListItemClick(l, v, position, id);
     }
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
@@ -47,5 +49,11 @@ public class ReportIncomeLayout extends ReportBaseLayout {
     @Override
 	protected int deleteItemToDB(int id) {
 		return DBMgr.getInstance().deleteItem(IncomeItem.TYPE, id);
+	}
+
+
+	@Override
+	protected FinanceItem getItemInstance(int id) {
+		return DBMgr.getInstance().getItem(IncomeItem.TYPE, id);
 	}
 }

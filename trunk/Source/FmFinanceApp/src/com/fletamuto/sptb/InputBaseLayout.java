@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.db.DBMgr;
 
 public abstract class InputBaseLayout extends Activity {
 	
@@ -29,8 +30,8 @@ public abstract class InputBaseLayout extends Activity {
 	
 	protected abstract void updateDate();
 	protected abstract void updateCategory(int id, String name);
-	protected abstract void saveData();
-	protected abstract void updateData();
+	protected abstract void saveItem();
+	protected abstract void updateItem();
 	protected abstract void createItemInstance();
 	protected abstract boolean getItemInstance(int id);
 	protected abstract void onCategoryClick();
@@ -129,14 +130,36 @@ public abstract class InputBaseLayout extends Activity {
 		 btnIncomeDate.setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
-				updateData();
+				updateItem();
 				
 				if (checkInputData() == true) {
-					saveData();		
+					saveItem();		
 					finish();
 		    	}
 			}
 		 });
+    }
+    
+    protected void saveNewItem(Class<?> cls) {
+    	if (DBMgr.getInstance().addFinanceItem(item) == false) {
+    		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + item.getId());
+    		return;
+    	}
+    	
+    	Intent intent = new Intent(InputBaseLayout.this, cls);
+		startActivity(intent);
+    }
+    
+    protected void saveUpdateItem() {
+    	if (DBMgr.getInstance().updateFinanceItem(item) == false) {
+    		Log.e(LogTag.LAYOUT, "== UPDATE fail to the save item : " + item.getId());
+    		return;
+    	}
+		
+		Intent intent = new Intent();
+		intent.putExtra("EDIT_ITEM_ID", item.getId());
+		setResult(RESULT_OK, intent);
+		finish();
     }
     
     protected void SetCategoryClickListener(int btnID) {

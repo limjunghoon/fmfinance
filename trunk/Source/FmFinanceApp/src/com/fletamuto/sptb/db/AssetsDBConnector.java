@@ -103,10 +103,15 @@ public class AssetsDBConnector extends BaseDBConnector {
 	public FinanceItem getItem(int id) {
 		FinanceItem item = null;
 		SQLiteDatabase db = getReadableDatabase();
-		Cursor c = db.query("assets", null, "_id=?", new String[]{String.valueOf(id)}, null, null, null);
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.valueOf(id)};
+		
+		queryBilder.setTables("assets, assets_main_category, assets_sub_category");
+		queryBilder.appendWhere("assets.main_category=assets_main_category._id AND assets.sub_category=assets_sub_category._id ");
+		Cursor c = queryBilder.query(db, null, "assets._id=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
-			item = CreateAssetsItem(c);
+				item = CreateAssetsItem(c);
 		}
 		c.close();
 		db.close();
@@ -214,10 +219,4 @@ public class AssetsDBConnector extends BaseDBConnector {
 		db.close();
 		return result;
 	}
-
-
-
-
-
-	
 }

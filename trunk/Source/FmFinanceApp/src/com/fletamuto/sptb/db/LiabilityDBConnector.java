@@ -97,10 +97,15 @@ public class LiabilityDBConnector extends BaseDBConnector {
 	public FinanceItem getItem(int id) {
 		FinanceItem item = null;
 		SQLiteDatabase db = getReadableDatabase();
-		Cursor c = db.query("liability", null, "_id=?", new String[]{String.valueOf(id)}, null, null, null);
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.valueOf(id)};
+		
+		queryBilder.setTables("liability, liability_main_category");
+		queryBilder.appendWhere("liability.main_category=liability_main_category._id");
+		Cursor c = queryBilder.query(db, null, "liability._id=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
-			item = CreateLiabilityItem(c);
+				item = CreateLiabilityItem(c);
 		}
 		c.close();
 		db.close();

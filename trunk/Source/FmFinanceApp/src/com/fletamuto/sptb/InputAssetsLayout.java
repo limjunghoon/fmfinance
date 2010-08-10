@@ -30,13 +30,13 @@ public class InputAssetsLayout extends InputBaseLayout {
     	updateBtnDateText(R.id.BtnAssetsDate);
     } 
     
-    protected void saveData() {
-    	if (DBMgr.getInstance().addFinanceItem(item) == false) {
-    		return;
+    protected void saveItem() {
+    	if (inputMode == InputMode.ADD_MODE) {
+    		saveNewItem(ReportAssetsLayout.class);
     	}
-    	
-    	Intent intent = new Intent(InputAssetsLayout.this, ReportAssetsLayout.class);
-		startActivity(intent);
+    	else if (inputMode == InputMode.EDIT_MODE){
+    		saveUpdateItem();
+    	}
     }
 
     @Override
@@ -93,10 +93,11 @@ public class InputAssetsLayout extends InputBaseLayout {
 		updateDate();
 		updateBtnCategoryText(R.id.BtnAssetsCategory);
 		updateBtnAmountText(R.id.BtnAssetsAmount);
+		updateEditTitleText(R.id.ETAssetsTitle);
 	}
 
 	@Override
-	protected void updateData() {
+	protected void updateItem() {
 		String title = ((TextView)findViewById(R.id.ETAssetsTitle)).getText().toString();
     	getItem().setTitle(title);
 	}

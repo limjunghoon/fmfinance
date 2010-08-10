@@ -17,27 +17,34 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public abstract class ReportBaseLayout extends ListActivity {
 	protected static final int ACT_ITEM_EDIT = 0;
 	
-	ArrayList<FinanceItem> items = null;
-	ReportItemAdapter adapter = null;
+	protected ArrayList<FinanceItem> items = null;
+	protected ReportItemAdapter adapter = null;
+	private int latestSelectPosition = -1;
 	
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
 	protected abstract void setDeleteBtnListener(View convertView, int itemId, int position);
 	protected abstract int	deleteItemToDB(int id);
+	protected abstract FinanceItem getItemInstance(int id);
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-
+		latestSelectPosition = position;
     }
+	
+	protected void startEditInputActivity(Class<?> cls, int itemId) {
+		Intent intent = new Intent(ReportBaseLayout.this, cls);
+    	intent.putExtra("EDIT_ITEM_ID", itemId);
+    	startActivityForResult(intent, ACT_ITEM_EDIT);
+	}
 	
 	protected boolean getItemsFromDB(int itemType) {
     	items = DBMgr.getInstance().getAllItems(itemType);
@@ -112,14 +119,12 @@ public abstract class ReportBaseLayout extends ListActivity {
     
     	if (requestCode == ACT_ITEM_EDIT) {
     		if (resultCode == RESULT_OK) {
+    			FinanceItem item = getItemInstance(data.getIntExtra("EDIT_ITEM_ID", -1));
     			
-    			// 해당 방식을 리스트가 많을경우 느려지는 문제가 있어 변경 요망
-    			items.clear();
-    			if (getItemsFromDB(ExpenseItem.TYPE) == false) {
-    				return;
+    			if (latestSelectPosition != -1 && item != null) {
+    				items.set(latestSelectPosition, item);
+    				adapter.notifyDataSetChanged();
     			}
-            
-    			setListAdapter(R.layout.report_list_expense);
     		}
     	}
     	

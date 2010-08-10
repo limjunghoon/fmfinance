@@ -26,7 +26,9 @@ public class ReportAssetsLayout extends ReportBaseLayout {
     }
     
     protected void onListItemClick(ListView l, View v, int position, long id) {
-
+    	FinanceItem item = (FinanceItem)adapter.getItem(position);
+    	startEditInputActivity(InputAssetsLayout.class, item.getId());
+    	super.onListItemClick(l, v, position, id);
     }
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
@@ -52,5 +54,7 @@ public class ReportAssetsLayout extends ReportBaseLayout {
 		return DBMgr.getInstance().deleteItem(AssetsItem.TYPE, id);
 	}
     
-    
+	protected FinanceItem getItemInstance(int id) {
+		return DBMgr.getInstance().getItem(AssetsItem.TYPE, id);
+	}
 }

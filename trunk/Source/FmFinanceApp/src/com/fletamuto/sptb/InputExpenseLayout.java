@@ -28,24 +28,13 @@ public class InputExpenseLayout extends InputBaseLayout {
     	updateBtnDateText(R.id.BtnExpenseDate);
     } 
     
-    protected void saveData() {
+    protected void saveItem() {
     	if (inputMode == InputMode.ADD_MODE) {
-    		if (DBMgr.getInstance().addFinanceItem(item) == false) {
-        		return;
-        	}
-        	
-        	Intent intent = new Intent(InputExpenseLayout.this, ReportExpenseLayout.class);
-    		startActivity(intent);
+    		saveNewItem(ReportExpenseLayout.class);
     	}
     	else if (inputMode == InputMode.EDIT_MODE){
-    		if (DBMgr.getInstance().updateFinanceItem(item) == false) {
-        		return;
-        	}
-    		
-    		setResult(RESULT_OK, new Intent());
-    		finish();
+    		saveUpdateItem();
     	}
-    	
     }
 
     @Override
@@ -106,7 +95,7 @@ public class InputExpenseLayout extends InputBaseLayout {
 	}
 
 	@Override
-	protected void updateData() {
+	protected void updateItem() {
 		String memo = ((TextView)findViewById(R.id.ETExpenseMemo)).getText().toString();
     	getItem().setMemo(memo);
 	}

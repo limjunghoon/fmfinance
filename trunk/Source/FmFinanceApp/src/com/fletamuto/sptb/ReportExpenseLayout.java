@@ -1,7 +1,6 @@
 package com.fletamuto.sptb;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +12,6 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportExpenseLayout extends ReportBaseLayout {
-    
     
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -27,10 +25,9 @@ public class ReportExpenseLayout extends ReportBaseLayout {
     }
     
     protected void onListItemClick(ListView l, View v, int position, long id) {
-    	Intent intent = new Intent(ReportExpenseLayout.this, InputExpenseLayout.class);
     	FinanceItem item = (FinanceItem)adapter.getItem(position);
-    	intent.putExtra("EDIT_ITEM_ID", item.getId());
-    	startActivityForResult(intent, ACT_ITEM_EDIT);
+    	startEditInputActivity(InputExpenseLayout.class, item.getId());
+    	super.onListItemClick(l, v, position, id);
     }
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
@@ -53,5 +50,10 @@ public class ReportExpenseLayout extends ReportBaseLayout {
     @Override
 	protected int deleteItemToDB(int id) {
 		return DBMgr.getInstance().deleteItem(ExpenseItem.TYPE, id);
+	}
+
+	@Override
+	protected FinanceItem getItemInstance(int id) {
+		return DBMgr.getInstance().getItem(ExpenseItem.TYPE, id);
 	}
 }
