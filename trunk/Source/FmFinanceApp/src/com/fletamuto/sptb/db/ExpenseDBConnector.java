@@ -66,7 +66,7 @@ public class ExpenseDBConnector extends BaseDBConnector {
 		
 		queryBilder.setTables("expense, expense_main_category, expense_sub_category");
 		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id ");
-		Cursor c = queryBilder.query(db, null, null, null, null, null, null);
+		Cursor c = queryBilder.query(db, null, null, null, null, null, "year, month, day DESC");
 		
 		if (c.moveToFirst() != false) {
 			do {

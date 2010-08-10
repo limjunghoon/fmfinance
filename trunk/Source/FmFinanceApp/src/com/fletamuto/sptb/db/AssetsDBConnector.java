@@ -23,6 +23,7 @@ public class AssetsDBConnector extends BaseDBConnector {
 		rowItem.put("day", item.getCreateDay());
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
+		
 		if (item.getCategory() != null) {
 			rowItem.put("main_category", item.getCategory().getId());
 		}
@@ -65,7 +66,7 @@ public class AssetsDBConnector extends BaseDBConnector {
 		
 		queryBilder.setTables("assets, assets_main_category, assets_sub_category");
 		queryBilder.appendWhere("assets.main_category=assets_main_category._id AND assets.sub_category=assets_sub_category._id ");
-		Cursor c = queryBilder.query(db, null, null, null, null, null, null);
+		Cursor c = queryBilder.query(db, null, null, null, null, null, "year, month, day DESC");
 		
 		if (c.moveToFirst() != false) {
 			do {
