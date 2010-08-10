@@ -29,10 +29,10 @@ public class InputExpenseLayout extends InputBaseLayout {
     } 
     
     protected void saveItem() {
-    	if (inputMode == InputMode.ADD_MODE) {
+    	if (mInputMode == InputMode.ADD_MODE) {
     		saveNewItem(ReportExpenseLayout.class);
     	}
-    	else if (inputMode == InputMode.EDIT_MODE){
+    	else if (mInputMode == InputMode.EDIT_MODE){
     		saveUpdateItem();
     	}
     }
@@ -45,13 +45,13 @@ public class InputExpenseLayout extends InputBaseLayout {
 
 	@Override
 	protected void createItemInstance() {
-		item = new ExpenseItem();
+		mItem = new ExpenseItem();
 	}
 	
 	@Override
 	protected boolean getItemInstance(int id) {
-		item = DBMgr.getInstance().getItem(ExpenseItem.TYPE, id);
-		if (item == null) return false;
+		mItem = DBMgr.getInstance().getItem(ExpenseItem.TYPE, id);
+		if (mItem == null) return false;
 		return true;
 	}
 
@@ -63,13 +63,13 @@ public class InputExpenseLayout extends InputBaseLayout {
 	
 	@Override
 	protected void updateCategory(int id, String name) {
-		item.setCategory(new Category(id, name));
+		mItem.setCategory(new Category(id, name));
 		updateBtnCategoryText(R.id.BtnExpenseCategory);
 	}
 	
 	protected void updateBtnCategoryText(int btnID) {
 		String categoryText = getResources().getString(R.string.input_select_category);
-		ExpenseItem expenseItem = (ExpenseItem)item;
+		ExpenseItem expenseItem = (ExpenseItem)mItem;
 		if (expenseItem.getCategory() != null && expenseItem.getSubCategory()!= null) {
 			categoryText = String.format("%s - %s", expenseItem.getCategory().getName(), expenseItem.getSubCategory().getName());
 		}
@@ -80,7 +80,7 @@ public class InputExpenseLayout extends InputBaseLayout {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_CATEGORY) {
     		if (resultCode == RESULT_OK) {
-    			((ExpenseItem)item).setSubCategory(new Category(data.getIntExtra("SUB_CATEGORY_ID", 0), data.getStringExtra("SUB_CATEGORY_NAME")));
+    			((ExpenseItem)mItem).setSubCategory(new Category(data.getIntExtra("SUB_CATEGORY_ID", 0), data.getStringExtra("SUB_CATEGORY_NAME")));
     		}
     	}
 		super.onActivityResult(requestCode, resultCode, data);

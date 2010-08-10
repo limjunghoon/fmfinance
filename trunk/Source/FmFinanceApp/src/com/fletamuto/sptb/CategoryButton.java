@@ -6,18 +6,18 @@ import android.widget.Button;
 import com.fletamuto.sptb.data.Category;
 
 public class CategoryButton extends Button {
-	private Category category;
+	private Category mCategory;
 
 	public CategoryButton(Context context, Category category) {
 		super(context);
-		this.category = category;
+		this.mCategory = category;
 	}
 	
 	public int getCategoryID() {
-		return category.getId();
+		return mCategory.getId();
 	}
 	
 	public String getCategoryName() {
-		return category.getName();
+		return mCategory.getName();
 	}
 }

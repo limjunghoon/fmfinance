@@ -20,8 +20,8 @@ import com.fletamuto.sptb.db.DBMgr;
 
 public abstract class InputBaseLayout extends Activity {
 	
-	protected FinanceItem item;
-	protected InputMode inputMode = InputMode.ADD_MODE;
+	protected FinanceItem mItem;
+	protected InputMode mInputMode = InputMode.ADD_MODE;
 	
 	protected final static int ACT_AMOUNT = 0;
 	protected final static int ACT_CATEGORY = 1;
@@ -42,9 +42,9 @@ public abstract class InputBaseLayout extends Activity {
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
 				int dayOfMonth) {
 
-			item.getCreateDate().set(Calendar.YEAR, year);
-			item.getCreateDate().set(Calendar.MONTH, monthOfYear);
-			item.getCreateDate().set(Calendar.DAY_OF_MONTH, dayOfMonth);
+			mItem.getCreateDate().set(Calendar.YEAR, year);
+			mItem.getCreateDate().set(Calendar.MONTH, monthOfYear);
+			mItem.getCreateDate().set(Calendar.DAY_OF_MONTH, dayOfMonth);
 			updateDate();
 		}
 	};
@@ -56,13 +56,13 @@ public abstract class InputBaseLayout extends Activity {
     }
 	
 	public FinanceItem getItem() {
-		return item;
+		return mItem;
 	}
 	
 	private void Initialize() {
 		int id  = getIntent().getIntExtra("EDIT_ITEM_ID", -1);
         if (id != -1) {
-        	inputMode = InputMode.EDIT_MODE;
+        	mInputMode = InputMode.EDIT_MODE;
         	if (getItemInstance(id) == false) {
         		Log.e(LogTag.LAYOUT, "== not found item");
         		createItemInstance();
@@ -74,31 +74,31 @@ public abstract class InputBaseLayout extends Activity {
 	}
     
     protected void updateBtnDateText(int btnID) {	
-    	((Button)findViewById(btnID)).setText(item.getDateString());
+    	((Button)findViewById(btnID)).setText(mItem.getDateString());
     }
     
     protected void updateBtnAmountText(int btnID) {
-    	((Button)findViewById(btnID)).setText(String.format("%,d¿ø", item.getAmount()));
+    	((Button)findViewById(btnID)).setText(String.format("%,d¿ø", mItem.getAmount()));
     }
     
     protected void updateEditMemoText(int editID) {
-    	((EditText)findViewById(editID)).setText(item.getMemo());
+    	((EditText)findViewById(editID)).setText(mItem.getMemo());
     }
     
     protected void updateEditTitleText(int editID) {
-    	((EditText)findViewById(editID)).setText(item.getTitle());
+    	((EditText)findViewById(editID)).setText(mItem.getTitle());
     }
     
     protected void updateBtnCategoryText(int btnID) {
     	String categoryText = getResources().getString(R.string.input_select_category);
-    	if (item.getCategory() != null) {
-    		categoryText = item.getCategory().getName();
+    	if (mItem.getCategory() != null) {
+    		categoryText = mItem.getCategory().getName();
     	}
     	((Button)findViewById(btnID)).setText(categoryText);
     }
     
     protected void updateAmount(Long amount) {
-    	item.setAmount(amount);
+    	mItem.setAmount(amount);
     }
     
     protected void SetDateBtnClickListener(int btnID) {
@@ -107,9 +107,9 @@ public abstract class InputBaseLayout extends Activity {
 		
 			public void onClick(View v) {
 				new DatePickerDialog(InputBaseLayout.this, dateDlg, 
-						item.getCreateDate().get(Calendar.YEAR),
-						item.getCreateDate().get(Calendar.MONTH), 
-						item.getCreateDate().get(Calendar.DAY_OF_MONTH)).show(); 				
+						mItem.getCreateDate().get(Calendar.YEAR),
+						mItem.getCreateDate().get(Calendar.MONTH), 
+						mItem.getCreateDate().get(Calendar.DAY_OF_MONTH)).show(); 				
 			}
 		 });
     }
@@ -141,8 +141,8 @@ public abstract class InputBaseLayout extends Activity {
     }
     
     protected void saveNewItem(Class<?> cls) {
-    	if (DBMgr.getInstance().addFinanceItem(item) == false) {
-    		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + item.getId());
+    	if (DBMgr.getInstance().addFinanceItem(mItem) == false) {
+    		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mItem.getId());
     		return;
     	}
     	
@@ -151,13 +151,13 @@ public abstract class InputBaseLayout extends Activity {
     }
     
     protected void saveUpdateItem() {
-    	if (DBMgr.getInstance().updateFinanceItem(item) == false) {
-    		Log.e(LogTag.LAYOUT, "== UPDATE fail to the save item : " + item.getId());
+    	if (DBMgr.getInstance().updateFinanceItem(mItem) == false) {
+    		Log.e(LogTag.LAYOUT, "== UPDATE fail to the save item : " + mItem.getId());
     		return;
     	}
 		
 		Intent intent = new Intent();
-		intent.putExtra("EDIT_ITEM_ID", item.getId());
+		intent.putExtra("EDIT_ITEM_ID", mItem.getId());
 		setResult(RESULT_OK, intent);
 		finish();
     }
@@ -172,16 +172,16 @@ public abstract class InputBaseLayout extends Activity {
     }    
     
     public Calendar getCreateDate() {
-    	return item.getCreateDate();
+    	return mItem.getCreateDate();
     }
     
     public boolean checkInputData() {
-    	if (item.getCategory() == null) {
+    	if (mItem.getCategory() == null) {
     		displayAlertMessage(getResources().getString(R.string.input_warning_msg_not_category));
     		return false;
     	}
     	
-    	if (item.getAmount() == 0L) {
+    	if (mItem.getAmount() == 0L) {
     		displayAlertMessage(getResources().getString(R.string.input_warning_msg_not_amount));
     		return false;
     	}

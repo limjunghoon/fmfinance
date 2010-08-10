@@ -16,23 +16,23 @@ import com.fletamuto.sptb.data.FinanceItem;
  * @version 1.0.0.1
  */
 public class DBConnector {
-	private BaseDBConnector[] dbConnector = {
+	private BaseDBConnector[] mDBConnector = {
 			new IncomeDBConnector(), 
 			new ExpenseDBConnector(), 
 			new AssetsDBConnector(), 
 			new LiabilityDBConnector()};
 	
 	protected BaseDBConnector getDBInstance(int itemType){
-		if (itemType >= dbConnector.length) {
+		if (itemType >= mDBConnector.length) {
 			Log.e(DBMgr.DB_TAG, "== invaild finance item itemType : " + itemType);
 			return null;
 		}
-		return dbConnector[itemType];
+		return mDBConnector[itemType];
 	}
 	  
 	public boolean addFinanceItem(FinanceItem item) {
 		Log.i(DBMgr.DB_TAG, "== DBConnector AddFinanceItem type : " + item.getType());
-		if (item.getType() >= dbConnector.length) {
+		if (item.getType() >= mDBConnector.length) {
 			Log.e(DBMgr.DB_TAG, "== invaild finance item " + item.getType());
 			return false;
 		}
@@ -41,7 +41,7 @@ public class DBConnector {
 	
 	public boolean updateFinanceItem(FinanceItem item) {
 		Log.i(DBMgr.DB_TAG, "== DBConnector updateFinanceItem type : " + item.getType());
-		if (item.getType() >= dbConnector.length) {
+		if (item.getType() >= mDBConnector.length) {
 			Log.e(DBMgr.DB_TAG, "== invaild finance item " + item.getType());
 			return false;
 		}
@@ -96,11 +96,6 @@ public class DBConnector {
 		}
 		return result;
 	}
-
-	
-
-	
-
 }
 
 
