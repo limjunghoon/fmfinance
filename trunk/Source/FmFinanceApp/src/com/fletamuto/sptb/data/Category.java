@@ -1,24 +1,24 @@
 package com.fletamuto.sptb.data;
 
 public class Category {
-	private String name;
-	private int id;
+	private String mName;
+	private int mID;
 	
 	public Category(int id, String name) {
-		this.id = id;
-		this.name = name;
+		this.mID = id;
+		this.mName = name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.mName = name;
 	}
 	public String getName() {
-		return name;
+		return mName;
 	}
 	public void setId(int id) {
-		this.id = id;
+		this.mID = id;
 	}
 	public int getId() {
-		return id;
+		return mID;
 	}
 	
 	

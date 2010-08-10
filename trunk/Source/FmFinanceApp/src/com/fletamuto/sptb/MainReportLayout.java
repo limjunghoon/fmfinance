@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 public class MainReportLayout extends ListActivity {
 	
-	private ArrayList<Class<?>> reportList = new ArrayList<Class<?>>();
+	private ArrayList<Class<?>> mReportList = new ArrayList<Class<?>>();
 	
     /** Called when the activity is first created. */
     @Override
@@ -23,16 +23,16 @@ public class MainReportLayout extends ListActivity {
        
         setListAdapter(adapter);
     
-        reportList.add(ReportExpenseLayout.class);
-        reportList.add(ReportIncomeLayout.class);
-        reportList.add(ReportAssetsLayout.class);
-        reportList.add(ReportLiabilityLayout.class);
+        mReportList.add(ReportExpenseLayout.class);
+        mReportList.add(ReportIncomeLayout.class);
+        mReportList.add(ReportAssetsLayout.class);
+        mReportList.add(ReportLiabilityLayout.class);
     }
     
     protected void onListItemClick(ListView l, View v, int position, long id) {
     	
-    	if (reportList.size() <= position) return;
-    	Intent intent = new Intent(this, reportList.get(position));
+    	if (mReportList.size() <= position) return;
+    	Intent intent = new Intent(this, mReportList.get(position));
 		startActivity(intent);
     }
 

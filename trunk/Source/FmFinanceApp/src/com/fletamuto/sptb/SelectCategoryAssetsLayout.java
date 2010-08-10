@@ -9,7 +9,7 @@ import com.fletamuto.sptb.data.Category;
 
 public class SelectCategoryAssetsLayout extends SelectCategoryBaseLayout {
 	protected final static int ACT_SUB_CATEGORY = 1;
-	private Category mainCategory;
+	private Category mMainCategory;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +22,7 @@ public class SelectCategoryAssetsLayout extends SelectCategoryBaseLayout {
     }
     
     protected void onClickCategoryButton(CategoryButton btn) {
-    	mainCategory = new Category(btn.getCategoryID(), btn.getCategoryName());
+    	mMainCategory = new Category(btn.getCategoryID(), btn.getCategoryName());
     	Intent intent = new Intent(SelectCategoryAssetsLayout.this, SelectSubCategoryLayout.class);
     	intent.putExtra("MAIN_CATEGORY_ID", btn.getCategoryID());
     	intent.putExtra("ITEM_TYPE", AssetsItem.TYPE);
@@ -35,8 +35,8 @@ public class SelectCategoryAssetsLayout extends SelectCategoryBaseLayout {
 			if (resultCode == RESULT_OK) {
 				Intent intent = new Intent();
 				
-				intent.putExtra("CATEGORY_ID", mainCategory.getId());
-				intent.putExtra("CATEGORY_NAME", mainCategory.getName());
+				intent.putExtra("CATEGORY_ID", mMainCategory.getId());
+				intent.putExtra("CATEGORY_NAME", mMainCategory.getName());
 				intent.putExtra("SUB_CATEGORY_ID", data.getIntExtra("SUB_CATEGORY_ID", 0));
 				intent.putExtra("SUB_CATEGORY_NAME", data.getStringExtra("SUB_CATEGORY_NAME"));
 				setResult(RESULT_OK, intent);

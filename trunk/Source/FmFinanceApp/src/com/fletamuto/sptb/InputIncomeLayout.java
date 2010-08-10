@@ -26,10 +26,10 @@ public class InputIncomeLayout extends InputBaseLayout {
     }
     
     protected void saveItem() {
-    	if (inputMode == InputMode.ADD_MODE) {
+    	if (mInputMode == InputMode.ADD_MODE) {
     		saveNewItem(ReportIncomeLayout.class);
     	}
-    	else if (inputMode == InputMode.EDIT_MODE){
+    	else if (mInputMode == InputMode.EDIT_MODE){
     		saveUpdateItem();
     	}
     }
@@ -42,13 +42,13 @@ public class InputIncomeLayout extends InputBaseLayout {
 
 	@Override
 	protected void createItemInstance() {
-		item = new IncomeItem();
+		mItem = new IncomeItem();
 	}
 	
 	@Override
 	protected boolean getItemInstance(int id) {
-		item = DBMgr.getInstance().getItem(IncomeItem.TYPE, id);
-		if (item == null) return false;
+		mItem = DBMgr.getInstance().getItem(IncomeItem.TYPE, id);
+		if (mItem == null) return false;
 		return true;
 	}
 
@@ -60,7 +60,7 @@ public class InputIncomeLayout extends InputBaseLayout {
 	
 	@Override
 	protected void updateCategory(int id, String name) {
-		item.setCategory(new Category(id, name));
+		mItem.setCategory(new Category(id, name));
 		updateBtnCategoryText(R.id.BtnIncomeCategory);
 	}
 

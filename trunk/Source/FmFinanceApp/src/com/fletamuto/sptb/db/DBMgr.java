@@ -15,9 +15,9 @@ import com.fletamuto.sptb.data.FinanceItem;
  * @version 1.0.0.1
  */
 public class DBMgr {
-	private static DBMgr instance = null;
-	private DBConnector dbConnector = new DBConnector();
-	private static FinanceDBHelper DBHelper = null; 
+	private static DBMgr mInstance = null;
+	private DBConnector mDBConnector = new DBConnector();
+	private static FinanceDBHelper mDBHelper = null; 
 	public static final String DB_TAG = "db_tag"; 
 	
 	/** 외부에서는 생성할 수 없다. getInstance()로 객체를 얻어 사용한다. */
@@ -26,10 +26,10 @@ public class DBMgr {
 	
 	/** 객체를 얻는다. */
 	public static DBMgr getInstance() {
-		if (instance == null) {
-			instance = new DBMgr();
+		if (mInstance == null) {
+			mInstance = new DBMgr();
 		}
-		return instance;
+		return mInstance;
 	}
 	
 	/**
@@ -37,7 +37,7 @@ public class DBMgr {
 	 * @param context 연동할 뷰 객체 컨텍스트
 	 */
 	public void initialize(Context context) {
-		DBHelper = new FinanceDBHelper(context);
+		mDBHelper = new FinanceDBHelper(context);
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class DBMgr {
 	 * @return 성공이면 true 실패면 false
 	 */
 	public boolean addFinanceItem(FinanceItem item) {
-		return dbConnector.addFinanceItem(item);
+		return mDBConnector.addFinanceItem(item);
 	}
 	
 	/**
@@ -55,7 +55,7 @@ public class DBMgr {
 	 * @return 성공이면 true 실패면 false
 	 */
 	public boolean updateFinanceItem(FinanceItem item) {
-		return dbConnector.updateFinanceItem(item);
+		return mDBConnector.updateFinanceItem(item);
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class DBMgr {
 	 * @return ArrayList<FinanceItem> 아이템 리스트
 	 */
 	public ArrayList<FinanceItem> getAllItems(int itemType) {
-		return dbConnector.getFinanceAllItems(itemType);
+		return mDBConnector.getFinanceAllItems(itemType);
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public class DBMgr {
 	 * @return ArrayList<FinanceItem> 아이템 리스트
 	 */
 	public ArrayList<FinanceItem> getItems(int itemType, Calendar calendar) {
-		return dbConnector.getItems(itemType, calendar);
+		return mDBConnector.getItems(itemType, calendar);
 	}
 	
 	/**
@@ -84,17 +84,17 @@ public class DBMgr {
 	 * @return 성공시 아이템 실패시 null
 	 */
 	public FinanceItem getItem(int itemType, int id) {
-		return dbConnector.getItem(itemType, id);
+		return mDBConnector.getItem(itemType, id);
 	}
 	
 	/**
-	 * DB에 입력된 수입, 주출, 자순, 부채 중 해당하는 아이디를 지운다.
+	 * DB에 입력된 수입, 지출, 자산, 부채 중 해당하는 아이디를 지운다.
 	 * @param itemType 수입, 지출, 자산, 부채 타입
 	 * @param id 삭제할 아이디]
 	 * @return 삭제된 아이템 수
 	 */
 	public int deleteItem(int itemType, int id) {
-		return dbConnector.deleteItem(itemType, id);
+		return mDBConnector.deleteItem(itemType, id);
 	}
 	
 	/**
@@ -103,7 +103,7 @@ public class DBMgr {
 	 * @return long 총 액수
 	 */
 	public long getTotalAmount(int itemType) {
-		return dbConnector.getTotalAmount(itemType);
+		return mDBConnector.getTotalAmount(itemType);
 	}
 	
 	/**
@@ -113,7 +113,7 @@ public class DBMgr {
 	 * @return long 총 액수
 	 */
 	public long getTotalAmountDay(int itemType, Calendar calendar) {
-		return dbConnector.getTotalAmountDay(itemType, calendar);
+		return mDBConnector.getTotalAmountDay(itemType, calendar);
 	}
 	
 	/**
@@ -123,7 +123,7 @@ public class DBMgr {
 	 * @return 아이템 갯수
 	 */
 	public int getItemCount(int itemType, Calendar calendar) {
-		return dbConnector.getItemCount(itemType, calendar);
+		return mDBConnector.getItemCount(itemType, calendar);
 	}
 	
 	/**
@@ -131,25 +131,25 @@ public class DBMgr {
 	 * @return DBHelper 객체
 	 */
 	public FinanceDBHelper getDBHelper() {
-		return DBHelper;
+		return mDBHelper;
 	}
 	
 	/**
-	 * DB에 입력된 수입, 지출, 자산, 부채 의 분류 리스트를 가져온다.
+	 * DB에 입력된 분류 리스트를 가져온다.
 	 * @param itemType 수입, 지출, 자산, 부채 타입
 	 * @return 분류 리스트
 	 */
 	public ArrayList<Category> getCategory(int itemType) {
-		return dbConnector.getCategory(itemType);
+		return mDBConnector.getCategory(itemType);
 	}
 	
 	/**
-	 * DB에 입력된 지출, 자산 의 분류의 하위 분류 리스트를 가져온다. 
+	 * DB에 입력된 지출, 자산의 분류 중 하위 분류 리스트를 가져온다. 
 	 * @param itemType 지출, 자산  타입
 	 * @param mainCategoryId 상위 분류
 	 * @return 하위 분류 리스트
 	 */
 	public ArrayList<Category> getSubCategory(int itemType, int mainCategoryId) {
-		return dbConnector.getSubCategory(itemType, mainCategoryId);
+		return mDBConnector.getSubCategory(itemType, mainCategoryId);
 	}
 }

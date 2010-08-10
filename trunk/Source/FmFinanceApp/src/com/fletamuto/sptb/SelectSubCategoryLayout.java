@@ -15,24 +15,24 @@ import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class SelectSubCategoryLayout extends Activity {
-	private int mainCagegoryId;
-	private int type;
-	ArrayList<Category> arrCategory = null;
+	private int mMainCagegoryId;
+	private int mType;
+	private ArrayList<Category> mArrCategory = null;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.category_base_new);
         
-        mainCagegoryId = getIntent().getIntExtra("MAIN_CATEGORY_ID", 0) ;
-        type = getIntent().getIntExtra("ITEM_TYPE", 0) ;
+        mMainCagegoryId = getIntent().getIntExtra("MAIN_CATEGORY_ID", 0) ;
+        mType = getIntent().getIntExtra("ITEM_TYPE", 0) ;
         
         getSubCategoryList();
     }
     
     protected void getSubCategoryList() {
-		arrCategory = DBMgr.getInstance().getSubCategory(type, mainCagegoryId);
-		if (arrCategory == null) return;
+    	mArrCategory = DBMgr.getInstance().getSubCategory(mType, mMainCagegoryId);
+		if (mArrCategory == null) return;
         GridView grid = (GridView)findViewById(R.id.GVCategory);
         CategoryButtonAdpter adapter = new CategoryButtonAdpter();
     	grid.setAdapter(adapter);
@@ -55,7 +55,7 @@ public class SelectSubCategoryLayout extends Activity {
     class CategoryButtonAdpter extends BaseAdapter {
   			public int getCount() {
   				// TODO Auto-generated method stub
-  				return arrCategory.size();
+  				return mArrCategory.size();
   			}
 
   			public Object getItem(int arg0) {
@@ -72,7 +72,7 @@ public class SelectSubCategoryLayout extends Activity {
   				// TODO Auto-generated method stub
   				Button btnCategory;
   				if (convertView == null) {
-  					Category category = arrCategory.get(position);
+  					Category category = mArrCategory.get(position);
   					btnCategory = new CategoryButton(SelectSubCategoryLayout.this, category);
   					btnCategory.setText(category.getName());
   				}

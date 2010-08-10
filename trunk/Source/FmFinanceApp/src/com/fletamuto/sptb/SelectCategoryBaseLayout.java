@@ -15,7 +15,7 @@ import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.db.DBMgr;
 
 public abstract class SelectCategoryBaseLayout extends Activity {
-	ArrayList<Category> arrCategory = null;
+	private ArrayList<Category> mArrCategory = null;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +26,8 @@ public abstract class SelectCategoryBaseLayout extends Activity {
 	protected abstract void getCategoryList();
 	
 	protected void getCategoryList(int type) {
-		arrCategory = DBMgr.getInstance().getCategory(type);
-		if (arrCategory == null) return;
+		mArrCategory = DBMgr.getInstance().getCategory(type);
+		if (mArrCategory == null) return;
         GridView grid = (GridView)findViewById(R.id.GVCategory);
         CategoryButtonAdpter adapter = new CategoryButtonAdpter();
     	grid.setAdapter(adapter);
@@ -50,7 +50,7 @@ public abstract class SelectCategoryBaseLayout extends Activity {
     class CategoryButtonAdpter extends BaseAdapter {
   			public int getCount() {
   				// TODO Auto-generated method stub
-  				return arrCategory.size();
+  				return mArrCategory.size();
   			}
 
   			public Object getItem(int arg0) {
@@ -67,7 +67,7 @@ public abstract class SelectCategoryBaseLayout extends Activity {
   				// TODO Auto-generated method stub
   				Button btnCategory;
   				if (convertView == null) {
-  					Category category = arrCategory.get(position);
+  					Category category = mArrCategory.get(position);
   					btnCategory = new CategoryButton(SelectCategoryBaseLayout.this, category);
   					btnCategory.setText(category.getName());
   				}

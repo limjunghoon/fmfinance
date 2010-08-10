@@ -25,10 +25,10 @@ public class InputLiabilityLayout extends InputBaseLayout {
     } 
     
     protected void saveItem() {
-    	if (inputMode == InputMode.ADD_MODE) {
+    	if (mInputMode == InputMode.ADD_MODE) {
     		saveNewItem(ReportLiabilityLayout.class);
     	}
-    	else if (inputMode == InputMode.EDIT_MODE){
+    	else if (mInputMode == InputMode.EDIT_MODE){
     		saveUpdateItem();
     	}
     }
@@ -41,13 +41,13 @@ public class InputLiabilityLayout extends InputBaseLayout {
 
 	@Override
 	protected void createItemInstance() {
-		item = new LiabilityItem();
+		mItem = new LiabilityItem();
 	}
 	
 	@Override
 	protected boolean getItemInstance(int id) {
-		item = DBMgr.getInstance().getItem(LiabilityItem.TYPE, id);
-		if (item == null) return false;
+		mItem = DBMgr.getInstance().getItem(LiabilityItem.TYPE, id);
+		if (mItem == null) return false;
 		return true;
 	}
 	
@@ -60,7 +60,7 @@ public class InputLiabilityLayout extends InputBaseLayout {
 	@Override
 	protected void updateCategory(int id, String name) {
 		// TODO Auto-generated method stub
-		item.setCategory(new Category(id, name));
+		mItem.setCategory(new Category(id, name));
 		updateBtnCategoryText(R.id.BtnLiabilityCategory);
 	}
 

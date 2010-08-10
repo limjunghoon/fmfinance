@@ -23,9 +23,9 @@ import com.fletamuto.sptb.db.DBMgr;
 public abstract class ReportBaseLayout extends ListActivity {
 	protected static final int ACT_ITEM_EDIT = 0;
 	
-	protected ArrayList<FinanceItem> items = null;
-	protected ReportItemAdapter adapter = null;
-	private int latestSelectPosition = -1;
+	protected ArrayList<FinanceItem> mItems = null;
+	protected ReportItemAdapter mItemAdapter = null;
+	private int mLatestSelectPosition = -1;
 	
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
 	protected abstract void setDeleteBtnListener(View convertView, int itemId, int position);
@@ -37,7 +37,7 @@ public abstract class ReportBaseLayout extends ListActivity {
 
     }
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		latestSelectPosition = position;
+		mLatestSelectPosition = position;
     }
 	
 	protected void startEditInputActivity(Class<?> cls, int itemId) {
@@ -47,24 +47,24 @@ public abstract class ReportBaseLayout extends ListActivity {
 	}
 	
 	protected boolean getItemsFromDB(int itemType) {
-    	items = DBMgr.getInstance().getAllItems(itemType);
-        if (items == null) {
+    	mItems = DBMgr.getInstance().getAllItems(itemType);
+        if (mItems == null) {
         	return false;
         }
         return true;
     }
 	
 	protected boolean getItemsFromDB(int itemType, Calendar calendar) {
-		items = DBMgr.getInstance().getItems(itemType, calendar);
-        if (items == null) {
+		mItems = DBMgr.getInstance().getItems(itemType, calendar);
+        if (mItems == null) {
         	return false;
         }
         return true;
     }
 	
 	protected void setListAdapter(int id) {
-		adapter = new ReportItemAdapter(this, id, items);
-		setListAdapter(adapter); 
+		mItemAdapter = new ReportItemAdapter(this, id, mItems);
+		setListAdapter(mItemAdapter); 
 	}
 	
 	public class ReportItemAdapter extends ArrayAdapter<FinanceItem> {
@@ -108,8 +108,8 @@ public abstract class ReportBaseLayout extends ListActivity {
 				Log.e(LogTag.LAYOUT, "== noting delete id : " + id);
 			}
 			else {
-				items.remove(position.intValue());
-				adapter.notifyDataSetChanged();
+				mItems.remove(position.intValue());
+				mItemAdapter.notifyDataSetChanged();
 			}
 		}
 	};
@@ -121,9 +121,9 @@ public abstract class ReportBaseLayout extends ListActivity {
     		if (resultCode == RESULT_OK) {
     			FinanceItem item = getItemInstance(data.getIntExtra("EDIT_ITEM_ID", -1));
     			
-    			if (latestSelectPosition != -1 && item != null) {
-    				items.set(latestSelectPosition, item);
-    				adapter.notifyDataSetChanged();
+    			if (mLatestSelectPosition != -1 && item != null) {
+    				mItems.set(mLatestSelectPosition, item);
+    				mItemAdapter.notifyDataSetChanged();
     			}
     		}
     	}
