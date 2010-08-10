@@ -59,7 +59,7 @@ public class LiabilityDBConnector extends BaseDBConnector {
 		
 		queryBilder.setTables("liability, liability_main_category");
 		queryBilder.appendWhere("liability.main_category=liability_main_category._id");
-		Cursor c = queryBilder.query(db, null, null, null, null, null, null);
+		Cursor c = queryBilder.query(db, null, null, null, null, null, "year, month, day DESC");
 		
 		if (c.moveToFirst() != false) {
 			do {
