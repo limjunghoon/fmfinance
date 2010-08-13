@@ -125,8 +125,8 @@ public class AssetsDBConnector extends BaseDBConnector {
 		item.setCreateDate(c.getInt(1), c.getInt(2), c.getInt(3));
 		item.setAmount(c.getLong(4));
 		item.setTitle(c.getString(5));
-		item.setCategory(new Category(c.getInt(9), c.getString(10)));
-		item.setSubCategory(new Category(c.getInt(11), c.getString(12)));
+		item.setCategory(c.getInt(9), c.getString(10));
+		item.setSubCategory(c.getInt(11), c.getString(12));
 		return item;
 	}
 	

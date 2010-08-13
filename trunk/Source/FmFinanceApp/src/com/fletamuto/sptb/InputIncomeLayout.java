@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -15,10 +14,10 @@ public class InputIncomeLayout extends InputBaseLayout {
         setContentView(R.layout.input_income);
         
         updateChildView();
-        SetDateBtnClickListener(R.id.BtnIncomeDate); 
-        SetAmountBtnClickListener(R.id.BtnIncomeAmount);
-        SetSaveBtnClickListener(R.id.BtnIncomeSave);
-        SetCategoryClickListener(R.id.BtnIncomeCategory);
+        setDateBtnClickListener(R.id.BtnIncomeDate); 
+        setAmountBtnClickListener(R.id.BtnIncomeAmount);
+        setSaveBtnClickListener(R.id.BtnIncomeSave);
+        setCategoryClickListener(R.id.BtnIncomeCategory);
     }
   
     protected void updateDate() {
@@ -60,7 +59,7 @@ public class InputIncomeLayout extends InputBaseLayout {
 	
 	@Override
 	protected void updateCategory(int id, String name) {
-		mItem.setCategory(new Category(id, name));
+		mItem.setCategory(id, name);
 		updateBtnCategoryText(R.id.BtnIncomeCategory);
 	}
 

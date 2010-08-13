@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -14,10 +13,10 @@ public class InputLiabilityLayout extends InputBaseLayout {
         setContentView(R.layout.input_liability);
         
         updateChildView();
-        SetDateBtnClickListener(R.id.BtnLiabilityDate); 
-        SetAmountBtnClickListener(R.id.BtnLiabilityAmount);
-        SetSaveBtnClickListener(R.id.BtnLiabilitySave);
-        SetCategoryClickListener(R.id.BtnLiabilityCategory);
+        setDateBtnClickListener(R.id.BtnLiabilityDate); 
+        setAmountBtnClickListener(R.id.BtnLiabilityAmount);
+        setSaveBtnClickListener(R.id.BtnLiabilitySave);
+        setCategoryClickListener(R.id.BtnLiabilityCategory);
     }
     
     protected void updateDate() {
@@ -60,7 +59,7 @@ public class InputLiabilityLayout extends InputBaseLayout {
 	@Override
 	protected void updateCategory(int id, String name) {
 		// TODO Auto-generated method stub
-		mItem.setCategory(new Category(id, name));
+		mItem.setCategory(id, name);
 		updateBtnCategoryText(R.id.BtnLiabilityCategory);
 	}
 

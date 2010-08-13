@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -18,10 +17,10 @@ public class InputExpenseLayout extends InputBaseLayout {
         setContentView(R.layout.input_expense);
         
         updateChildView();
-        SetDateBtnClickListener(R.id.BtnExpenseDate);
-        SetAmountBtnClickListener(R.id.BtnExpenseAmount);
-        SetSaveBtnClickListener(R.id.BtnExpenseSave);
-        SetCategoryClickListener(R.id.BtnExpenseCategory);
+        setDateBtnClickListener(R.id.BtnExpenseDate);
+        setAmountBtnClickListener(R.id.BtnExpenseAmount);
+        setSaveBtnClickListener(R.id.BtnExpenseSave);
+        setCategoryClickListener(R.id.BtnExpenseCategory);
     }
     
     protected void updateDate() {
@@ -63,14 +62,14 @@ public class InputExpenseLayout extends InputBaseLayout {
 	
 	@Override
 	protected void updateCategory(int id, String name) {
-		mItem.setCategory(new Category(id, name));
+		mItem.setCategory(id, name);
 		updateBtnCategoryText(R.id.BtnExpenseCategory);
 	}
 	
 	protected void updateBtnCategoryText(int btnID) {
 		String categoryText = getResources().getString(R.string.input_select_category);
 		ExpenseItem expenseItem = (ExpenseItem)mItem;
-		if (expenseItem.getCategory() != null && expenseItem.getSubCategory()!= null) {
+		if (expenseItem.isVaildCatetory()) {
 			categoryText = String.format("%s - %s", expenseItem.getCategory().getName(), expenseItem.getSubCategory().getName());
 		}
 		 
@@ -80,7 +79,7 @@ public class InputExpenseLayout extends InputBaseLayout {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_CATEGORY) {
     		if (resultCode == RESULT_OK) {
-    			((ExpenseItem)mItem).setSubCategory(new Category(data.getIntExtra("SUB_CATEGORY_ID", 0), data.getStringExtra("SUB_CATEGORY_NAME")));
+    			((ExpenseItem)mItem).setSubCategory(data.getIntExtra("SUB_CATEGORY_ID", 0), data.getStringExtra("SUB_CATEGORY_NAME"));
     		}
     	}
 		super.onActivityResult(requestCode, resultCode, data);

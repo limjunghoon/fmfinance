@@ -118,7 +118,7 @@ public class IncomeDBConnector extends BaseDBConnector {
 		item.setCreateDate(c.getInt(1), c.getInt(2), c.getInt(3));
 		item.setAmount(c.getLong(4));
 		item.setMemo(c.getString(6)); 
-		item.setCategory(new Category(c.getInt(8), c.getString(9)));
+		item.setCategory(c.getInt(8), c.getString(9));
 		return item;
 	}
 

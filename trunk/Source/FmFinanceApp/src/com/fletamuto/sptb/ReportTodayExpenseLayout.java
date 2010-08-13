@@ -58,4 +58,5 @@ public class ReportTodayExpenseLayout extends ReportBaseLayout {
 	protected FinanceItem getItemInstance(int id) {
 		return DBMgr.getInstance().getItem(ExpenseItem.TYPE, id);
 	}
+
 }

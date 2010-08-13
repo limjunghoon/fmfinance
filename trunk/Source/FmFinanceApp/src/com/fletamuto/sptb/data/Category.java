@@ -21,5 +21,9 @@ public class Category {
 		return mID;
 	}
 	
+	public void set(int id, String name) {
+		this.mID = id;
+		this.mName = name;
+	}
 	
 }

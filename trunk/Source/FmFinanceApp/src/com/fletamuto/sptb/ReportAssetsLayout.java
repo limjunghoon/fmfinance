@@ -57,4 +57,5 @@ public class ReportAssetsLayout extends ReportBaseLayout {
 	protected FinanceItem getItemInstance(int id) {
 		return DBMgr.getInstance().getItem(AssetsItem.TYPE, id);
 	}
+
 }

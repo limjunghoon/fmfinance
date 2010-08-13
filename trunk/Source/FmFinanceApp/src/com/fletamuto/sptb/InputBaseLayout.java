@@ -52,14 +52,14 @@ public abstract class InputBaseLayout extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        Initialize();
+        initialize();
     }
 	
 	public FinanceItem getItem() {
 		return mItem;
 	}
 	
-	private void Initialize() {
+	private void initialize() {
 		int id  = getIntent().getIntExtra("EDIT_ITEM_ID", -1);
         if (id != -1) {
         	mInputMode = InputMode.EDIT_MODE;
@@ -91,7 +91,7 @@ public abstract class InputBaseLayout extends Activity {
     
     protected void updateBtnCategoryText(int btnID) {
     	String categoryText = getResources().getString(R.string.input_select_category);
-    	if (mItem.getCategory() != null) {
+    	if (mItem.isVaildCatetory()) {
     		categoryText = mItem.getCategory().getName();
     	}
     	((Button)findViewById(btnID)).setText(categoryText);
@@ -101,7 +101,7 @@ public abstract class InputBaseLayout extends Activity {
     	mItem.setAmount(amount);
     }
     
-    protected void SetDateBtnClickListener(int btnID) {
+    protected void setDateBtnClickListener(int btnID) {
     	Button btnIncomeDate = (Button)findViewById(btnID);
 		 btnIncomeDate.setOnClickListener(new Button.OnClickListener() {
 		
@@ -114,7 +114,7 @@ public abstract class InputBaseLayout extends Activity {
 		 });
     }
     
-    protected void SetAmountBtnClickListener(int btnID) {
+    protected void setAmountBtnClickListener(int btnID) {
     	Button btnIncomeDate = (Button)findViewById(btnID);
 		 btnIncomeDate.setOnClickListener(new Button.OnClickListener() {
 		
@@ -125,7 +125,7 @@ public abstract class InputBaseLayout extends Activity {
 		 });
     }
     
-    protected void SetSaveBtnClickListener(int btnID) {
+    protected void setSaveBtnClickListener(int btnID) {
     	Button btnIncomeDate = (Button)findViewById(btnID);
 		 btnIncomeDate.setOnClickListener(new Button.OnClickListener() {
 		
@@ -162,7 +162,7 @@ public abstract class InputBaseLayout extends Activity {
 		finish();
     }
     
-    protected void SetCategoryClickListener(int btnID) {
+    protected void setCategoryClickListener(int btnID) {
     	((Button)findViewById(btnID)).setOnClickListener(new Button.OnClickListener() {
     		
     		public void onClick(View v) {
