@@ -87,7 +87,7 @@ public class FmFinanceLayout extends Activity {
     protected void updateTotalExpenseText() {
     	long amount = DBMgr.getInstance().getTotalAmount(ExpenseItem.TYPE);
     	TextView totalExpense = (TextView)findViewById(R.id.TVTotalExpense);
-    	totalExpense.setText(String.format("%,d원", amount));
+    	totalExpense.setText(String.format("%,d원", -amount));
     	totalExpense.setTextColor(Color.RED);
 	}
     
@@ -111,7 +111,7 @@ public class FmFinanceLayout extends Activity {
     	int count = DBMgr.getInstance().getItemCount(ExpenseItem.TYPE, Calendar.getInstance());
     	long amount = DBMgr.getInstance().getTotalAmountDay(ExpenseItem.TYPE, Calendar.getInstance());
     	Button expenseToday = (Button)findViewById(R.id.BtnTodayExpense);
-    	expenseToday.setText(String.format("지출(%d건) \t\t\t\t\t %,d원", count, amount));
+    	expenseToday.setText(String.format("지출(%d건) \t\t\t\t\t %,d원", count, -amount));
 	}
     
     /**

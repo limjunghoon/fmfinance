@@ -118,7 +118,7 @@ public class LiabilityDBConnector extends BaseDBConnector {
 		item.setCreateDate(c.getInt(1), c.getInt(2), c.getInt(3));
 		item.setAmount(c.getLong(4));
 		item.setTitle(c.getString(5));
-		item.setCategory(new Category(c.getInt(8), c.getString(9)));
+		item.setCategory(c.getInt(8), c.getString(9));
 		
 		return item;
 	}

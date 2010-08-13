@@ -57,4 +57,5 @@ public class ReportTodayIncomeLayout extends ReportBaseLayout {
 	protected FinanceItem getItemInstance(int id) {
 		return DBMgr.getInstance().getItem(IncomeItem.TYPE, id);
 	}
+
 }

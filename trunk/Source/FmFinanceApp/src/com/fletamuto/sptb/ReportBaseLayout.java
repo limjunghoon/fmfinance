@@ -34,7 +34,7 @@ public abstract class ReportBaseLayout extends ListActivity {
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
     }
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		mLatestSelectPosition = position;

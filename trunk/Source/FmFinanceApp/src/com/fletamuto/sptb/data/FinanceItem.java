@@ -10,7 +10,7 @@ public abstract class FinanceItem {
 	private SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy/MM/dd");
 	private long mAmount = 0L;
 	private int	mID = -1;
-	private Category mCategory = null;
+	private final Category mCategory = new Category(-1, "");
 	
 	public abstract int getType();
 	
@@ -38,12 +38,19 @@ public abstract class FinanceItem {
 		return mMemo;
 	}
 	
-	public void setCategory(Category category) {
-		this.mCategory = category;
+	public void setCategory(int id, String name) {
+		mCategory.set(id, name);
 	}
 	
 	public Category getCategory() {
 		return mCategory;
+	}
+	
+	public boolean isVaildCatetory() {
+		if (mCategory.getId() == -1 || mCategory.getName() == "") {
+			return false;
+		}
+		return true;
 	}
 
 	public void setCreateDate(Calendar createDate) {

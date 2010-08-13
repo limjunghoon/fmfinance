@@ -127,8 +127,9 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		private void insertIncomeCategory(SQLiteDatabase db) {
 			ContentValues rowItem = new ContentValues();
 			String [] baseMainCategory = context.getResources().getStringArray(R.array.income_base_main_category);
+			int categoryLenth = baseMainCategory.length;
 			
-			for (int index = 0; index < baseMainCategory.length; index++) {
+			for (int index = 0; index < categoryLenth; index++) {
 				rowItem.put("name", baseMainCategory[index]);
 				db.insert("income_main_category", null, rowItem);
 			}
@@ -136,8 +137,9 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		private void insertExpenseCategory(SQLiteDatabase db) {
 			ContentValues rowItem = new ContentValues();
 			String [] baseMainCategory = context.getResources().getStringArray(R.array.expense_base_main_category);
+			int categoryLenth = baseMainCategory.length;
 			
-			for (int index = 0; index < baseMainCategory.length; index++) {
+			for (int index = 0; index < categoryLenth; index++) {
 				rowItem.put("name", baseMainCategory[index]);
 				db.insert("expense_main_category", null, rowItem);
 			}
@@ -147,8 +149,9 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		private void insertAssetsCategory(SQLiteDatabase db) {
 			ContentValues rowItem = new ContentValues();
 			String [] baseMainCategory = context.getResources().getStringArray(R.array.assets_base_main_category);
+			int categoryLenth = baseMainCategory.length;
 			
-			for (int index = 0; index < baseMainCategory.length; index++) {
+			for (int index = 0; index < categoryLenth; index++) {
 				rowItem.put("name", baseMainCategory[index]);
 				db.insert("assets_main_category", null, rowItem);
 			}
@@ -158,8 +161,9 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		private void insertLiabilityCategory(SQLiteDatabase db) {
 			ContentValues rowItem = new ContentValues();
 			String [] baseMainCategory = context.getResources().getStringArray(R.array.liability_base_main_category);
+			int categoryLenth = baseMainCategory.length;
 			
-			for (int index = 0; index < baseMainCategory.length; index++) {
+			for (int index = 0; index < categoryLenth; index++) {
 				rowItem.put("name", baseMainCategory[index]);
 				db.insert("liability_main_category", null, rowItem);
 			}
@@ -181,10 +185,13 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_10));
 			baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_11));
 			
-			for (int i = 0; i < baseSubCategorys.size(); i++) {
+			int subCategoryArrLenth = baseSubCategorys.size();
+			
+			for (int i = 0; i < subCategoryArrLenth; i++) {
 				String [] subCategory = baseSubCategorys.get(i);
+				int subCategoryLenth = subCategory.length;
 				
-				for (int j = 0; j < subCategory.length; j++) {
+				for (int j = 0; j < subCategoryLenth; j++) {
 					rowItem.put("name", subCategory[j]);
 					rowItem.put("main_id", i+1);
 					db.insert("expense_sub_category", null, rowItem);
@@ -202,10 +209,12 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			baseSubCategorys.add(context.getResources().getStringArray(R.array.assets_base_sub_category_4));
 			baseSubCategorys.add(context.getResources().getStringArray(R.array.assets_base_sub_category_5));
 			
-			for (int i = 0; i < baseSubCategorys.size(); i++) {
+			int subCategoryArrLenth = baseSubCategorys.size();
+			for (int i = 0; i < subCategoryArrLenth; i++) {
 				String [] subCategory = baseSubCategorys.get(i);
+				int subCategoryLenth = subCategory.length;
 				
-				for (int j = 0; j < subCategory.length; j++) {
+				for (int j = 0; j < subCategoryLenth; j++) {
 					rowItem.put("name", subCategory[j]);
 					rowItem.put("main_id", i+1);
 					db.insert("assets_sub_category", null, rowItem);
