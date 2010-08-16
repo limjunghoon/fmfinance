@@ -2,7 +2,6 @@ package com.fletamuto.sptb;
 
 import java.util.Calendar;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -18,7 +17,7 @@ import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public abstract class InputBaseLayout extends Activity {
+public abstract class InputBaseLayout extends FmBaseActivity {
 	
 	protected FinanceItem mItem;
 	protected InputMode mInputMode = InputMode.ADD_MODE;

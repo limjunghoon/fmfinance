@@ -10,13 +10,15 @@ import com.fletamuto.sptb.db.DBMgr;
 public class InputLiabilityLayout extends InputBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.input_liability);
+        setContentView(R.layout.input_liability, true);
         
         updateChildView();
         setDateBtnClickListener(R.id.BtnLiabilityDate); 
         setAmountBtnClickListener(R.id.BtnLiabilityAmount);
         setSaveBtnClickListener(R.id.BtnLiabilitySave);
         setCategoryClickListener(R.id.BtnLiabilityCategory);
+        setTitleButtonListener();
+        setTitle(getResources().getString(R.string.input_liability_name));
     }
     
     protected void updateDate() {

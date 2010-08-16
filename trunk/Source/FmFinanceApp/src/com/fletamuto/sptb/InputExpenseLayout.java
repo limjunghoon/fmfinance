@@ -14,13 +14,15 @@ public class InputExpenseLayout extends InputBaseLayout {
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.input_expense);
+        setContentView(R.layout.input_expense, true);
         
         updateChildView();
         setDateBtnClickListener(R.id.BtnExpenseDate);
         setAmountBtnClickListener(R.id.BtnExpenseAmount);
         setSaveBtnClickListener(R.id.BtnExpenseSave);
         setCategoryClickListener(R.id.BtnExpenseCategory);
+        setTitleButtonListener();
+        setTitle(getResources().getString(R.string.input_expense_name));
     }
     
     protected void updateDate() {

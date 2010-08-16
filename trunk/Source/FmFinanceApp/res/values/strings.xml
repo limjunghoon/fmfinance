@@ -4,9 +4,11 @@
     <string name="btn_edit">EDIT</string>
     <string name="btn_favo">Favo</string>
     <string name="btn_category">분류</string>
+    <string name="btn_category_select">분류선택</string>
     <string name="btn_save">저장</string>
 	<string name="input_amount_remove_all">전체지움</string>
 	<string name="input_amount_remove">지움</string>
+	<string name="input_assets_name">지출입력</string>
 	<string name="input_assets_btn_name">자산</string>
 	<string name="input_assets_tab_name">자산</string>
     <string name="input_assets_date_name">날짜</string>
@@ -14,6 +16,7 @@
     <string name="input_assets_amount_name">금액</string>
     <string name="input_assets_title_name">제목</string>
     <string name="input_assets_btn_save">저장</string>
+    <string name="input_liability_name">지출입력</string>
     <string name="input_liability_btn_name">부채</string>
     <string name="input_liability_tab_name">부채</string>
     <string name="input_liability_date_name">날짜</string>
@@ -21,12 +24,14 @@
     <string name="input_liability_amount_name">금액</string>
     <string name="input_liability_title_name">제목</string>
     <string name="input_liability_btn_save">저장</string>
+    <string name="input_expense_name">지출입력</string>
 	<string name="input_expense_btn_name">지출</string>
     <string name="input_expense_date_name">날짜</string>
     <string name="input_expense_category_name">분류</string>
     <string name="input_expense_amount_name">금액</string>
     <string name="input_expense_memo_name">메모</string>
     <string name="input_expense_btn_save">저장</string>
+    <string name="input_income_name">수입입력</string>
     <string name="input_income_btn_name">수입</string>
     <string name="input_income_date_name">날짜</string>
     <string name="input_income_category_name">분류</string>

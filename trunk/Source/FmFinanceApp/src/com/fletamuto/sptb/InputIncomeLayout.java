@@ -11,13 +11,15 @@ import com.fletamuto.sptb.db.DBMgr;
 public class InputIncomeLayout extends InputBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.input_income);
+        setContentView(R.layout.input_income, true);
         
         updateChildView();
         setDateBtnClickListener(R.id.BtnIncomeDate); 
         setAmountBtnClickListener(R.id.BtnIncomeAmount);
         setSaveBtnClickListener(R.id.BtnIncomeSave);
         setCategoryClickListener(R.id.BtnIncomeCategory);
+        setTitleButtonListener();
+        setTitle(getResources().getString(R.string.input_income_name));
     }
   
     protected void updateDate() {

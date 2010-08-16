@@ -17,13 +17,14 @@ import com.fletamuto.sptb.db.DBMgr;
 public class InputAssetsLayout extends InputBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.input_assets);
+        setContentView(R.layout.input_assets, true);
         
         updateChildView();
         setDateBtnClickListener(R.id.BtnAssetsDate); 
         setAmountBtnClickListener(R.id.BtnAssetsAmount);
         setSaveBtnClickListener(R.id.BtnAssetsSave);
         setCategoryClickListener(R.id.BtnAssetsCategory);
+        setTitle(getResources().getString(R.string.input_assets_name));
     }
     
     protected void updateDate() {
