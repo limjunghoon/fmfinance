@@ -3,7 +3,6 @@ package com.fletamuto.sptb;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,15 +20,18 @@ import com.fletamuto.sptb.db.DBMgr;
  * @author yongbban
  * @version  1.0.0.1
  */
-public class FmFinanceLayout extends Activity {  	
+public class FmFinanceLayout extends FmBaseActivity {  	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-         
-        DBMgr.getInstance().initialize(getApplicationContext());	
+        setContentView(R.layout.main, true);
+        
+        DBMgr.getInstance().initialize(getApplicationContext());
+        setTitleButtonListener();
         setBtnClickListener();
         updateViewText();
+        
+        setTitle(getResources().getString(R.string.app_name));
     }
     
     /**

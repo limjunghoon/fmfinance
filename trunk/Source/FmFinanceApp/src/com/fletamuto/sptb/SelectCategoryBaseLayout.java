@@ -2,7 +2,6 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,13 +13,17 @@ import android.widget.GridView;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.db.DBMgr;
 
-public abstract class SelectCategoryBaseLayout extends Activity {
+public abstract class SelectCategoryBaseLayout extends FmBaseActivity {
 	private ArrayList<Category> mArrCategory = null;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       
-        setContentView(R.layout.category_base_new);
+        setContentView(R.layout.category_base_new, true);
+        setTitleButtonListener();
+        
+        setTitle(getResources().getString(R.string.btn_category_select));
+        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
     }
 	
 	protected abstract void getCategoryList();
