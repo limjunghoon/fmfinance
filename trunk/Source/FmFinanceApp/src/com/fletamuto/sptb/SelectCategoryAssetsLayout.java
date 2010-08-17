@@ -8,18 +8,15 @@ import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
 
 public class SelectCategoryAssetsLayout extends SelectCategoryBaseLayout {
-	protected final static int ACT_SUB_CATEGORY = 1;
 	private Category mMainCategory;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        setType(AssetsItem.TYPE);
         getCategoryList();
     }
     
-    protected void getCategoryList() {
-    	getCategoryList(AssetsItem.TYPE);
-    }
     
     protected void onClickCategoryButton(CategoryButton btn) {
     	mMainCategory = new Category(btn.getCategoryID(), btn.getCategoryName());

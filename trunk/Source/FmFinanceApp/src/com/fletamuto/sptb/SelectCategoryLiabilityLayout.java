@@ -9,11 +9,8 @@ public class SelectCategoryLiabilityLayout extends SelectCategoryBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        setType(LiabilityItem.TYPE);
         getCategoryList();
     }
 
-    @Override
-	protected void getCategoryList() {
-    	getCategoryList(LiabilityItem.TYPE);
-    }
 }

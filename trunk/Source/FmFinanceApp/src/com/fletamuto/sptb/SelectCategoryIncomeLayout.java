@@ -9,11 +9,8 @@ public class SelectCategoryIncomeLayout extends SelectCategoryBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
  
+        setType(IncomeItem.TYPE);
         getCategoryList();
     }
 
-    @Override
-	protected void getCategoryList() {
-    	getCategoryList(IncomeItem.TYPE);
-    }
 }

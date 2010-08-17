@@ -41,17 +41,30 @@ public class FmTitleLayout extends LinearLayout {
 	}
 	
 	public void setVisibility(int btnIndex, int visibility) {
+		if (TitleLayout == null) return;
 		
 		if (btnIndex == BTN_LEFT_01) {
-			TitleLayout.findViewById(R.id.BtnTitleLeft01).setVisibility(visibility);
+			btnLeft01.setVisibility(visibility);
 		}
 		
 		if (btnIndex == BTN_RIGTH_01) {
-			TitleLayout.findViewById(R.id.BtnTitleRigth01).setVisibility(visibility);
+			btnRigth01.setVisibility(visibility);
 		}
 	}
 	
-	public Button getBtn(int btnIndex) {
+	public void setEnabledButton(int btnIndex, boolean enabled) {
+		if (TitleLayout == null) return;
+		
+		if (btnIndex == BTN_LEFT_01) {
+			btnLeft01.setEnabled(enabled);
+		}
+		
+		if (btnIndex == BTN_RIGTH_01) {
+			btnRigth01.setEnabled(enabled);
+		}
+	}
+	
+	public Button getButton(int btnIndex) {
 		if (btnIndex == BTN_LEFT_01) {
 			return btnLeft01;
 		}
@@ -63,8 +76,19 @@ public class FmTitleLayout extends LinearLayout {
 		}
 	}
 	
+	public void setButtonText(int btnIndex, CharSequence name) {
+		if (btnIndex == BTN_LEFT_01) {
+			btnLeft01.setText(name);
+		}
+		else if (btnIndex == BTN_RIGTH_01) {
+			btnRigth01.setText(name);
+		}
+	}
+	
+	
+	
 	public void setTitle(CharSequence title) {
-		if (tvTitle == null) return;
+		if (TitleLayout == null) return;
 		tvTitle.setText(title);
 	}
 }

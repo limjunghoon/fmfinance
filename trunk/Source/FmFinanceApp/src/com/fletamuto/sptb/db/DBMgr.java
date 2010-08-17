@@ -135,6 +135,16 @@ public class DBMgr {
 	}
 	
 	/**
+	 * DB에 입력된 메인 분류를 가져온다.]
+	 * @param itemType  수입, 지출, 자산, 부채 타입
+	 * @param name  분류이름
+	 * @return the row ID of the newly inserted row, or -1 if an error occurred
+	 */
+	public long addCategory(int itemType, String name) {
+		return mDBConnector.addCategory(itemType, name);
+	}
+	
+	/**
 	 * DB에 입력된 분류 리스트를 가져온다.
 	 * @param itemType 수입, 지출, 자산, 부채 타입
 	 * @return 분류 리스트
@@ -149,7 +159,7 @@ public class DBMgr {
 	 * @param mainCategoryId 상위 분류
 	 * @return 하위 분류 리스트
 	 */
-	public ArrayList<Category> getSubCategory(int itemType, int mainCategoryId) {
+	public ArrayList<Category> getSubCategory(int itemType, long mainCategoryId) {
 		return mDBConnector.getSubCategory(itemType, mainCategoryId);
 	}
 }

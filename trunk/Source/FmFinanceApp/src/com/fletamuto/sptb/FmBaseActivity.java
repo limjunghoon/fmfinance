@@ -2,10 +2,8 @@ package com.fletamuto.sptb;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.InputFilter.LengthFilter;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 public class FmBaseActivity extends Activity {
 	private FmTitleLayout titleLayout;
@@ -29,13 +27,30 @@ public class FmBaseActivity extends Activity {
     protected void setTitleButtonListener() {
     	if (titleLayout == null) return;
     	
-    	Button btnBack = titleLayout.getBtn(FmTitleLayout.BTN_LEFT_01);
+    	Button btnBack = titleLayout.getButton(FmTitleLayout.BTN_LEFT_01);
     	btnBack.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				finish();
 			}
 		});
+    }
+    
+    protected void setTitleButtonListener(int btnIndex, View.OnClickListener listener) {
+    	if (titleLayout == null) return;
+    	Button button = null;
+    	
+    	if (btnIndex == FmTitleLayout.BTN_LEFT_01) {
+    		button = titleLayout.getButton(FmTitleLayout.BTN_LEFT_01);
+    	}
+    	else if (btnIndex == FmTitleLayout.BTN_RIGTH_01) {
+    		button = titleLayout.getButton(FmTitleLayout.BTN_RIGTH_01);
+    	}
+    	else {
+    		return;
+    	}
+    	
+    	button.setOnClickListener(listener);
     }
     
     public void setTitle(CharSequence title) {
@@ -46,5 +61,15 @@ public class FmBaseActivity extends Activity {
     public void setTitleBtnVisibility(int btnIndex, int visibility) {
     	if (titleLayout == null) return;
     	titleLayout.setVisibility(btnIndex, visibility);
+    }
+    
+    public void setTitleBtnText(int btnIndex, CharSequence name) {
+    	if (titleLayout == null) return;
+    	titleLayout.setButtonText(btnIndex, name);
+    }
+    
+    public void setTitleBtnEnabled(int layoutResID, boolean enabled) {
+    	if (titleLayout == null) return;
+    	titleLayout.setEnabledButton(layoutResID, enabled);
     }
 }
