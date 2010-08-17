@@ -123,6 +123,18 @@ public class LiabilityDBConnector extends BaseDBConnector {
 		return item;
 	}
 	
+	public long addCategory(String name) {
+		long ret = -1;
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("name", name);
+		
+		ret = db.insert("liability_main_category", null, rowItem);
+		db.close();
+		return ret;
+	}
+	
 	public ArrayList<Category> getCategory() {
 		ArrayList<Category> category = new ArrayList<Category>();
 		SQLiteDatabase db = getReadableDatabase();
@@ -198,4 +210,5 @@ public class LiabilityDBConnector extends BaseDBConnector {
 		db.close();
 		return result;
 	}
+
 }

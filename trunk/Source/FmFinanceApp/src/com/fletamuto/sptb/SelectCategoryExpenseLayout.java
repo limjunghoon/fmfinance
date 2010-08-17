@@ -9,18 +9,16 @@ import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 
 public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
-	protected final static int ACT_SUB_CATEGORY = 1;
+	
 	private Category mMainCategory;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        setType(ExpenseItem.TYPE);
         getCategoryList();
     }
     
-    protected void getCategoryList() {
-    	getCategoryList(ExpenseItem.TYPE);
-    }
     
     protected void onClickCategoryButton(CategoryButton btn) {
     	mMainCategory = new Category(btn.getCategoryID(), btn.getCategoryName());

@@ -23,7 +23,7 @@ public class DBConnector {
 			new LiabilityDBConnector()};
 	
 	protected BaseDBConnector getDBInstance(int itemType){
-		if (itemType >= mDBConnector.length) {
+		if (itemType < 0|| itemType >= mDBConnector.length) {
 			Log.e(DBMgr.DB_TAG, "== invaild finance item itemType : " + itemType);
 			return null;
 		}
@@ -68,12 +68,17 @@ public class DBConnector {
 		return getDBInstance(itemType).getAllItems();
 	}
 	
+	public long addCategory(int itemType, String name) {
+		Log.i(DBMgr.DB_TAG, "== DBConnector addCategory type : " + itemType);
+		return getDBInstance(itemType).addCategory(name);
+	}
+	
 	public ArrayList<Category> getCategory(int itemType) {
 		Log.i(DBMgr.DB_TAG, "== DBConnector getCategory type : " + itemType);
 		return getDBInstance(itemType).getCategory();
 	}
 
-	public ArrayList<Category> getSubCategory(int itemType, int mainCategoryId) {
+	public ArrayList<Category> getSubCategory(int itemType, long mainCategoryId) {
 		Log.i(DBMgr.DB_TAG, "== DBConnector getSubCategory type : " + itemType);
 		return getDBInstance(itemType).getSubCategory(mainCategoryId);
 	}
@@ -96,6 +101,8 @@ public class DBConnector {
 		}
 		return result;
 	}
+
+	
 }
 
 

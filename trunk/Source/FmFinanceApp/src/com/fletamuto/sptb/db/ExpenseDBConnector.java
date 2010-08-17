@@ -130,6 +130,18 @@ public class ExpenseDBConnector extends BaseDBConnector {
 		return item;
 	}
 	
+	public long addCategory(String name) {
+		long ret = -1;
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("name", name);
+		
+		ret = db.insert("expense_main_category", null, rowItem);
+		db.close();
+		return ret;
+	}
+	
 	public ArrayList<Category> getCategory() {
 		ArrayList<Category> category = new ArrayList<Category>();
 		SQLiteDatabase db = getReadableDatabase();
@@ -147,7 +159,7 @@ public class ExpenseDBConnector extends BaseDBConnector {
 		return category;
 	}
 
-	public ArrayList<Category> getSubCategory(int mainCategoryId) {
+	public ArrayList<Category> getSubCategory(long mainCategoryId) {
 		ArrayList<Category> subCategory = new ArrayList<Category>();
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor c = db.query("expense_sub_category", null, "main_id=?", new String[]{String.valueOf(mainCategoryId)}, null, null, null);
@@ -220,4 +232,6 @@ public class ExpenseDBConnector extends BaseDBConnector {
 		db.close();
 		return result;
 	}
+
+	
 }

@@ -25,6 +25,7 @@ public abstract class BaseDBConnector {
 	public abstract boolean updateItem(FinanceItem item);
 	public abstract ArrayList<FinanceItem> getAllItems();
 	public abstract FinanceItem getItem(int id);
+	public abstract long addCategory(String name);
 	public abstract ArrayList<Category> getCategory();
 	public abstract long getTotalAmount();
 	public abstract long getTotalAmountDay(Calendar calendar);
@@ -32,9 +33,11 @@ public abstract class BaseDBConnector {
 	public abstract ArrayList<FinanceItem> getItems(Calendar calendar);
 	public abstract int deleteItem(int id);
 
-	public ArrayList<Category> getSubCategory(int mainCategoryId) {
+	public ArrayList<Category> getSubCategory(long mainCategoryId) {
 		return null;
 	}
+
+	
 
 
 

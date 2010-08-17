@@ -3,6 +3,7 @@
     <string name="btn_back">BACK</string>	
     <string name="btn_edit">EDIT</string>
     <string name="btn_favo">Favo</string>
+    <string name="btn_add">Add</string>
     <string name="btn_category">분류</string>
     <string name="btn_category_select">분류선택</string>
     <string name="btn_save">저장</string>
