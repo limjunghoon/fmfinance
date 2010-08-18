@@ -135,6 +135,19 @@ public class LiabilityDBConnector extends BaseDBConnector {
 		return ret;
 	}
 	
+	public long addSubCategory(long mainCategoryID, String name) {
+		long ret = -1;
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("name", name);
+		rowItem.put("main_id", mainCategoryID);
+		
+		ret = db.insert("liability_sub_category", null, rowItem);
+		db.close();
+		return ret;
+	}
+	
 	public ArrayList<Category> getCategory() {
 		ArrayList<Category> category = new ArrayList<Category>();
 		SQLiteDatabase db = getReadableDatabase();

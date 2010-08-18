@@ -25,6 +25,7 @@ public abstract class BaseDBConnector {
 	public abstract boolean updateItem(FinanceItem item);
 	public abstract ArrayList<FinanceItem> getAllItems();
 	public abstract FinanceItem getItem(int id);
+	public abstract long addSubCategory(long mainCategoryID, String name);
 	public abstract long addCategory(String name);
 	public abstract ArrayList<Category> getCategory();
 	public abstract long getTotalAmount();
@@ -36,6 +37,7 @@ public abstract class BaseDBConnector {
 	public ArrayList<Category> getSubCategory(long mainCategoryId) {
 		return null;
 	}
+
 
 	
 
