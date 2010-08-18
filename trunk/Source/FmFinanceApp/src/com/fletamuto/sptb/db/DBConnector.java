@@ -73,6 +73,11 @@ public class DBConnector {
 		return getDBInstance(itemType).addCategory(name);
 	}
 	
+	public long addSubCategory(int itemType, long mainCategoryID, String name) {
+		Log.i(DBMgr.DB_TAG, "== DBConnector addSubCategory type : " + itemType);
+		return getDBInstance(itemType).addSubCategory(mainCategoryID, name);
+	}
+	
 	public ArrayList<Category> getCategory(int itemType) {
 		Log.i(DBMgr.DB_TAG, "== DBConnector getCategory type : " + itemType);
 		return getDBInstance(itemType).getCategory();

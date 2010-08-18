@@ -20,10 +20,10 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
     }
     
     
-    protected void onClickCategoryButton(CategoryButton btn) {
-    	mMainCategory = new Category(btn.getCategoryID(), btn.getCategoryName());
+    protected void onClickCategoryButton(Category category) {
+    	mMainCategory = category;
     	Intent intent = new Intent(SelectCategoryExpenseLayout.this, SelectSubCategoryLayout.class);
-    	intent.putExtra("MAIN_CATEGORY_ID", btn.getCategoryID());
+    	intent.putExtra("MAIN_CATEGORY_ID", category.getId());
     	intent.putExtra("ITEM_TYPE", ExpenseItem.TYPE);
     	startActivityForResult(intent, ACT_SUB_CATEGORY);
 	}

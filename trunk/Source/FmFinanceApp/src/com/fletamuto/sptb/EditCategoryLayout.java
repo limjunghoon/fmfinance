@@ -7,37 +7,31 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.sax.TextElementListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.ReportBaseLayout.ReportItemAdapter;
-import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class EditCategoryLayout  extends FmBaseActivity {  	
 	private int mType = -1;
 	private ArrayList<Category> mArrCategory;
 	protected CategoryItemAdapter mAdapterCategory;
-	Button mVisibleDeleteButton;
+	private Button mVisibleDeleteButton;
 	private boolean mHasSubCategory = false;
 	private boolean mHasMainCategory = false;
 	private String mMainCategoryName;
 	private long mMainCategoryID = -1;
+	private boolean mEditTextEnable = false;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -66,27 +60,67 @@ public class EditCategoryLayout  extends FmBaseActivity {
     		final EditText mainCategoryName = (EditText)findViewById(R.id.ETMainCategoryName); 
 				
 				public void onClick(View v) {
-					String name = mainCategoryName.getText().toString();
-					if (CheckCategoryName(name) == false) {
-						return;
+					if (mMainCategoryID == -1) {
+						Category newCategory = createMainCategory(mainCategoryName.getText().toString());
+						if (newCategory == null) {
+							return;
+						}
 					}
 					
-					if (mType == -1 ) return;
-					mMainCategoryID = DBMgr.getInstance().addCategory(mType, name);
-					mMainCategoryName = name;
 					updateView();
 				}
 			});
     	}
     }
     
-    private boolean CheckCategoryName(String name) {
+    private Category createMainCategory(String categoryName) {
+    	String name = categoryName;
+		if (checkCategoryName(name) == false) {
+			return null;
+		}
+		
+		if (mType == -1 ) return null;
+		mMainCategoryID = DBMgr.getInstance().addCategory(mType, name);
+		
+		if (mMainCategoryID == -1) {
+			return null;
+		}
+		mMainCategoryName = name;
+		
+		if (mHasMainCategory == true) {
+			makeSubCategory();
+		}
+		
+		return new Category(mMainCategoryID, mMainCategoryName);
+	}
+    
+    private void makeSubCategory() {
+    	makeCategory();
+	}
+
+	private Category createSubCategory(String subCategoryName) {
+		if (mMainCategoryID == -1 || mType == -1) {
+			Log.e(LogTag.LAYOUT, ":: Don't make sub category");
+			return null;
+		}
+		
+		if (checkCategoryName(subCategoryName) == false) {
+			return null;
+		}
+		
+		long subCategoryID = DBMgr.getInstance().addSubCategory(mType, mMainCategoryID, subCategoryName);
+		if (subCategoryID == -1) {
+			return null;
+		}
+		
+		return new Category(subCategoryID, subCategoryName);
+	}
+    
+    private boolean checkCategoryName(String name) {
 		if (name.length() == 0) {
 			displayAlertMessage("이름이 입력되지 않았습니다.");
 			return false;
 		}
-		
-		
 		return true;
 	}
     
@@ -103,20 +137,51 @@ public class EditCategoryLayout  extends FmBaseActivity {
     	alert.show();
     }
     
+    
     public void updateView() {
-    	if (isNewCategoryWithSub()) {
-    		setTitleBtnEnabled(FmTitleLayout.BTN_RIGTH_01, false);
-    		((Button)findViewById(R.id.BtnMainCategoryEdit)).setText("완료");
-    	}
-    	else {
-    		if (mHasMainCategory != false) {
-    			setTitleBtnEnabled(FmTitleLayout.BTN_RIGTH_01, true);
-    			((Button)findViewById(R.id.BtnMainCategoryEdit)).setText("수정");
-    		}
-    	}
+    	updateMainCategoryView();
+    	
     }
     
-    public boolean isNewCategoryWithSub() {
+    private void updateMainCategoryView() {
+    	if (mHasMainCategory == false) {
+    		return;
+    	}
+    	Button editCategoryBtn = ((Button)findViewById(R.id.BtnMainCategoryEdit));
+    	
+		if (isNewCategoryWithSub()) {
+    		setTitleBtnEnabled(FmTitleLayout.BTN_RIGTH_01, false);
+    		editCategoryBtn.setText("완료");
+    		mEditTextEnable = true;
+    	}
+    	else {
+			if (mEditTextEnable) {
+				editCategoryBtn.setText("수정");
+    			mEditTextEnable = false;
+			}
+			else {
+				editCategoryBtn.setText("완료");
+	    		mEditTextEnable = true;
+			}
+			setTitleBtnEnabled(FmTitleLayout.BTN_RIGTH_01, true);
+    	}
+		
+		((EditText)findViewById(R.id.ETMainCategoryName)).setEnabled(mEditTextEnable);
+	}
+    
+    private void updateAdapterCategory(Category category) {
+    	if (mAdapterCategory == null) {
+			getCategoryItems();
+	        setAdapterList();
+		}
+		else {
+			mAdapterCategory.add(category);
+			mAdapterCategory.notifyDataSetChanged();
+		}
+	}
+    
+
+	public boolean isNewCategoryWithSub() {
     	return (mHasMainCategory && mMainCategoryID == -1);
     }
  
@@ -170,7 +235,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
     	}
     	else {
     		if (mMainCategoryID != -1) {
-    			DBMgr.getInstance().getSubCategory(mType, mMainCategoryID);
+    			mArrCategory = DBMgr.getInstance().getSubCategory(mType, mMainCategoryID);
     		}
     	}
     }
@@ -202,29 +267,48 @@ public class EditCategoryLayout  extends FmBaseActivity {
 					startActivityForResult(intent, SelectCategoryBaseLayout.ACT_EDIT_CATEGORY);
 				}
 				else {
-					EditText edit = new EditText(EditCategoryLayout.this);
-					new AlertDialog.Builder(EditCategoryLayout.this)
-					.setTitle("분류를 입력하세요")
-					.setView(edit)
-					.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-						
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-							
-						}
-					})
-					.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-						
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-							
-						}
-					})
-					.show();
+					makeCategory();
 				}
 			}
 		});
     }
+    
+    private void makeCategory() {
+    	final EditText edit = new EditText(EditCategoryLayout.this);
+		new AlertDialog.Builder(EditCategoryLayout.this)
+		.setTitle("분류를 입력하세요")
+		.setView(edit)
+		.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				String categoryName = edit.getText().toString();
+				Category category = null;
+				if (mHasMainCategory == true) {
+					category = createSubCategory(categoryName);
+					if (category == null) {
+						Log.e(LogTag.LAYOUT, ":: Fail make the subcategory");
+						return;
+					}
+				}
+				else {
+					category = createMainCategory(categoryName);
+					if (category == null) {
+						Log.e(LogTag.LAYOUT, ":: Fail make the category");
+						return;
+					}
+				}
+				updateAdapterCategory(category);
+			}
+		})
+		.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		})
+		.show();
+	}
     
     private void setVisibleDeleteButton(Button button) {
 		if (mVisibleDeleteButton != null) {
@@ -235,7 +319,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 		mVisibleDeleteButton.setVisibility(View.VISIBLE);
 	}
     
-    protected void setDeleteBtnListener(View convertView, int itemId, int position) {
+    protected void setDeleteBtnListener(View convertView, long itemId, int position) {
     	Button btnDelete = (Button)convertView.findViewById(R.id.BtnCategoryDelete);
 //		btnDelete.setTag(R.id.delete_id, new Integer(itemId));
 //		btnDelete.setTag(R.id.delete_position, new Integer(position));
@@ -274,5 +358,37 @@ public class EditCategoryLayout  extends FmBaseActivity {
 			
 			return convertView;
 		}
+    }
+    
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == SelectCategoryBaseLayout.ACT_EDIT_CATEGORY) {
+			if (resultCode == RESULT_OK) {
+				long categoryID = data.getLongExtra("CATEGORY_ID", -1);
+				String categoryName = data.getStringExtra("CATEGORY_NAME");
+				
+				if (categoryID != -1) {
+					updateAdapterCategory(new Category(categoryID, categoryName));
+				}
+				
+    		}
+    	}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+    
+    @Override
+    public void onBackPressed() {
+    	
+    	super.onBackPressed();
+    }
+    
+    @Override
+    public void finish() {
+    	Intent intent = new Intent();
+		
+		intent.putExtra("CATEGORY_ID", mMainCategoryID);
+		intent.putExtra("CATEGORY_NAME", mMainCategoryName);
+		
+    	setResult(RESULT_OK, intent);
+    	super.finish();
     }
 }

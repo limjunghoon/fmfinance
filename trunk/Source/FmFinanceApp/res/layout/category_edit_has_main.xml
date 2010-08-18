@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_height="wrap_content" android:layout_width="fill_parent">
-<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent"><EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/ETMainCategoryName" android:layout_weight="1" android:singleLine="true"></EditText><Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Edit" android:id="@+id/BtnMainCategoryEdit" android:layout_weight="0"></Button></LinearLayout><ListView android:layout_height="wrap_content" android:id="@+id/ListViewEditCategory" android:layout_width="fill_parent"></ListView>
+  android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical">
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent"><EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/ETMainCategoryName" android:layout_weight="1" android:singleLine="true"></EditText><Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Edit" android:id="@+id/BtnMainCategoryEdit" android:layout_weight="0"></Button></LinearLayout><ListView android:id="@+id/ListViewEditCategory" android:layout_width="fill_parent" android:layout_height="wrap_content"></ListView>
 
 
 

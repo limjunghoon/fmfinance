@@ -133,6 +133,19 @@ public class IncomeDBConnector extends BaseDBConnector {
 		db.close();
 		return ret;
 	}
+	
+	public long addSubCategory(long mainCategoryID, String name) {
+		long ret = -1;
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("name", name);
+		rowItem.put("main_id", mainCategoryID);
+		
+		ret = db.insert("income_sub_category", null, rowItem);
+		db.close();
+		return ret;
+	}
 
 	public ArrayList<Category> getCategory() {
 		ArrayList<Category> category = new ArrayList<Category>();

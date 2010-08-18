@@ -135,13 +135,24 @@ public class DBMgr {
 	}
 	
 	/**
-	 * DB에 입력된 메인 분류를 가져온다.]
+	 * 새로운 분류를 추가한다.
 	 * @param itemType  수입, 지출, 자산, 부채 타입
 	 * @param name  분류이름
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
 	public long addCategory(int itemType, String name) {
 		return mDBConnector.addCategory(itemType, name);
+	}
+	
+	/**
+	 * 하위 분류를 추가한다.
+	 * @param itemTyee 수입, 지출, 자산, 부채 타입
+	 * @param mainCategoryID 상위 분류 아이디
+	 * @param name 하위 분류 이름
+	 * @return the row ID of the newly inserted row, or -1 if an error occurred
+	 */
+	public long addSubCategory(int itemTyee, long mainCategoryID, String name) {
+		return mDBConnector.addSubCategory(itemTyee, mainCategoryID, name);
 	}
 	
 	/**
