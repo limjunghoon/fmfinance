@@ -211,7 +211,7 @@ public abstract class InputBaseLayout extends FmBaseActivity {
     	}
     	else if (requestCode == ACT_CATEGORY) {
     		if (resultCode == RESULT_OK) {
-    			updateCategory(data.getIntExtra("CATEGORY_ID", 0), data.getStringExtra("CATEGORY_NAME"));
+    			updateCategory(data.getIntExtra("CATEGORY_ID", -1), data.getStringExtra("CATEGORY_NAME"));
     		}
     	}
     	

@@ -2,9 +2,9 @@ package com.fletamuto.sptb.data;
 
 public class Category {
 	private String mName;
-	private long mID;
+	private int mID;
 	
-	public Category(long id, String name) {
+	public Category(int id, String name) {
 		this.mID = id;
 		this.mName = name;
 	}
@@ -14,14 +14,14 @@ public class Category {
 	public String getName() {
 		return mName;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.mID = id;
 	}
-	public long getId() {
+	public int getId() {
 		return mID;
 	}
 	
-	public void set(long id, String name) {
+	public void set(int id, String name) {
 		this.mID = id;
 		this.mName = name;
 	}

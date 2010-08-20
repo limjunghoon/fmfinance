@@ -36,6 +36,12 @@ public class DBConnector {
 			Log.e(DBMgr.DB_TAG, "== invaild finance item " + item.getType());
 			return false;
 		}
+		
+		if (item.getCategory().getId() == -1) {
+			Log.e(DBMgr.DB_TAG, "== invaild category item ID");
+			return false;
+		}
+		
 		return getDBInstance(item.getType()).addItem(item);
 	}
 	
@@ -45,6 +51,12 @@ public class DBConnector {
 			Log.e(DBMgr.DB_TAG, "== invaild finance item " + item.getType());
 			return false;
 		}
+		
+		if (item.getId() == -1 || item.getCategory().getId() == -1) {
+			Log.e(DBMgr.DB_TAG, "== invaild item ID");
+			return false;
+		}
+		
 		return getDBInstance(item.getType()).updateItem(item);
 	}
 	

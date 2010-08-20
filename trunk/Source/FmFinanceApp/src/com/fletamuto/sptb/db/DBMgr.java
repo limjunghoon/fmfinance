@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
@@ -40,12 +41,21 @@ public class DBMgr {
 		mDBHelper = new FinanceDBHelper(context);
 	}
 	
+	private boolean checkItemType(int type) {
+		if (type < 0) {
+			Log.e(DBMgr.DB_TAG, "== invaild finance item " + type);
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * DB에 아이템을  추가한다.
 	 * @param item 수입, 지출, 자산, 부채 객체
 	 * @return 성공이면 true 실패면 false
 	 */
 	public boolean addFinanceItem(FinanceItem item) {
+		if (checkItemType(item.getType()) == false) return false;
 		return mDBConnector.addFinanceItem(item);
 	}
 	
@@ -55,6 +65,7 @@ public class DBMgr {
 	 * @return 성공이면 true 실패면 false
 	 */
 	public boolean updateFinanceItem(FinanceItem item) {
+		if (checkItemType(item.getType()) == false) return false;
 		return mDBConnector.updateFinanceItem(item);
 	}
 	
@@ -64,6 +75,7 @@ public class DBMgr {
 	 * @return ArrayList<FinanceItem> 아이템 리스트
 	 */
 	public ArrayList<FinanceItem> getAllItems(int itemType) {
+		if (checkItemType(itemType) == false) return null;
 		return mDBConnector.getFinanceAllItems(itemType);
 	}
 	
@@ -74,6 +86,7 @@ public class DBMgr {
 	 * @return ArrayList<FinanceItem> 아이템 리스트
 	 */
 	public ArrayList<FinanceItem> getItems(int itemType, Calendar calendar) {
+		if (checkItemType(itemType) == false) return null;
 		return mDBConnector.getItems(itemType, calendar);
 	}
 	
@@ -84,6 +97,7 @@ public class DBMgr {
 	 * @return 성공시 아이템 실패시 null
 	 */
 	public FinanceItem getItem(int itemType, int id) {
+		if (checkItemType(itemType) == false) return null;
 		return mDBConnector.getItem(itemType, id);
 	}
 	
@@ -94,6 +108,7 @@ public class DBMgr {
 	 * @return 삭제된 아이템 수
 	 */
 	public int deleteItem(int itemType, int id) {
+		if (checkItemType(itemType) == false) return -1;
 		return mDBConnector.deleteItem(itemType, id);
 	}
 	
@@ -103,6 +118,7 @@ public class DBMgr {
 	 * @return long 총 액수
 	 */
 	public long getTotalAmount(int itemType) {
+		if (checkItemType(itemType) == false) return -1;
 		return mDBConnector.getTotalAmount(itemType);
 	}
 	
@@ -113,6 +129,7 @@ public class DBMgr {
 	 * @return long 총 액수
 	 */
 	public long getTotalAmountDay(int itemType, Calendar calendar) {
+		if (checkItemType(itemType) == false) return 0L;
 		return mDBConnector.getTotalAmountDay(itemType, calendar);
 	}
 	
@@ -123,6 +140,7 @@ public class DBMgr {
 	 * @return 아이템 갯수
 	 */
 	public int getItemCount(int itemType, Calendar calendar) {
+		if (checkItemType(itemType) == false) return -1;
 		return mDBConnector.getItemCount(itemType, calendar);
 	}
 	
@@ -140,8 +158,9 @@ public class DBMgr {
 	 * @param name  분류이름
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
-	public long addCategory(int itemType, String name) {
-		return mDBConnector.addCategory(itemType, name);
+	public int addCategory(int itemType, String name) {
+		if (checkItemType(itemType) == false) return -1;
+		return (int)mDBConnector.addCategory(itemType, name);
 	}
 	
 	/**
@@ -151,8 +170,9 @@ public class DBMgr {
 	 * @param name 하위 분류 이름
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
-	public long addSubCategory(int itemTyee, long mainCategoryID, String name) {
-		return mDBConnector.addSubCategory(itemTyee, mainCategoryID, name);
+	public int addSubCategory(int itemType, long mainCategoryID, String name) {
+		if (checkItemType(itemType) == false) return -1;
+		return (int)mDBConnector.addSubCategory(itemType, mainCategoryID, name);
 	}
 	
 	/**
@@ -161,6 +181,7 @@ public class DBMgr {
 	 * @return 분류 리스트
 	 */
 	public ArrayList<Category> getCategory(int itemType) {
+		if (checkItemType(itemType) == false) return null;
 		return mDBConnector.getCategory(itemType);
 	}
 	
@@ -171,6 +192,7 @@ public class DBMgr {
 	 * @return 하위 분류 리스트
 	 */
 	public ArrayList<Category> getSubCategory(int itemType, long mainCategoryId) {
+		if (checkItemType(itemType) == false) return null;
 		return mDBConnector.getSubCategory(itemType, mainCategoryId);
 	}
 }

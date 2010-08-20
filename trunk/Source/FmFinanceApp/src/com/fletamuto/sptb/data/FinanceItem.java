@@ -3,6 +3,11 @@ package com.fletamuto.sptb.data;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import android.util.Log;
+
+import com.fletamuto.sptb.LogTag;
+import com.fletamuto.sptb.db.DBMgr;
+
 public abstract class FinanceItem {
 	private String mTitle;
 	private String mMemo;
@@ -39,6 +44,10 @@ public abstract class FinanceItem {
 	}
 	
 	public void setCategory(int id, String name) {
+		if (isVaildCatetory()) {
+			Log.e(LogTag.LAYOUT, "== invaild category : " + id + " "+name);
+			return;
+		}
 		mCategory.set(id, name);
 	}
 	
