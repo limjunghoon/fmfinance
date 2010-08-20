@@ -30,7 +30,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 	private boolean mHasSubCategory = false;
 	private boolean mHasMainCategory = false;
 	private String mMainCategoryName;
-	private long mMainCategoryID = -1;
+	private int mMainCategoryID = -1;
 	private boolean mEditTextEnable = false;
 	
 	/** Called when the activity is first created. */
@@ -48,10 +48,19 @@ public class EditCategoryLayout  extends FmBaseActivity {
         }
         
         initTitle();
+        setMainText();
         getCategoryItems();
         setAdapterList();
         setViewListener();
         updateView();
+    }
+    
+    protected void setMainText() {
+    	if (mMainCategoryID != -1 && mMainCategoryName != "") {
+        	EditText mainCategoryName = (EditText)findViewById(R.id.ETMainCategoryName);
+        	mainCategoryName.setText(mMainCategoryName);
+        	mEditTextEnable = true;
+        }
     }
     
     protected void setViewListener() {
@@ -108,7 +117,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 			return null;
 		}
 		
-		long subCategoryID = DBMgr.getInstance().addSubCategory(mType, mMainCategoryID, subCategoryName);
+		int subCategoryID = DBMgr.getInstance().addSubCategory(mType, mMainCategoryID, subCategoryName);
 		if (subCategoryID == -1) {
 			return null;
 		}
@@ -245,7 +254,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
         mHasSubCategory = getIntent().getBooleanExtra("CATEGORY_HAS_SUB", false) ;
         mHasMainCategory = getIntent().getBooleanExtra("CATEGORY_HAS_MAIN", false) ;
         mMainCategoryName = getIntent().getStringExtra("CATEGORY_MAIN_CATEGORY_NAME");
-        mMainCategoryID = getIntent().getIntExtra("CATEGORY_MAIN_CATEGOR_ID", -1) ;
+        mMainCategoryID = getIntent().getIntExtra("CATEGORY_MAIN_CATEGORY_ID", -1) ;
     }
     
     protected void initTitle() {
@@ -363,7 +372,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == SelectCategoryBaseLayout.ACT_EDIT_CATEGORY) {
 			if (resultCode == RESULT_OK) {
-				long categoryID = data.getLongExtra("CATEGORY_ID", -1);
+				int categoryID = data.getIntExtra("CATEGORY_ID", -1);
 				String categoryName = data.getStringExtra("CATEGORY_NAME");
 				
 				if (categoryID != -1) {

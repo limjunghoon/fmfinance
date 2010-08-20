@@ -81,7 +81,7 @@ public class InputExpenseLayout extends InputBaseLayout {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_CATEGORY) {
     		if (resultCode == RESULT_OK) {
-    			((ExpenseItem)mItem).setSubCategory(data.getIntExtra("SUB_CATEGORY_ID", 0), data.getStringExtra("SUB_CATEGORY_NAME"));
+    			((ExpenseItem)mItem).setSubCategory(data.getIntExtra("SUB_CATEGORY_ID", -1), data.getStringExtra("SUB_CATEGORY_NAME"));
     		}
     	}
 		super.onActivityResult(requestCode, resultCode, data);

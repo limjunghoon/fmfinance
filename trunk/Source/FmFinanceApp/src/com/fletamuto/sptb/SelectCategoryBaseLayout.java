@@ -140,7 +140,7 @@ public abstract class SelectCategoryBaseLayout extends FmBaseActivity {
 		if (requestCode == ACT_EDIT_CATEGORY) {
 			if (resultCode == RESULT_OK) {
 			
-					updateAdapterCategory();
+				updateAdapterCategory();
 
     		}
     	}
