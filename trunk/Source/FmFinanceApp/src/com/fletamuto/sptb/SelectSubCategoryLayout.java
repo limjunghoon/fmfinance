@@ -55,6 +55,8 @@ public class SelectSubCategoryLayout extends SelectCategoryBaseLayout {
 		Intent intent = new Intent();
 		intent.putExtra("SUB_CATEGORY_ID", category.getId());
 		intent.putExtra("SUB_CATEGORY_NAME", category.getName());
+		
+		Log.i(LogTag.LAYOUT, ":: Selected sub category ID : " + category.getId());
 		setResult(RESULT_OK, intent);
 		finish();
 	}

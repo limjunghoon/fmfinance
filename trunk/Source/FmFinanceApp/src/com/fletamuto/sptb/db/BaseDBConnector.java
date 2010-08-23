@@ -33,15 +33,22 @@ public abstract class BaseDBConnector {
 	public abstract int getItemCount(Calendar calendar);
 	public abstract ArrayList<FinanceItem> getItems(Calendar calendar);
 	public abstract int deleteItem(int id);
-
+	public abstract int deleteCategory(int id);
+	public abstract boolean updateCategory(int id, String name);
+	
 	public ArrayList<Category> getSubCategory(long mainCategoryId) {
 		return null;
 	}
-
-
 	
+	public int deleteSubCategoryFromMainID(int mainCategoryID) {
+		return 0;
+	}
 
-
-
+	public int deleteSubCategory(int id) {
+		return 0;
+	}
 	
+	public boolean updateSubCategory(int id, String name) {
+		return false;
+	}
 }

@@ -246,7 +246,58 @@ public class AssetsDBConnector extends BaseDBConnector {
 		return result;
 	}
 
+	@Override
+	public int deleteCategory(int id) {
+		int result = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		result = db.delete("assets_main_category", "_id=?", new String[] {String.valueOf(id)});
+		db.close();
+		
+		deleteSubCategoryFromMainID(id);
+		return result;
+	}
 	
+	@Override
+	public int deleteSubCategoryFromMainID(int mainCategoryID) {
+		int result = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		result = db.delete("assets_sub_category", "main_id=?", new String[] {String.valueOf(mainCategoryID)});
+		db.close();
+		return result;
+	}
 
+	@Override
+	public int deleteSubCategory(int id) {
+		int result = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		result = db.delete("assets_sub_category", "_id=?", new String[] {String.valueOf(id)});
+		db.close();
+		return result;
+	}
 	
+	@Override
+	public boolean updateCategory(int id, String name) {
+		int result = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("name", name);
+		
+		result = db.update("assets_main_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
+		db.close();
+		return (result != 0);
+	}
+	
+	@Override
+	public boolean updateSubCategory(int id, String name) {
+		int result = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("name", name);
+		
+		result = db.update("assets_sub_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
+		db.close();
+		return (result != 0);
+	}
 }

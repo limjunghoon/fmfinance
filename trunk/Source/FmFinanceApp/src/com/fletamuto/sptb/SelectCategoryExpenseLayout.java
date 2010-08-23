@@ -41,6 +41,7 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
 				intent.putExtra("SUB_CATEGORY_NAME", data.getStringExtra("SUB_CATEGORY_NAME"));
 				setResult(RESULT_OK, intent);
     			finish();
+    			return;
     		}
     	}
 		super.onActivityResult(requestCode, resultCode, data);

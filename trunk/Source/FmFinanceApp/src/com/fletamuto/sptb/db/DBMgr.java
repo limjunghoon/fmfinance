@@ -70,6 +70,30 @@ public class DBMgr {
 	}
 	
 	/**
+	 * 아이디에 해당하는 분류 이름을 변경한다. 
+	 * @param itemType 수입, 지출, 자산, 부채 타입
+	 * @param id 수정할 아이디
+	 * @param name 변경되는 분류 이름
+	 * @return 성공여부
+	 */
+	public boolean updateCategory(int itemType, int id, String name) {
+		if (checkItemType(itemType) == false) return false;
+		return mDBConnector.updateCategory(itemType, id, name);
+	}
+	
+	/**
+	 * 아이디에 해당하는 하위 분류 이름을 변경한다. 
+	 * @param itemType 수입, 지출, 자산, 부채 타입
+	 * @param id 수정할 아이디
+	 * @param name 변경되는 하위 분류 이름
+	 * @return 성공여부
+	 */
+	public boolean updateSubCategory(int itemType, int id, String name) {
+		if (checkItemType(itemType) == false) return false;
+		return mDBConnector.updateSubCategory(itemType, id, name);
+	}
+	
+	/**
 	 * DB에 입력된 수입, 지출, 자산, 부채 중 하나의 아이템을 모두 가져온다.
 	 * @param itemType 가져올 수입, 지출, 자산, 부채 타입
 	 * @return ArrayList<FinanceItem> 아이템 리스트
@@ -194,5 +218,21 @@ public class DBMgr {
 	public ArrayList<Category> getSubCategory(int itemType, long mainCategoryId) {
 		if (checkItemType(itemType) == false) return null;
 		return mDBConnector.getSubCategory(itemType, mainCategoryId);
+	}
+	
+	/**
+	 * DB에서 ID에 해당하는 카테고리를 지운다.
+	 * @param itemType 수입, 지출, 자산, 부채 타입
+	 * @param itemID 삭제할 아이디
+	 * @return 
+	 */
+	public int deleteCategory(int itemType, int itemID) {
+		if (checkItemType(itemType) == false) return 0;
+		return mDBConnector.deleteCategory(itemType, itemID);
+	}
+	
+	public int deleteSubCategory(int itemType, int itemID) {
+		if (checkItemType(itemType) == false) return 0;
+		return mDBConnector.deleteSubCategory(itemType, itemID);
 	}
 }

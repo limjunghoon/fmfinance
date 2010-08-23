@@ -44,10 +44,6 @@ public abstract class FinanceItem {
 	}
 	
 	public void setCategory(int id, String name) {
-		if (isVaildCatetory()) {
-			Log.e(LogTag.LAYOUT, "== invaild category : " + id + " "+name);
-			return;
-		}
 		mCategory.set(id, name);
 	}
 	

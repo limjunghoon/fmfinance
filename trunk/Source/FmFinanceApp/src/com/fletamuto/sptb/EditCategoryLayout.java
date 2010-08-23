@@ -328,18 +328,97 @@ public class EditCategoryLayout  extends FmBaseActivity {
 		mVisibleDeleteButton.setVisibility(View.VISIBLE);
 	}
     
-    protected void setDeleteBtnListener(View convertView, long itemId, int position) {
-    	Button btnDelete = (Button)convertView.findViewById(R.id.BtnCategoryDelete);
-//		btnDelete.setTag(R.id.delete_id, new Integer(itemId));
-//		btnDelete.setTag(R.id.delete_position, new Integer(position));
+    protected void setDeleteBtnListener(View convertView, int itemID, int position) {
+    	final Button btnDelete = (Button)convertView.findViewById(R.id.BtnCategoryDelete);
+    	final int deletePosition = position;
+    	final int dleteItemID = itemID;
 		btnDelete.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				if (mHasMainCategory) {
+					if (DBMgr.getInstance().deleteSubCategory(mType, dleteItemID) == 0) {
+						return;
+					}
+				}
+				else {
+					if (DBMgr.getInstance().deleteCategory(mType, dleteItemID) == 0) {
+						return;
+					}
+				}
 				
+				mArrCategory.remove(deletePosition);
+				mAdapterCategory.notifyDataSetChanged();
 			}
 		});
     }
+    
+    protected void setEditBtnListener(View convertView, Category category, int position)  {
+    	final Button btnEdit = (Button)convertView.findViewById(R.id.BtnCategoryEdit);
+    	final int editPosition = position;
+    	final Category editCategory = category;
+    	
+    	btnEdit.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				updateCategory(editCategory, editPosition);
+			}
+		});
+    }
+    
+    public void updateCategory(Category category, int position) {
+    	final EditText edit = new EditText(EditCategoryLayout.this);
+    	final int editPosition = position;
+    	final int editCategoryID = category.getId();
+    	
+    	edit.setText(category.getName());
+		new AlertDialog.Builder(EditCategoryLayout.this)
+		.setTitle("분류를 입력하세요")
+		.setView(edit)
+		.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				String categoryName = edit.getText().toString();
+				
+				if (categoryName.length() == 0) {
+					return;
+				}
+				
+				if (mHasMainCategory == true) {
+					if (updateSubCategory(editCategoryID, categoryName) == false) {
+						Log.e(LogTag.LAYOUT, ":: Fail update the subcategory");
+						return;
+					}
+				}
+				else {
+					if (updateMainCategory(editCategoryID, categoryName) == false) {
+						Log.e(LogTag.LAYOUT, ":: Fail update the category");
+						return;
+					}
+				}
+				
+				mArrCategory.set(editPosition, new Category(editCategoryID, categoryName));
+				mAdapterCategory.notifyDataSetChanged();
+			}
+
+			
+		})
+		.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		})
+		.show();
+    }
+    
+    private boolean updateMainCategory(int id, String name) {
+		return (DBMgr.getInstance().updateCategory(mType, id, name));
+	}
+    
+    private boolean updateSubCategory(int id, String name) {
+    	return (DBMgr.getInstance().updateSubCategory(mType, id, name));
+	}
     
     public class CategoryItemAdapter extends ArrayAdapter<Category> {
     	int mResource;
@@ -364,6 +443,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 			categoryName.setText(item.getName());
 			
 			setDeleteBtnListener(convertView, item.getId(), position);
+			setEditBtnListener(convertView, item, position);
 			
 			return convertView;
 		}
