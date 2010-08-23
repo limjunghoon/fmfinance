@@ -119,6 +119,41 @@ public class DBConnector {
 		return result;
 	}
 
+	public int deleteCategory(int itemType, int id) {
+		Log.i(DBMgr.DB_TAG, "== DBConnector deleteCategory ");
+		int result = getDBInstance(itemType).deleteCategory(id);
+		if (result == 0) {
+			Log.e(LogTag.DB, "== do not delete id : " + id + " type : " + itemType); 
+		}
+		return result;
+	}
+
+	public int deleteSubCategory(int itemType, int id) {
+		Log.i(DBMgr.DB_TAG, "== DBConnector deleteSubCategory ");
+		int result = getDBInstance(itemType).deleteSubCategory(id);
+		if (result == 0) {
+			Log.e(LogTag.DB, "== do not delete id : " + id + " type : " + itemType); 
+		}
+		return result;
+	}
+
+	public boolean updateCategory(int itemType, int id, String name) {
+		Log.i(DBMgr.DB_TAG, "== DBConnector updateCategory ");
+		boolean result = getDBInstance(itemType).updateCategory(id, name);
+		if (result == false) {
+			Log.e(LogTag.DB, "== do not update id : " + id + " type : " + itemType); 
+		}
+		return result;
+	}
+	
+	public boolean updateSubCategory(int itemType, int id, String name) {
+		Log.i(DBMgr.DB_TAG, "== DBConnector updateSubCategory ");
+		boolean result = getDBInstance(itemType).updateSubCategory(id, name);
+		if (result == false) {
+			Log.e(LogTag.DB, "== do not update id : " + id + " type : " + itemType); 
+		}
+		return result;
+	}
 	
 }
 

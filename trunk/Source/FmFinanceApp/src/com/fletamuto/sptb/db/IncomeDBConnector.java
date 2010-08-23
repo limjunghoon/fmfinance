@@ -221,4 +221,26 @@ public class IncomeDBConnector extends BaseDBConnector {
 		return result;
 	}
 
+	@Override
+	public int deleteCategory(int id) {
+		int result = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		result = db.delete("income_main_category", "_id=?", new String[] {String.valueOf(id)});
+		db.close();
+		
+		return result;
+	}
+	
+	@Override
+	public boolean updateCategory(int id, String name) {
+		int result = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("name", name);
+		
+		result = db.update("income_main_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
+		db.close();
+		return (result != 0);
+	}
 }
