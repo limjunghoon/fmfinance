@@ -11,7 +11,7 @@ public class InputAssetsOrLiability extends TabActivity {
         super.onCreate(savedInstanceState);
        
         TabHost thAssetsLiability = getTabHost();
-       
+      
         thAssetsLiability.addTab(thAssetsLiability.newTabSpec("tagAssets")
         		.setIndicator(getResources().getString(R.string.input_assets_tab_name))
         		.setContent(new Intent(this, InputAssetsLayout.class)));
@@ -19,7 +19,6 @@ public class InputAssetsOrLiability extends TabActivity {
         thAssetsLiability.addTab(thAssetsLiability.newTabSpec("tagLiability")
         		.setIndicator(getResources().getString(R.string.input_liability_tab_name))
         		.setContent(new Intent(this, InputLiabilityLayout.class)));
-        
         
     }
 }

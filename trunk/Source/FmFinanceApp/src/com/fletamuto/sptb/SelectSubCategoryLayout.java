@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class SelectSubCategoryLayout extends SelectCategoryBaseLayout {
@@ -41,7 +39,7 @@ public class SelectSubCategoryLayout extends SelectCategoryBaseLayout {
 			public void onClick(View v) {
 				Intent intent = new Intent(SelectSubCategoryLayout.this, EditCategoryLayout.class);
 				intent.putExtra("CATEGORY_TYPE", mType);
-				intent.putExtra("CATEGORY_HAS_MAIN", true);
+				intent.putExtra("CATEGORY_HAS_WITH_MAIN", true);
 				intent.putExtra("CATEGORY_MAIN_CATEGORY_ID", mMainCagegoryID);
 				intent.putExtra("CATEGORY_MAIN_CATEGORY_NAME", mMainCagegoryName);
 				

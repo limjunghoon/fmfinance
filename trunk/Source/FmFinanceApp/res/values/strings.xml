@@ -39,6 +39,14 @@
     <string name="input_income_amount_name">금액</string>
     <string name="input_income_memo_name">메모</string>
     <string name="input_income_btn_save">저장</string>
+    <string name="input_account_institution">금융기관</string>
+    <string name="input_account_nubmer">계좌번호</string>
+    <string name="input_account_balance">금액</string>
+    <string name="input_account_type">종류</string>
+    <string name="input_account_create_date">신규일</string>
+    <string name="input_account_expiry_date">만기일</string>
+    <string name="input_account_memo">메모</string>
+    <string name="input_account_title">이름</string>
     <string name="input_select_category">분류를 선택해 주세요</string>
     <string name="input_warning_msg_not_category">분류가 선택되지 않았습니다.</string>
     <string name="input_warning_msg_not_amount">가격이 입력되지 않았습니다.</string>

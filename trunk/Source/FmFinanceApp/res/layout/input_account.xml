@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+  
+  <LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="30dp">
+		<TextView android:id="@+id/TVAssetsTitle" android:text="@string/input_assets_title_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:layout_width="70dp">
+		</TextView>
+		<EditText android:id="@+id/ETAssetsTitle" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</EditText>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:id="@+id/TVAssetsDate" android:text="@string/input_assets_date_name" android:layout_height="wrap_content" android:textSize="18dp" android:gravity="center" android:layout_width="70dp">
+		</TextView>
+		<Button android:layout_height="wrap_content" android:id="@+id/BtnAssetsDate" android:textSize="18dp" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:id="@+id/TVAssetsCategory" android:text="@string/input_assets_category_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:layout_width="70dp">
+		</TextView>
+		<Button android:id="@+id/BtnAssetsCategory" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:id="@+id/TVAssetsAmount" android:text="@string/input_assets_amount_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:layout_width="70dp">
+		</TextView>
+		<Button android:id="@+id/BtnAssetsAmount" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnAssetsSave" android:text="@string/input_assets_btn_save" android:layout_marginTop="20dp">
+	</Button>
+  
+  
+</LinearLayout>
