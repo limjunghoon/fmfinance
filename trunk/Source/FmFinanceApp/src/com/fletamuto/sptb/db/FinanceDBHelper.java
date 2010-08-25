@@ -36,7 +36,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			createAssetsTable(db);
 			createLiabilityTable(db);
 			createCategoryTable(db);
-			
+			createAccountTable(db);
+			createInstitution(db);
 		}
 		
 		private void createIncomeTable(SQLiteDatabase db) {
@@ -117,11 +118,32 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"name TEXT NOT NULL);");
 		}
 		
+		private void createAccountTable(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE account ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"number TEXT NOT NULL," +
+					"balance INTEGER," +
+					"institution INTEGER," +
+					"type INTEGER," +
+					"create_date INTEGER," +
+					"expiry_date INTEGER," +
+					"memo TEXT," +
+					"name TEXT);");
+		}
+		
+		private void createInstitution(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE institution ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"name TEXT NOT NULL," +
+					"type INTEGER NOT NULL);");
+		}
+		
 		private void insertCategory(SQLiteDatabase db) {
 			insertIncomeCategory(db);
 			insertExpenseCategory(db);
 			insertAssetsCategory(db);
 			insertLiabilityCategory(db);
+			insertInstitution(db);
 		}
 		
 		private void insertIncomeCategory(SQLiteDatabase db) {
@@ -219,6 +241,18 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					rowItem.put("main_id", i+1);
 					db.insert("assets_sub_category", null, rowItem);
 				}
+			}
+		}
+		
+		private void insertInstitution(SQLiteDatabase db) {
+			ContentValues rowItem = new ContentValues();
+			String [] bakingName = context.getResources().getStringArray(R.array.financial_institution_banking);
+			int nameLenth = bakingName.length;
+			
+			for (int index = 0; index < nameLenth; index++) {
+				rowItem.put("name", bakingName[index]);
+				rowItem.put("type", 1);
+				db.insert("institution", null, rowItem);
 			}
 		}
 }

@@ -3,11 +3,6 @@ package com.fletamuto.sptb.data;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import android.util.Log;
-
-import com.fletamuto.sptb.LogTag;
-import com.fletamuto.sptb.db.DBMgr;
-
 public abstract class FinanceItem {
 	private String mTitle;
 	private String mMemo;

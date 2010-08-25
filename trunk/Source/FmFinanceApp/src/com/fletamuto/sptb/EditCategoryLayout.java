@@ -22,13 +22,15 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.db.DBMgr;
 
+
 public class EditCategoryLayout  extends FmBaseActivity {  	
+	
 	private int mType = -1;
 	private ArrayList<Category> mArrCategory;
 	protected CategoryItemAdapter mAdapterCategory;
 	private Button mVisibleDeleteButton;
 	private boolean mHasSubCategory = false;
-	private boolean mHasMainCategory = false;
+	private boolean mHasWithMainCategory = false;
 	private String mMainCategoryName;
 	private int mMainCategoryID = -1;
 	private boolean mEditTextEnable = false;
@@ -40,7 +42,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
         
         getExtraInfo();
         
-        if (mHasMainCategory == false) {
+        if (mHasWithMainCategory == false) {
         	setContentView(R.layout.category_edit, true);
         }
         else {
@@ -56,22 +58,34 @@ public class EditCategoryLayout  extends FmBaseActivity {
     }
     
     protected void setMainText() {
+    	if (mHasWithMainCategory == false) return;
     	if (mMainCategoryID != -1 && mMainCategoryName != "") {
         	EditText mainCategoryName = (EditText)findViewById(R.id.ETMainCategoryName);
         	mainCategoryName.setText(mMainCategoryName);
-        	mEditTextEnable = true;
+        	
+        	if (mHasSubCategory == false) {
+        		mEditTextEnable = true;
+        	}
+        	
         }
     }
     
     protected void setViewListener() {
-    	if (mHasMainCategory == true) {
+    	if (mHasWithMainCategory == true) {
+    		
     		((Button)findViewById(R.id.BtnMainCategoryEdit)).setOnClickListener(new View.OnClickListener() {
     		final EditText mainCategoryName = (EditText)findViewById(R.id.ETMainCategoryName); 
 				
 				public void onClick(View v) {
 					if (mMainCategoryID == -1) {
-						Category newCategory = createMainCategory(mainCategoryName.getText().toString());
-						if (newCategory == null) {
+						if (createMainCategory(mainCategoryName.getText().toString()) == null) {
+							Log.e(LogTag.LAYOUT, ":: Fail to create category");
+							return;
+						}
+					}
+					else {
+						if (updateMainCategory(mMainCategoryID, mainCategoryName.getText().toString()) == false) {
+							Log.e(LogTag.LAYOUT, ":: Fail to update category");
 							return;
 						}
 					}
@@ -84,11 +98,10 @@ public class EditCategoryLayout  extends FmBaseActivity {
     
     private Category createMainCategory(String categoryName) {
     	String name = categoryName;
-		if (checkCategoryName(name) == false) {
+		if (checkCategoryName(name) == false || mType == -1) {
 			return null;
 		}
 		
-		if (mType == -1 ) return null;
 		mMainCategoryID = DBMgr.getInstance().addCategory(mType, name);
 		
 		if (mMainCategoryID == -1) {
@@ -96,7 +109,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 		}
 		mMainCategoryName = name;
 		
-		if (mHasMainCategory == true) {
+		if (mHasWithMainCategory == true) {
 			makeSubCategory();
 		}
 		
@@ -153,7 +166,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
     }
     
     private void updateMainCategoryView() {
-    	if (mHasMainCategory == false) {
+    	if (mHasWithMainCategory == false) {
     		return;
     	}
     	Button editCategoryBtn = ((Button)findViewById(R.id.BtnMainCategoryEdit));
@@ -179,19 +192,26 @@ public class EditCategoryLayout  extends FmBaseActivity {
 	}
     
     private void updateAdapterCategory(Category category) {
-    	if (mAdapterCategory == null) {
-			getCategoryItems();
-	        setAdapterList();
-		}
-		else {
-			mAdapterCategory.add(category);
-			mAdapterCategory.notifyDataSetChanged();
-		}
+//    	if (mAdapterCategory == null) {
+//			getCategoryItems();
+//	        setAdapterList();
+//		}
+//		else {
+//			mAdapterCategory.add(category);
+//			mAdapterCategory.notifyDataSetChanged();
+//		}
+    	
+    	if (mAdapterCategory != null) {
+    		mAdapterCategory.clear();
+    	}
+    	
+    	getCategoryItems();
+    	setAdapterList();
 	}
     
 
 	public boolean isNewCategoryWithSub() {
-    	return (mHasMainCategory && mMainCategoryID == -1);
+    	return (mHasWithMainCategory && mMainCategoryID == -1);
     }
  
     
@@ -239,7 +259,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
     }
     
     protected void getCategoryItems() {
-    	if (mHasMainCategory == false) {
+    	if (mHasWithMainCategory == false) {
     		mArrCategory = DBMgr.getInstance().getCategory(mType);
     	}
     	else {
@@ -252,7 +272,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
     protected void getExtraInfo() {
     	mType = getIntent().getIntExtra("CATEGORY_TYPE", -1) ;
         mHasSubCategory = getIntent().getBooleanExtra("CATEGORY_HAS_SUB", false) ;
-        mHasMainCategory = getIntent().getBooleanExtra("CATEGORY_HAS_MAIN", false) ;
+        mHasWithMainCategory = getIntent().getBooleanExtra("CATEGORY_HAS_WITH_MAIN", false) ;
         mMainCategoryName = getIntent().getStringExtra("CATEGORY_MAIN_CATEGORY_NAME");
         mMainCategoryID = getIntent().getIntExtra("CATEGORY_MAIN_CATEGORY_ID", -1) ;
     }
@@ -270,7 +290,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 					Intent intent = new Intent(EditCategoryLayout.this, EditCategoryLayout.class);
 					intent.putExtra("CATEGORY_TYPE", mType);
 					if (mHasSubCategory) {
-						intent.putExtra("CATEGORY_HAS_MAIN", true);
+						intent.putExtra("CATEGORY_HAS_WITH_MAIN", true);
 					}
 					
 					startActivityForResult(intent, SelectCategoryBaseLayout.ACT_EDIT_CATEGORY);
@@ -292,7 +312,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 			public void onClick(DialogInterface dialog, int which) {
 				String categoryName = edit.getText().toString();
 				Category category = null;
-				if (mHasMainCategory == true) {
+				if (mHasWithMainCategory == true) {
 					category = createSubCategory(categoryName);
 					if (category == null) {
 						Log.e(LogTag.LAYOUT, ":: Fail make the subcategory");
@@ -335,7 +355,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 		btnDelete.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				if (mHasMainCategory) {
+				if (mHasWithMainCategory) {
 					if (DBMgr.getInstance().deleteSubCategory(mType, dleteItemID) == 0) {
 						return;
 					}
@@ -366,6 +386,27 @@ public class EditCategoryLayout  extends FmBaseActivity {
     }
     
     public void updateCategory(Category category, int position) {
+    	if (mHasSubCategory && mHasWithMainCategory == false) {
+    		updateCategoryWithSubCategory(category, position);
+    	}
+    	else {
+    		updateSingleCategory(category, position);
+    	}
+    	
+    }
+    
+    private void updateCategoryWithSubCategory(Category category, int position) {
+    	Intent intent = new Intent(EditCategoryLayout.this, EditCategoryLayout.class);
+		intent.putExtra("CATEGORY_TYPE", mType);
+		intent.putExtra("CATEGORY_HAS_SUB", true);
+		intent.putExtra("CATEGORY_HAS_WITH_MAIN", true);
+		intent.putExtra("CATEGORY_MAIN_CATEGORY_NAME", category.getName());
+		intent.putExtra("CATEGORY_MAIN_CATEGORY_ID", category.getId());
+		
+		startActivityForResult(intent, SelectCategoryBaseLayout.ACT_EDIT_CATEGORY);
+	}
+
+	private void updateSingleCategory(Category category, int position) {
     	final EditText edit = new EditText(EditCategoryLayout.this);
     	final int editPosition = position;
     	final int editCategoryID = category.getId();
@@ -383,7 +424,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 					return;
 				}
 				
-				if (mHasMainCategory == true) {
+				if (mHasWithMainCategory == true) {
 					if (updateSubCategory(editCategoryID, categoryName) == false) {
 						Log.e(LogTag.LAYOUT, ":: Fail update the subcategory");
 						return;
@@ -410,9 +451,9 @@ public class EditCategoryLayout  extends FmBaseActivity {
 			}
 		})
 		.show();
-    }
-    
-    private boolean updateMainCategory(int id, String name) {
+	}
+
+	private boolean updateMainCategory(int id, String name) {
 		return (DBMgr.getInstance().updateCategory(mType, id, name));
 	}
     

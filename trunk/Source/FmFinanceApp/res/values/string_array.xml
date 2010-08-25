@@ -123,4 +123,18 @@
 		<item>마이너스 통장</item>
 		<item>기타 부채</item>
 	</string-array>
+	
+	<string-array name="financial_institution_banking">
+		<item>국민은행</item>
+		<item>우리은행</item>
+		<item>하나은행</item>
+		<item>신한은행</item>
+		<item>외환은행</item>
+		<item>중소기업은행</item>
+		<item>SC제일은행</item>
+		<item>한국씨티은행</item>
+		<item>산업은행</item>
+		<item>농협</item>
+		<item>신협</item>
+	</string-array>
 </resources>
