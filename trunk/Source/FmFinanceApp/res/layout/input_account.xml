@@ -4,25 +4,25 @@
   android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
   
   <LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="30dp">
-		<TextView android:id="@+id/TVAssetsTitle" android:text="@string/input_assets_title_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:layout_width="70dp">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:id="@+id/TVAccountNumber" android:text="@string/input_account_nubmer" android:layout_width="80dp">
 		</TextView>
-		<EditText android:id="@+id/ETAssetsTitle" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:numeric="integer" android:id="@+id/ETAccountNumber">
 		</EditText>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
-		<TextView android:id="@+id/TVAssetsDate" android:text="@string/input_assets_date_name" android:layout_height="wrap_content" android:textSize="18dp" android:gravity="center" android:layout_width="70dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18dp" android:gravity="center" android:text="@string/input_account_institution" android:id="@+id/TVAccountInstiitution" android:layout_width="80dp">
 		</TextView>
-		<Button android:layout_height="wrap_content" android:id="@+id/BtnAssetsDate" android:textSize="18dp" android:layout_width="fill_parent">
+		<Button android:layout_height="wrap_content" android:textSize="18dp" android:layout_width="fill_parent" android:id="@+id/BtnAccountInstitution">
 		</Button>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
-		<TextView android:id="@+id/TVAssetsCategory" android:text="@string/input_assets_category_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:layout_width="70dp">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:text="@string/input_account_type" android:id="@+id/TVAccountType" android:layout_width="80dp">
 		</TextView>
-		<Button android:id="@+id/BtnAssetsCategory" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnAccountType">
 		</Button>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
-		<TextView android:id="@+id/TVAssetsAmount" android:text="@string/input_assets_amount_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:layout_width="70dp">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:id="@+id/TVAccountBalance" android:text="@string/input_account_balance" android:layout_width="80dp">
 		</TextView>
 		<Button android:id="@+id/BtnAssetsAmount" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		</Button>
