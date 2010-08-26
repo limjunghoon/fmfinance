@@ -50,6 +50,7 @@ public class FmFinanceLayout extends FmBaseActivity {
     	setChangeActivityBtnClickListener(R.id.BtnReport);
     	setChangeActivityBtnClickListener(R.id.BtnTodayExpense);
     	setChangeActivityBtnClickListener(R.id.BtnTodayIncome);
+    	setChangeActivityBtnClickListener(R.id.BtnSetting);
     }
     
     /**
@@ -139,6 +140,7 @@ public class FmFinanceLayout extends FmBaseActivity {
 			else if (id == R.id.BtnReport) changeClass = MainReportLayout.class;
 			else if (id == R.id.BtnTodayExpense) changeClass = ReportTodayExpenseLayout.class;
 			else if (id == R.id.BtnTodayIncome) changeClass = ReportTodayIncomeLayout.class;
+			else if (id == R.id.BtnSetting) changeClass = MainSettingLayout.class;
 			else {
 				Log.e(LogTag.LAYOUT, "== unregistered event hander ");
 				return;

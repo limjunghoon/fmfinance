@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.fletamuto.sptb.R;
+import com.fletamuto.sptb.data.FinancialInstitution;
+import com.fletamuto.sptb.data.PaymentMethod;
 
 public class FinanceDBHelper extends SQLiteOpenHelper {
 	private Context context;
@@ -25,7 +27,6 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			// TODO Auto-generated method stub
 			db.execSQL("DROP TABLE IF EXISTS expense");
 			onCreate(db);
 		}
@@ -38,8 +39,12 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			createCategoryTable(db);
 			createAccountTable(db);
 			createInstitution(db);
+			createPaymentMethod(db);
+			createCard(db);
 		}
 		
+		
+
 		private void createIncomeTable(SQLiteDatabase db) {
 			db.execSQL("CREATE TABLE income ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -138,12 +143,37 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"type INTEGER NOT NULL);");
 		}
 		
+		private void createCard(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE card ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"number INTEGER," +
+					"account INEGER," +
+					"name TEXT," +
+					"instituion INTEGER," +
+					"settlement_day INTEGER," +
+					"start_settlement_day INTEGER," +
+					"start_settlement_month INTEGER," +
+					"end_settlement_day INTEGER," +
+					"end_settlement_month INTEGER," +
+					"memo TEXT," +
+					"type INTEGER NOT NULL);");
+			
+		}
+
+		private void createPaymentMethod(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE payment_method ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"type INTEGER NOT NULL," +
+					"type_id INTEGER NOT NULL);");
+		}
+		
 		private void insertCategory(SQLiteDatabase db) {
 			insertIncomeCategory(db);
 			insertExpenseCategory(db);
 			insertAssetsCategory(db);
 			insertLiabilityCategory(db);
 			insertInstitution(db);
+			insertPaymentMethod(db);
 		}
 		
 		private void insertIncomeCategory(SQLiteDatabase db) {
@@ -251,8 +281,15 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			
 			for (int index = 0; index < nameLenth; index++) {
 				rowItem.put("name", bakingName[index]);
-				rowItem.put("type", 1);
+				rowItem.put("type", FinancialInstitution.BANKING);
 				db.insert("institution", null, rowItem);
 			}
+		}
+		
+		private void insertPaymentMethod(SQLiteDatabase db) {
+			ContentValues rowItem = new ContentValues();
+			rowItem.put("type", PaymentMethod.CASH);
+			rowItem.put("type_id", 0);
+			db.insert("payment_method", null, rowItem);
 		}
 }

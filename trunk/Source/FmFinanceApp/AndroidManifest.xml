@@ -31,6 +31,10 @@
 		<activity android:name=".ReportTodayExpenseLayout" android:label="금일 지출목록" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:label="금일 수입목록" android:name=".ReportTodayIncomeLayout" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".EditCategoryLayout" android:theme="@android:style/Theme.NoTitleBar" android:label="분류편집"></activity>
+<activity android:label="설정" android:name=".MainSettingLayout"></activity>
+<activity android:name=".SettingRegstrationLayout" android:label="등록"></activity>
+<activity android:name=".InputAccountLayout" android:label="계좌등록"></activity>
+
 </application>
 
 

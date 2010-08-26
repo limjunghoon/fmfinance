@@ -31,7 +31,7 @@ public abstract class SelectCategoryBaseLayout extends FmBaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       
-        setContentView(R.layout.category_base_new, true);
+        setContentView(R.layout.select_grid_base, true);
         setTitleButtonListener();
         setEditButtonListener();
         setTitle(getResources().getString(R.string.btn_category_select));
@@ -53,7 +53,7 @@ public abstract class SelectCategoryBaseLayout extends FmBaseActivity {
 		if (mArrCategory == null) return;
         
     	final GridView gridCategory = (GridView)findViewById(R.id.GVCategory);
-    	mAdapterCategory = new CategoryButtonAdpter(this, R.layout.category_grid, mArrCategory);
+    	mAdapterCategory = new CategoryButtonAdpter(this, R.layout.grid_select, mArrCategory);
     	gridCategory.setAdapter(mAdapterCategory);
     	
 	}
