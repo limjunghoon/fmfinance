@@ -9,6 +9,7 @@ import android.util.Log;
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.FinancialInstitution;
 
 /**
  * DB와 연동하여 데이타를 관리한다.
@@ -16,13 +17,14 @@ import com.fletamuto.sptb.data.FinanceItem;
  * @version 1.0.0.1
  */
 public class DBConnector {
-	private BaseDBConnector[] mDBConnector = {
+	private InstitutionDBConnector mInstitutionDBConnector = new InstitutionDBConnector();
+	private BaseFinanceDBConnector[] mDBConnector = {
 			new IncomeDBConnector(), 
 			new ExpenseDBConnector(), 
 			new AssetsDBConnector(), 
 			new LiabilityDBConnector()};
 	
-	protected BaseDBConnector getDBInstance(int itemType){
+	protected BaseFinanceDBConnector getDBInstance(int itemType){
 		if (itemType < 0|| itemType >= mDBConnector.length) {
 			Log.e(DBMgr.DB_TAG, "== invaild finance item itemType : " + itemType);
 			return null;
@@ -153,6 +155,14 @@ public class DBConnector {
 			Log.e(LogTag.DB, "== do not update id : " + id + " type : " + itemType); 
 		}
 		return result;
+	}
+
+	public ArrayList<FinancialInstitution> getInstitutions() {
+		return mInstitutionDBConnector.getAllItems();
+	}
+
+	public FinancialInstitution getInstitution(int id) {
+		return mInstitutionDBConnector.getItem(id);
 	}
 	
 }

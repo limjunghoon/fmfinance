@@ -11,6 +11,7 @@ public class SelectCategoryIncomeLayout extends SelectCategoryBaseLayout {
  
         setType(IncomeItem.TYPE);
         getCategoryList();
+        setCategoryAdaper();
     }
 
 }

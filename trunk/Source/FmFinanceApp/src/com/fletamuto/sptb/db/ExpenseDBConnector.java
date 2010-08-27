@@ -12,7 +12,7 @@ import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 
-public class ExpenseDBConnector extends BaseDBConnector {
+public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	
 	public boolean addItem(FinanceItem financeItem) {
 		ExpenseItem item = (ExpenseItem)financeItem;

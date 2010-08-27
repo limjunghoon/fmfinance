@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class InputIncomeLayout extends InputBaseLayout {
+public class InputIncomeLayout extends InputFinanceItemBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_income, true);

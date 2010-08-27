@@ -19,7 +19,7 @@ import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public abstract class SelectCategoryBaseLayout extends FmBaseActivity {
+public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 	protected ArrayList<Category> mArrCategory = null;
 	CategoryButtonAdpter mAdapterCategory;
 	private int mType = -1;
@@ -31,13 +31,11 @@ public abstract class SelectCategoryBaseLayout extends FmBaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       
-        setContentView(R.layout.select_grid_base, true);
         setTitleButtonListener();
         setEditButtonListener();
         setTitle(getResources().getString(R.string.btn_category_select));
         setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
     }
-	
 	
 	protected void getCategoryList() {
 		if (mType == -1) {
@@ -45,17 +43,15 @@ public abstract class SelectCategoryBaseLayout extends FmBaseActivity {
 			return;
 		}
 		mArrCategory = DBMgr.getInstance().getCategory(mType);
-		setCategoryAdaper();
-        
+		
 	}
 	
 	protected void setCategoryAdaper() {
 		if (mArrCategory == null) return;
         
-    	final GridView gridCategory = (GridView)findViewById(R.id.GVCategory);
+    	final GridView gridCategory = (GridView)findViewById(R.id.GVSelect);
     	mAdapterCategory = new CategoryButtonAdpter(this, R.layout.grid_select, mArrCategory);
     	gridCategory.setAdapter(mAdapterCategory);
-    	
 	}
 	
 	protected void updateAdapterCategory() {
@@ -103,6 +99,7 @@ public abstract class SelectCategoryBaseLayout extends FmBaseActivity {
 	public int getType() {
 		return mType;
 	}
+	
 	private class CategoryButtonAdpter extends ArrayAdapter<Category> {
 		int mResource;
     	LayoutInflater mInflater;
@@ -123,7 +120,7 @@ public abstract class SelectCategoryBaseLayout extends FmBaseActivity {
 				convertView = mInflater.inflate(mResource, parent, false);
 			}
 			
-			Button button = (Button)convertView.findViewById(R.id.BtnGridCategory);
+			Button button = (Button)convertView.findViewById(R.id.BtnGridItem);
 			button.setText(category.getName());
 			button.setOnClickListener(categoryListener);
 			button.setTag(category);

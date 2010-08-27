@@ -13,7 +13,7 @@ import com.fletamuto.sptb.db.DBMgr;
  * @author yongbban
  * @version  1.0.0.1
  */
-public class InputAssetsLayout extends InputBaseLayout {
+public class InputAssetsLayout extends InputFinanceItemBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_assets, true);

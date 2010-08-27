@@ -27,7 +27,7 @@
 		<Button android:id="@+id/BtnAssetsAmount" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		</Button>
 	</LinearLayout>
-	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnAssetsSave" android:text="@string/input_assets_btn_save" android:layout_marginTop="20dp">
+	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="20dp" android:id="@+id/BtnAccountSave" android:text="@string/input_account_save">
 	</Button>
   
   

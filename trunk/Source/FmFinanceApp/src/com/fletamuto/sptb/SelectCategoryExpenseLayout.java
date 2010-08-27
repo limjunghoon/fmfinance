@@ -17,6 +17,7 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
         
         setType(ExpenseItem.TYPE);
         getCategoryList();
+        setCategoryAdaper();
     }
     
     

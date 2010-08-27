@@ -11,6 +11,7 @@ public class SelectCategoryLiabilityLayout extends SelectCategoryBaseLayout {
         
         setType(LiabilityItem.TYPE);
         getCategoryList();
+        setCategoryAdaper();
     }
 
 }

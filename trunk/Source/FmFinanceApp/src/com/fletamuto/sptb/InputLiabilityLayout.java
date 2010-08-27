@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class InputLiabilityLayout extends InputBaseLayout {
+public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_liability, true);

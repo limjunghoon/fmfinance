@@ -10,7 +10,7 @@ import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 
-public class InputExpenseLayout extends InputBaseLayout {
+public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
