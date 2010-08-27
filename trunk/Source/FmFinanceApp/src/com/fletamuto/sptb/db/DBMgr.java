@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.FinancialInstitution;
 
 /**
  * 레이아웃과  DB를 연동하는 클래스
@@ -234,5 +235,13 @@ public class DBMgr {
 	public int deleteSubCategory(int itemType, int itemID) {
 		if (checkItemType(itemType) == false) return 0;
 		return mDBConnector.deleteSubCategory(itemType, itemID);
+	}
+
+	public ArrayList<FinancialInstitution> getInstitutions() {
+		return mDBConnector.getInstitutions();
+	}
+
+	public FinancialInstitution getInstitution(int id) {
+		return mDBConnector.getInstitution(id);
 	}
 }

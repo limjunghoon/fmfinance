@@ -35,6 +35,7 @@
 <activity android:name=".SettingRegstrationLayout" android:label="등록"></activity>
 <activity android:name=".InputAccountLayout" android:label="계좌등록"></activity>
 
+<activity android:label="금융기관 선택" android:name=".SelectInstitutionLayout"></activity>
 </application>
 
 

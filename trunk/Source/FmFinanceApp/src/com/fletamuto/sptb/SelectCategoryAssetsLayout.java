@@ -15,6 +15,7 @@ public class SelectCategoryAssetsLayout extends SelectCategoryBaseLayout {
         
         setType(AssetsItem.TYPE);
         getCategoryList();
+        setCategoryAdaper();
     }
     
     

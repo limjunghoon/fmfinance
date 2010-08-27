@@ -12,7 +12,7 @@ import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 
-public class AssetsDBConnector extends BaseDBConnector {
+public class AssetsDBConnector extends BaseFinanceDBConnector {
 	public boolean addItem(FinanceItem financeItem) {
 		AssetsItem item = (AssetsItem)financeItem;
 		SQLiteDatabase db = getWritableDatabase();

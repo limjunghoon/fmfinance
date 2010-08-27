@@ -2,15 +2,16 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+
 import com.fletamuto.sptb.data.PaymentMethod;
 
-public class SelectPayMethodLayout extends SelectGridBase {
+public class SelectPayMethodLayout extends SelectGridBaseLayout {
 	protected ArrayList<PaymentMethod> mArrCategory = null;
 	PaymentMethodButtonAdpter mAdapterCategory;
 	
@@ -28,13 +29,13 @@ public class SelectPayMethodLayout extends SelectGridBase {
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			PaymentMethod paymentMethod = (PaymentMethod)getItem(position);
+//			PaymentMethod paymentMethod = (PaymentMethod)getItem(position);
 			
 			if (convertView == null) {
 				convertView = mInflater.inflate(mResource, parent, false);
 			}
 			
-			Button button = (Button)convertView.findViewById(R.id.BtnGridCategory);
+//			Button button = (Button)convertView.findViewById(R.id.BtnGridItem);
 //			button.setText(category.getName());
 			//button.setOnClickListener(categoryListener);
 			//button.setTag(category);
