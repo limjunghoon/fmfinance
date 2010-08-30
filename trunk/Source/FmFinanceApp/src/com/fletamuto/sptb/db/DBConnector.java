@@ -7,6 +7,7 @@ import java.util.Calendar;
 import android.util.Log;
 
 import com.fletamuto.sptb.LogTag;
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.FinancialInstitution;
@@ -18,6 +19,7 @@ import com.fletamuto.sptb.data.FinancialInstitution;
  */
 public class DBConnector {
 	private InstitutionDBConnector mInstitutionDBConnector = new InstitutionDBConnector();
+	private AccountDBConnector mAccountDBConnector = new AccountDBConnector();
 	private BaseFinanceDBConnector[] mDBConnector = {
 			new IncomeDBConnector(), 
 			new ExpenseDBConnector(), 
@@ -164,7 +166,18 @@ public class DBConnector {
 	public FinancialInstitution getInstitution(int id) {
 		return mInstitutionDBConnector.getItem(id);
 	}
-	
+
+	public int addAccountItem(AccountItem account) {
+		return mAccountDBConnector.addItem(account);
+	}
+
+	public AccountItem getAccountItem(int id) {
+		return mAccountDBConnector.getItem(id);
+	}
+
+	public ArrayList<AccountItem> getAccountAllItems() {
+		return mAccountDBConnector.getAllItems();
+	}
 }
 
 

@@ -8,7 +8,7 @@ public class AccountItem {
 	private int	mID = -1;
 	private String mNumber;
 	private long mBalance = 0L;
-	private FinancialInstitution mInstitution = new FinancialInstitution();
+	private FinancialInstitution mInstitution;
 	private Calendar mCreateDate = Calendar.getInstance();
 	private Calendar mExpiryDate = Calendar.getInstance();
 	private String mMemo;
@@ -55,8 +55,8 @@ public class AccountItem {
 		return mCreateDate;
 	}
 	
-	public void setmExpiryDate(Calendar ExpiryDate) {
-		this.mExpiryDate = ExpiryDate;
+	public void setExpiryDate(Calendar expiryDate) {
+		this.mExpiryDate = expiryDate;
 	}
 	
 	public Calendar getExpiryDate() {
@@ -71,8 +71,8 @@ public class AccountItem {
 		return mMemo;
 	}
 	
-	public void setmName(String Name) {
-		this.mName = Name;
+	public void setName(String name) {
+		this.mName = name;
 	}
 	
 	public String getName() {

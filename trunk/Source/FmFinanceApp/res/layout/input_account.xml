@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
@@ -18,13 +19,13 @@
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:text="@string/input_account_type" android:id="@+id/TVAccountType" android:layout_width="80dp">
 		</TextView>
-		<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnAccountType">
-		</Button>
+		<Spinner android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/SpAccountType" android:entries="@array/account_type">
+		</Spinner>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:id="@+id/TVAccountBalance" android:text="@string/input_account_balance" android:layout_width="80dp">
 		</TextView>
-		<Button android:id="@+id/BtnAssetsAmount" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<Button android:id="@+id/BtnAccountAmount" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		</Button>
 	</LinearLayout>
 	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="20dp" android:id="@+id/BtnAccountSave" android:text="@string/input_account_save">
