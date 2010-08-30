@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.FinancialInstitution;
 import com.fletamuto.sptb.db.DBMgr;
@@ -21,7 +23,7 @@ public class InputAccountLayout extends InputBaseLayout {
 	public final static int ACT_SELECT_INSTITUTION = 1;
 	public final static int MIN_DIGIT = 10;
 	
-	private AccountItem mAccount = new AccountItem();
+	private AccountItem mAccount;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,7 @@ public class InputAccountLayout extends InputBaseLayout {
         setTitleButtonListener();
         setTitle(getResources().getString(R.string.input_account_title));
         setSaveBtnClickListener(R.id.BtnAccountSave);
+        setAmountBtnClickListener(R.id.BtnAccountAmount);
         setSelectInstitutionBtnClickListener();
     }
 
@@ -47,6 +50,17 @@ public class InputAccountLayout extends InputBaseLayout {
 		});
 		
 	}
+	
+	 protected void setAmountBtnClickListener(int btnID) {
+    	Button btnAmount = (Button)findViewById(btnID);
+    	btnAmount.setOnClickListener(new Button.OnClickListener() {
+		
+			public void onClick(View v) {
+				Intent intent = new Intent(InputAccountLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, ACT_AMOUNT);
+			}
+		 });
+    }
 
 	@Override
 	public boolean checkInputData() {
@@ -58,20 +72,43 @@ public class InputAccountLayout extends InputBaseLayout {
 
 	@Override
 	protected void createItemInstance() {
-		// TODO Auto-generated method stub
-		
+		 mAccount = new AccountItem();
 	}
 
 	@Override
 	protected boolean getItemInstance(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		mAccount = DBMgr.getInstance().getAccountItem(id);
+		if (mAccount == null) return false;
+		return true;
 	}
 
 	@Override
 	protected void saveItem() {
+		
+		if (mInputMode == InputMode.ADD_MODE) {
+    		saveNewItem();
+    	}
+    	else if (mInputMode == InputMode.EDIT_MODE){
+    		saveUpdateItem();
+    	}
+		
+	}
+
+	private void saveUpdateItem() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	private void saveNewItem() {
+		if (DBMgr.getInstance().addAccountItem(mAccount) == -1) {
+    		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mAccount.getID());
+    		return;
+    	}
+		
+		Intent intent = new Intent();
+		intent.putExtra("ACCOUNT_ID", mAccount.getID());
+		setResult(RESULT_OK, intent);
+		finish();
 	}
 
 	@Override
@@ -84,6 +121,12 @@ public class InputAccountLayout extends InputBaseLayout {
 	protected void updateItem() {
 		String number = ((TextView)findViewById(R.id.ETAccountNumber)).getText().toString();
 		mAccount.setNumber(number);
+		
+		Spinner AccountType = (Spinner)findViewById(R.id.SpAccountType);
+		int selectedPostion = AccountType.getSelectedItemPosition();
+		if (Spinner.INVALID_POSITION != selectedPostion){
+			mAccount.setType(selectedPostion);
+		}
 	}
 	
 	private FinancialInstitution getInstitution(int id) {
@@ -102,7 +145,18 @@ public class InputAccountLayout extends InputBaseLayout {
     			updateInstitution( getInstitution(data.getIntExtra("INSTITUTION_ID", -1)));
     		}
     	}
+		else if (requestCode == ACT_AMOUNT) {
+    		if (resultCode == RESULT_OK) {
+    			updateBalance(data.getLongExtra("AMOUNT", 0L));
+    		}
+    	}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void updateBalance(long balance) {
+		mAccount.setBalance(balance);
+		((Button)findViewById(R.id.BtnAccountAmount)).setText(String.format("%,d¿ø", mAccount.getBalance()));
+		
 	}
 
 	private void updateInstitution(FinancialInstitution institution) {

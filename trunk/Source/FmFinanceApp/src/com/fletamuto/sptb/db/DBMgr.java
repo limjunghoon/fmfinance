@@ -6,6 +6,7 @@ import java.util.Calendar;
 import android.content.Context;
 import android.util.Log;
 
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.FinancialInstitution;
@@ -243,5 +244,17 @@ public class DBMgr {
 
 	public FinancialInstitution getInstitution(int id) {
 		return mDBConnector.getInstitution(id);
+	}
+	
+	public int addAccountItem(AccountItem account) {
+		return mDBConnector.addAccountItem(account);
+	}
+	
+	public AccountItem getAccountItem(int id) {
+		return mDBConnector.getAccountItem(id);
+	}
+	
+	public ArrayList<AccountItem> getAccountAllItems() {
+		return mDBConnector.getAccountAllItems();
 	}
 }

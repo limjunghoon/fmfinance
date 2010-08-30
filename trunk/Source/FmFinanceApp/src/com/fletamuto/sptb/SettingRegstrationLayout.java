@@ -21,10 +21,9 @@ public class SettingRegstrationLayout extends FmBaseActivity {
         btnRegAccount.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(SettingRegstrationLayout.this, InputAccountLayout.class);
+				Intent intent = new Intent(SettingRegstrationLayout.this, ReportAccountLayout.class);
 				startActivity(intent);
 			}
 		});
     }
-    
 }

@@ -18,9 +18,6 @@ public class InstitutionDBConnector extends BaseDBConnector {
 		rowItem.put("name", institution.getName());
 		rowItem.put("type", institution.getGroup());
 		
-		if (institution.getName().length() == 0) {
-			rowItem.put("main_category", institution.getID());
-		}
 		
 		db.insert(TABLE_NAME, null, rowItem);
 		db.close();
@@ -33,9 +30,6 @@ public class InstitutionDBConnector extends BaseDBConnector {
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", institution.getName());
 		rowItem.put("type", institution.getGroup());
-		if (institution.getName().length() == 0) {
-			rowItem.put("main_category", institution.getID());
-		}
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(institution.getID())});
 		db.close();

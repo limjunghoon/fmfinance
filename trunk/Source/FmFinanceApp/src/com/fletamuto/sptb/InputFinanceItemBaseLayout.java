@@ -87,8 +87,8 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     }
     
     protected void setAmountBtnClickListener(int btnID) {
-    	Button btnIncomeDate = (Button)findViewById(btnID);
-		 btnIncomeDate.setOnClickListener(new Button.OnClickListener() {
+    	Button btnAmount = (Button)findViewById(btnID);
+    	btnAmount.setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
 				Intent intent = new Intent(InputFinanceItemBaseLayout.this, InputAmountDialog.class);
