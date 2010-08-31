@@ -5,12 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class FmTitleLayout extends LinearLayout {
 	private ViewGroup bodyLayout;
 	private LinearLayout TitleLayout;
 	private Button btnLeft01;
 	private Button btnRigth01;
+	private TextView tvTitle;
 	
 	public static final int BTN_LEFT_01 = 0;
 	public static final int BTN_RIGTH_01 = 1;
@@ -24,7 +26,8 @@ public class FmTitleLayout extends LinearLayout {
 
 	private void addContent() {
 		addView(TitleLayout);
-		addView(bodyLayout);
+		LinearLayout.LayoutParams params = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
+		addView(bodyLayout, params);
 	}
 	
 	private void initialize(Context context, int layoutResID) {
@@ -34,6 +37,7 @@ public class FmTitleLayout extends LinearLayout {
 		btnLeft01 = (Button)TitleLayout.findViewById(R.id.BtnTitleLeft01);
 		btnRigth01 = (Button)TitleLayout.findViewById(R.id.BtnTitleRigth01);
 		btnRigth01.setVisibility(View.INVISIBLE);
+		tvTitle = (TextView)TitleLayout.findViewById(R.id.TVTitle);
 	}
 	
 	public void setVisibility(int btnIndex, int visibility) {
@@ -57,5 +61,10 @@ public class FmTitleLayout extends LinearLayout {
 		else {
 			return null;
 		}
+	}
+	
+	public void setTitle(CharSequence title) {
+		if (tvTitle == null) return;
+		tvTitle.setText(title);
 	}
 }
