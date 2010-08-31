@@ -138,6 +138,20 @@
 		<item>신협</item>
 	</string-array>
 	
+	<string-array name="financial_institution_card">
+		<item>국민카드</item>
+		<item>우리카드</item>
+		<item>하나카드</item>
+		<item>신한카드</item>
+		<item>외환카드</item>
+		<item>IBK카드</item>
+		<item>SC제일카드</item>
+		<item>씨티카드</item>
+		<item>산업은행카드</item>
+		<item>농협카드</item>
+		<item>신협카드</item>
+	</string-array>
+	
 	<string-array name="account_type">
 		<item>예금</item>
 	</string-array>

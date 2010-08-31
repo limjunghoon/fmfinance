@@ -257,4 +257,8 @@ public class DBMgr {
 	public ArrayList<AccountItem> getAccountAllItems() {
 		return mDBConnector.getAccountAllItems();
 	}
+	
+	public int deleteAccount(int id) {
+		return mDBConnector.deleteAccount(id);
+	}
 }

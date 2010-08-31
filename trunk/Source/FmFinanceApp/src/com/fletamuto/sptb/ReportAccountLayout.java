@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,8 +65,6 @@ public class ReportAccountLayout extends FmBaseActivity {
 				
 			}
 		});
-    	
-    
     }
 	
 	public void setAddButtonListener() {
@@ -111,14 +110,32 @@ public class ReportAccountLayout extends FmBaseActivity {
 				convertView = mInflater.inflate(mResource, parent, false);
 			}
 			
-			setListViewText(item, convertView);
-			
-//			setDeleteBtnListener(convertView, item.getId(), position);
-//			setEditBtnListener(convertView, item, position);
+			setListViewText(item, convertView);			
+			setDeleteBtnListener(convertView, item.getID(), position);
 			
 			return convertView;
 		}
+
+		
     }
+	
+	private void setDeleteBtnListener(View convertView, int id, int position) {
+    	Button btnDelete = (Button)convertView.findViewById(R.id.BtnReportAccountDelete);
+    	final int ItemID = id;
+    	final int Itempsition = position;
+    	
+		btnDelete.setOnClickListener(new View.OnClickListener() {
+	
+			public void onClick(View v) {
+				if (DBMgr.getInstance().deleteAccount(ItemID) == 0 ) {
+					Log.e(LogTag.LAYOUT, "can't delete accoutn Item  ID : " + ItemID);
+				}
+				mArrAccount.remove(Itempsition);
+				mAdapterAccount.notifyDataSetChanged();
+			}
+		});
+	}
+	
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -27,7 +27,6 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			db.execSQL("DROP TABLE IF EXISTS expense");
 			onCreate(db);
 		}
 		
@@ -41,6 +40,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			createInstitution(db);
 			createPaymentMethod(db);
 			createCard(db);
+			createCardCompanyName(db);
 		}
 		
 		
@@ -157,7 +157,13 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"end_settlement_month INTEGER," +
 					"memo TEXT," +
 					"type INTEGER NOT NULL);");
-			
+		}
+		
+		private void createCardCompanyName(SQLiteDatabase db) {
+			db.execSQL("CREATE TABLE card_company_name ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"name INTEGER NOT NULL," +
+					"institution_id INEGER);");
 		}
 
 		private void createPaymentMethod(SQLiteDatabase db) {
@@ -276,15 +282,30 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		
 		private void insertInstitution(SQLiteDatabase db) {
 			ContentValues rowItem = new ContentValues();
-			String [] bakingName = context.getResources().getStringArray(R.array.financial_institution_banking);
-			int nameLenth = bakingName.length;
+			String [] bakingNames = context.getResources().getStringArray(R.array.financial_institution_banking);
+			String [] cardNames = context.getResources().getStringArray(R.array.financial_institution_card);
+			int nameLenth = bakingNames.length;
+			int InstitutionID = -1;
 			
 			for (int index = 0; index < nameLenth; index++) {
-				rowItem.put("name", bakingName[index]);
+				rowItem.put("name", bakingNames[index]);
 				rowItem.put("type", FinancialInstitution.BANKING);
-				db.insert("institution", null, rowItem);
+				InstitutionID = (int)db.insert("institution", null, rowItem);
+				if (InstitutionID != -1) {
+					insertCardCompanyName(db, cardNames[index], InstitutionID);
+				}
 			}
 		}
+		
+		private void insertCardCompanyName(SQLiteDatabase db, String cardName, int instituionID) {
+			if (instituionID == -1) return;
+			
+			ContentValues rowItem = new ContentValues();
+			rowItem.put("name", cardName);
+			rowItem.put("institution_id", instituionID);
+			db.insert("card_company_name", null, rowItem);
+		}
+		
 		
 		private void insertPaymentMethod(SQLiteDatabase db) {
 			ContentValues rowItem = new ContentValues();
