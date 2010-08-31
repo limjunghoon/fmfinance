@@ -62,7 +62,7 @@ public class AccountDBConnector extends BaseDBConnector {
 		
 		if (c.moveToFirst() != false) {
 			do {
-				incomeItems.add(CreateAccountItem(c));
+				incomeItems.add(createAccountItem(c));
 			} while (c.moveToNext());
 		}
 		c.close();
@@ -80,7 +80,7 @@ public class AccountDBConnector extends BaseDBConnector {
 		Cursor c = queryBilder.query(db, null, "account._id=?", new String[] {String.valueOf(id)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
-			account = CreateAccountItem(c);
+			account = createAccountItem(c);
 		}
 		c.close();
 		db.close();
@@ -88,7 +88,7 @@ public class AccountDBConnector extends BaseDBConnector {
 	}
 	
 	
-	public AccountItem CreateAccountItem(Cursor c) {
+	public AccountItem createAccountItem(Cursor c) {
 		AccountItem account = new AccountItem();
 		account.setID(c.getInt(0));
 		account.setNumber(c.getString(1));
@@ -107,5 +107,13 @@ public class AccountDBConnector extends BaseDBConnector {
 		account.setInstitution(institution);
 
 		return account;
+	}
+	
+	public int deleteAccountItem(int id) {
+		int result = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		result = db.delete(TABLE_NAME, "_id=?", new String[] {String.valueOf(id)});
+		db.close();
+		return result;
 	}
 }

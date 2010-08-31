@@ -178,6 +178,10 @@ public class DBConnector {
 	public ArrayList<AccountItem> getAccountAllItems() {
 		return mAccountDBConnector.getAllItems();
 	}
+
+	public int deleteAccount(int id) {
+		return mAccountDBConnector.deleteAccountItem(id);
+	}
 }
 
 
