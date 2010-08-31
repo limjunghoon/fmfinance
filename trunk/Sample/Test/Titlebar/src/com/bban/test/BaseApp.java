@@ -12,8 +12,6 @@ public class BaseApp extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        
-        
     }
     
     public void setContentView(int layoutResID, boolean title) {
@@ -31,13 +29,20 @@ public class BaseApp extends Activity {
     	
     	Button btnBack = titleLayout.getBtn(FmTitleLayout.BTN_LEFT_01);
     	btnBack.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
+
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				finish();
 			}
 		});
-    	
+    }
+    
+    public void setTitle(CharSequence title) {
+    	if (titleLayout == null) return;
+    	titleLayout.setTitle(title);
+    };
+    
+    public void setTitleBtnVisibility(int btnIndex, int visibility) {
+    	if (titleLayout == null) return;
+    	titleLayout.setVisibility(btnIndex, visibility);
     }
 }
