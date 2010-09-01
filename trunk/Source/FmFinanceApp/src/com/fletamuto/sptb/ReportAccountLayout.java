@@ -3,7 +3,6 @@ package com.fletamuto.sptb;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,11 +16,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.EditCategoryLayout.CategoryItemAdapter;
 import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.ExpenseItem;
-import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportAccountLayout extends FmBaseActivity {

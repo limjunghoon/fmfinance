@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.CardCompenyName;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.FinancialInstitution;
@@ -18,6 +19,7 @@ import com.fletamuto.sptb.data.FinancialInstitution;
  * @version 1.0.0.1
  */
 public class DBConnector {
+	private CardCompanyNameDBConnector mCardCompanyNameDBConnector = new CardCompanyNameDBConnector();
 	private InstitutionDBConnector mInstitutionDBConnector = new InstitutionDBConnector();
 	private AccountDBConnector mAccountDBConnector = new AccountDBConnector();
 	private BaseFinanceDBConnector[] mDBConnector = {
@@ -28,21 +30,21 @@ public class DBConnector {
 	
 	protected BaseFinanceDBConnector getDBInstance(int itemType){
 		if (itemType < 0|| itemType >= mDBConnector.length) {
-			Log.e(DBMgr.DB_TAG, "== invaild finance item itemType : " + itemType);
+			Log.e(LogTag.DB, "== invaild finance item itemType : " + itemType);
 			return null;
 		}
 		return mDBConnector[itemType];
 	}
 	  
 	public boolean addFinanceItem(FinanceItem item) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector AddFinanceItem type : " + item.getType());
+		Log.i(LogTag.DB, "== DBConnector AddFinanceItem type : " + item.getType());
 		if (item.getType() >= mDBConnector.length) {
-			Log.e(DBMgr.DB_TAG, "== invaild finance item " + item.getType());
+			Log.e(LogTag.DB, "== invaild finance item " + item.getType());
 			return false;
 		}
 		
 		if (item.getCategory().getId() == -1) {
-			Log.e(DBMgr.DB_TAG, "== invaild category item ID");
+			Log.e(LogTag.DB, "== invaild category item ID");
 			return false;
 		}
 		
@@ -50,14 +52,14 @@ public class DBConnector {
 	}
 	
 	public boolean updateFinanceItem(FinanceItem item) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector updateFinanceItem type : " + item.getType());
+		Log.i(LogTag.DB, "== DBConnector updateFinanceItem type : " + item.getType());
 		if (item.getType() >= mDBConnector.length) {
-			Log.e(DBMgr.DB_TAG, "== invaild finance item " + item.getType());
+			Log.e(LogTag.DB, "== invaild finance item " + item.getType());
 			return false;
 		}
 		
 		if (item.getId() == -1 || item.getCategory().getId() == -1) {
-			Log.e(DBMgr.DB_TAG, "== invaild item ID");
+			Log.e(LogTag.DB, "== invaild item ID");
 			return false;
 		}
 		
@@ -65,57 +67,57 @@ public class DBConnector {
 	}
 	
 	public FinanceItem getItem(int itemType, int id) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector getItem type : " + itemType);
+		Log.i(LogTag.DB, "== DBConnector getItem type : " + itemType);
 		return getDBInstance(itemType).getItem(id);
 	}
 	
 	public long getTotalAmount(int itemType) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector getTotalAmount type : " + itemType);
+		Log.i(LogTag.DB, "== DBConnector getTotalAmount type : " + itemType);
 		return getDBInstance(itemType).getTotalAmount();
 	}
 	
 	public long getTotalAmountDay(int itemType, Calendar calendar) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector getTotalAmountDay type : " + itemType);
+		Log.i(LogTag.DB, "== DBConnector getTotalAmountDay type : " + itemType);
 		return getDBInstance(itemType).getTotalAmountDay(calendar);
 	}
 	
 	public ArrayList<FinanceItem> getFinanceAllItems(int itemType) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector getFinanceAllItems type : " + itemType);
+		Log.i(LogTag.DB, "== DBConnector getFinanceAllItems type : " + itemType);
 		return getDBInstance(itemType).getAllItems();
 	}
 	
 	public long addCategory(int itemType, String name) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector addCategory type : " + itemType);
+		Log.i(LogTag.DB, "== DBConnector addCategory type : " + itemType);
 		return getDBInstance(itemType).addCategory(name);
 	}
 	
 	public long addSubCategory(int itemType, long mainCategoryID, String name) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector addSubCategory type : " + itemType);
+		Log.i(LogTag.DB, "== DBConnector addSubCategory type : " + itemType);
 		return getDBInstance(itemType).addSubCategory(mainCategoryID, name);
 	}
 	
 	public ArrayList<Category> getCategory(int itemType) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector getCategory type : " + itemType);
+		Log.i(LogTag.DB, "== DBConnector getCategory type : " + itemType);
 		return getDBInstance(itemType).getCategory();
 	}
 
 	public ArrayList<Category> getSubCategory(int itemType, long mainCategoryId) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector getSubCategory type : " + itemType);
+		Log.i(LogTag.DB, "== DBConnector getSubCategory type : " + itemType);
 		return getDBInstance(itemType).getSubCategory(mainCategoryId);
 	}
 	
 	public int getItemCount(int itemType, Calendar calendar) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector getItemCount type : " + itemType);
+		Log.i(LogTag.DB, "== DBConnector getItemCount type : " + itemType);
 		return getDBInstance(itemType).getItemCount(calendar);
 	}
 
 	public ArrayList<FinanceItem> getItems(int itemType, Calendar calendar) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector getItems type : " + itemType);
+		Log.i(LogTag.DB, "== DBConnector getItems type : " + itemType);
 		return getDBInstance(itemType).getItems(calendar);
 	}
 
 	public int deleteItem(int itemType, int id) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector deleteItem ");
+		Log.i(LogTag.DB, "== DBConnector deleteItem ");
 		int result = getDBInstance(itemType).deleteItem(id);
 		if (result == 0) {
 			Log.e(LogTag.DB, "== do not delete id : " + id + " type : " + itemType); 
@@ -124,7 +126,7 @@ public class DBConnector {
 	}
 
 	public int deleteCategory(int itemType, int id) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector deleteCategory ");
+		Log.i(LogTag.DB, "== DBConnector deleteCategory ");
 		int result = getDBInstance(itemType).deleteCategory(id);
 		if (result == 0) {
 			Log.e(LogTag.DB, "== do not delete id : " + id + " type : " + itemType); 
@@ -133,7 +135,7 @@ public class DBConnector {
 	}
 
 	public int deleteSubCategory(int itemType, int id) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector deleteSubCategory ");
+		Log.i(LogTag.DB, "== DBConnector deleteSubCategory ");
 		int result = getDBInstance(itemType).deleteSubCategory(id);
 		if (result == 0) {
 			Log.e(LogTag.DB, "== do not delete id : " + id + " type : " + itemType); 
@@ -142,7 +144,7 @@ public class DBConnector {
 	}
 
 	public boolean updateCategory(int itemType, int id, String name) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector updateCategory ");
+		Log.i(LogTag.DB, "== DBConnector updateCategory ");
 		boolean result = getDBInstance(itemType).updateCategory(id, name);
 		if (result == false) {
 			Log.e(LogTag.DB, "== do not update id : " + id + " type : " + itemType); 
@@ -151,7 +153,7 @@ public class DBConnector {
 	}
 	
 	public boolean updateSubCategory(int itemType, int id, String name) {
-		Log.i(DBMgr.DB_TAG, "== DBConnector updateSubCategory ");
+		Log.i(LogTag.DB, "== DBConnector updateSubCategory ");
 		boolean result = getDBInstance(itemType).updateSubCategory(id, name);
 		if (result == false) {
 			Log.e(LogTag.DB, "== do not update id : " + id + " type : " + itemType); 
@@ -181,6 +183,14 @@ public class DBConnector {
 
 	public int deleteAccount(int id) {
 		return mAccountDBConnector.deleteAccountItem(id);
+	}
+
+	public ArrayList<CardCompenyName> getCardCompanyNames() {
+		return mCardCompanyNameDBConnector.getAllItems();
+	}
+
+	public CardCompenyName getCardCompanyName(int id) {
+		return mCardCompanyNameDBConnector.getItem(id);
 	}
 }
 

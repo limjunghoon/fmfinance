@@ -21,6 +21,8 @@ import com.fletamuto.sptb.db.DBMgr;
  * @version  1.0.0.1
  */
 public class FmFinanceLayout extends FmBaseActivity {  	
+	private ChangeActivity startActivity = new ChangeActivity();
+	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,7 @@ public class FmFinanceLayout extends FmBaseActivity {
      * @param id 버튼 아이디
      */
     protected void setChangeActivityBtnClickListener(int id) {
-    	((Button)findViewById(id)).setOnClickListener(new ChangeActivity());
+    	((Button)findViewById(id)).setOnClickListener(startActivity);
     }
     
     /** 화면 텍스트 초기화 */

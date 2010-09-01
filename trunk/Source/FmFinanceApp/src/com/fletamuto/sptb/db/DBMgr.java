@@ -6,7 +6,9 @@ import java.util.Calendar;
 import android.content.Context;
 import android.util.Log;
 
+import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.CardCompenyName;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.FinancialInstitution;
@@ -21,7 +23,6 @@ public class DBMgr {
 	private static DBMgr mInstance = null;
 	private DBConnector mDBConnector = new DBConnector();
 	private static FinanceDBHelper mDBHelper = null; 
-	public static final String DB_TAG = "db_tag"; 
 	
 	/** 외부에서는 생성할 수 없다. getInstance()로 객체를 얻어 사용한다. */
 	private DBMgr() {
@@ -45,7 +46,7 @@ public class DBMgr {
 	
 	private boolean checkItemType(int type) {
 		if (type < 0) {
-			Log.e(DBMgr.DB_TAG, "== invaild finance item " + type);
+			Log.e(LogTag.DB, "== invaild finance item " + type);
 			return false;
 		}
 		return true;
@@ -260,5 +261,13 @@ public class DBMgr {
 	
 	public int deleteAccount(int id) {
 		return mDBConnector.deleteAccount(id);
+	}
+
+	public ArrayList<CardCompenyName> getCardCompanyNames() {
+		return mDBConnector.getCardCompanyNames();
+	}
+
+	public CardCompenyName getCardCompanyName(int id) {
+		return mDBConnector.getCardCompanyName(id);
 	}
 }

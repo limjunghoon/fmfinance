@@ -51,6 +51,11 @@
     <string name="input_select_category">분류를 선택해 주세요</string>
     <string name="input_warning_msg_not_category">분류가 선택되지 않았습니다.</string>
     <string name="input_warning_msg_not_amount">가격이 입력되지 않았습니다.</string>
+    <string name="input_credit_card_title">카드등록</string>
+    <string name="input_credit_card_compant">카드사</string>
+    <string name="input_credit_card_name">이름</string>
+    <string name="input_credit_card_number">번호</string>
+    <string name="input_credit_card_account">결제계좌</string>
     <string name="main_memu_home">홈</string>
     <string name="main_memu_assets_liability">자산</string>
     <string name="main_memu_report">목록 </string>
