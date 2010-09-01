@@ -43,8 +43,6 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			createCardCompanyName(db);
 		}
 		
-		
-
 		private void createIncomeTable(SQLiteDatabase db) {
 			db.execSQL("CREATE TABLE income ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -147,9 +145,9 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			db.execSQL("CREATE TABLE card ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"number INTEGER," +
-					"account INEGER," +
+					"account_id INEGER," +
+					"company_name_id INTEGER," +
 					"name TEXT," +
-					"instituion INTEGER," +
 					"settlement_day INTEGER," +
 					"start_settlement_day INTEGER," +
 					"start_settlement_month INTEGER," +
