@@ -9,6 +9,7 @@ import android.util.Log;
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardCompenyName;
+import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.FinancialInstitution;
@@ -51,6 +52,7 @@ public class DBMgr {
 		}
 		return true;
 	}
+	
 	
 	/**
 	 * DB에 아이템을  추가한다.
@@ -269,5 +271,17 @@ public class DBMgr {
 
 	public CardCompenyName getCardCompanyName(int id) {
 		return mDBConnector.getCardCompanyName(id);
+	}
+
+	public int addCardItem(CardItem card) {
+		return mDBConnector.addCard(card);
+	}
+
+	public ArrayList<CardItem> getCardItems(int type) {
+		return mDBConnector.getCardItems(type);
+	}
+
+	public CardItem getCardItem(int id) {
+		return mDBConnector.getCardItem(id);
 	}
 }

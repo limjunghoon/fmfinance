@@ -40,7 +40,7 @@ public class SettingRegstrationLayout extends FmBaseActivity {
 			int id = arg0.getId();
 			
 			if (id == R.id.BtnRegAccount) changeClass = ReportAccountLayout.class;
-			else if (id == R.id.BtnRegCreditCard) changeClass = InputCreditCardLayout.class;
+			else if (id == R.id.BtnRegCreditCard) changeClass = ReportCreditCardLayout.class;
 			else {
 				Log.e(LogTag.LAYOUT, "== unregistered event hander ");
 				return;

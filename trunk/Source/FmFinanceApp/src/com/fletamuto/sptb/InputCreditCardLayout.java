@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardCompenyName;
 import com.fletamuto.sptb.data.CardItem;
@@ -23,7 +23,7 @@ public class InputCreditCardLayout extends InputBaseLayout {
 	public static final int ACT_SELECT_COMPANY_NAME = 0;
 	public static final int ACT_SELECT_ACCOUNT = 1;
 	
-	private CardItem mCreditCard = new CardItem(CardItem.CREDIT_CARD);
+	private CardItem mCreditCard;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +35,7 @@ public class InputCreditCardLayout extends InputBaseLayout {
         setTitleButtonListener();
         setTitle(getResources().getString(R.string.input_credit_card_title));
         setSelectCardCompenyNameBtnClickListener();
+        setSaveBtnClickListener(R.id.BtnCreadCardSave);
         setAccountBtnClickListener(R.id.BtnCreditCardAccount);
     }
 
@@ -53,13 +54,12 @@ public class InputCreditCardLayout extends InputBaseLayout {
 	@Override
 	public boolean checkInputData() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	protected void createItemInstance() {
-		// TODO Auto-generated method stub
-		
+		mCreditCard = new CardItem(CardItem.CREDIT_CARD);
 	}
 
 	@Override
@@ -70,8 +70,29 @@ public class InputCreditCardLayout extends InputBaseLayout {
 
 	@Override
 	protected void saveItem() {
+		if (mInputMode == InputMode.ADD_MODE) {
+    		saveNewItem();
+    	}
+    	else if (mInputMode == InputMode.EDIT_MODE){
+    		saveUpdateItem();
+    	}
+	}
+
+	private void saveUpdateItem() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	private void saveNewItem() {
+		if (DBMgr.getInstance().addCardItem(mCreditCard) == -1) {
+    		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mCreditCard.getID());
+    		return;
+    	}
+		
+		Intent intent = new Intent();
+		intent.putExtra("CARD_ID", mCreditCard.getID());
+		setResult(RESULT_OK, intent);
+		finish();
 	}
 
 	@Override
@@ -87,6 +108,21 @@ public class InputCreditCardLayout extends InputBaseLayout {
 		
 		String number = ((TextView)findViewById(R.id.ETCrediCardNumber)).getText().toString();
 		mCreditCard.setNumber(number);
+		
+		String memo = ((TextView)findViewById(R.id.ETCrediCardMemo)).getText().toString();
+		mCreditCard.setMemo(memo);
+		
+		Spinner startPeriodMonth = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodMonth);
+		int selectedMonthPostion = startPeriodMonth.getSelectedItemPosition();
+		if (Spinner.INVALID_POSITION != selectedMonthPostion){
+			mCreditCard.setStartSettlementMonth(selectedMonthPostion);
+		}
+		
+		Spinner startPeriodDay = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodDay);
+		int selectedDayPostion = startPeriodDay.getSelectedItemPosition();
+		if (Spinner.INVALID_POSITION != selectedDayPostion){
+			mCreditCard.setStartSettlementDay(selectedDayPostion);
+		}
 	}
 	
 	@Override
@@ -128,7 +164,7 @@ public class InputCreditCardLayout extends InputBaseLayout {
 			return;
 		}
 		
-		mCreditCard.setAccount(account);
+		mCreditCard.setAccountID(account.getID());
 		((Button)findViewById(R.id.BtnCreditCardAccount)).setText(String.format("%s : %s", account.getInstitution().getName(), account.getNumber()));
 	}
 

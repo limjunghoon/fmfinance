@@ -9,6 +9,7 @@ import android.util.Log;
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardCompenyName;
+import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.FinancialInstitution;
@@ -20,6 +21,7 @@ import com.fletamuto.sptb.data.FinancialInstitution;
  */
 public class DBConnector {
 	private CardCompanyNameDBConnector mCardCompanyNameDBConnector = new CardCompanyNameDBConnector();
+	private CardItemDBConnector mCardDBConnector = new CardItemDBConnector();
 	private InstitutionDBConnector mInstitutionDBConnector = new InstitutionDBConnector();
 	private AccountDBConnector mAccountDBConnector = new AccountDBConnector();
 	private BaseFinanceDBConnector[] mDBConnector = {
@@ -191,6 +193,22 @@ public class DBConnector {
 
 	public CardCompenyName getCardCompanyName(int id) {
 		return mCardCompanyNameDBConnector.getItem(id);
+	}
+
+	public int addCard(CardItem card) {
+		return mCardDBConnector.addItem(card);
+	}
+
+	public ArrayList<CardItem> getCardItems(int type) {
+		if (CardItem.CREDIT_CARD < type || CardItem.PRIPAID_CARD > CardItem.PRIPAID_CARD) {
+			Log.e(LogTag.DB, "== invaild card item type : " + type); 
+			return null;
+		}
+		return mCardDBConnector.getAllItems(type);
+	}
+
+	public CardItem getCardItem(int id) {
+		return mCardDBConnector.getItem(id);
 	}
 }
 

@@ -3,10 +3,6 @@ package com.fletamuto.sptb;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fletamuto.sptb.ReportAccountLayout.CategoryItemAdapter;
-import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.db.DBMgr;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.db.DBMgr;
 
 public class SelectAccountLayout extends Activity {
 	public static final int ACT_ADD_ACCOUNT = 0;
