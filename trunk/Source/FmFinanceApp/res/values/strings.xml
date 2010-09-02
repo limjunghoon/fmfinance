@@ -56,6 +56,13 @@
     <string name="input_credit_card_name">이름</string>
     <string name="input_credit_card_number">번호</string>
     <string name="input_credit_card_account">결제계좌</string>
+    <string name="input_credit_card_start_bill">청구시작일</string>
+    <string name="input_credit_card_end_bill">청구종료일</string>
+    <string name="input_credit_card_bill_period">청구기간</string>
+    <string name="input_credit_card_bill_period_one_month">부터한달</string>
+    <string name="input_credit_card_settlement_day">결제일</string>
+    <string name="input_credit_card_memo">메모</string>
+    <string name="input_credit_card_save">저장</string>
     <string name="main_memu_home">홈</string>
     <string name="main_memu_assets_liability">자산</string>
     <string name="main_memu_report">목록 </string>

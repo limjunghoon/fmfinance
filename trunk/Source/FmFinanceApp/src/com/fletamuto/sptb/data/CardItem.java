@@ -5,11 +5,11 @@ public class CardItem {
 	public final static int CASH_CARD = 2;
 	public final static int PRIPAID_CARD = 3;
 	
-	private int mID;
+	private int mID = -1;
 	private CardCompenyName mCompenyName;
 	private String mName;
 	private String mNumber;
-	private AccountItem mAccount;
+	private int mAccountID;
 	private String mMemo;
 	private int mType = CREDIT_CARD;
 	private Settlement mSettlement = new Settlement();
@@ -58,12 +58,12 @@ public class CardItem {
 		return mNumber;
 	}
 
-	public void setAccount(AccountItem account) {
-		this.mAccount = account;
+	public void setAccountID(int accountID) {
+		this.mAccountID = accountID;
 	}
 
-	public AccountItem getAccount() {
-		return mAccount;
+	public int getAccountID() {
+		return mAccountID;
 	}
 
 	public void setMemo(String memo) {

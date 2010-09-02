@@ -16,19 +16,22 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class ReportAccountLayout extends FmBaseActivity {
-	public static final int ACT_ADD_ACCOUNT = 0;
+public abstract class ReportBaseCardLayout extends FmBaseActivity {
+	public static final int ACT_ADD_CARD = 0;
 	
-	private ArrayList<AccountItem> mArrAccount;
-	protected AccountItemAdapter mAdapterAccount;
-	private String [] mAccountTypes;
+	protected int mType = -1;
+	private ArrayList<CardItem> mArrCard;
+	protected CardItemAdapter mAdapterCard;
+	
+	public abstract void setType();
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        setType();
         setContentView(R.layout.empty_list, true);
         
         setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "추가");
@@ -36,23 +39,22 @@ public class ReportAccountLayout extends FmBaseActivity {
         setAddButtonListener();
         setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
         
-        getAccountItems();
+        getCardItems();
         setAdapterList();
     }
 	
-	protected void getAccountItems() {
-		mArrAccount = DBMgr.getInstance().getAccountAllItems();
-		mAccountTypes = getResources().getStringArray(R.array.account_type);
+	protected void getCardItems() {
+		mArrCard = DBMgr.getInstance().getCardItems(mType);
     }
 	
 	protected void setAdapterList() {
-    	if (mArrAccount == null) return;
+    	if (mArrCard == null) return;
         
-    	final ListView listAccount = (ListView)findViewById(R.id.LVBase);
-    	mAdapterAccount = new AccountItemAdapter(this, R.layout.report_list_account, mArrAccount);
-    	listAccount.setAdapter(mAdapterAccount);
+    	final ListView listCard = (ListView)findViewById(R.id.LVBase);
+    	mAdapterCard = new CardItemAdapter(this, R.layout.report_list_card, mArrCard);
+    	listCard.setAdapter(mAdapterCard);
     	
-    	listAccount.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    	listCard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -66,32 +68,26 @@ public class ReportAccountLayout extends FmBaseActivity {
 		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(ReportAccountLayout.this, InputAccountLayout.class);		
-				startActivityForResult(intent, ACT_ADD_ACCOUNT);
+				Intent intent = new Intent(ReportBaseCardLayout.this, InputCreditCardLayout.class);		
+				startActivityForResult(intent, ACT_ADD_CARD);
 			}
 		});
 	}
 	
-	protected void setListViewText(AccountItem account, View convertView) {
-			
-			((TextView)convertView.findViewById(R.id.TVAccountReportListNumer)).setText("번호 : " + account.getNumber());			
-			((TextView)convertView.findViewById(R.id.TVAccountReportListBalance)).setText(String.format("잔액 : %,d원", account.getBalance()));
-			((TextView)convertView.findViewById(R.id.TVAccountReportListType)).setText("종류 : " + getAccoutTypeName(account.getType()));
-			((TextView)convertView.findViewById(R.id.TVAccountReportListInstitution)).setText("기관 : " + account.getInstitution().getName());
+	protected void setListViewText(CardItem card, View convertView) {
+			((TextView)convertView.findViewById(R.id.TVCardCompany)).setText("카드사 : " + card.getCompenyName().getName());			
+			((TextView)convertView.findViewById(R.id.TVCardName)).setText("카드명 : " + card.getName());
+			((TextView)convertView.findViewById(R.id.TVCardNumber)).setText("카드번호 : " + card.getNumber());
 	}
 	
-	protected String getAccoutTypeName(int index) {
-		if (mAccountTypes == null) return null;
-		if (index >= mAccountTypes.length) return null;
-		return mAccountTypes[index];
-	}
+
 	
-	public class AccountItemAdapter extends ArrayAdapter<AccountItem> {
+	public class CardItemAdapter extends ArrayAdapter<CardItem> {
     	int mResource;
     	LayoutInflater mInflater;
 
-		public AccountItemAdapter(Context context, int resource,
-				 List<AccountItem> objects) {
+		public CardItemAdapter(Context context, int resource,
+				 List<CardItem> objects) {
 			super(context, resource, objects);
 			this.mResource = resource;
 			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -99,7 +95,7 @@ public class ReportAccountLayout extends FmBaseActivity {
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			AccountItem item = (AccountItem)getItem(position);
+			CardItem item = (CardItem)getItem(position);
 			
 			if (convertView == null) {
 				convertView = mInflater.inflate(mResource, parent, false);
@@ -125,8 +121,8 @@ public class ReportAccountLayout extends FmBaseActivity {
 				if (DBMgr.getInstance().deleteAccount(ItemID) == 0 ) {
 					Log.e(LogTag.LAYOUT, "can't delete accoutn Item  ID : " + ItemID);
 				}
-				mArrAccount.remove(Itempsition);
-				mAdapterAccount.notifyDataSetChanged();
+				mArrCard.remove(Itempsition);
+				mAdapterCard.notifyDataSetChanged();
 			}
 		});
 	}
@@ -134,15 +130,15 @@ public class ReportAccountLayout extends FmBaseActivity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == ACT_ADD_ACCOUNT) {
+		if (requestCode == ACT_ADD_CARD) {
 			if (resultCode == RESULT_OK) {
-				int accountID = data.getIntExtra("ACCOUNT_ID", -1);
-				if (accountID == -1) return;
+				int cardID = data.getIntExtra("CARD_ID", -1);
+				if (cardID == -1) return;
 				
-				AccountItem account = DBMgr.getInstance().getAccountItem(accountID);
-				if (account == null) return;
-				mAdapterAccount.add(account);
-				mAdapterAccount.notifyDataSetChanged();
+				CardItem card = DBMgr.getInstance().getCardItem(cardID);
+				if (card == null) return;
+				mAdapterCard.add(card);
+				mAdapterCard.notifyDataSetChanged();
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
