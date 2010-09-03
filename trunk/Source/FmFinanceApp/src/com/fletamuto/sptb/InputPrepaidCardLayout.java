@@ -9,47 +9,60 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardCompenyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 /**
- * °èÁÂµî·Ï
+ * 
  * @author yongbban
  * @version  1.0.0.1
  */
-public class InputCreditCardLayout extends InputBaseLayout {
+public class InputPrepaidCardLayout extends InputBaseLayout {
 	public static final int ACT_SELECT_COMPANY_NAME = 0;
 	public static final int ACT_SELECT_ACCOUNT = 1;
+	public static final int ACT_BALANCE = 2;
 	
-	private CardItem mCreditCard;
+	private CardItem mPrepaidCard;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.input_credit_card, true);
+        setContentView(R.layout.input_prepaid_card, true);
         
         setTitleButtonListener();
         
         updateChildView();
         setTitleButtonListener();
-        setTitle(getResources().getString(R.string.input_credit_card_title));
+        setTitle(getResources().getString(R.string.input_prepaid_card_title));
         setSelectCardCompenyNameBtnClickListener();
-        setSaveBtnClickListener(R.id.BtnCreditCardSave);
-        setAccountBtnClickListener(R.id.BtnCreditCardAccount);
+        setSaveBtnClickListener(R.id.BtnPrepaidCardSave);
+        setBalanceBtnClickListener(R.id.BtnPrepaidCardBalance);
     }
 
 	private void setSelectCardCompenyNameBtnClickListener() {
-		Button button = (Button)findViewById(R.id.BtnCreditCardCompany);
+		Button button = (Button)findViewById(R.id.BtnPrepaidCardCompany);
 		button.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(InputCreditCardLayout.this, SelectCardCompanyLayout.class);
+				Intent intent = new Intent(InputPrepaidCardLayout.this, SelectCardCompanyLayout.class);
 		    	startActivityForResult(intent, ACT_SELECT_COMPANY_NAME);
 			}
 		});
 		
 	}
+	
+	 protected void setBalanceBtnClickListener(int btnID) {
+    	Button btnAmount = (Button)findViewById(btnID);
+    	btnAmount.setOnClickListener(new Button.OnClickListener() {
+		
+			public void onClick(View v) {
+				Intent intent = new Intent(InputPrepaidCardLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, ACT_BALANCE);
+			}
+		 });
+    }
 
 	@Override
 	public boolean checkInputData() {
@@ -59,7 +72,7 @@ public class InputCreditCardLayout extends InputBaseLayout {
 
 	@Override
 	protected void createItemInstance() {
-		mCreditCard = new CardItem(CardItem.CREDIT_CARD);
+		mPrepaidCard = new CardItem(CardItem.PREPAID_CARD);
 	}
 
 	@Override
@@ -84,13 +97,13 @@ public class InputCreditCardLayout extends InputBaseLayout {
 	}
 
 	private void saveNewItem() {
-		if (DBMgr.getInstance().addCardItem(mCreditCard) == -1) {
-    		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mCreditCard.getID());
+		if (DBMgr.getInstance().addCardItem(mPrepaidCard) == -1) {
+    		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mPrepaidCard.getID());
     		return;
     	}
 		
 		Intent intent = new Intent();
-		intent.putExtra("CARD_ID", mCreditCard.getID());
+		intent.putExtra("CARD_ID", mPrepaidCard.getID());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
@@ -103,26 +116,14 @@ public class InputCreditCardLayout extends InputBaseLayout {
 
 	@Override
 	protected void updateItem() {
-		String name = ((TextView)findViewById(R.id.ETCrediCardName)).getText().toString();
-		mCreditCard.setName(name);
+		String name = ((TextView)findViewById(R.id.ETPrepaidCardName)).getText().toString();
+		mPrepaidCard.setName(name);
 		
-		String number = ((TextView)findViewById(R.id.ETCrediCardNumber)).getText().toString();
-		mCreditCard.setNumber(number);
+		String number = ((TextView)findViewById(R.id.ETPrepaidCardNumber)).getText().toString();
+		mPrepaidCard.setNumber(number);
 		
-		String memo = ((TextView)findViewById(R.id.ETCreditCardMemo)).getText().toString();
-		mCreditCard.setMemo(memo);
-		
-		Spinner startPeriodMonth = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodMonth);
-		int selectedMonthPostion = startPeriodMonth.getSelectedItemPosition();
-		if (Spinner.INVALID_POSITION != selectedMonthPostion){
-			mCreditCard.setStartSettlementMonth(selectedMonthPostion);
-		}
-		
-		Spinner startPeriodDay = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodDay);
-		int selectedDayPostion = startPeriodDay.getSelectedItemPosition();
-		if (Spinner.INVALID_POSITION != selectedDayPostion){
-			mCreditCard.setStartSettlementDay(selectedDayPostion);
-		}
+		String memo = ((TextView)findViewById(R.id.ETPrepaidCardMemo)).getText().toString();
+		mPrepaidCard.setMemo(memo);
 	}
 	
 	@Override
@@ -132,9 +133,9 @@ public class InputCreditCardLayout extends InputBaseLayout {
     			updateCompenyName( getCompenyName(data.getIntExtra("CARD_COMPENY_NAME_ID", -1)));
     		}
     	}
-		else if (requestCode == ACT_SELECT_ACCOUNT) {
+		else if (requestCode == ACT_BALANCE) {
     		if (resultCode == RESULT_OK) {
-    			updateAccount( getAccount(data.getIntExtra("ACCOUNT_ID", -1)));
+    			updateBalance(data.getLongExtra("AMOUNT", 0L));
     		}
     	}
 
@@ -143,12 +144,10 @@ public class InputCreditCardLayout extends InputBaseLayout {
 	
 	
 
-	private AccountItem getAccount(int id) {
-		AccountItem account = DBMgr.getInstance().getAccountItem(id);
-		if (account == null) {
-			Log.e(LogTag.LAYOUT, ":: not found account item ID :" + id);
-		}
-		return account;
+	private void updateBalance(long balance) {
+		mPrepaidCard.setBalance(balance);
+		((Button)findViewById(R.id.BtnPrepaidCardBalance)).setText(String.format("%,d¿ø", mPrepaidCard.getBalance()));
+		
 	}
 
 	private CardCompenyName getCompenyName(int id) {
@@ -159,22 +158,14 @@ public class InputCreditCardLayout extends InputBaseLayout {
 		return cardCompenyName;
 	}
 	
-	private void updateAccount(AccountItem account) {
-		if (account == null){
-			return;
-		}
-		
-		mCreditCard.setAccountID(account.getID());
-		((Button)findViewById(R.id.BtnCreditCardAccount)).setText(String.format("%s : %s", account.getInstitution().getName(), account.getNumber()));
-	}
 
 	private void updateCompenyName(CardCompenyName cardCompenyName) {
 		if (cardCompenyName == null){
 			return;
 		}
 		
-		mCreditCard.setCompenyName(cardCompenyName);
-		((Button)findViewById(R.id.BtnCreditCardCompany)).setText(cardCompenyName.getName());
+		mPrepaidCard.setCompenyName(cardCompenyName);
+		((Button)findViewById(R.id.BtnPrepaidCardCompany)).setText(cardCompenyName.getName());
 	}
 	
 	protected void setAccountBtnClickListener(int btnID) {
@@ -182,7 +173,7 @@ public class InputCreditCardLayout extends InputBaseLayout {
     	btnAccount.setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
-				Intent intent = new Intent(InputCreditCardLayout.this, SelectAccountLayout.class);
+				Intent intent = new Intent(InputPrepaidCardLayout.this, SelectAccountLayout.class);
 				startActivityForResult(intent, ACT_SELECT_ACCOUNT);
 			}
 		 });

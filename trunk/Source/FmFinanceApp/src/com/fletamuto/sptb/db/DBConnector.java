@@ -200,7 +200,7 @@ public class DBConnector {
 	}
 
 	public ArrayList<CardItem> getCardItems(int type) {
-		if (CardItem.CREDIT_CARD < type || CardItem.PRIPAID_CARD > CardItem.PRIPAID_CARD) {
+		if (type < CardItem.CREDIT_CARD  ||  type > CardItem.CASH_CARD) {
 			Log.e(LogTag.DB, "== invaild card item type : " + type); 
 			return null;
 		}

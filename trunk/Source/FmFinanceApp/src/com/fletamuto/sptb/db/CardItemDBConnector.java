@@ -18,6 +18,7 @@ public class CardItemDBConnector extends BaseDBConnector {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
+		rowItem.put("type", card.getType());
 		rowItem.put("number", card.getNumber());
 		rowItem.put("account_id", card.getAccountID());
 		rowItem.put("company_name_id", card.getCompenyName().getID());
@@ -28,7 +29,7 @@ public class CardItemDBConnector extends BaseDBConnector {
 		rowItem.put("end_settlement_day", card.getEndSettlementDay());
 		rowItem.put("end_settlement_month", card.getEndSettlementMonth());
 		rowItem.put("memo", card.getMemo());
-		rowItem.put("type", card.getType());
+		rowItem.put("balance", card.getBalance());
 		
 		newID = (int)db.insert(TABLE_NAME, null, rowItem);
 		card.setID(newID);
@@ -40,6 +41,7 @@ public class CardItemDBConnector extends BaseDBConnector {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
+		rowItem.put("type", card.getType());
 		rowItem.put("number", card.getNumber());
 		rowItem.put("account_id", card.getAccountID());
 		rowItem.put("company_name_id", card.getCompenyName().getID());
@@ -50,7 +52,7 @@ public class CardItemDBConnector extends BaseDBConnector {
 		rowItem.put("end_settlement_day", card.getEndSettlementDay());
 		rowItem.put("end_settlement_month", card.getEndSettlementMonth());
 		rowItem.put("memo", card.getMemo());
-		rowItem.put("type", card.getType());
+		rowItem.put("balance", card.getBalance());
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(card.getID())});
 		db.close();
@@ -96,23 +98,24 @@ public class CardItemDBConnector extends BaseDBConnector {
 	
 	public CardItem CreateCardItem(Cursor c) {
 		
-		CardItem card = new CardItem(c.getInt(11));
+		CardItem card = new CardItem(c.getInt(1));
 		
 		card.setID(c.getInt(0));
-		card.setNumber(c.getString(1));
-		card.setAccountID(c.getInt(2));
-		card.setName(c.getString(4));
-		card.setSettlementDay(c.getInt(5));
-		card.setStartSettlementDay(c.getInt(6));
-		card.setStartSettlementMonth(c.getInt(7));
-		card.setEndSettlementDay(c.getInt(8));
-		card.setEndSettlementMonth(c.getInt(9));
-		card.setMemo(c.getString(10));
+		card.setNumber(c.getString(2));
+		card.setAccountID(c.getInt(3));
+		card.setName(c.getString(5));
+		card.setSettlementDay(c.getInt(6));
+		card.setStartSettlementDay(c.getInt(7));
+		card.setStartSettlementMonth(c.getInt(8));
+		card.setEndSettlementDay(c.getInt(9));
+		card.setEndSettlementMonth(c.getInt(10));
+		card.setMemo(c.getString(11));
+		card.setBalance(c.getInt(12));
 		
 		CardCompenyName compenyName = new CardCompenyName();
-		compenyName.setID(c.getInt(12));
-		compenyName.setName(c.getString(13));
-		compenyName.setInstituionID(c.getInt(14));
+		compenyName.setID(c.getInt(13));
+		compenyName.setName(c.getString(14));
+		compenyName.setInstituionID(c.getInt(15));
 		card.setCompenyName(compenyName);
 		
 		return card;

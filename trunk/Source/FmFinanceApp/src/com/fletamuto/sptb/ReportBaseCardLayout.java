@@ -27,6 +27,7 @@ public abstract class ReportBaseCardLayout extends FmBaseActivity {
 	protected CardItemAdapter mAdapterCard;
 	
 	public abstract void setType();
+	public abstract void AddCardItem();
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +69,7 @@ public abstract class ReportBaseCardLayout extends FmBaseActivity {
 		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(ReportBaseCardLayout.this, InputCreditCardLayout.class);		
-				startActivityForResult(intent, ACT_ADD_CARD);
+				AddCardItem();
 			}
 		});
 	}
@@ -137,8 +137,15 @@ public abstract class ReportBaseCardLayout extends FmBaseActivity {
 				
 				CardItem card = DBMgr.getInstance().getCardItem(cardID);
 				if (card == null) return;
-				mAdapterCard.add(card);
-				mAdapterCard.notifyDataSetChanged();
+				if (mAdapterCard == null) {
+					getCardItems();
+			        setAdapterList();
+				}
+				else {
+					mAdapterCard.add(card);
+					mAdapterCard.notifyDataSetChanged();
+				}
+				
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);

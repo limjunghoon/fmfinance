@@ -144,6 +144,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		private void createCard(SQLiteDatabase db) {
 			db.execSQL("CREATE TABLE card ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"type INTEGER NOT NULL," +
 					"number INTEGER," +
 					"account_id INEGER," +
 					"company_name_id INTEGER," +
@@ -154,7 +155,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"end_settlement_day INTEGER," +
 					"end_settlement_month INTEGER," +
 					"memo TEXT," +
-					"type INTEGER NOT NULL);");
+					"balance INTEGER);");
 		}
 		
 		private void createCardCompanyName(SQLiteDatabase db) {

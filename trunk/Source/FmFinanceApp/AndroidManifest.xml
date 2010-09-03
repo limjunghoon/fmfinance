@@ -41,6 +41,10 @@
 <activity android:name=".InputCreditCardLayout" android:label="신용카드 등록" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:theme="@android:style/Theme.Dialog" android:label="계좌선택" android:name=".SelectAccountLayout"></activity>
 <activity android:name=".ReportCreditCardLayout" android:label="신용카드 목록"></activity>
+<activity android:name=".InputCheckCardLayout" android:label="체크카드 입력"></activity>
+<activity android:name=".InputPrepaidCardLayout" android:label="선불카드 입력"></activity>
+<activity android:name=".ReportCheckCardLayout" android:label="체크카드 목록"></activity>
+<activity android:name=".ReportPrepaidCardLayout" android:label="선불카드 목록"></activity>
 </application>
 
 

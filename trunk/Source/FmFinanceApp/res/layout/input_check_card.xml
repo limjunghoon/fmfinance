@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+  
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:text="@string/input_check_card_compant" android:layout_width="80dp" android:id="@+id/TVCheckCardCompany">
+		</TextView>
+		<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:numeric="integer" android:id="@+id/BtnCheckCardCompany">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:layout_height="wrap_content" android:textSize="18dp" android:gravity="center" android:text="@string/input_check_card_name" android:id="@+id/TVCheckCardName" android:layout_width="80dp">
+		</TextView>
+		<EditText android:layout_height="wrap_content" android:textSize="18dp" android:layout_width="fill_parent" android:id="@+id/ETCheckCardName">
+		</EditText>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:text="@string/input_check_card_number" android:id="@+id/TVCheckCardNumber" android:layout_width="80dp">
+		</TextView>
+		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/ETCheckCardNumber" android:singleLine="true" android:numeric="integer">
+		</EditText>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:text="@string/input_check_card_account" android:layout_width="80dp" android:id="@+id/TVCheckCardAccount">
+		</TextView>
+		<Button android:id="@+id/BtnCheckCardAccount" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:text="@string/input_check_card_memo" android:id="@+id/TVCheckCardMemo" android:layout_width="80dp">
+		</TextView>
+		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/ETCheckCardMemo" android:singleLine="true">
+		</EditText>
+	</LinearLayout>
+	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="20dp" android:text="@string/input_check_card_save" android:id="@+id/BtnCheckCardSave">
+	</Button>
+  
+  
+</LinearLayout>

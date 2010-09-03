@@ -3,9 +3,10 @@ package com.fletamuto.sptb.data;
 public class PaymentMethod {
 	public final static int CASH = 0;
 	public final static int CREDIT_CARD = 1;
-	public final static int CASH_CARD = 2;
+	public final static int CHECK_CARD = 2;
 	public final static int PRIPAID_CARD = 3;
-	public final static int ACCOUNT = 4;
+	public final static int CASH_CARD = 4;
+	public final static int ACCOUNT = 5;
 	
 	private int id = -1;
 	private int type;
