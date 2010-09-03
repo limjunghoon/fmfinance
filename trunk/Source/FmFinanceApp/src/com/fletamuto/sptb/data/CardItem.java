@@ -2,8 +2,9 @@ package com.fletamuto.sptb.data;
 
 public class CardItem {
 	public final static int CREDIT_CARD = 1;
-	public final static int CASH_CARD = 2;
-	public final static int PRIPAID_CARD = 3;
+	public final static int CHECK_CARD = 2;
+	public final static int PREPAID_CARD = 3;
+	public final static int CASH_CARD = 4;
 	
 	private int mID = -1;
 	private CardCompenyName mCompenyName;
@@ -12,6 +13,7 @@ public class CardItem {
 	private int mAccountID;
 	private String mMemo;
 	private int mType = CREDIT_CARD;
+	private long mBalance;
 	private Settlement mSettlement = new Settlement();
 	
 	public class Settlement {
@@ -120,5 +122,13 @@ public class CardItem {
 	
 	public int getEndSettlementMonth() {
 		return mSettlement.mEndMonth;
+	}
+
+	public void setBalance(long balance) {
+		this.mBalance = balance;
+	}
+
+	public long getBalance() {
+		return mBalance;
 	}
 }

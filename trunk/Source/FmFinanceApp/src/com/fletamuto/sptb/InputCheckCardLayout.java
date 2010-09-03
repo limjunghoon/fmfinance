@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
@@ -19,32 +18,32 @@ import com.fletamuto.sptb.db.DBMgr;
  * @author yongbban
  * @version  1.0.0.1
  */
-public class InputCreditCardLayout extends InputBaseLayout {
+public class InputCheckCardLayout extends InputBaseLayout {
 	public static final int ACT_SELECT_COMPANY_NAME = 0;
 	public static final int ACT_SELECT_ACCOUNT = 1;
 	
-	private CardItem mCreditCard;
+	private CardItem mCheckCard;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.input_credit_card, true);
+        setContentView(R.layout.input_check_card, true);
         
         setTitleButtonListener();
         
         updateChildView();
         setTitleButtonListener();
-        setTitle(getResources().getString(R.string.input_credit_card_title));
+        setTitle(getResources().getString(R.string.input_check_card_title));
         setSelectCardCompenyNameBtnClickListener();
-        setSaveBtnClickListener(R.id.BtnCreditCardSave);
-        setAccountBtnClickListener(R.id.BtnCreditCardAccount);
+        setSaveBtnClickListener(R.id.BtnCheckCardSave);
+        setAccountBtnClickListener(R.id.BtnCheckCardAccount);
     }
 
 	private void setSelectCardCompenyNameBtnClickListener() {
-		Button button = (Button)findViewById(R.id.BtnCreditCardCompany);
+		Button button = (Button)findViewById(R.id.BtnPrepaidCardCompany);
 		button.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(InputCreditCardLayout.this, SelectCardCompanyLayout.class);
+				Intent intent = new Intent(InputCheckCardLayout.this, SelectCardCompanyLayout.class);
 		    	startActivityForResult(intent, ACT_SELECT_COMPANY_NAME);
 			}
 		});
@@ -59,7 +58,7 @@ public class InputCreditCardLayout extends InputBaseLayout {
 
 	@Override
 	protected void createItemInstance() {
-		mCreditCard = new CardItem(CardItem.CREDIT_CARD);
+		mCheckCard = new CardItem(CardItem.CHECK_CARD);
 	}
 
 	@Override
@@ -84,13 +83,13 @@ public class InputCreditCardLayout extends InputBaseLayout {
 	}
 
 	private void saveNewItem() {
-		if (DBMgr.getInstance().addCardItem(mCreditCard) == -1) {
-    		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mCreditCard.getID());
+		if (DBMgr.getInstance().addCardItem(mCheckCard) == -1) {
+    		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mCheckCard.getID());
     		return;
     	}
 		
 		Intent intent = new Intent();
-		intent.putExtra("CARD_ID", mCreditCard.getID());
+		intent.putExtra("CARD_ID", mCheckCard.getID());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
@@ -103,26 +102,14 @@ public class InputCreditCardLayout extends InputBaseLayout {
 
 	@Override
 	protected void updateItem() {
-		String name = ((TextView)findViewById(R.id.ETCrediCardName)).getText().toString();
-		mCreditCard.setName(name);
+		String name = ((TextView)findViewById(R.id.ETCheckCardName)).getText().toString();
+		mCheckCard.setName(name);
 		
-		String number = ((TextView)findViewById(R.id.ETCrediCardNumber)).getText().toString();
-		mCreditCard.setNumber(number);
+		String number = ((TextView)findViewById(R.id.ETCheckCardNumber)).getText().toString();
+		mCheckCard.setNumber(number);
 		
-		String memo = ((TextView)findViewById(R.id.ETCreditCardMemo)).getText().toString();
-		mCreditCard.setMemo(memo);
-		
-		Spinner startPeriodMonth = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodMonth);
-		int selectedMonthPostion = startPeriodMonth.getSelectedItemPosition();
-		if (Spinner.INVALID_POSITION != selectedMonthPostion){
-			mCreditCard.setStartSettlementMonth(selectedMonthPostion);
-		}
-		
-		Spinner startPeriodDay = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodDay);
-		int selectedDayPostion = startPeriodDay.getSelectedItemPosition();
-		if (Spinner.INVALID_POSITION != selectedDayPostion){
-			mCreditCard.setStartSettlementDay(selectedDayPostion);
-		}
+		String memo = ((TextView)findViewById(R.id.ETCheckCardMemo)).getText().toString();
+		mCheckCard.setMemo(memo);
 	}
 	
 	@Override
@@ -164,8 +151,8 @@ public class InputCreditCardLayout extends InputBaseLayout {
 			return;
 		}
 		
-		mCreditCard.setAccountID(account.getID());
-		((Button)findViewById(R.id.BtnCreditCardAccount)).setText(String.format("%s : %s", account.getInstitution().getName(), account.getNumber()));
+		mCheckCard.setAccountID(account.getID());
+		((Button)findViewById(R.id.BtnCheckCardAccount)).setText(String.format("%s : %s", account.getInstitution().getName(), account.getNumber()));
 	}
 
 	private void updateCompenyName(CardCompenyName cardCompenyName) {
@@ -173,8 +160,8 @@ public class InputCreditCardLayout extends InputBaseLayout {
 			return;
 		}
 		
-		mCreditCard.setCompenyName(cardCompenyName);
-		((Button)findViewById(R.id.BtnCreditCardCompany)).setText(cardCompenyName.getName());
+		mCheckCard.setCompenyName(cardCompenyName);
+		((Button)findViewById(R.id.BtnCheckCardCompany)).setText(cardCompenyName.getName());
 	}
 	
 	protected void setAccountBtnClickListener(int btnID) {
@@ -182,7 +169,7 @@ public class InputCreditCardLayout extends InputBaseLayout {
     	btnAccount.setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
-				Intent intent = new Intent(InputCreditCardLayout.this, SelectAccountLayout.class);
+				Intent intent = new Intent(InputCheckCardLayout.this, SelectAccountLayout.class);
 				startActivityForResult(intent, ACT_SELECT_ACCOUNT);
 			}
 		 });

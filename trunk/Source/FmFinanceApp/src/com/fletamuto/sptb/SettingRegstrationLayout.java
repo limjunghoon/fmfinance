@@ -25,7 +25,8 @@ public class SettingRegstrationLayout extends FmBaseActivity {
 	private void setBtnClickListener() {
 		setChangeActivityBtnClickListener(R.id.BtnRegAccount);
 		setChangeActivityBtnClickListener(R.id.BtnRegCreditCard);
-		
+		setChangeActivityBtnClickListener(R.id.BtnRegCheckCard);
+		setChangeActivityBtnClickListener(R.id.BtnRegPrepaidCard);
 	}
 	
 	protected void setChangeActivityBtnClickListener(int id) {
@@ -41,6 +42,8 @@ public class SettingRegstrationLayout extends FmBaseActivity {
 			
 			if (id == R.id.BtnRegAccount) changeClass = ReportAccountLayout.class;
 			else if (id == R.id.BtnRegCreditCard) changeClass = ReportCreditCardLayout.class;
+			else if (id == R.id.BtnRegCheckCard) changeClass = ReportCheckCardLayout.class;
+			else if (id == R.id.BtnRegPrepaidCard) changeClass = ReportPrepaidCardLayout.class;
 			else {
 				Log.e(LogTag.LAYOUT, "== unregistered event hander ");
 				return;
