@@ -6,11 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fletamuto.common.control.InputAmountDialog;
-import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardCompenyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
