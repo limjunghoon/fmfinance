@@ -35,7 +35,7 @@ public class FmFinanceLayout extends FmBaseActivity {
         
         setTitle(getResources().getString(R.string.app_name));
     }
-    
+
     /**
      * activity가 다시 시작할 때
      */
@@ -43,7 +43,7 @@ public class FmFinanceLayout extends FmBaseActivity {
     	updateViewText();
     	super.onResume();
     }
-    
+
     /** 버튼 클릭시 리슨너 등록 */
     protected void setBtnClickListener() {
     	setChangeActivityBtnClickListener(R.id.BtnInputExpense);
@@ -136,10 +136,10 @@ public class FmFinanceLayout extends FmBaseActivity {
 		private void changeActivity(int id) {
 			Class<?> changeClass = null;
 			
-			if (id == R.id.BtnInputExpense) changeClass = InputExpenseLayout.class;
+			if (id == R.id.BtnInputExpense)	changeClass = InputExpenseLayout.class;
 			else if (id == R.id.BtnInputIncome) changeClass = InputIncomeLayout.class;
 			else if (id == R.id.BtnAssetsLiability) changeClass = InputAssetsOrLiability.class;
-			else if (id == R.id.BtnReport) changeClass = MainReportLayout.class;
+			else if (id == R.id.BtnReport) 	changeClass = MainReportLayout.class;
 			else if (id == R.id.BtnTodayExpense) changeClass = ReportTodayExpenseLayout.class;
 			else if (id == R.id.BtnTodayIncome) changeClass = ReportTodayIncomeLayout.class;
 			else if (id == R.id.BtnSetting) changeClass = MainSettingLayout.class;
