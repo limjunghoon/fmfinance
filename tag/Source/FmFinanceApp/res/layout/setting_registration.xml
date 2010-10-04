@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical">
+	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnRegAccount" android:text="계좌등록"></Button>
+	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnRegCreditCard" android:text="신용카드 등록"></Button>
+	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnRegCheckCard" android:text="체크카드 등록"></Button>
+	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnRegPrepaidCard" android:text="선불카드 등록"></Button>
+</LinearLayout>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="report_list">
+		<item>지출내역 목록</item>
+		<item>수입내역 목록</item>
+		<item>자산내역 목록</item>
+		<item>부채내역 목록</item>
+	</string-array>
+	<string-array name="income_base_main_category">
+		<item>급여</item>
+		<item>상여금</item>
+		<item>주식</item>
+		<item>이자</item>
+		<item>용돈</item>
+		<item>아르바이트</item>
+	</string-array>
+	<string-array name="expense_base_main_category">
+		<item>음식</item>
+		<item>교통</item>
+		<item>쇼핑</item>
+		<item>문화생활</item>
+		<item>집</item>
+		<item>통신비</item>
+		<item>의료비</item>
+		<item>경조사비</item>
+		<item>자동차</item>
+		<item>교육비</item>
+		<item>자산</item>
+	</string-array>
+	<string-array name="expense_base_sub_category_1">
+		<item>아침식사</item>
+		<item>점심식사</item>
+		<item>저녁식사</item>
+		<item>커피/Tea</item>
+		<item>유흥비</item>
+	</string-array>
+	<string-array name="expense_base_sub_category_2">
+		<item>지하철</item>
+		<item>버스</item>
+		<item>택시</item>
+	</string-array>
+	<string-array name="expense_base_sub_category_3">
+		<item>의류</item>
+		<item>화장품</item>
+		<item>미용</item>
+	</string-array>
+	<string-array name="expense_base_sub_category_4">
+		<item>영화</item>
+		<item>스포츠</item>
+		<item>공연</item>
+		<item>취미</item>
+	</string-array>
+	<string-array name="expense_base_sub_category_5">
+		<item>관리비</item>
+		<item>전기</item>
+		<item>수도</item>
+		<item>가스</item>
+		<item>우유</item>
+		<item>신문</item>
+	</string-array>
+	<string-array name="expense_base_sub_category_6">
+		<item>휴대폰</item>
+		<item>유선전화</item>
+		<item>인터넷</item>
+	</string-array>
+	<string-array name="expense_base_sub_category_7">
+		<item>병원비</item>
+		<item>약국</item>
+	</string-array>
+	<string-array name="expense_base_sub_category_8">
+		<item>축의금</item>
+		<item>조의금</item>
+	</string-array>
+	<string-array name="expense_base_sub_category_9">
+		<item>할부</item>
+		<item>보험</item>
+		<item>정비</item>
+		<item>주차</item>
+		<item>주유</item>
+	</string-array>
+	<string-array name="expense_base_sub_category_10">
+		<item>학원/과외</item>
+		<item>교재비</item>
+	</string-array>
+	<string-array name="expense_base_sub_category_11">
+		<item>주식</item>
+		<item>부동산</item>
+	</string-array>
+	<string-array name="assets_base_main_category">
+		<item>금융자산</item>
+		<item>부동산</item>
+		<item>주식</item>
+		<item>기타자산</item>
+		<item>보석</item>
+	</string-array>
+	<string-array name="assets_base_sub_category_1">
+		<item>예금</item>
+		<item>펀드</item>
+		<item>보험</item>
+		<item>장기주택마련</item>
+		<item>유흥비</item>
+	</string-array>
+	<string-array name="assets_base_sub_category_2">
+		<item>아파트</item>
+		<item>기타주택</item>
+		<item>토지</item>
+		<item>전세보증금</item>
+	</string-array>
+	<string-array name="assets_base_sub_category_3">
+		<item>개별종목</item>
+		<item>ETF</item>
+		<item>ELS</item>
+	</string-array>
+	<string-array name="assets_base_sub_category_4">
+		<item>금</item>
+	</string-array>
+	<string-array name="assets_base_sub_category_5">
+		<item>보석</item>
+	</string-array>
+	<string-array name="liability_base_main_category">
+		<item>모가지론</item>
+		<item>신용대출</item>
+		<item>마이너스 통장</item>
+		<item>기타 부채</item>
+	</string-array>
+	
+	<string-array name="financial_institution_banking">
+		<item>국민은행</item>
+		<item>우리은행</item>
+		<item>하나은행</item>
+		<item>신한은행</item>
+		<item>외환은행</item>
+		<item>중소기업은행</item>
+		<item>SC제일은행</item>
+		<item>한국씨티은행</item>
+		<item>산업은행</item>
+		<item>농협</item>
+		<item>신협</item>
+	</string-array>
+	
+	<string-array name="financial_institution_card">
+		<item>국민카드</item>
+		<item>우리카드</item>
+		<item>하나카드</item>
+		<item>신한카드</item>
+		<item>외환카드</item>
+		<item>IBK카드</item>
+		<item>SC제일카드</item>
+		<item>씨티카드</item>
+		<item>산업은행카드</item>
+		<item>농협카드</item>
+		<item>신협카드</item>
+	</string-array>
+	
+	<string-array name="account_type">
+		<item>예금</item>
+	</string-array>
+	<string-array name="credit_card_period_month">
+		<item>전전월</item>
+		<item>전월</item>
+	</string-array>
+	<string-array name="select_day_list">
+		<item>1일</item><item>2일</item><item>3일</item><item>4일</item><item>5일</item><item>6일</item><item>7일</item>
+		<item>8일</item><item>9일</item><item>10일</item><item>11일</item><item>12일</item><item>13일</item><item>14일</item>
+		<item>15일</item><item>16일</item><item>17일</item><item>18일</item><item>19일</item><item>20일</item><item>21일</item>
+		<item>22일</item><item>23일</item><item>24일</item><item>25일</item><item>26일</item><item>27일</item><item>28일</item>
+		<item>29일</item><item>30일</item><item>말일</item>
+	</string-array>
+</resources>

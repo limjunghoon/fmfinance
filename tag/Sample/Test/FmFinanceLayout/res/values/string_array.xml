@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="report_list">
+		<item>지출내역 목록</item>
+		<item>수입내역 목록</item>
+		<item>자산내역 목록</item>
+		<item>부채내역 목록</item>
+	</string-array>
+</resources>

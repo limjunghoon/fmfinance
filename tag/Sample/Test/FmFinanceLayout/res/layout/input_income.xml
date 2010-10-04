@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
+
+	
+		
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="20pt">
+		<TextView android:layout_width="35pt" android:id="@+id/TVIncomeDate" android:text="@string/input_income_date_name" android:layout_height="wrap_content" android:textSize="7pt" android:padding="2pt" android:gravity="center">
+		</TextView>
+		<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnIncomeDate" android:textSize="7pt">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:layout_width="35pt" android:id="@+id/TVIncomeCategory" android:layout_height="wrap_content" android:textSize="7pt" android:padding="2pt" android:gravity="center" android:text="@string/input_income_category_name">
+		</TextView>
+		<Button android:id="@+id/BtnIncomeCategory" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:layout_width="35pt" android:id="@+id/TVIncomeAmount" android:layout_height="wrap_content" android:textSize="7pt" android:padding="2pt" android:gravity="center" android:text="@string/input_income_amount_name">
+		</TextView>
+		<Button android:id="@+id/BtnIncomeAmount" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:layout_width="35pt" android:id="@+id/TVIncomeMemo" android:layout_height="wrap_content" android:textSize="7pt" android:padding="2pt" android:gravity="center" android:text="@string/input_income_memo_name">
+		</TextView>
+		<EditText android:id="@+id/ETIncomeMemo" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</EditText>
+	</LinearLayout>
+	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnIncomeSave" android:text="@string/input_income_btn_save" android:layout_marginTop="10pt">
+	</Button>
+	
+
+
+
+
+
+
+
+
+
+</LinearLayout>
