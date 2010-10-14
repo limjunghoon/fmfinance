@@ -7,7 +7,7 @@ public abstract class FinanceItem {
 	private String mTitle;
 	private String mMemo;
 	private Calendar mCreateDate = Calendar.getInstance();
-	private SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+	private SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private long mAmount = 0L;
 	private int	mID = -1;
 	private final Category mCategory = new Category(-1, "");

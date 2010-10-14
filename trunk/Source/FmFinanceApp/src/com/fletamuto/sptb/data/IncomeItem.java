@@ -1,7 +1,7 @@
 package com.fletamuto.sptb.data;
 
 public class IncomeItem extends FinanceItem {
-	public final static int TYPE = 0;
+	public final static int TYPE = ItemDef.FinanceDef.INCOME;
 
 	@Override
 	public int getType() {

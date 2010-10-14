@@ -33,6 +33,7 @@ public class DBMgr {
 	public static DBMgr getInstance() {
 		if (mInstance == null) {
 			mInstance = new DBMgr();
+			Log.i(LogTag.DB, "== create db mgr ==");
 		}
 		return mInstance;
 	}
