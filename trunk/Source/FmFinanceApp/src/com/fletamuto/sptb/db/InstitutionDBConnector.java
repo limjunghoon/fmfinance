@@ -6,12 +6,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.fletamuto.sptb.data.FinancialInstitution;
+import com.fletamuto.sptb.data.FinancialCompany;
 
 public class InstitutionDBConnector extends BaseDBConnector {
 	private static final String TABLE_NAME = "institution";
 	
-	public boolean addItem(FinancialInstitution institution) {
+	public boolean addItem(FinancialCompany institution) {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
@@ -24,7 +24,7 @@ public class InstitutionDBConnector extends BaseDBConnector {
 		return true;
 	}
 	
-	public boolean updateItem(FinancialInstitution institution) {
+	public boolean updateItem(FinancialCompany institution) {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
@@ -36,8 +36,8 @@ public class InstitutionDBConnector extends BaseDBConnector {
 		return true;
 	}
 	
-	public  ArrayList<FinancialInstitution> getAllItems() {
-		ArrayList<FinancialInstitution> institutions = new ArrayList<FinancialInstitution>();
+	public  ArrayList<FinancialCompany> getAllItems() {
+		ArrayList<FinancialCompany> institutions = new ArrayList<FinancialCompany>();
 		SQLiteDatabase db = getReadableDatabase();
 		
 		Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
@@ -52,8 +52,8 @@ public class InstitutionDBConnector extends BaseDBConnector {
 		return institutions;
 	}
 	
-	public FinancialInstitution getItem(int id) {
-		FinancialInstitution institution = null;
+	public FinancialCompany getItem(int id) {
+		FinancialCompany institution = null;
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor c = db.query(TABLE_NAME, null, "_id=?", new String[]{String.valueOf(id)}, null, null, null);
 		
@@ -66,8 +66,8 @@ public class InstitutionDBConnector extends BaseDBConnector {
 	}
 	
 	
-	public FinancialInstitution CreateInstitutionItem(Cursor c) {
-		FinancialInstitution institution = new FinancialInstitution();
+	public FinancialCompany CreateInstitutionItem(Cursor c) {
+		FinancialCompany institution = new FinancialCompany();
 		institution.setID(c.getInt(0));
 		institution.setName(c.getString(1));
 		institution.setGroup(c.getInt(2));

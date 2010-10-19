@@ -11,7 +11,7 @@ import android.util.Log;
 
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.R;
-import com.fletamuto.sptb.data.FinancialInstitution;
+import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.data.PaymentMethod;
 
 /**
@@ -31,7 +31,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		createTables(db);
-		insertCategory(db);
+		insertBaseItems(db);
 	}
 
 	@Override
@@ -52,25 +52,51 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		
 		createExpenseTable(db);
 		createExpenseOpenUsedTable(db);
-		createExpenseTag(db);
-		createPaymentMethod(db);
+		createExpenseTagTable(db);
+		createPaymentMethodTable(db);
+		createExpenseSMSTable(db);
 		
 		createAssetsTable(db);
+		createChangeAssetsAmountTable(db);
 		createAssetsExtendTable(db);
-		createAssetsExpense(db);
+		createAssetsExpenseTable(db);
+		createAssetsSavingsTable(db);
+		createAssetsDepositTable(db);
 		createFundTable(db);
 		createChangeFundTable(db);
+		createEndowmentMortgageTable(db);
+		createChangeEndowmentMortgageTable(db);
+		createAssetsStockTable(db);
+		createChangeAssetsStockTable(db);
+		createAssetsPurposeTable(db);
+		createPurposeTable(db);
 		
-//		createLiabilityTable(db);
-		createLiabilityIncome(db);
+		createLiabilityTable(db);
+		createChangeLiabilityAmountTable(db);
+		createLiabilityExtendTable(db);
+		createLiabilityIncomeTable(db);
+		createLiabilityLoanTable(db);
+		createLiabilityCashServiceTable(db);
+		createLiabilityPersonLoanTable(db);
+		
 		createCategoryTable(db);
-//		createAccountTable(db);
-//		createInstitution(db);
+		
+		createAccountTable(db);
+		creaetTransferHistoryTable(db);
 
-//		createCard(db);
-//		createCardCompanyName(db);
+		createCardTable(db);
+		createCardCompanyTable(db);
+		
+		createBudgetTable(db);
+		createBudgetMainCategoryTable(db);
+		createBudgetSubCategoryTable(db);
+		
 		createNotificationTable(db);
-		createRepeat(db);
+		
+		createReceiptTable(db);
+		
+		createRepeatTable(db);
+		createFinanceCompanyTable(db);
 		Log.i(LogTag.DB, "== end make db table ==");
 	}
 		
@@ -109,7 +135,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
 	}
-	
+		
 	/**
 	 * 월급 명세서 테이블을 만든다.
 	 * @param db Exposes methods to manage a SQLite database.
@@ -143,7 +169,6 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		}
 	}
 	
-
 	/**
 	 * 지출 테이블을 만든다.
 	 * @param db Exposes methods to manage a SQLite database.
@@ -184,7 +209,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 	 * 자주 사용되는 지출 테이블을 만든다.
 	 * @param db Exposes methods to manage a SQLite database.
 	 */
-	private void createExpenseTag(SQLiteDatabase db) {
+	private void createExpenseTagTable(SQLiteDatabase db) {
 		try {
 			db.execSQL("CREATE TABLE expense_tag ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -217,7 +242,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 	}
 	
 	/**
-	 * 자산 테이블을 만든다.
+	 * 자산 확장  테이블을 만든다.
 	 * @param db Exposes methods to manage a SQLite database.
 	 */
 	private void createAssetsExtendTable(SQLiteDatabase db) {
@@ -232,6 +257,58 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 	}
 	
 	/**
+	 * 자산 변동  테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createChangeAssetsAmountTable(SQLiteDatabase db) {
+		try {
+			db.execSQL("CREATE TABLE assets_change_amount ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"assets_id INTEGER NOT NULL," +
+					"change_date DATE NOT NULL," +
+					"amount DATE NOT NULL," +
+					"count INTEGER NOT NULL);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * 적금 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createAssetsSavingsTable(SQLiteDatabase db) {
+		try {
+			db.execSQL("CREATE TABLE assets_savings ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"start_date DATE NOT NULL," +
+					"end_date DATE NOT NULL," +
+					"account INTEGER," +
+					"payment INTEGER NOT NULL," +
+					"memo TEXT);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * 예금 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createAssetsDepositTable(SQLiteDatabase db) {
+		try {
+			db.execSQL("CREATE TABLE assets_deposit ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"start_date DATE NOT NULL," +
+					"end_date DATE NOT NULL," +
+					"account INTEGER," +
+					"memo TEXT);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+
+	/**
 	 * 펀드 테이블을 만든다.
 	 * @param db Exposes methods to manage a SQLite database.
 	 */
@@ -240,7 +317,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			db.execSQL("CREATE TABLE assets_fund ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"mena_price INTEGER," +
-					"store INTEGER);");
+					"store INTEGER," +
+					"memo TEXT);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -274,7 +352,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"start_date DATE NOT NULL," +
 					"end_date DATE NOT NULL," +
 					"payment INTEGER NOT NULL," +
-					"company INTEGER);");
+					"company INTEGER," +
+					"memo TEXT);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -288,22 +367,68 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		try {
 			db.execSQL("CREATE TABLE assets_change_endowment_mortgage ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-					"endowment_mortgage INTEGER NOT NULL," +
+					"endowment_mortgage_id INTEGER NOT NULL," +
 					"change_date DATE NOT NULL," +
-					"price DATE NOT NULL," +
+					"count INTEGER NOT NULL);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * 주식 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createAssetsStockTable(SQLiteDatabase db) {
+		try {
+			db.execSQL("CREATE TABLE assets_stock ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"total_count INTEGER," +
+					"mean_price INTEGER," +
+					"store INTEGER," +
+					"memo TEXT);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * 저축성 보험  변동  테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createChangeAssetsStockTable(SQLiteDatabase db) {
+		try {
+			db.execSQL("CREATE TABLE assets_chage_stock ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"stock_id INTEGER NOT NULL," +
+					"change_date DATE NOT NULL," +
+					"stock_price DATE NOT NULL," +
 					"price_type INTEGER NOT NULL);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
 	}
 	
-	
+	/**
+	 * 목표와 연관되어 있는 자산 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createAssetsPurposeTable(SQLiteDatabase db) {
+		try {
+			db.execSQL("CREATE TABLE assets_purpose ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"purpose_id INTEGER NOT NULL," +
+					"assets_id INTEGER NOT NULL);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
 	
 	/**
 	 * 자산을 위해 지출 한  테이블을 만든다.
 	 * @param db Exposes methods to manage a SQLite database.
 	 */
-	private void createAssetsExpense(SQLiteDatabase db) {
+	private void createAssetsExpenseTable(SQLiteDatabase db) {
 		try {
 			db.execSQL("CREATE TABLE assets_expense ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -314,23 +439,55 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		}
 	}
 		
+	/**
+	 * 부채 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
 	private void createLiabilityTable(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE liability ( " +
 				"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-				"year INTEGER NOT NULL," +
-				"month INTEGER NOT NULL," +
-				"day INTEGER NOT NULL," +
+				"create_date DATE NOT NULL," +
 				"amount INTEGER NOT NULL," +
 				"title TEXT," +
 				"memo TEXT," +
-				"main_category INTEGER NOT NULL);");
+				"main_category INTEGER NOT NULL," +
+				"sub_category INTEGER," +
+				"extend INTEGER);");
+	}
+	
+	/**
+	 * 부채 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createLiabilityExtendTable(SQLiteDatabase db) {
+		db.execSQL("CREATE TABLE liability_extend ( " +
+				"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+				"type TYPE NOT NULL," +
+				"extend_id INTEGER);");
+	}
+	
+	/**
+	 * 부채 변동  테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createChangeLiabilityAmountTable(SQLiteDatabase db) {
+		try {
+			db.execSQL("CREATE TABLE liability_change_amount ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"liability_id INTEGER NOT NULL," +
+					"change_date DATE NOT NULL," +
+					"amount DATE NOT NULL," +
+					"count INTEGER NOT NULL);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
 	}
 	
 	/**
 	 * 부채로 인한 수입 테이블을 만든다.
 	 * @param db Exposes methods to manage a SQLite database.
 	 */
-	private void createLiabilityIncome(SQLiteDatabase db) {
+	private void createLiabilityIncomeTable(SQLiteDatabase db) {
 		try {
 			db.execSQL("CREATE TABLE liability_income ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -340,7 +497,53 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
 	}
+
+	/**
+	 * 대출 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createLiabilityLoanTable(SQLiteDatabase db) {
+		try {
+			db.execSQL("CREATE TABLE liability_loan ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"finance_company INTEGER);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
 		
+	/**
+	 * 현금서비스 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createLiabilityCashServiceTable(SQLiteDatabase db) {
+		try {
+			db.execSQL("CREATE TABLE liability_cash_service ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"card_company INTEGER);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * 빌린돈 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createLiabilityPersonLoanTable(SQLiteDatabase db) {
+		try {
+			db.execSQL("CREATE TABLE liability_person_loan ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"name TEXT);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * 분류 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
 	private void createCategoryTable(SQLiteDatabase db) {
 		try {
 			db.execSQL("CREATE TABLE income_main_category ( " +
@@ -382,7 +585,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 	 * 반복 테이블을 만든다.
 	 * @param db Exposes methods to manage a SQLite database.
 	 */
-	private void createRepeat(SQLiteDatabase db) {
+	private void createRepeatTable(SQLiteDatabase db) {
 		try {
 			db.execSQL("CREATE TABLE repeat ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -395,55 +598,148 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		}
 	}
 	
+	/**
+	 * 계좌 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
 	private void createAccountTable(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE account ( " +
 				"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-				"number TEXT NOT NULL," +
+				"create_date DATE," +
+				"number TEXT," +
 				"balance INTEGER," +
-				"institution INTEGER," +
-				"type INTEGER," +
-				"create_date INTEGER," +
-				"expiry_date INTEGER," +
+				"company INTEGER NOT NULL," +
+				"type INTEGER NOT NULL," +
+				"expiry_date DATE," +
 				"memo TEXT," +
 				"name TEXT);");
 	}
 	
-	private void createInstitution(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE institution ( " +
+	/**
+	 * 이체기록 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void creaetTransferHistoryTable(SQLiteDatabase db) {
+		db.execSQL("CREATE TABLE transfer_history ( " +
+				"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+				"occurrence_date DATE," +
+				"to_account INTEGER," +
+				"from_account INTEGER," +
+				"amount INTEGER NOT NULL);");
+	}
+	
+	/**
+	 * 금융회사 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createFinanceCompanyTable(SQLiteDatabase db) {
+		db.execSQL("CREATE TABLE finance_company ( " +
 				"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 				"name TEXT NOT NULL," +
-				"type INTEGER NOT NULL);");
-	}
-	
-	private void createCard(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE card ( " +
-				"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 				"type INTEGER NOT NULL," +
-				"number INTEGER," +
-				"account_id INEGER," +
-				"company_name_id INTEGER," +
-				"name TEXT," +
-				"settlement_day INTEGER," +
-				"start_settlement_day INTEGER," +
-				"start_settlement_month INTEGER," +
-				"end_settlement_day INTEGER," +
-				"end_settlement_month INTEGER," +
-				"memo TEXT," +
-				"balance INTEGER);");
+				"prioritize INTEGER NOT NULL," +
+				"image_index INTEGER NOT NULL);");
 	}
 	
-	private void createCardCompanyName(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE card_company_name ( " +
-				"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-				"name INTEGER NOT NULL," +
-				"institution_id INEGER);");
+	/**
+	 * 카드 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createCardTable(SQLiteDatabase db) {
+		try{
+			db.execSQL("CREATE TABLE card ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"name TEXT," +
+					"number INTEGER," +
+					"type INTEGER NOT NULL," +
+					"account_id INEGER," +
+					"company_name_id INTEGER," +
+					"settlement_day INTEGER," +
+					"biling_period_day INTEGER," +
+					"biling_period_month INTEGER," +
+					"memo TEXT," +
+					"maxiup_balance INTEGER);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * 카드회사  테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createCardCompanyTable(SQLiteDatabase db) {
+		try{
+			db.execSQL("CREATE TABLE card_company ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"card_name TEXT NOT NULL," +
+					"finance_company_id INEGER," +
+					"prioritize INTEGER NOT NULL," +
+					"image_index INTEGER NOT NULL);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
 	}
 
+	/**
+	 * 예산  테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createBudgetTable(SQLiteDatabase db) {
+		try{
+			db.execSQL("CREATE TABLE budget ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"total_amount INTEGER NOT NULL," +
+					"year INTEGER NOT NULL," +
+					"month INTEGER NOT NULL);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * 예산  상위분류 설정 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createBudgetMainCategoryTable(SQLiteDatabase db) {
+		try{
+			db.execSQL("CREATE TABLE budget_main_category ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"amount INTEGER," +
+					"year INTEGER," +
+					"month INTEGER," +
+					"budget_id INTEGER," +
+					"main_category INTEGER);");
+					
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * 예산  하위분류 설정 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createBudgetSubCategoryTable(SQLiteDatabase db) {
+		try{
+			db.execSQL("CREATE TABLE budget_sub_category ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"amount INTEGER," +
+					"year INTEGER," +
+					"month INTEGER," +
+					"budget_id INTEGER," +
+					"sub_category INTEGER);");
+					
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
 	/**
 	 * 지불방법 테이블을 만든다.
 	 * @param db Exposes methods to manage a SQLite database.
 	 */
-	private void createPaymentMethod(SQLiteDatabase db) {
+	private void createPaymentMethodTable(SQLiteDatabase db) {
 		try {
 			db.execSQL("CREATE TABLE payment_method ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -452,6 +748,25 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"card INTEGER," +
 					"installment_plan INTEGER);");
 		}catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * SMS 정보 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createExpenseSMSTable(SQLiteDatabase db) {
+		try{
+			db.execSQL("CREATE TABLE expense_sms ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"create_date DATE NOT NULL," +
+					"card INTEGER NOT NULL," +
+					"message INTEGER NOT NULL," +
+					"done INTEGER," +
+					"receive_number INTEGER);");
+					
+		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
 	}
@@ -472,61 +787,148 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		}
 	}
 	
-	private void insertCategory(SQLiteDatabase db) {
-//		insertIncomeCategory(db);
-//		insertExpenseCategory(db);
-//		insertAssetsCategory(db);
-//		insertLiabilityCategory(db);
-//		insertInstitution(db);
-//		insertPaymentMethod(db);
+	/**
+	 * 목표 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createPurposeTable(SQLiteDatabase db) {
+		try{
+			db.execSQL("CREATE TABLE purpose ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"amount INTEGER NOT NULL," +
+					"start_date DATE NOT NULL," +
+					"end_date DATE NOT NULL);");
+					
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
 	}
 	
-	private void insertIncomeCategory(SQLiteDatabase db) {
+	/**
+	 * 영수증  테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createReceiptTable(SQLiteDatabase db) {
+		try{
+			db.execSQL("CREATE TABLE receipt ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"create_date DATE NOT NULL," +
+					"expense_main_category INTEGER," +
+					"expense_sub_category INTEGER," +
+					"done INTEGER," +
+					"memo INTEGER," +
+					"picture_info TEXT);");
+					
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * 기본적인 데이타를 테이블에 추가한다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void insertBaseItems(SQLiteDatabase db) {
+		insertCategoryTables(db);
+		insertInstitutionTable(db);
+	//	insertPaymentMethodTable(db);
+	}
+	
+
+	/**
+	 * 기본적인 분류 항목을 추가한다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void insertCategoryTables(SQLiteDatabase db) {
+		insertIncomeCategoryTable(db);
+		insertExpenseCategoryTable(db);
+		insertAssetsCategoryTable(db);
+		insertLiabilityCategoryTable(db);
+	}
+	
+	/**
+	 * 기본적인 수입 상위  분류 항목을 추가한다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void insertIncomeCategoryTable(SQLiteDatabase db) {
 		ContentValues rowItem = new ContentValues();
 		String [] baseMainCategory = context.getResources().getStringArray(R.array.income_base_main_category);
 		int categoryLenth = baseMainCategory.length;
 		
 		for (int index = 0; index < categoryLenth; index++) {
 			rowItem.put("name", baseMainCategory[index]);
-			db.insert("income_main_category", null, rowItem);
+			rowItem.put("prioritize", index+1);
+			rowItem.put("image_index", index+1);
+			if (db.insert("income_main_category", null, rowItem) == -1) {
+				Log.e(LogTag.DB, "== DB Insert ERROR ==");
+			}
 		}
 	}
-	private void insertExpenseCategory(SQLiteDatabase db) {
+	
+	/**
+	 * 기본적인 지출 상위  분류 항목을 추가한다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void insertExpenseCategoryTable(SQLiteDatabase db) {
 		ContentValues rowItem = new ContentValues();
 		String [] baseMainCategory = context.getResources().getStringArray(R.array.expense_base_main_category);
 		int categoryLenth = baseMainCategory.length;
 		
 		for (int index = 0; index < categoryLenth; index++) {
 			rowItem.put("name", baseMainCategory[index]);
-			db.insert("expense_main_category", null, rowItem);
+			rowItem.put("prioritize", index+1);
+			rowItem.put("image_index", index+1);
+			if (db.insert("expense_main_category", null, rowItem) == -1) {
+				Log.e(LogTag.DB, "== DB Insert ERROR ==");
+			}
 		}
 		
-		insertExpenseSubCategory(db);
+		insertExpenseSubCategoryTable(db);
 	}
-	private void insertAssetsCategory(SQLiteDatabase db) {
+	
+	/**
+	 * 기본적인 자산 상위  분류 항목을 추가한다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void insertAssetsCategoryTable(SQLiteDatabase db) {
 		ContentValues rowItem = new ContentValues();
 		String [] baseMainCategory = context.getResources().getStringArray(R.array.assets_base_main_category);
 		int categoryLenth = baseMainCategory.length;
 		
 		for (int index = 0; index < categoryLenth; index++) {
 			rowItem.put("name", baseMainCategory[index]);
-			db.insert("assets_main_category", null, rowItem);
+			rowItem.put("prioritize", index+1);
+			rowItem.put("image_index", index+1);
+			if (db.insert("assets_main_category", null, rowItem) == -1) {
+				Log.e(LogTag.DB, "== DB Insert ERROR ==");
+			}
 		}
-		
-		insertAssetsSubCategory(db);
 	}
-	private void insertLiabilityCategory(SQLiteDatabase db) {
+	
+	/**
+	 * 기본적인 부채 상위  분류 항목을 추가한다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void insertLiabilityCategoryTable(SQLiteDatabase db) {
 		ContentValues rowItem = new ContentValues();
 		String [] baseMainCategory = context.getResources().getStringArray(R.array.liability_base_main_category);
 		int categoryLenth = baseMainCategory.length;
 		
 		for (int index = 0; index < categoryLenth; index++) {
 			rowItem.put("name", baseMainCategory[index]);
-			db.insert("liability_main_category", null, rowItem);
+			rowItem.put("prioritize", index+1);
+			rowItem.put("image_index", index+1);
+			if (db.insert("liability_main_category", null, rowItem) == -1) {
+				Log.e(LogTag.DB, "== DB Insert ERROR ==");
+			}
 		}
 	}
 	
-	private void insertExpenseSubCategory(SQLiteDatabase db) {
+	/**
+	 * 기본적인 지출 하위  분류 항목을 추가한다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void insertExpenseSubCategoryTable(SQLiteDatabase db) {
 		ContentValues rowItem = new ContentValues();
 		ArrayList<String []> baseSubCategorys = new ArrayList<String []>();
 		
@@ -541,6 +943,10 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_9));
 		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_10));
 		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_11));
+		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_12));
+		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_13));
+		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_14));
+		baseSubCategorys.add(context.getResources().getStringArray(R.array.assets_base_main_category));
 		
 		int subCategoryArrLenth = baseSubCategorys.size();
 		
@@ -550,13 +956,17 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			
 			for (int j = 0; j < subCategoryLenth; j++) {
 				rowItem.put("name", subCategory[j]);
+				rowItem.put("prioritize", i+1);
+				rowItem.put("image_index", i+1);
 				rowItem.put("main_id", i+1);
-				db.insert("expense_sub_category", null, rowItem);
+				if (db.insert("expense_sub_category", null, rowItem) == -1) {
+					Log.e(LogTag.DB, "== DB Insert ERROR ==");
+				}
 			}
 		}
 	}
-	
-	private void insertAssetsSubCategory(SQLiteDatabase db) {
+	/*
+	private void insertAssetsSubCategoryTable(SQLiteDatabase db) {
 		ContentValues rowItem = new ContentValues();
 		ArrayList<String []> baseSubCategorys = new ArrayList<String []>();
 		
@@ -578,8 +988,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			}
 		}
 	}
-	
-	private void insertInstitution(SQLiteDatabase db) {
+	*/
+	private void insertInstitutionTable(SQLiteDatabase db) {
 		ContentValues rowItem = new ContentValues();
 		String [] bakingNames = context.getResources().getStringArray(R.array.financial_institution_banking);
 		String [] cardNames = context.getResources().getStringArray(R.array.financial_institution_card);
@@ -588,28 +998,37 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		
 		for (int index = 0; index < nameLenth; index++) {
 			rowItem.put("name", bakingNames[index]);
-			rowItem.put("type", FinancialInstitution.BANKING);
-			InstitutionID = (int)db.insert("institution", null, rowItem);
+			rowItem.put("type", FinancialCompany.BANKING);
+			rowItem.put("prioritize", index+1);
+			rowItem.put("image_index", index+1);
+			InstitutionID = (int)db.insert("finance_company", null, rowItem);
 			if (InstitutionID != -1) {
-				insertCardCompanyName(db, cardNames[index], InstitutionID);
+				insertCardCompanyNameTable(db, cardNames[index], InstitutionID);
 			}
 		}
 	}
 	
-	private void insertCardCompanyName(SQLiteDatabase db, String cardName, int instituionID) {
+	private void insertCardCompanyNameTable(SQLiteDatabase db, String cardName, int instituionID) {
 		if (instituionID == -1) return;
 		
 		ContentValues rowItem = new ContentValues();
-		rowItem.put("name", cardName);
-		rowItem.put("institution_id", instituionID);
-		db.insert("card_company_name", null, rowItem);
+		rowItem.put("card_name", cardName);
+		rowItem.put("finance_company_id", instituionID);
+		rowItem.put("prioritize", instituionID);
+		rowItem.put("image_index", instituionID);
+		if (db.insert("card_company", null, rowItem) == -1) {
+			Log.e(LogTag.DB, "== DB Insert ERROR ==");
+		}
 	}
 	
-	
-	private void insertPaymentMethod(SQLiteDatabase db) {
+	/*
+	private void insertPaymentMethodTable(SQLiteDatabase db) {
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("type", PaymentMethod.CASH);
 		rowItem.put("type_id", 0);
-		db.insert("payment_method", null, rowItem);
+		if (db.insert("payment_method", null, rowItem) == -1) {
+			Log.e(LogTag.DB, "== DB Insert ERROR ==");
+		}
 	}
+	*/
 }

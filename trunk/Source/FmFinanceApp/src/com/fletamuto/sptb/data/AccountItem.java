@@ -8,7 +8,7 @@ public class AccountItem {
 	private int	mID = -1;
 	private String mNumber;
 	private long mBalance = 0L;
-	private FinancialInstitution mInstitution;
+	private FinancialCompany mInstitution;
 	private Calendar mCreateDate = Calendar.getInstance();
 	private Calendar mExpiryDate = Calendar.getInstance();
 	private String mMemo;
@@ -31,11 +31,11 @@ public class AccountItem {
 		return mNumber;
 	}
 	
-	public void setInstitution(FinancialInstitution institution) {
+	public void setInstitution(FinancialCompany institution) {
 		this.mInstitution = institution;
 	}
 	
-	public FinancialInstitution getInstitution() {
+	public FinancialCompany getInstitution() {
 		return mInstitution;
 	}
 	

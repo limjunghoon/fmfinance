@@ -12,7 +12,7 @@ import com.fletamuto.sptb.data.CardCompenyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.FinancialInstitution;
+import com.fletamuto.sptb.data.FinancialCompany;
 
 /**
  * DB와 연동하여 데이타를 관리한다.
@@ -163,11 +163,11 @@ public class DBConnector {
 		return result;
 	}
 
-	public ArrayList<FinancialInstitution> getInstitutions() {
+	public ArrayList<FinancialCompany> getInstitutions() {
 		return mInstitutionDBConnector.getAllItems();
 	}
 
-	public FinancialInstitution getInstitution(int id) {
+	public FinancialCompany getInstitution(int id) {
 		return mInstitutionDBConnector.getItem(id);
 	}
 

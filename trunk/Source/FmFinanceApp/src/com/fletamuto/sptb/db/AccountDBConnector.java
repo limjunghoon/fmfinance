@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
 import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.FinancialInstitution;
+import com.fletamuto.sptb.data.FinancialCompany;
 
 public class AccountDBConnector extends BaseDBConnector {
 	private static final String TABLE_NAME = "account";
@@ -100,7 +100,7 @@ public class AccountDBConnector extends BaseDBConnector {
 		account.setMemo(c.getString(7));
 		account.setName(c.getString(8));
 		
-		FinancialInstitution institution = new FinancialInstitution();
+		FinancialCompany institution = new FinancialCompany();
 		institution.setID(c.getInt(9));
 		institution.setName(c.getString(10));
 		institution.setGroup(c.getInt(11));

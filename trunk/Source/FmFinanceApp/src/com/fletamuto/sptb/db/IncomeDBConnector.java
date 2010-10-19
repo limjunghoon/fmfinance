@@ -182,9 +182,9 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	public long getTotalAmountDay(Calendar calendar) {
 		long amount = 0L;
 		SQLiteDatabase db = getReadableDatabase();
-		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)), 
-				String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
-		String query = "SELECT SUM(amount) FROM income WHERE year=? AND month=? AND day=?";
+		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)) 
+				+ String.valueOf(calendar.get(Calendar.MONTH)) + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
+		String query = "SELECT SUM(amount) FROM income WHERE strftime('%Y-%m-%d', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
 		
 		if (c.moveToFirst() != false) {
@@ -199,9 +199,10 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	public int getItemCount(Calendar calendar) {
 		int count = 0;
 		SQLiteDatabase db = getReadableDatabase();
-		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)), 
-				String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
-		String query = "SELECT COUNT(*) FROM income WHERE year=? AND month=? AND day=?";
+		
+		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)) 
+				+ String.valueOf(calendar.get(Calendar.MONTH)) + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
+		String query = "SELECT COUNT(*) FROM income WHERE strftime('%Y-%m-%d', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
 		
 		if (c.moveToFirst() != false) {
