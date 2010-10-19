@@ -10,8 +10,4 @@ final class DBDef {
 		public static final String DB_NAME = "fmfinance.db";
 		public static final int DB_VERSION = 1;
 	}
-	
-	public static final class IncomeTeable {
-		
-	}
 }

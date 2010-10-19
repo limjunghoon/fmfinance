@@ -12,7 +12,7 @@ import com.fletamuto.sptb.data.CardCompenyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.FinancialInstitution;
+import com.fletamuto.sptb.data.FinancialCompany;
 
 /**
  * 레이아웃과  DB를 연동하는 클래스
@@ -242,11 +242,11 @@ public class DBMgr {
 		return mDBConnector.deleteSubCategory(itemType, itemID);
 	}
 
-	public ArrayList<FinancialInstitution> getInstitutions() {
+	public ArrayList<FinancialCompany> getInstitutions() {
 		return mDBConnector.getInstitutions();
 	}
 
-	public FinancialInstitution getInstitution(int id) {
+	public FinancialCompany getInstitution(int id) {
 		return mDBConnector.getInstitution(id);
 	}
 	

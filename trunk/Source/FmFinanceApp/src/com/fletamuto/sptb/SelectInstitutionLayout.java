@@ -13,11 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 
-import com.fletamuto.sptb.data.FinancialInstitution;
+import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class SelectInstitutionLayout extends FmBaseActivity {
-	protected ArrayList<FinancialInstitution> mArrInstitution = null;
+	protected ArrayList<FinancialCompany> mArrInstitution = null;
 	InstitutionButtonAdpter mAdapterInstituion;
 	
 	
@@ -55,7 +55,7 @@ public class SelectInstitutionLayout extends FmBaseActivity {
 		setInstitutionAdaper();
 	}
 	
-	protected void onClickInstitutionButton(FinancialInstitution institution) {
+	protected void onClickInstitutionButton(FinancialCompany institution) {
 		Intent intent = new Intent();
 		intent.putExtra("INSTITUTION_ID", institution.getID());
 		setResult(RESULT_OK, intent);
@@ -64,7 +64,7 @@ public class SelectInstitutionLayout extends FmBaseActivity {
 
     View.OnClickListener institutionListener = new View.OnClickListener() {
 		public void onClick(View v) {
-			FinancialInstitution institution = (FinancialInstitution)v.getTag();
+			FinancialCompany institution = (FinancialCompany)v.getTag();
 			onClickInstitutionButton(institution);
 		}
 	};
@@ -77,12 +77,12 @@ public class SelectInstitutionLayout extends FmBaseActivity {
 		});
 	}
 
-	private class InstitutionButtonAdpter extends ArrayAdapter<FinancialInstitution> {
+	private class InstitutionButtonAdpter extends ArrayAdapter<FinancialCompany> {
 		int mResource;
     	LayoutInflater mInflater;
     	
 		public InstitutionButtonAdpter(Context context, int resource,
-				 List<FinancialInstitution> objects) {
+				 List<FinancialCompany> objects) {
 			super(context, resource, objects);
 			this.mResource = resource;
 			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -91,7 +91,7 @@ public class SelectInstitutionLayout extends FmBaseActivity {
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			FinancialInstitution instituion = (FinancialInstitution)getItem(position);
+			FinancialCompany instituion = (FinancialCompany)getItem(position);
 			
 			if (convertView == null) {
 				convertView = mInflater.inflate(mResource, parent, false);

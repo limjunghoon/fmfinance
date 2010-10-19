@@ -1,6 +1,6 @@
 package com.fletamuto.sptb.data;
 
-public class FinancialInstitution {
+public class FinancialCompany {
 	public static final int GROUP_NONE = 0;
 	public static final int BANKING = 1;
 	public static final int SECURITIES_COMPANY = 2;
@@ -10,10 +10,10 @@ public class FinancialInstitution {
 	private String mName;
 	private int	mGroup = GROUP_NONE;
 	
-	public FinancialInstitution() {
+	public FinancialCompany() {
 	}
 	
-	public FinancialInstitution(int group, String name) {
+	public FinancialCompany(int group, String name) {
 		this.mName = name;
 		this.mGroup = group;
 	}

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.FinancialInstitution;
+import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.db.DBMgr;
 
 /**
@@ -129,7 +129,7 @@ public class InputAccountLayout extends InputBaseLayout {
 		}
 	}
 	
-	private FinancialInstitution getInstitution(int id) {
+	private FinancialCompany getInstitution(int id) {
 		if (id == -1) {
 			Log.e(LogTag.LAYOUT, "== noting select id : " + id);
 			return null;
@@ -159,7 +159,7 @@ public class InputAccountLayout extends InputBaseLayout {
 		
 	}
 
-	private void updateInstitution(FinancialInstitution institution) {
+	private void updateInstitution(FinancialCompany institution) {
 		if (institution == null){
 			return;
 		}
