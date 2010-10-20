@@ -34,7 +34,7 @@ public class ReportLiabilityLayout extends ReportBaseLayout {
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	LiabilityItem item = (LiabilityItem)financeItem;
     	((TextView)convertView.findViewById(R.id.TVLiabilityReportListTitle)).setText("제목 : " + item.getTitle());
-		((TextView)convertView.findViewById(R.id.TVLiabilityReportListDate)).setText("날짜 : " + item.getDateString());			
+		((TextView)convertView.findViewById(R.id.TVLiabilityReportListDate)).setText("날짜 : " + item.getCreateDateString());			
 		((TextView)convertView.findViewById(R.id.TVLiabilityReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
 		((TextView)convertView.findViewById(R.id.TVLiabilityReportListCategory)).setText("분류 : " + item.getCategory().getName());
 	}
@@ -48,12 +48,12 @@ public class ReportLiabilityLayout extends ReportBaseLayout {
     
     @Override
 	protected int deleteItemToDB(int id) {
-		return DBMgr.getInstance().deleteItem(LiabilityItem.TYPE, id);
+		return DBMgr.deleteItem(LiabilityItem.TYPE, id);
 	}
 
 	@Override
 	protected FinanceItem getItemInstance(int id) {
-		return DBMgr.getInstance().getItem(LiabilityItem.TYPE, id);
+		return DBMgr.getItem(LiabilityItem.TYPE, id);
 	}
 
 }

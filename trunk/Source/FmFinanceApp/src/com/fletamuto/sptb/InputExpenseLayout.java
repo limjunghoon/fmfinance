@@ -51,7 +51,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	
 	@Override
 	protected boolean getItemInstance(int id) {
-		mItem = DBMgr.getInstance().getItem(ExpenseItem.TYPE, id);
+		mItem = DBMgr.getItem(ExpenseItem.TYPE, id);
 		if (mItem == null) return false;
 		return true;
 	}

@@ -1,5 +1,6 @@
 package com.fletamuto.sptb.db;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -11,47 +12,63 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.LiabilityItem;
+import com.fletamuto.sptb.util.FinanceDataFormat;
 
+/**
+ * 부채관련 DB를 관리
+ * @author yongbban
+ * @version 1.0.0.0
+ */
 public class LiabilityDBConnector extends BaseFinanceDBConnector {
-	public boolean addItem(FinanceItem financeItem) {
+	
+	/**
+	 * 자산을 DB테이블에 추가
+	 * @param item 부채 아이템
+	 * @return the row ID of the newly inserted row, or -1 if an error occurred
+	 */
+	public long addItem(FinanceItem financeItem) {
 		LiabilityItem item = (LiabilityItem)financeItem;
+		if (checkVaildItem(item) != DBDef.ValidError.SUCCESS) return -1; 
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
-		rowItem.put("year", item.getCreateYear());
-		rowItem.put("month", item.getCreateMonth());
-		rowItem.put("day", item.getCreateDay());
+		rowItem.put("create_date", item.getCreateDateString());
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
-		if (item.getCategory() != null) {
-			rowItem.put("main_category", item.getCategory().getId());
-		}
+		rowItem.put("memo", item.getMemo());
+		rowItem.put("main_category", item.getCategory().getId());
 		
-		db.insert("liability", null, rowItem);
+		long ret = db.insert("liability", null, rowItem);
 		db.close();
-		return true;
+		return ret;
 	}
 	
-	@Override
-	public boolean updateItem(FinanceItem financeItem) {
+	/**
+	 * 부채 DB테이블에서 수정
+	 * @param item 부채 아이템
+	 * @return the number of rows affected , or -1 if an error occurred
+	 */
+	public long updateItem(FinanceItem financeItem) {
 		LiabilityItem item = (LiabilityItem)financeItem;
+		if (checkVaildItem(item) != DBDef.ValidError.SUCCESS) return -1; 
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
-		rowItem.put("year", item.getCreateYear());
-		rowItem.put("month", item.getCreateMonth());
-		rowItem.put("day", item.getCreateDay());
+		rowItem.put("create_date", item.getCreateDateString());
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
-		if (item.getCategory() != null) {
-			rowItem.put("main_category", item.getCategory().getId());
-		}
+		rowItem.put("memo", item.getMemo());
+		rowItem.put("main_category", item.getCategory().getId());
 		
-		db.update("liability", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getId())});
+		long ret = db.update("liability", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getId())});
 		db.close();
-		return true;
+		return ret;
 	}
 	
+	/**
+	 * 모든 부채 아이템을 DB에서 가져온다.
+	 * @return ArrayList<FinanceItem> 부채아이템 목록
+	 */
 	public  ArrayList<FinanceItem> getAllItems() {
 		ArrayList<FinanceItem> LiabilityItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();
@@ -59,7 +76,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		queryBilder.setTables("liability, liability_main_category");
 		queryBilder.appendWhere("liability.main_category=liability_main_category._id");
-		Cursor c = queryBilder.query(db, null, null, null, null, null, "year, month, day DESC");
+		Cursor c = queryBilder.query(db, null, null, null, null, null, "create_date DESC");
 		
 		if (c.moveToFirst() != false) {
 			do {
@@ -71,7 +88,11 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return LiabilityItems;
 	}
 	
-	@Override
+	/**
+	 * 지정된 날짜의 부채 아이템을 가져온다.
+	 * @param Calendar calendar instance
+	 * @return ArrayList<FinanceItem> 부채아이템 목록
+	 */
 	public ArrayList<FinanceItem> getItems(Calendar calendar) {
 		ArrayList<FinanceItem> LiabilityItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();
@@ -81,7 +102,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		queryBilder.setTables("liability, liability_main_category");
 		queryBilder.appendWhere("liability.main_category=liability_main_category._id");
-		Cursor c = queryBilder.query(db, null, "year=? AND month=? AND day=?", params, null, null, null);
+		Cursor c = queryBilder.query(db, null, "strftime('%Y-%m-%d', create_date)=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			do {
@@ -93,7 +114,10 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return LiabilityItems;
 	}
 	
-	@Override
+	/**
+	 * 지정된 아이디의 부채 아이템을 가져온다.
+	 * @param id 가져올 부채 아이디
+	 */
 	public FinanceItem getItem(int id) {
 		FinanceItem item = null;
 		SQLiteDatabase db = getReadableDatabase();
@@ -112,17 +136,32 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return item;
 	}
 	
+	/**
+	 * 부채 객체를 만들고 DB에서 가져온 값으로 설정
+	 * @param c Cursor
+	 * @return 부채 아이템
+	 */
 	public LiabilityItem CreateLiabilityItem(Cursor c) {
 		LiabilityItem item = new LiabilityItem();
 		item.setId(c.getInt(0));
-		item.setCreateDate(c.getInt(1), c.getInt(2), c.getInt(3));
-		item.setAmount(c.getLong(4));
-		item.setTitle(c.getString(5));
-		item.setCategory(c.getInt(8), c.getString(9));
+		try {
+			item.setCreateDate(FinanceDataFormat.DATA_FORMAT.parse(c.getString(1)));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		item.setAmount(c.getLong(2));
+		item.setTitle(c.getString(3));
+		item.setMemo(c.getString(4));
+		item.setCategory(c.getInt(5), c.getString(9));
 		
 		return item;
 	}
 	
+	/**
+	 * 부채 상위 분류를 추가한다.
+	 * @param name 분류 이름
+	 * @return the row ID of the newly inserted row, or -1 if an error occurred 
+	 */
 	public long addCategory(String name) {
 		long ret = -1;
 		SQLiteDatabase db = getWritableDatabase();
@@ -135,6 +174,12 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return ret;
 	}
 	
+	/**
+	 * 부채 하위 분류를 추가한다.
+	 * @param mainCategoryID 상위분류 아이디
+	 * @param name 분류 이름
+	 * @return the row ID of the newly inserted row, or -1 if an error occurred 
+	 */
 	public long addSubCategory(long mainCategoryID, String name) {
 		long ret = -1;
 		SQLiteDatabase db = getWritableDatabase();
@@ -148,6 +193,11 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return ret;
 	}
 	
+	/**
+	 * 부채 상위분류 목록을 얻는다.
+	 * 카테고리 객체생성
+	 * @return ArrayList<Category> 상위 분류리스트
+	 */
 	public ArrayList<Category> getCategory() {
 		ArrayList<Category> category = new ArrayList<Category>();
 		SQLiteDatabase db = getReadableDatabase();
@@ -165,7 +215,10 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return category;
 	}
 	
-	@Override
+	/**
+	 *  총 부채금액을 얻는다.
+	 * @return long 총 금액
+	 */
 	public long getTotalAmount() {
 		long amount = 0L;
 		SQLiteDatabase db = getReadableDatabase();
@@ -180,13 +233,16 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return amount;
 	}
 	
-	@Override
+	/**
+	 * 지정된 날짜에 대한 총 부채금액을 얻는다.
+	 * @return long 총 금액
+	 */
 	public long getTotalAmountDay(Calendar calendar) {
 		long amount = 0L;
 		SQLiteDatabase db = getReadableDatabase();
 		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)), 
 				String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
-		String query = "SELECT SUM(amount) FROM liability WHERE year=? AND month=? AND day=?";
+		String query = "SELECT SUM(amount) FROM liability WHERE strftime('%Y-%m-%d', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
 		
 		if (c.moveToFirst() != false) {
@@ -197,13 +253,16 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return amount;
 	}
 
-	@Override
+	/**
+	 * 지정된 날짜의 추가된 부채 아이템 갯수를 얻는다.
+	 * @return int 아이템 수
+	 */
 	public int getItemCount(Calendar calendar) {
 		int count = 0;
 		SQLiteDatabase db = getReadableDatabase();
 		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)), 
 				String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
-		String query = "SELECT COUNT(*) FROM liability WHERE year=? AND month=? AND day=?";
+		String query = "SELECT COUNT(*) FROM liability WHERE strftime('%Y-%m-%d', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
 		
 		if (c.moveToFirst() != false) {
@@ -215,7 +274,11 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	}
 
 
-	@Override
+	/**
+	 * 지정된 아이디의 아이템을 DB에서 삭제한다.
+	 * @param id 삭제할 아이템 아이디
+	 * @return int the number of rows affected if a whereClause is passed in, 0 otherwise. To remove all rows and get a count pass "1" as the whereClause. 
+	 */
 	public int deleteItem(int id) {
 		int result = 0;
 		SQLiteDatabase db = getWritableDatabase();
@@ -224,7 +287,11 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return result;
 	}
 
-	@Override
+	/**
+	 * 지정된 상위분류  아이템을 DB에서 삭제한다.
+	 * @param id 삭제할 상위분류 아이디
+	 * @return int the number of rows affected if a whereClause is passed in, 0 otherwise. To remove all rows and get a count pass "1" as the whereClause. 
+	 */
 	public int deleteCategory(int id) {
 		int result = 0;
 		SQLiteDatabase db = getWritableDatabase();
@@ -234,16 +301,20 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return result;
 	}
 	
-	@Override
-	public boolean updateCategory(int id, String name) {
-		int result = 0;
+	/**
+	 * 지정된 아이디의 상위분류 이름을 변경한다.
+	 * @param id 변경할 상위분류 아이디
+	 * @param name 변경할 이름
+	 * @return int the number of rows affected 
+	 */
+	public int updateCategory(int id, String name) {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
 		
-		result = db.update("liability_main_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
+		int result = db.update("liability_main_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
 		db.close();
-		return (result != 0);
+		return result;
 	}
 }

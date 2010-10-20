@@ -18,7 +18,7 @@ public class SelectCategoryAssetsLayout extends SelectCategoryBaseLayout {
         setCategoryAdaper();
     }
     
-    
+    /*
     protected void onClickCategoryButton(Category category) {
     	mMainCategory = category;
     	Intent intent = new Intent(SelectCategoryAssetsLayout.this, SelectSubCategoryLayout.class);
@@ -45,4 +45,5 @@ public class SelectCategoryAssetsLayout extends SelectCategoryBaseLayout {
     	}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+	*/
 }

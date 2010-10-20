@@ -95,7 +95,7 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 	}
 
 	private void saveNewItem() {
-		if (DBMgr.getInstance().addCardItem(mPrepaidCard) == -1) {
+		if (DBMgr.addCardItem(mPrepaidCard) == -1) {
     		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mPrepaidCard.getID());
     		return;
     	}
@@ -149,7 +149,7 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 	}
 
 	private CardCompenyName getCompenyName(int id) {
-		CardCompenyName cardCompenyName = DBMgr.getInstance().getCardCompanyName(id);
+		CardCompenyName cardCompenyName = DBMgr.getCardCompanyName(id);
 		if (cardCompenyName == null) {
 			Log.e(LogTag.LAYOUT, ":: not found cardcompany item ID :" + id);
 		}

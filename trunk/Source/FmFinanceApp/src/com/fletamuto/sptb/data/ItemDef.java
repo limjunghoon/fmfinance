@@ -12,7 +12,7 @@ public final class ItemDef {
 		public static final int INCOME = 0;
 		public static final int EXPENSE = 1;
 		public static final int ASSETS = 2;
-		public static final int LIABILITY = 4;
+		public static final int LIABILITY = 3;
 	}
 	
 	/**	 학장된 수입 리스트*/

@@ -28,7 +28,7 @@ public class FmFinanceLayout extends FmBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main, true);
         
-        DBMgr.getInstance().initialize(getApplicationContext());
+        DBMgr.initialize(getApplicationContext());
         setTitleButtonListener();
         setBtnClickListener();
         updateViewText();
@@ -82,7 +82,7 @@ public class FmFinanceLayout extends FmBaseActivity {
     
     /** 총 수입 액수 갱신 */
     protected void updateTotalIncomeText() {
-    	long amount = DBMgr.getInstance().getTotalAmount(IncomeItem.TYPE);
+    	long amount = DBMgr.getTotalAmount(IncomeItem.TYPE);
     	TextView totalIncome = (TextView)findViewById(R.id.TVTotalIncome);
     	totalIncome.setText(String.format("%,d원", amount));
     	totalIncome.setTextColor(Color.BLUE);
@@ -90,7 +90,7 @@ public class FmFinanceLayout extends FmBaseActivity {
     
     /** 총 지출 액수 갱신 */
     protected void updateTotalExpenseText() {
-    	long amount = DBMgr.getInstance().getTotalAmount(ExpenseItem.TYPE);
+    	long amount = DBMgr.getTotalAmount(ExpenseItem.TYPE);
     	TextView totalExpense = (TextView)findViewById(R.id.TVTotalExpense);
     	totalExpense.setText(String.format("%,d원", -amount));
     	totalExpense.setTextColor(Color.RED);
@@ -105,16 +105,16 @@ public class FmFinanceLayout extends FmBaseActivity {
     
     /** 오늘 수입 정보갱신 */
     protected void updateTodayIncomeText() {
-    	int count = DBMgr.getInstance().getItemCount(IncomeItem.TYPE, Calendar.getInstance());
-    	long amount = DBMgr.getInstance().getTotalAmountDay(IncomeItem.TYPE, Calendar.getInstance());
+    	int count = DBMgr.getItemCount(IncomeItem.TYPE, Calendar.getInstance());
+    	long amount = DBMgr.getTotalAmountDay(IncomeItem.TYPE, Calendar.getInstance());
     	Button incomeToday = (Button)findViewById(R.id.BtnTodayIncome);
     	incomeToday.setText(String.format("수입(%d건) \t\t\t\t\t %,d원", count, amount));
 	}
     
     /** 오늘 지출 정보갱신 */
     protected void updateTodayExpenseText() {
-    	int count = DBMgr.getInstance().getItemCount(ExpenseItem.TYPE, Calendar.getInstance());
-    	long amount = DBMgr.getInstance().getTotalAmountDay(ExpenseItem.TYPE, Calendar.getInstance());
+    	int count = DBMgr.getItemCount(ExpenseItem.TYPE, Calendar.getInstance());
+    	long amount = DBMgr.getTotalAmountDay(ExpenseItem.TYPE, Calendar.getInstance());
     	Button expenseToday = (Button)findViewById(R.id.BtnTodayExpense);
     	expenseToday.setText(String.format("지출(%d건) \t\t\t\t\t %,d원", count, -amount));
 	}

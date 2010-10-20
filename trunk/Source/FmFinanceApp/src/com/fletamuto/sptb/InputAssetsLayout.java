@@ -52,7 +52,7 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
 	
 	@Override
 	protected boolean getItemInstance(int id) {
-		mItem = DBMgr.getInstance().getItem(AssetsItem.TYPE, id);
+		mItem = DBMgr.getItem(AssetsItem.TYPE, id);
 		if (mItem == null) return false;
 		return true;
 	}
@@ -65,7 +65,6 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
 
 	@Override
 	protected void updateCategory(int id, String name) {
-		// TODO Auto-generated method stub
 		mItem.setCategory(id, name);
 		updateBtnCategoryText(R.id.BtnAssetsCategory);
 	}
@@ -74,7 +73,8 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
 		String categoryText = getResources().getString(R.string.input_select_category);
 		AssetsItem assetsItem = (AssetsItem)mItem;
 		if (assetsItem.isVaildCatetory()) {
-			categoryText = String.format("%s - %s", assetsItem.getCategory().getName(), assetsItem.getSubCategory().getName());
+			// categoryText = String.format("%s - %s", assetsItem.getCategory().getName(), assetsItem.getSubCategory().getName());
+			categoryText = String.format("%s", assetsItem.getCategory().getName());
 		}
 		((Button)findViewById(btnID)).setText(categoryText);
     }

@@ -30,7 +30,7 @@ public class DBConnector {
 			new AssetsDBConnector(), 
 			new LiabilityDBConnector()};
 	
-	protected BaseFinanceDBConnector getDBInstance(int itemType){
+	public BaseFinanceDBConnector getBaseFinanceDBInstance(int itemType){
 		if (itemType < 0|| itemType >= mDBConnector.length) {
 			Log.e(LogTag.DB, "== invaild finance item itemType : " + itemType);
 			return null;
@@ -38,89 +38,89 @@ public class DBConnector {
 		return mDBConnector[itemType];
 	}
 	  
-	public boolean addFinanceItem(FinanceItem item) {
+	public long addFinanceItem(FinanceItem item) {
 		Log.i(LogTag.DB, "== DBConnector AddFinanceItem type : " + item.getType());
 		if (item.getType() >= mDBConnector.length) {
 			Log.e(LogTag.DB, "== invaild finance item " + item.getType());
-			return false;
+			return -1;
 		}
 		
 		if (item.getCategory().getId() == -1) {
 			Log.e(LogTag.DB, "== invaild category item ID");
-			return false;
+			return -1;
 		}
 		
-		return getDBInstance(item.getType()).addItem(item);
+		return getBaseFinanceDBInstance(item.getType()).addItem(item);
 	}
 	
-	public boolean updateFinanceItem(FinanceItem item) {
+	public long updateFinanceItem(FinanceItem item) {
 		Log.i(LogTag.DB, "== DBConnector updateFinanceItem type : " + item.getType());
 		if (item.getType() >= mDBConnector.length) {
 			Log.e(LogTag.DB, "== invaild finance item " + item.getType());
-			return false;
+			return -1;
 		}
 		
 		if (item.getId() == -1 || item.getCategory().getId() == -1) {
 			Log.e(LogTag.DB, "== invaild item ID");
-			return false;
+			return -1;
 		}
 		
-		return getDBInstance(item.getType()).updateItem(item);
+		return getBaseFinanceDBInstance(item.getType()).updateItem(item);
 	}
 	
 	public FinanceItem getItem(int itemType, int id) {
 		Log.i(LogTag.DB, "== DBConnector getItem type : " + itemType);
-		return getDBInstance(itemType).getItem(id);
+		return getBaseFinanceDBInstance(itemType).getItem(id);
 	}
 	
 	public long getTotalAmount(int itemType) {
 		Log.i(LogTag.DB, "== DBConnector getTotalAmount type : " + itemType);
-		return getDBInstance(itemType).getTotalAmount();
+		return getBaseFinanceDBInstance(itemType).getTotalAmount();
 	}
 	
 	public long getTotalAmountDay(int itemType, Calendar calendar) {
 		Log.i(LogTag.DB, "== DBConnector getTotalAmountDay type : " + itemType);
-		return getDBInstance(itemType).getTotalAmountDay(calendar);
+		return getBaseFinanceDBInstance(itemType).getTotalAmountDay(calendar);
 	}
 	
 	public ArrayList<FinanceItem> getFinanceAllItems(int itemType) {
 		Log.i(LogTag.DB, "== DBConnector getFinanceAllItems type : " + itemType);
-		return getDBInstance(itemType).getAllItems();
+		return getBaseFinanceDBInstance(itemType).getAllItems();
 	}
 	
 	public long addCategory(int itemType, String name) {
 		Log.i(LogTag.DB, "== DBConnector addCategory type : " + itemType);
-		return getDBInstance(itemType).addCategory(name);
+		return getBaseFinanceDBInstance(itemType).addCategory(name);
 	}
 	
 	public long addSubCategory(int itemType, long mainCategoryID, String name) {
 		Log.i(LogTag.DB, "== DBConnector addSubCategory type : " + itemType);
-		return getDBInstance(itemType).addSubCategory(mainCategoryID, name);
+		return getBaseFinanceDBInstance(itemType).addSubCategory(mainCategoryID, name);
 	}
 	
 	public ArrayList<Category> getCategory(int itemType) {
 		Log.i(LogTag.DB, "== DBConnector getCategory type : " + itemType);
-		return getDBInstance(itemType).getCategory();
+		return getBaseFinanceDBInstance(itemType).getCategory();
 	}
 
 	public ArrayList<Category> getSubCategory(int itemType, long mainCategoryId) {
 		Log.i(LogTag.DB, "== DBConnector getSubCategory type : " + itemType);
-		return getDBInstance(itemType).getSubCategory(mainCategoryId);
+		return getBaseFinanceDBInstance(itemType).getSubCategory(mainCategoryId);
 	}
 	
 	public int getItemCount(int itemType, Calendar calendar) {
 		Log.i(LogTag.DB, "== DBConnector getItemCount type : " + itemType);
-		return getDBInstance(itemType).getItemCount(calendar);
+		return getBaseFinanceDBInstance(itemType).getItemCount(calendar);
 	}
 
 	public ArrayList<FinanceItem> getItems(int itemType, Calendar calendar) {
 		Log.i(LogTag.DB, "== DBConnector getItems type : " + itemType);
-		return getDBInstance(itemType).getItems(calendar);
+		return getBaseFinanceDBInstance(itemType).getItems(calendar);
 	}
 
 	public int deleteItem(int itemType, int id) {
 		Log.i(LogTag.DB, "== DBConnector deleteItem ");
-		int result = getDBInstance(itemType).deleteItem(id);
+		int result = getBaseFinanceDBInstance(itemType).deleteItem(id);
 		if (result == 0) {
 			Log.e(LogTag.DB, "== do not delete id : " + id + " type : " + itemType); 
 		}
@@ -129,7 +129,7 @@ public class DBConnector {
 
 	public int deleteCategory(int itemType, int id) {
 		Log.i(LogTag.DB, "== DBConnector deleteCategory ");
-		int result = getDBInstance(itemType).deleteCategory(id);
+		int result = getBaseFinanceDBInstance(itemType).deleteCategory(id);
 		if (result == 0) {
 			Log.e(LogTag.DB, "== do not delete id : " + id + " type : " + itemType); 
 		}
@@ -138,26 +138,26 @@ public class DBConnector {
 
 	public int deleteSubCategory(int itemType, int id) {
 		Log.i(LogTag.DB, "== DBConnector deleteSubCategory ");
-		int result = getDBInstance(itemType).deleteSubCategory(id);
+		int result = getBaseFinanceDBInstance(itemType).deleteSubCategory(id);
 		if (result == 0) {
 			Log.e(LogTag.DB, "== do not delete id : " + id + " type : " + itemType); 
 		}
 		return result;
 	}
 
-	public boolean updateCategory(int itemType, int id, String name) {
+	public int updateCategory(int itemType, int id, String name) {
 		Log.i(LogTag.DB, "== DBConnector updateCategory ");
-		boolean result = getDBInstance(itemType).updateCategory(id, name);
-		if (result == false) {
+		int result = getBaseFinanceDBInstance(itemType).updateCategory(id, name);
+		if (result == 0) {
 			Log.e(LogTag.DB, "== do not update id : " + id + " type : " + itemType); 
 		}
 		return result;
 	}
 	
-	public boolean updateSubCategory(int itemType, int id, String name) {
+	public int updateSubCategory(int itemType, int id, String name) {
 		Log.i(LogTag.DB, "== DBConnector updateSubCategory ");
-		boolean result = getDBInstance(itemType).updateSubCategory(id, name);
-		if (result == false) {
+		int result = getBaseFinanceDBInstance(itemType).updateSubCategory(id, name);
+		if (result == 0) {
 			Log.e(LogTag.DB, "== do not update id : " + id + " type : " + itemType); 
 		}
 		return result;

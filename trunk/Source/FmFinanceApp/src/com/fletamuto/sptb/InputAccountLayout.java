@@ -77,7 +77,7 @@ public class InputAccountLayout extends InputBaseLayout {
 
 	@Override
 	protected boolean getItemInstance(int id) {
-		mAccount = DBMgr.getInstance().getAccountItem(id);
+		mAccount = DBMgr.getAccountItem(id);
 		if (mAccount == null) return false;
 		return true;
 	}
@@ -100,7 +100,7 @@ public class InputAccountLayout extends InputBaseLayout {
 	}
 
 	private void saveNewItem() {
-		if (DBMgr.getInstance().addAccountItem(mAccount) == -1) {
+		if (DBMgr.addAccountItem(mAccount) == -1) {
     		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mAccount.getID());
     		return;
     	}
@@ -135,7 +135,7 @@ public class InputAccountLayout extends InputBaseLayout {
 			return null;
 		}
 		
-		return DBMgr.getInstance().getInstitution(id);
+		return DBMgr.getInstitution(id);
 	}
     
 	@Override

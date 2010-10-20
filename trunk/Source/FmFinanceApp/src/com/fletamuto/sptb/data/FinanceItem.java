@@ -1,13 +1,14 @@
 package com.fletamuto.sptb.data;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+
+import com.fletamuto.sptb.util.FinanceDataFormat;
 
 public abstract class FinanceItem {
 	private String mTitle;
 	private String mMemo;
 	private Calendar mCreateDate = Calendar.getInstance();
-	private SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private long mAmount = 0L;
 	private int	mID = -1;
 	private final Category mCategory = new Category(-1, "");
@@ -56,6 +57,10 @@ public abstract class FinanceItem {
 	public void setCreateDate(Calendar createDate) {
 		this.mCreateDate = createDate;
 	}
+	
+	public void setCreateDate(Date date) {
+		this.mCreateDate.setTime(date);
+	}
 
 	public Calendar getCreateDate() {
 		return mCreateDate;
@@ -69,8 +74,8 @@ public abstract class FinanceItem {
 		return mAmount;
 	}
 	
-	public String getDateString() {
-		return mDateFormat.format(mCreateDate.getTime());
+	public String getCreateDateString() {
+		return FinanceDataFormat.getFormat(mCreateDate.getTime());
 	}
 	
 	public void setCreateDate(int year, int month, int day) {

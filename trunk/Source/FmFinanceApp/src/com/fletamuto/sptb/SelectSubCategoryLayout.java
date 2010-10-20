@@ -28,7 +28,7 @@ public class SelectSubCategoryLayout extends SelectCategoryBaseLayout {
 			Log.e(LogTag.LAYOUT, "== invaild category type");
 			return;
 		}
-		mArrCategory = DBMgr.getInstance().getSubCategory(mType, mMainCagegoryID);
+		mArrCategory = DBMgr.getSubCategory(mType, mMainCagegoryID);
 		setCategoryAdaper();
         
 	}
