@@ -84,7 +84,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 						}
 					}
 					else {
-						if (updateMainCategory(mMainCategoryID, mainCategoryName.getText().toString()) == false) {
+						if (updateMainCategory(mMainCategoryID, mainCategoryName.getText().toString()) == 0) {
 							Log.e(LogTag.LAYOUT, ":: Fail to update category");
 							return;
 						}
@@ -102,7 +102,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 			return null;
 		}
 		
-		mMainCategoryID = DBMgr.getInstance().addCategory(mType, name);
+		mMainCategoryID = DBMgr.addCategory(mType, name);
 		
 		if (mMainCategoryID == -1) {
 			return null;
@@ -130,7 +130,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 			return null;
 		}
 		
-		int subCategoryID = DBMgr.getInstance().addSubCategory(mType, mMainCategoryID, subCategoryName);
+		int subCategoryID = DBMgr.addSubCategory(mType, mMainCategoryID, subCategoryName);
 		if (subCategoryID == -1) {
 			return null;
 		}
@@ -260,11 +260,11 @@ public class EditCategoryLayout  extends FmBaseActivity {
     
     protected void getCategoryItems() {
     	if (mHasWithMainCategory == false) {
-    		mArrCategory = DBMgr.getInstance().getCategory(mType);
+    		mArrCategory = DBMgr.getCategory(mType);
     	}
     	else {
     		if (mMainCategoryID != -1) {
-    			mArrCategory = DBMgr.getInstance().getSubCategory(mType, mMainCategoryID);
+    			mArrCategory = DBMgr.getSubCategory(mType, mMainCategoryID);
     		}
     	}
     }
@@ -356,12 +356,12 @@ public class EditCategoryLayout  extends FmBaseActivity {
 			
 			public void onClick(View v) {
 				if (mHasWithMainCategory) {
-					if (DBMgr.getInstance().deleteSubCategory(mType, dleteItemID) == 0) {
+					if (DBMgr.deleteSubCategory(mType, dleteItemID) == 0) {
 						return;
 					}
 				}
 				else {
-					if (DBMgr.getInstance().deleteCategory(mType, dleteItemID) == 0) {
+					if (DBMgr.deleteCategory(mType, dleteItemID) == 0) {
 						return;
 					}
 				}
@@ -425,13 +425,13 @@ public class EditCategoryLayout  extends FmBaseActivity {
 				}
 				
 				if (mHasWithMainCategory == true) {
-					if (updateSubCategory(editCategoryID, categoryName) == false) {
+					if (updateSubCategory(editCategoryID, categoryName) == 0) {
 						Log.e(LogTag.LAYOUT, ":: Fail update the subcategory");
 						return;
 					}
 				}
 				else {
-					if (updateMainCategory(editCategoryID, categoryName) == false) {
+					if (updateMainCategory(editCategoryID, categoryName) == 0) {
 						Log.e(LogTag.LAYOUT, ":: Fail update the category");
 						return;
 					}
@@ -453,12 +453,12 @@ public class EditCategoryLayout  extends FmBaseActivity {
 		.show();
 	}
 
-	private boolean updateMainCategory(int id, String name) {
-		return (DBMgr.getInstance().updateCategory(mType, id, name));
+	private int updateMainCategory(int id, String name) {
+		return (DBMgr.updateCategory(mType, id, name));
 	}
     
-    private boolean updateSubCategory(int id, String name) {
-    	return (DBMgr.getInstance().updateSubCategory(mType, id, name));
+    private int updateSubCategory(int id, String name) {
+    	return (DBMgr.updateSubCategory(mType, id, name));
 	}
     
     public class CategoryItemAdapter extends ArrayAdapter<Category> {

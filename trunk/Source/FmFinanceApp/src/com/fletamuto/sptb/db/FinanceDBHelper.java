@@ -12,7 +12,6 @@ import android.util.Log;
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.R;
 import com.fletamuto.sptb.data.FinancialCompany;
-import com.fletamuto.sptb.data.PaymentMethod;
 
 /**
  * DB 생성되거나 버전이 업데이트 될 경우 
@@ -177,7 +176,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE expense ( " +
 				"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 				"create_date DATE NOT NULL," +
-				"create_time TIME NOT NULL," +
+				"create_time TIME ," +
 				"amount INTEGER NOT NULL," +
 				"title TEXT," +
 				"memo TEXT," +
@@ -234,7 +233,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"title TEXT," +
 					"memo TEXT," +
 					"main_category INTEGER NOT NULL," +
-					"sub_category INTEGER NOT NULL," +
+					"sub_category INTEGER," +
 					"extend INTEGER);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());

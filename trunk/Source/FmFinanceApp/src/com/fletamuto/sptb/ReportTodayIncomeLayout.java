@@ -35,7 +35,7 @@ public class ReportTodayIncomeLayout extends ReportBaseLayout {
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	IncomeItem item = (IncomeItem)financeItem;
-    	((TextView)convertView.findViewById(R.id.TVIncomeReportListDate)).setText("날짜 : " + item.getDateString());			
+    	((TextView)convertView.findViewById(R.id.TVIncomeReportListDate)).setText("날짜 : " + item.getCreateDateString());			
 		((TextView)convertView.findViewById(R.id.TVIncomeReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
 		((TextView)convertView.findViewById(R.id.TVIncomeReportListMemo)).setText("메모 : " + item.getMemo());
 		((TextView)convertView.findViewById(R.id.TVIncomeReportListCategory)).setText("분류 : " + item.getCategory().getName());
@@ -50,12 +50,12 @@ public class ReportTodayIncomeLayout extends ReportBaseLayout {
     
     @Override
 	protected int deleteItemToDB(int id) {
-		return DBMgr.getInstance().deleteItem(IncomeItem.TYPE, id);
+		return DBMgr.deleteItem(IncomeItem.TYPE, id);
 	}
 
 	@Override
 	protected FinanceItem getItemInstance(int id) {
-		return DBMgr.getInstance().getItem(IncomeItem.TYPE, id);
+		return DBMgr.getItem(IncomeItem.TYPE, id);
 	}
 
 }

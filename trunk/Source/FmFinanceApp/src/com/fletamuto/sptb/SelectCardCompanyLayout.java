@@ -34,7 +34,7 @@ public class SelectCardCompanyLayout extends FmBaseActivity {
     }
 	
 	protected void getInstitutionList() {
-		mCardCompenyNames = DBMgr.getInstance().getCardCompanyNames();
+		mCardCompenyNames = DBMgr.getCardCompanyNames();
 	}
 	
 	protected void setInstitutionAdaper() {

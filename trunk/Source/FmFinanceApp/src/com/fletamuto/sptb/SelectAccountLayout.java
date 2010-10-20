@@ -38,7 +38,7 @@ public class SelectAccountLayout extends Activity {
     }
 	
 	protected void getAccountItems() {
-		mArrAccount = DBMgr.getInstance().getAccountAllItems();
+		mArrAccount = DBMgr.getAccountAllItems();
     }
 	
 	protected void setAdapterList() {
@@ -81,7 +81,7 @@ public class SelectAccountLayout extends Activity {
 				int accountID = data.getIntExtra("ACCOUNT_ID", -1);
 				if (accountID == -1) return;
 				
-				AccountItem account = DBMgr.getInstance().getAccountItem(accountID);
+				AccountItem account = DBMgr.getAccountItem(accountID);
 				if (account == null) return;
 				mAdapterAccount.add(account);
 				mAdapterAccount.notifyDataSetChanged();

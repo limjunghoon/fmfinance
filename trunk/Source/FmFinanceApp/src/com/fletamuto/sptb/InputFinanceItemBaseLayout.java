@@ -15,6 +15,11 @@ import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
+/**
+ * 수입, 지출, 자산, 부채  입력 또는 수정 기본 레이아웃 클래스
+ * @author yongbban
+ * @version 1.0.0.0
+ */
 public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 	
 	protected FinanceItem mItem;
@@ -46,7 +51,7 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 	}
     
     protected void updateBtnDateText(int btnID) {	
-    	((Button)findViewById(btnID)).setText(mItem.getDateString());
+    	((Button)findViewById(btnID)).setText(mItem.getCreateDateString());
     }
     
     protected void updateBtnAmountText(int btnID) {
@@ -97,18 +102,24 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 		 });
     }
     
-    protected void saveNewItem(Class<?> cls) {
-    	if (DBMgr.getInstance().addFinanceItem(mItem) == false) {
+    /**
+     * 아이템을 DB에 저장
+     * @param cls The component class that is to be used for the intent.
+     */
+    protected boolean saveNewItem(Class<?> cls) {
+
+    	if (DBMgr.addFinanceItem(mItem) == -1) {
     		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mItem.getId());
-    		return;
+    		return false;
     	}
     	
     	Intent intent = new Intent(InputFinanceItemBaseLayout.this, cls);
 		startActivity(intent);
+		return true;
     }
     
     protected void saveUpdateItem() {
-    	if (DBMgr.getInstance().updateFinanceItem(mItem) == false) {
+    	if (DBMgr.updateFinanceItem(mItem) == 0) {
     		Log.e(LogTag.LAYOUT, "== UPDATE fail to the save item : " + mItem.getId());
     		return;
     	}

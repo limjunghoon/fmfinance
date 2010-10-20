@@ -83,7 +83,7 @@ public class InputCheckCardLayout extends InputBaseLayout {
 	}
 
 	private void saveNewItem() {
-		if (DBMgr.getInstance().addCardItem(mCheckCard) == -1) {
+		if (DBMgr.addCardItem(mCheckCard) == -1) {
     		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mCheckCard.getID());
     		return;
     	}
@@ -131,7 +131,7 @@ public class InputCheckCardLayout extends InputBaseLayout {
 	
 
 	private AccountItem getAccount(int id) {
-		AccountItem account = DBMgr.getInstance().getAccountItem(id);
+		AccountItem account = DBMgr.getAccountItem(id);
 		if (account == null) {
 			Log.e(LogTag.LAYOUT, ":: not found account item ID :" + id);
 		}
@@ -139,7 +139,7 @@ public class InputCheckCardLayout extends InputBaseLayout {
 	}
 
 	private CardCompenyName getCompenyName(int id) {
-		CardCompenyName cardCompenyName = DBMgr.getInstance().getCardCompanyName(id);
+		CardCompenyName cardCompenyName = DBMgr.getCardCompanyName(id);
 		if (cardCompenyName == null) {
 			Log.e(LogTag.LAYOUT, ":: not found cardcompany item ID :" + id);
 		}

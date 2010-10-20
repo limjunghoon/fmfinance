@@ -33,7 +33,7 @@ public class ReportExpenseLayout extends ReportBaseLayout {
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	ExpenseItem item = (ExpenseItem)financeItem;
 		
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListDate)).setText("날짜 : " + item.getDateString());			
+		((TextView)convertView.findViewById(R.id.TVExpenseReportListDate)).setText("날짜 : " + item.getCreateDateString());			
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListMemo)).setText("메모 : " + item.getMemo());
 		String categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
@@ -49,12 +49,12 @@ public class ReportExpenseLayout extends ReportBaseLayout {
     
     @Override
 	protected int deleteItemToDB(int id) {
-		return DBMgr.getInstance().deleteItem(ExpenseItem.TYPE, id);
+		return DBMgr.deleteItem(ExpenseItem.TYPE, id);
 	}
 
 	@Override
 	protected FinanceItem getItemInstance(int id) {
-		return DBMgr.getInstance().getItem(ExpenseItem.TYPE, id);
+		return DBMgr.getItem(ExpenseItem.TYPE, id);
 	}
 
 }

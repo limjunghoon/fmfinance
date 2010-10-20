@@ -34,7 +34,7 @@ public class ReportAssetsLayout extends ReportBaseLayout {
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	AssetsItem item = (AssetsItem)financeItem;
 		
-		((TextView)convertView.findViewById(R.id.TVAssetsReportListDate)).setText(item.getDateString());			
+		((TextView)convertView.findViewById(R.id.TVAssetsReportListDate)).setText(item.getCreateDateString());			
 		((TextView)convertView.findViewById(R.id.TVAssetsReportListAmount)).setText(String.format("±Ý¾× : %,d¿ø", item.getAmount()));
 		((TextView)convertView.findViewById(R.id.TVAssetsReportListTitle)).setText(item.getTitle());
 		String categoryText = String.format(item.getCategory().getName());
@@ -51,11 +51,11 @@ public class ReportAssetsLayout extends ReportBaseLayout {
 
 	@Override
 	protected int deleteItemToDB(int id) {
-		return DBMgr.getInstance().deleteItem(AssetsItem.TYPE, id);
+		return DBMgr.deleteItem(AssetsItem.TYPE, id);
 	}
     
 	protected FinanceItem getItemInstance(int id) {
-		return DBMgr.getInstance().getItem(AssetsItem.TYPE, id);
+		return DBMgr.getItem(AssetsItem.TYPE, id);
 	}
 
 }

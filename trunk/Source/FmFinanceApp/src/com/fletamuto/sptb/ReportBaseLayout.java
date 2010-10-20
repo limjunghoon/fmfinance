@@ -47,7 +47,7 @@ public abstract class ReportBaseLayout extends ListActivity {
 	}
 	
 	protected boolean getItemsFromDB(int itemType) {
-    	mItems = DBMgr.getInstance().getAllItems(itemType);
+    	mItems = DBMgr.getAllItems(itemType);
         if (mItems == null) {
         	return false;
         }
@@ -55,7 +55,7 @@ public abstract class ReportBaseLayout extends ListActivity {
     }
 	
 	protected boolean getItemsFromDB(int itemType, Calendar calendar) {
-		mItems = DBMgr.getInstance().getItems(itemType, calendar);
+		mItems = DBMgr.getItems(itemType, calendar);
         if (mItems == null) {
         	return false;
         }

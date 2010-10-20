@@ -45,7 +45,7 @@ public abstract class ReportBaseCardLayout extends FmBaseActivity {
     }
 	
 	protected void getCardItems() {
-		mArrCard = DBMgr.getInstance().getCardItems(mType);
+		mArrCard = DBMgr.getCardItems(mType);
     }
 	
 	protected void setAdapterList() {
@@ -118,7 +118,7 @@ public abstract class ReportBaseCardLayout extends FmBaseActivity {
 		btnDelete.setOnClickListener(new View.OnClickListener() {
 	
 			public void onClick(View v) {
-				if (DBMgr.getInstance().deleteAccount(ItemID) == 0 ) {
+				if (DBMgr.deleteAccount(ItemID) == 0 ) {
 					Log.e(LogTag.LAYOUT, "can't delete accoutn Item  ID : " + ItemID);
 				}
 				mArrCard.remove(Itempsition);
@@ -135,7 +135,7 @@ public abstract class ReportBaseCardLayout extends FmBaseActivity {
 				int cardID = data.getIntExtra("CARD_ID", -1);
 				if (cardID == -1) return;
 				
-				CardItem card = DBMgr.getInstance().getCardItem(cardID);
+				CardItem card = DBMgr.getCardItem(cardID);
 				if (card == null) return;
 				if (mAdapterCard == null) {
 					getCardItems();

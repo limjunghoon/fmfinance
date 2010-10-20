@@ -41,7 +41,7 @@ public class ReportAccountLayout extends FmBaseActivity {
     }
 	
 	protected void getAccountItems() {
-		mArrAccount = DBMgr.getInstance().getAccountAllItems();
+		mArrAccount = DBMgr.getAccountAllItems();
 		mAccountTypes = getResources().getStringArray(R.array.account_type);
     }
 	
@@ -122,7 +122,7 @@ public class ReportAccountLayout extends FmBaseActivity {
 		btnDelete.setOnClickListener(new View.OnClickListener() {
 	
 			public void onClick(View v) {
-				if (DBMgr.getInstance().deleteAccount(ItemID) == 0 ) {
+				if (DBMgr.deleteAccount(ItemID) == 0 ) {
 					Log.e(LogTag.LAYOUT, "can't delete accoutn Item  ID : " + ItemID);
 				}
 				mArrAccount.remove(Itempsition);
@@ -139,7 +139,7 @@ public class ReportAccountLayout extends FmBaseActivity {
 				int accountID = data.getIntExtra("ACCOUNT_ID", -1);
 				if (accountID == -1) return;
 				
-				AccountItem account = DBMgr.getInstance().getAccountItem(accountID);
+				AccountItem account = DBMgr.getAccountItem(accountID);
 				if (account == null) return;
 				mAdapterAccount.add(account);
 				mAdapterAccount.notifyDataSetChanged();

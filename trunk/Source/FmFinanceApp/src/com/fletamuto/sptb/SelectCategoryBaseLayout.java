@@ -42,7 +42,7 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 			Log.e(LogTag.LAYOUT, "== invaild category type");
 			return;
 		}
-		mArrCategory = DBMgr.getInstance().getCategory(mType);
+		mArrCategory = DBMgr.getCategory(mType);
 		
 	}
 	

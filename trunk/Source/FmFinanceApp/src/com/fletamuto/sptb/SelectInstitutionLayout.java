@@ -35,7 +35,7 @@ public class SelectInstitutionLayout extends FmBaseActivity {
     }
 	
 	protected void getInstitutionList() {
-		mArrInstitution = DBMgr.getInstance().getInstitutions();
+		mArrInstitution = DBMgr.getInstitutions();
 	}
 	
 	protected void setInstitutionAdaper() {
