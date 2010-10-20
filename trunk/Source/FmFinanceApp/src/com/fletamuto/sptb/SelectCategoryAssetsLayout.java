@@ -1,14 +1,12 @@
 package com.fletamuto.sptb;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.fletamuto.sptb.data.AssetsItem;
-import com.fletamuto.sptb.data.Category;
 
 public class SelectCategoryAssetsLayout extends SelectCategoryBaseLayout {
-	private Category mMainCategory;
+//	private Category mMainCategory;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
