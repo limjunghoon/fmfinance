@@ -85,6 +85,11 @@
     <string name="main_memu_home">홈</string>
     <string name="main_memu_assets_liability">자산</string>
     <string name="main_memu_report">목록 </string>
+    <string name="main_memu_card">카드</string>
+    <string name="main_memu_account">계좌</string>
+    <string name="main_memu_budget">예산</string>
+    <string name="main_memu_purpose">목표</string>
+    <string name="main_memu_search">검색</string>
     <string name="main_memu_setting">설정</string>
     <string name="app_name">FmFinanceLayout</string>
 </resources>
