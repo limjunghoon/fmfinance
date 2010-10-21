@@ -45,6 +45,11 @@
 <activity android:name=".InputPrepaidCardLayout" android:label="선불카드 입력"></activity>
 <activity android:name=".ReportCheckCardLayout" android:label="체크카드 목록"></activity>
 <activity android:name=".ReportPrepaidCardLayout" android:label="선불카드 목록"></activity>
+<activity android:name=".CardLayout" android:label="카드"></activity>
+<activity android:name=".AccountLayout"></activity>
+<activity android:name=".BudgetLayout"></activity>
+<activity android:name="SearchLayout"></activity>
+<activity android:name="PurposeLayout"></activity>
 </application>
 
 

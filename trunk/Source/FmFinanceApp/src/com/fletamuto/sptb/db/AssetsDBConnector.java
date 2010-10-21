@@ -99,8 +99,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
-		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)), 
-				String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
+		String[] params = {FinanceDataFormat.getFormat(calendar.getTime())};
 		
 		queryBilder.setTables("assets, assets_main_category");
 		queryBilder.appendWhere("assets.main_category=assets_main_category._id");

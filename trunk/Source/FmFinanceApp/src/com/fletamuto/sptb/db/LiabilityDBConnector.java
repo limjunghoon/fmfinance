@@ -97,8 +97,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		ArrayList<FinanceItem> LiabilityItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
-		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)), 
-				String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
+		String[] params = {FinanceDataFormat.getFormat(calendar.getTime())};
 		
 		queryBilder.setTables("liability, liability_main_category");
 		queryBilder.appendWhere("liability.main_category=liability_main_category._id");

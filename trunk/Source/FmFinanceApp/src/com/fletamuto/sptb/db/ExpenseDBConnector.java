@@ -102,8 +102,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
-		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)), 
-				String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
+		String[] params = {FinanceDataFormat.getFormat(calendar.getTime())};
 		
 		queryBilder.setTables("expense, expense_main_category, expense_sub_category");
 		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id ");
