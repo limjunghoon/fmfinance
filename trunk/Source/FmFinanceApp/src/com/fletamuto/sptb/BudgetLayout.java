@@ -14,6 +14,6 @@ public class BudgetLayout extends FmBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_budget, true);
         
-   
+        setTitle("¿¹»ê");
     }
 }

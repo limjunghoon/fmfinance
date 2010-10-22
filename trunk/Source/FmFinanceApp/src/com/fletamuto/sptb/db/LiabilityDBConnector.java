@@ -97,7 +97,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		ArrayList<FinanceItem> LiabilityItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
-		String[] params = {FinanceDataFormat.getFormat(calendar.getTime())};
+		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		
 		queryBilder.setTables("liability, liability_main_category");
 		queryBilder.appendWhere("liability.main_category=liability_main_category._id");
@@ -144,7 +144,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		LiabilityItem item = new LiabilityItem();
 		item.setId(c.getInt(0));
 		try {
-			item.setCreateDate(FinanceDataFormat.DATA_FORMAT.parse(c.getString(1)));
+			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

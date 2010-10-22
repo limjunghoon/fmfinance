@@ -99,7 +99,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
-		String[] params = {FinanceDataFormat.getFormat(calendar.getTime())};
+		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		
 		queryBilder.setTables("assets, assets_main_category");
 		queryBilder.appendWhere("assets.main_category=assets_main_category._id");
@@ -146,7 +146,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		AssetsItem item = new AssetsItem();
 		item.setId(c.getInt(0));
 		try {
-			item.setCreateDate(FinanceDataFormat.DATA_FORMAT.parse(c.getString(1)));
+			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

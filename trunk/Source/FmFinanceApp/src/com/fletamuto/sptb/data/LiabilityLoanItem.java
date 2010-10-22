@@ -1,0 +1,55 @@
+package com.fletamuto.sptb.data;
+
+
+/**
+ * 부채 중 대출
+ * @author yongbban
+ *
+ */
+public class LiabilityLoanItem extends AssetsExtendItem {
+	
+	/**
+	 * 대출 DB테이블 아이디
+	 */
+	private int mLoanID = -1;
+	
+	/**
+	 * 대출받은 기관
+	 */
+	private FinancialCompany mCompany;
+
+	/**
+	 * 대출 아이디 설정
+	 * @param loanID
+	 */
+	public void setLoanID(int loanID) {
+		this.mLoanID = loanID;
+	}
+
+	/**
+	 * 대출 아이디를 얻는다.
+	 * @return
+	 */
+	public int getLoanID() {
+		return mLoanID;
+	}
+
+	/**
+	 * 대출 받은 기관 설정
+	 * @param company
+	 */
+	public void setCompany(FinancialCompany company) {
+		this.mCompany = company;
+	}
+
+	/**
+	 * 대출 바은 기관을 얻는다.
+	 * @return
+	 */
+	public FinancialCompany getCompany() {
+		return mCompany;
+	}
+	
+	
+	
+}

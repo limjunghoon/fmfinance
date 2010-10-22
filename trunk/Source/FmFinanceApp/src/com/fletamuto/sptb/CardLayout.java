@@ -14,6 +14,6 @@ public class CardLayout extends FmBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_card, true);
         
-   
+        setTitle("Ä«µå");
     }
 }

@@ -1,8 +1,13 @@
 package com.fletamuto.sptb.data;
 
-public class Category {
+/**
+ * 상위분류와 하위분류
+ * @author yongbban
+ *
+ */
+public class Category extends UISelectItem {
 	private String mName;
-	private int mID;
+	private int mID = -1; 
 	
 	public Category(int id, String name) {
 		this.mID = id;

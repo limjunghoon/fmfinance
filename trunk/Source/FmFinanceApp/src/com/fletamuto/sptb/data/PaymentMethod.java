@@ -2,38 +2,26 @@ package com.fletamuto.sptb.data;
 
 public class PaymentMethod {
 	public final static int CASH = 0;
-	public final static int CREDIT_CARD = 1;
-	public final static int CHECK_CARD = 2;
-	public final static int PRIPAID_CARD = 3;
-	public final static int CASH_CARD = 4;
-	public final static int ACCOUNT = 5;
+	public final static int CARD = 1;
+	public final static int ACCOUNT = 2;
 	
-	private int id = -1;
-	private int type;
-	private int type_id;
+	private int mID = -1;
+	private int mType = CASH;
+	
 	
 	public void setId(int id) {
-		this.id = id;
+		this.mID = id;
 	}
 	
 	public int getId() {
-		return id;
+		return mID;
 	}
 	
 	public void setType(int type) {
-		this.type = type;
+		this.mType = type;
 	}
 	
 	public int getType() {
-		return type;
+		return mType;
 	}
-	
-	public void setType_id(int type_id) {
-		this.type_id = type_id;
-	}
-	
-	public int getType_id() {
-		return type_id;
-	}
-	 
 }
