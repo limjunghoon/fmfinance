@@ -54,7 +54,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
-		rowItem.put("create_date", item.getCreateYear());
+		rowItem.put("create_date", item.getCreateDateString());
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getId());
@@ -96,7 +96,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		ArrayList<FinanceItem> incomeItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
-		String[] params = {FinanceDataFormat.getFormat(calendar.getTime())};
+		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		
 		queryBilder.setTables("income, income_main_category");
 		queryBilder.appendWhere("income.main_category=income_main_category._id");
@@ -144,7 +144,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		item.setId(c.getInt(0));
 		
 		try {
-			item.setCreateDate(FinanceDataFormat.DATA_FORMAT.parse(c.getString(1)));
+			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -237,7 +237,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	public long getTotalAmountDay(Calendar calendar) {
 		long amount = 0L;
 		SQLiteDatabase db = getReadableDatabase();
-		String[] params = {FinanceDataFormat.getFormat(calendar.getTime())};
+		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		String query = "SELECT SUM(amount) FROM income WHERE strftime('%Y-%m-%d', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
 		
@@ -256,7 +256,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	public int getItemCount(Calendar calendar) {
 		int count = 0;
 		SQLiteDatabase db = getReadableDatabase();
-		String[] params = {FinanceDataFormat.getFormat(calendar.getTime())};
+		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		String query = "SELECT COUNT(*) FROM income WHERE strftime('%Y-%m-%d', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
 		

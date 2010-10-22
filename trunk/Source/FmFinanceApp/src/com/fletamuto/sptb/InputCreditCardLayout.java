@@ -111,7 +111,7 @@ public class InputCreditCardLayout extends InputBaseLayout {
 		
 		String memo = ((TextView)findViewById(R.id.ETCreditCardMemo)).getText().toString();
 		mCreditCard.setMemo(memo);
-		
+/*		
 		Spinner startPeriodMonth = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodMonth);
 		int selectedMonthPostion = startPeriodMonth.getSelectedItemPosition();
 		if (Spinner.INVALID_POSITION != selectedMonthPostion){
@@ -123,6 +123,7 @@ public class InputCreditCardLayout extends InputBaseLayout {
 		if (Spinner.INVALID_POSITION != selectedDayPostion){
 			mCreditCard.setStartSettlementDay(selectedDayPostion);
 		}
+*/
 	}
 	
 	@Override

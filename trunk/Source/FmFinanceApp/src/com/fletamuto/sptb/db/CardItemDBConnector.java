@@ -24,10 +24,10 @@ public class CardItemDBConnector extends BaseDBConnector {
 		rowItem.put("company_name_id", card.getCompenyName().getID());
 		rowItem.put("name", card.getName());
 		rowItem.put("settlement_day", card.getSettlementDay());
-		rowItem.put("start_settlement_day", card.getStartSettlementDay());
-		rowItem.put("start_settlement_month", card.getStartSettlementMonth());
-		rowItem.put("end_settlement_day", card.getEndSettlementDay());
-		rowItem.put("end_settlement_month", card.getEndSettlementMonth());
+	//	rowItem.put("start_settlement_day", card.getStartSettlementDay());
+//		rowItem.put("start_settlement_month", card.getStartSettlementMonth());
+		//rowItem.put("end_settlement_day", card.getEndSettlementDay());
+		//rowItem.put("end_settlement_month", card.getEndSettlementMonth());
 		rowItem.put("memo", card.getMemo());
 		rowItem.put("balance", card.getBalance());
 		
@@ -47,10 +47,10 @@ public class CardItemDBConnector extends BaseDBConnector {
 		rowItem.put("company_name_id", card.getCompenyName().getID());
 		rowItem.put("name", card.getName());
 		rowItem.put("settlement_day", card.getSettlementDay());
-		rowItem.put("start_settlement_day", card.getStartSettlementDay());
-		rowItem.put("start_settlement_month", card.getStartSettlementMonth());
-		rowItem.put("end_settlement_day", card.getEndSettlementDay());
-		rowItem.put("end_settlement_month", card.getEndSettlementMonth());
+////		rowItem.put("start_settlement_day", card.getStartSettlementDay());
+//		rowItem.put("start_settlement_month", card.getStartSettlementMonth());
+////		rowItem.put("end_settlement_day", card.getEndSettlementDay());
+//		rowItem.put("end_settlement_month", card.getEndSettlementMonth());
 		rowItem.put("memo", card.getMemo());
 		rowItem.put("balance", card.getBalance());
 		
@@ -105,10 +105,10 @@ public class CardItemDBConnector extends BaseDBConnector {
 		card.setAccountID(c.getInt(3));
 		card.setName(c.getString(5));
 		card.setSettlementDay(c.getInt(6));
-		card.setStartSettlementDay(c.getInt(7));
-		card.setStartSettlementMonth(c.getInt(8));
-		card.setEndSettlementDay(c.getInt(9));
-		card.setEndSettlementMonth(c.getInt(10));
+//		card.setStartSettlementDay(c.getInt(7));
+//		card.setStartSettlementMonth(c.getInt(8));
+//		card.setEndSettlementDay(c.getInt(9));
+//		card.setEndSettlementMonth(c.getInt(10));
 		card.setMemo(c.getString(11));
 		card.setBalance(c.getInt(12));
 		

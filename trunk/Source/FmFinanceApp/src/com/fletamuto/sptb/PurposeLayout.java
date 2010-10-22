@@ -14,6 +14,6 @@ public class PurposeLayout extends FmBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_purpose, true);
         
-   
+        setTitle("∏Ò«•");
     }
 }

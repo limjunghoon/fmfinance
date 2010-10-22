@@ -14,15 +14,9 @@ public class CardItem {
 	private String mMemo;
 	private int mType = CREDIT_CARD;
 	private long mBalance;
-	private Settlement mSettlement = new Settlement();
-	
-	public class Settlement {
-		private int mDay;
-		private int mStartDay;
-		private int mStartMonth;
-		private int mEndDay;
-		private int mEndMonth;
-	}
+	private int mSettlementDay = 1;
+	private int mBillingPeriodDay = 1;
+	private int mBillingPeriodMonth = 0;
 	
 	public CardItem(int type) {
 		mType = type;
@@ -83,46 +77,6 @@ public class CardItem {
 	public int getType() {
 		return mType;
 	}
-	
-	public void setSettlementDay(int day) {
-		mSettlement.mDay = day;
-	}
-	
-	public int getSettlementDay() {
-		return mSettlement.mDay;
-	}
-	
-	public void setStartSettlementDay(int startDay) {
-		mSettlement.mStartDay = startDay;
-	}
-	
-	public int getStartSettlementDay() {
-		return mSettlement.mStartDay;
-	}
-	
-	public void setStartSettlementMonth(int startMonth) {
-		mSettlement.mStartMonth = startMonth;
-	}
-	
-	public int getStartSettlementMonth() {
-		return mSettlement.mStartMonth;
-	}
-	
-	public void setEndSettlementDay(int endDay) {
-		mSettlement.mEndDay = endDay;
-	}
-	
-	public int getEndSettlementDay() {
-		return mSettlement.mEndDay;
-	}
-	
-	public void setEndSettlementMonth(int endMonth) {
-		mSettlement.mEndMonth = endMonth;
-	}
-	
-	public int getEndSettlementMonth() {
-		return mSettlement.mEndMonth;
-	}
 
 	public void setBalance(long balance) {
 		this.mBalance = balance;
@@ -130,5 +84,29 @@ public class CardItem {
 
 	public long getBalance() {
 		return mBalance;
+	}
+
+	public void setSettlementDay(int settlementDay) {
+		this.mSettlementDay = settlementDay;
+	}
+
+	public int getSettlementDay() {
+		return mSettlementDay;
+	}
+
+	public void setBillingPeriodDay(int billingPeriodDay) {
+		this.mBillingPeriodDay = billingPeriodDay;
+	}
+
+	public int getBillingPeriodDay() {
+		return mBillingPeriodDay;
+	}
+
+	public void setBillingPeriodMonth(int billingPeriodMonth) {
+		this.mBillingPeriodMonth = billingPeriodMonth;
+	}
+
+	public int getmillingPeriodMonth() {
+		return mBillingPeriodMonth;
 	}
 }

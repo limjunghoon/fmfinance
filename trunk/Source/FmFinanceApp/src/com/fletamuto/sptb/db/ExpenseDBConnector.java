@@ -57,7 +57,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues rowItem = new ContentValues();
 		
-		rowItem.put("create_date", item.getCreateYear());
+		rowItem.put("create_date", item.getCreateDateString());
 		rowItem.put("create_time", "21:20:00");
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
@@ -102,7 +102,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
-		String[] params = {FinanceDataFormat.getFormat(calendar.getTime())};
+		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		
 		queryBilder.setTables("expense, expense_main_category, expense_sub_category");
 		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id ");
@@ -149,7 +149,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		ExpenseItem item = new ExpenseItem();
 		item.setId(c.getInt(0));
 		try {
-			item.setCreateDate(FinanceDataFormat.DATA_FORMAT.parse(c.getString(1)));
+			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

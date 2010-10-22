@@ -14,6 +14,6 @@ public class SearchLayout extends FmBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_search, true);
         
-   
+        setTitle("°Ë»ö");
     }
 }
