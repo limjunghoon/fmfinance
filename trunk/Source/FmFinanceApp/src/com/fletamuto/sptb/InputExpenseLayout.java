@@ -10,9 +10,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.ExpenseTag;
+import com.fletamuto.sptb.data.PaymentAccountMethod;
+import com.fletamuto.sptb.data.PaymentCardMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -22,11 +25,11 @@ import com.fletamuto.sptb.db.DBMgr;
  * @version 1.0.0.0
  */
 public class InputExpenseLayout extends InputFinanceItemBaseLayout {
-//	private int mPaymentSelected = PaymentMethod.CASH;
+	private ExpenseItem mExpensItem;
 	protected final static int ACT_TAG_SELECTED = MsgDef.ActRequest.ACT_TAG_SELECTED;
 	protected final static int ACT_REPEAT = MsgDef.ActRequest.ACT_REPEAT;
 	protected final static int ACT_CARD_SELECT = MsgDef.ActRequest.ACT_CARD_SELECT;
-	
+	protected final static int ACT_ACCOUNT_SELECT = MsgDef.ActRequest.ACT_ACCOUNT_SELECT;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +71,14 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 
 	@Override
 	protected void createItemInstance() {
-		mItem = new ExpenseItem();
+		mExpensItem = new ExpenseItem();
+		setItem(mExpensItem);
 	}
 	
 	@Override
 	protected boolean getItemInstance(int id) {
-		mItem = DBMgr.getItem(ExpenseItem.TYPE, id);
-		if (mItem == null) return false;
+		mExpensItem = (ExpenseItem)DBMgr.getItem(ExpenseItem.TYPE, id);
+		if (mExpensItem == null) return false;
 		return true;
 	}
 
@@ -86,15 +90,14 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	
 	@Override
 	protected void updateCategory(int id, String name) {
-		mItem.setCategory(id, name);
+		mExpensItem.setCategory(id, name);
 		updateBtnCategoryText(R.id.BtnExpenseCategory);
 	}
 	
 	protected void updateBtnCategoryText(int btnID) {
 		String categoryText = getResources().getString(R.string.input_select_category);
-		ExpenseItem expenseItem = (ExpenseItem)mItem;
-		if (expenseItem.isVaildCatetory()) {
-			categoryText = String.format("%s - %s", expenseItem.getCategory().getName(), expenseItem.getSubCategory().getName());
+		if (mExpensItem.isVaildCatetory()) {
+			categoryText = String.format("%s - %s", mExpensItem.getCategory().getName(), mExpensItem.getSubCategory().getName());
 		}
 		 
     	((Button)findViewById(btnID)).setText(categoryText);
@@ -103,7 +106,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_CATEGORY) {
     		if (resultCode == RESULT_OK) {
-    			((ExpenseItem)mItem).setSubCategory(data.getIntExtra("SUB_CATEGORY_ID", -1), data.getStringExtra("SUB_CATEGORY_NAME"));
+    			mExpensItem.setSubCategory(data.getIntExtra("SUB_CATEGORY_ID", -1), data.getStringExtra("SUB_CATEGORY_NAME"));
     		}
     	}
 		
@@ -120,55 +123,67 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     			
     			CardItem selectedCard = DBMgr.getCardItem(selectedID);
     			if (selectedCard.getType() == CardItem.CREDIT_CARD) {
-    				SelectedInstallmentPlan();
+    				int installmentPlan = data.getIntExtra(MsgDef.ExtraNames.INSTALLMENT_PLAN, -1);
+    				if (installmentPlan == -1) return;
+    								
+    	        	PaymentCardMethod paymentMethod = (PaymentCardMethod) mExpensItem.getPaymentMethod();
+    	        	if (paymentMethod == null || paymentMethod.getType() != PaymentCardMethod.CARD) return;
+    	        	
+    	        	paymentMethod.setInstallmentPlan(installmentPlan);
     			}
     			
+    			updateCard(selectedCard);
     		}
+			else {
+				updatePaymentMethod();
+			}
 		}
+		
+		if (requestCode == ACT_ACCOUNT_SELECT) {
+			if (resultCode == RESULT_OK) {
+				int selectedID = data.getIntExtra(MsgDef.ExtraNames.ACCOUNT_ID, -1);
+				if (selectedID == -1) return;
+			
+				AccountItem selectedAccount = DBMgr.getAccountItem(selectedID);
+				updateAccount(selectedAccount);
+			}
+			else {
+				updatePaymentMethod();
+			}
+		}
+		
+		
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
-	/**
-	 *  할부 방법을 선택한다.
-	 */
-	private void SelectedInstallmentPlan() {
-		new AlertDialog.Builder(InputExpenseLayout.this)
-	    .setTitle("할부선택")
-	    .setSingleChoiceItems(R.array.select_installment_plan, 0, 
-	      new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int whichButton) {
-	          /* User clicked on a radio button do some stuff */
-	        }
-	      })
-	      .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int whichButton) {
-	          /* User clicked Yes so do some stuff */
-	        }
-	      })
-	      .setNegativeButton("취소", new DialogInterface.OnClickListener() {
 
-	        public void onClick(DialogInterface dialog, int whichButton) {
-	           /* User clicked No so do some stuff */
-	        }
-	     })
-	     .create().show();
-
+	private void updateAccount(AccountItem selectedAccount) {
+		PaymentAccountMethod paymentMethod = (PaymentAccountMethod) mExpensItem.getPaymentMethod();
+		if (paymentMethod == null) return;
 		
+		paymentMethod.setAccount(selectedAccount);
+		
+		updatePaymentMethod();
 	}
 
-	private void updateCard(int intExtra, String stringExtra) {
-		// TODO Auto-generated method stub
+	private void updateCard(CardItem card) {
+		PaymentCardMethod paymentMethod = (PaymentCardMethod) mExpensItem.getPaymentMethod();
+		if (paymentMethod == null) return;
+		
+		paymentMethod.setCard(card);
+		
+		updatePaymentMethod();
 		
 	}
 
 	private void updateTag(int id, String name) {
-		((ExpenseItem)mItem).setTag(id, name);
+		mExpensItem.setTag(id, name);
 		updateTagText();
 	}
 	
 	protected void updateTagText() {
 		String tagText = getResources().getString(R.string.input_expense_selected_tag);
-		ExpenseTag tag = ((ExpenseItem)mItem).getTag();
+		ExpenseTag tag = mExpensItem.getTag();
 
 		if (isValidTag()) {
 			tagText = String.format("%s", tag.getName());
@@ -178,7 +193,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	}
 	
 	public boolean isValidTag() {
-		ExpenseTag tag = ((ExpenseItem)mItem).getTag();
+		ExpenseTag tag = mExpensItem.getTag();
 		return  !(tag == null || tag.getID() == -1);
 	}
 
@@ -191,14 +206,15 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		((ToggleButton)findViewById(R.id.TBExpenseMethodCash)).setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				updatePaymentMethod(PaymentMethod.CASH);
+				createPaymentMethod(PaymentMethod.CASH);
+				updatePaymentMethod();
 			}
 		});
 		
 		((ToggleButton)findViewById(R.id.TBExpenseMethodCard)).setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				updatePaymentMethod(PaymentMethod.CARD);
+				createPaymentMethod(PaymentMethod.CARD);
 				
 				Intent intent = new Intent(InputExpenseLayout.this, SelectCardLayout.class);
 				startActivityForResult(intent, ACT_CARD_SELECT);
@@ -208,7 +224,10 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		((ToggleButton)findViewById(R.id.TBExpenseMethodAccount)).setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				updatePaymentMethod(PaymentMethod.ACCOUNT);
+				createPaymentMethod(PaymentMethod.ACCOUNT);
+				
+				Intent intent = new Intent(InputExpenseLayout.this, SelectAccountLayout.class);
+				startActivityForResult(intent, ACT_ACCOUNT_SELECT);
 			}
 		});
 	}
@@ -219,33 +238,41 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		updateBtnCategoryText(R.id.BtnExpenseCategory);
 		updateBtnAmountText(R.id.BtnExpenseAmount);
 		updateEditMemoText(R.id.ETExpenseMemo);
-		updatePaymentMethod(((ExpenseItem)mItem).getSelectedPaymentMethodType());
+		updatePaymentMethod();
 		updateTagText();
+	}
+	
+	public PaymentMethod createPaymentMethod(int paymentMethodSelected) {
+		if (mExpensItem.createPaymentMethod(paymentMethodSelected) == false) {
+			return null;
+		}
+		return mExpensItem.getPaymentMethod();
 	}
 
 	/**
 	 * 지불정보 상태를 갱신한다.
 	 */
-	private void updatePaymentMethod(int paymentMethodSelected) {
-		if (((ExpenseItem)mItem).createPaymentMethod(paymentMethodSelected) == false) {
-			return;
+	private void updatePaymentMethod() {
+		PaymentMethod paymentMethod = mExpensItem.getPaymentMethod();
+		if (paymentMethod == null) {
+			paymentMethod = createPaymentMethod(PaymentMethod.CASH);
 		}
 		
 		ToggleButton btnCash = (ToggleButton)findViewById(R.id.TBExpenseMethodCash);
 		ToggleButton btnCard = (ToggleButton)findViewById(R.id.TBExpenseMethodCard);
 		ToggleButton btnAccount = (ToggleButton)findViewById(R.id.TBExpenseMethodAccount);
 		
-		if (paymentMethodSelected == PaymentMethod.CASH) {
+		if (paymentMethod.getType() == PaymentMethod.CASH) {
 			btnCash.setChecked(true);
 			btnCard.setChecked(false);
 			btnAccount.setChecked(false);
 		}
-		else if (paymentMethodSelected == PaymentMethod.CARD) {
+		else if (paymentMethod.getType() == PaymentMethod.CARD) {
 			btnCash.setChecked(false);
 			btnCard.setChecked(true);
 			btnAccount.setChecked(false);
 		}
-		else if (paymentMethodSelected == PaymentMethod.ACCOUNT) {
+		else if (paymentMethod.getType() == PaymentMethod.ACCOUNT) {
 			btnCash.setChecked(false);
 			btnCard.setChecked(false);
 			btnAccount.setChecked(true);
@@ -284,7 +311,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 
 	private void updatePaymentMethodText() {
 		TextView tvPaymentMethod = (TextView)findViewById(R.id.TVPaymentMethod);
-		tvPaymentMethod.setText(((ExpenseItem)mItem).getPaymentMethod().getText());
+		tvPaymentMethod.setText(mExpensItem.getPaymentMethod().getText());
 	}
 
 	@Override

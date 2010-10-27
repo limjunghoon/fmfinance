@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 /**
@@ -14,6 +15,8 @@ import com.fletamuto.sptb.db.DBMgr;
  * @version  1.0.0.1
  */
 public class InputAssetsLayout extends InputFinanceItemBaseLayout {
+	private AssetsItem mAssetsItem;
+	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_assets, true);
@@ -47,13 +50,14 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
     
 	@Override
 	protected void createItemInstance() {
-		mItem = new AssetsItem();
+		mAssetsItem = new AssetsItem();
+		setItem(mAssetsItem);
 	}
 	
 	@Override
 	protected boolean getItemInstance(int id) {
-		mItem = DBMgr.getItem(AssetsItem.TYPE, id);
-		if (mItem == null) return false;
+		mAssetsItem = (AssetsItem) DBMgr.getItem(AssetsItem.TYPE, id);
+		if (mAssetsItem == null) return false;
 		return true;
 	}
 
@@ -65,16 +69,15 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
 
 	@Override
 	protected void updateCategory(int id, String name) {
-		mItem.setCategory(id, name);
+		mAssetsItem.setCategory(id, name);
 		updateBtnCategoryText(R.id.BtnAssetsCategory);
 	}
 	
 	protected void updateBtnCategoryText(int btnID) {
 		String categoryText = getResources().getString(R.string.input_select_category);
-		AssetsItem assetsItem = (AssetsItem)mItem;
-		if (assetsItem.isVaildCatetory()) {
+		if (mAssetsItem.isVaildCatetory()) {
 			// categoryText = String.format("%s - %s", assetsItem.getCategory().getName(), assetsItem.getSubCategory().getName());
-			categoryText = String.format("%s", assetsItem.getCategory().getName());
+			categoryText = String.format("%s", mAssetsItem.getCategory().getName());
 		}
 		((Button)findViewById(btnID)).setText(categoryText);
     }
@@ -82,7 +85,7 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_CATEGORY) {
     		if (resultCode == RESULT_OK) {
-    			((AssetsItem)mItem).setSubCategory(data.getIntExtra("SUB_CATEGORY_ID", 0), data.getStringExtra("SUB_CATEGORY_NAME"));
+    			mAssetsItem.setSubCategory(data.getIntExtra("SUB_CATEGORY_ID", 0), data.getStringExtra("SUB_CATEGORY_NAME"));
     		}
     	}
 		super.onActivityResult(requestCode, resultCode, data);

@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,6 +26,7 @@ public class SelectCardLayout extends Activity {
 	
 	private ArrayList<CardItem> mArrCard;
 	protected CategoryItemAdapter mAdapterCard;
+	private int mSelectedInstallmentPlan = -1;
 
     /** Called when the activity is first created. */
     @Override
@@ -54,15 +56,55 @@ public class SelectCardLayout extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
-				CardItem Card = (CardItem)view.getTag();
+				CardItem card = (CardItem)view.getTag();
 				
-				Intent intent = new Intent();
-				intent.putExtra(MsgDef.ExtraNames.CARD_ID, Card.getID());
-				setResult(RESULT_OK, intent);
-				finish();
+				if (card.getType() == CardItem.CREDIT_CARD) {
+					SelectedInstallmentPlan(card);
+				}
+				else {
+					Intent intent = new Intent();
+					intent.putExtra(MsgDef.ExtraNames.CARD_ID, card.getID());
+					setResult(RESULT_OK, intent);
+					finish();
+				}
+				
+				
 			}
 		});
     }
+	
+
+	/**
+	 *  할부 방법을 선택한다.
+	 */
+	private void SelectedInstallmentPlan(final CardItem card) {
+		
+		
+		new AlertDialog.Builder(SelectCardLayout.this)
+	    .setTitle("할부선택")
+	    .setSingleChoiceItems(R.array.select_installment_plan, 0, 
+	      new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	        	mSelectedInstallmentPlan = whichButton;
+	        	card.getID();
+	        }
+	      })
+	      .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int whichButton) {
+	        	
+	        	if (mSelectedInstallmentPlan == -1)
+	        		mSelectedInstallmentPlan = 0;
+        	
+	        	Intent intent = new Intent();
+				intent.putExtra(MsgDef.ExtraNames.CARD_ID, card.getID());
+				intent.putExtra(MsgDef.ExtraNames.INSTALLMENT_PLAN, mSelectedInstallmentPlan);
+				
+				setResult(RESULT_OK, intent);
+				finish();
+	        }
+	      })
+	     .create().show();
+	}
 
 	private void setAddButtonListener() {
 		Button btnAdd = (Button)findViewById(R.id.BtnCardAdd);
