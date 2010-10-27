@@ -23,7 +23,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         setAmountBtnClickListener(R.id.BtnIncomeAmount);
         setSaveBtnClickListener(R.id.BtnIncomeSave);
         setCategoryClickListener(R.id.BtnIncomeCategory);
-        setTitleButtonListener();
+        
         setTitle(getResources().getString(R.string.input_income_name));
     }
   

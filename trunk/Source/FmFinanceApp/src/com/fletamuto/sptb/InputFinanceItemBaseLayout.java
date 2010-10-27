@@ -44,8 +44,30 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        
     }
 	
+	@Override
+	protected void setTitleBtn() {
+		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+        setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "완료");
+        
+        setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				updateItem();
+				
+				if (checkInputData() == true) {
+					saveItem();		
+					finish();
+		    	}
+			}
+		});
+		
+		super.setTitleBtn();
+	}
+	
+		
 	public FinanceItem getItem() {
 		return mItem;
 	}
@@ -78,6 +100,10 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     	mItem.setAmount(amount);
     }
     
+    /**
+     * 날짜 버튼 클릭시 리슨너 설정
+     * @param btnID 날짜버튼 아이디
+     */
     protected void setDateBtnClickListener(int btnID) {
     	Button btnIncomeDate = (Button)findViewById(btnID);
 		 btnIncomeDate.setOnClickListener(new Button.OnClickListener() {
@@ -91,6 +117,10 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 		 });
     }
     
+    /**
+     * 금액버튼 클릭시 리슨너 설정
+     * @param btnID 금액버튼 아이디
+     */
     protected void setAmountBtnClickListener(int btnID) {
     	Button btnAmount = (Button)findViewById(btnID);
     	btnAmount.setOnClickListener(new Button.OnClickListener() {
@@ -130,6 +160,10 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 		finish();
     }
     
+    /**
+     * 분류버튼 클릭시 리슨너 설정
+     * @param btnID 분류버튼 아이디
+     */
     protected void setCategoryClickListener(int btnID) {
     	((Button)findViewById(btnID)).setOnClickListener(new Button.OnClickListener() {
     		

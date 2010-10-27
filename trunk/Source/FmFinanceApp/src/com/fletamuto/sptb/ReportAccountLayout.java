@@ -77,7 +77,7 @@ public class ReportAccountLayout extends FmBaseActivity {
 			((TextView)convertView.findViewById(R.id.TVAccountReportListNumer)).setText("번호 : " + account.getNumber());			
 			((TextView)convertView.findViewById(R.id.TVAccountReportListBalance)).setText(String.format("잔액 : %,d원", account.getBalance()));
 			((TextView)convertView.findViewById(R.id.TVAccountReportListType)).setText("종류 : " + getAccoutTypeName(account.getType()));
-			((TextView)convertView.findViewById(R.id.TVAccountReportListInstitution)).setText("기관 : " + account.getInstitution().getName());
+			((TextView)convertView.findViewById(R.id.TVAccountReportListInstitution)).setText("기관 : " + account.getCompany().getName());
 	}
 	
 	protected String getAccoutTypeName(int index) {

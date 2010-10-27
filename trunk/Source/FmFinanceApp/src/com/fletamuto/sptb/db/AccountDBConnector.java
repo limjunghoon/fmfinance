@@ -1,5 +1,6 @@
 package com.fletamuto.sptb.db;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import android.content.ContentValues;
@@ -9,6 +10,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.FinancialCompany;
+import com.fletamuto.sptb.util.FinanceDataFormat;
 
 public class AccountDBConnector extends BaseDBConnector {
 	private static final String TABLE_NAME = "account";
@@ -18,12 +20,12 @@ public class AccountDBConnector extends BaseDBConnector {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
+		rowItem.put("create_date", account.getCreateDateString());
 		rowItem.put("number", account.getNumber());
 		rowItem.put("balance", account.getBalance());
-		rowItem.put("institution", account.getInstitution().getID());
+		rowItem.put("company", account.getCompany().getID());
 		rowItem.put("type", account.getType());
-//		rowItem.put("create_date", account.getCreateDate());
-//		rowItem.put("expriy_date", account.getExpiryDate());
+		rowItem.put("expiry_date", account.getExpiryDateString());
 		rowItem.put("memo", account.getMemo());
 		rowItem.put("name", account.getName());
 		
@@ -37,12 +39,12 @@ public class AccountDBConnector extends BaseDBConnector {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
+		rowItem.put("create_date", account.getCreateDateString());
 		rowItem.put("number", account.getNumber());
 		rowItem.put("balance", account.getBalance());
-		rowItem.put("institution", account.getInstitution().getID());
+		rowItem.put("company", account.getCompany().getID());
 		rowItem.put("type", account.getType());
-//		rowItem.put("create_date", account.getCreateDate());
-//		rowItem.put("expriy_date", account.getExpiryDate());
+		rowItem.put("expiry_date", account.getExpiryDateString());
 		rowItem.put("memo", account.getMemo());
 		rowItem.put("name", account.getName());
 		
@@ -56,8 +58,8 @@ public class AccountDBConnector extends BaseDBConnector {
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		
-		queryBilder.setTables("account, institution");
-		queryBilder.appendWhere("account.institution=institution._id");
+		queryBilder.setTables("account, finance_company");
+		queryBilder.appendWhere("account.company=finance_company._id");
 		Cursor c = queryBilder.query(db, null, null, null, null, null, null);
 		
 		if (c.moveToFirst() != false) {
@@ -75,8 +77,8 @@ public class AccountDBConnector extends BaseDBConnector {
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		
-		queryBilder.setTables("account, institution");
-		queryBilder.appendWhere("account.institution=institution._id");
+		queryBilder.setTables("account, finance_company");
+		queryBilder.appendWhere("account.company=finance_company._id");
 		Cursor c = queryBilder.query(db, null, "account._id=?", new String[] {String.valueOf(id)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
@@ -91,20 +93,32 @@ public class AccountDBConnector extends BaseDBConnector {
 	public AccountItem createAccountItem(Cursor c) {
 		AccountItem account = new AccountItem();
 		account.setID(c.getInt(0));
-		account.setNumber(c.getString(1));
-		account.setBalance(c.getInt(2));
-//		account.setInstitution(c.getInt(3));
-//		account.setType(c.getInt(4));
-//		account.setCreateDate(c.getInt(5));
-//		account.setExpiryDate(c.getString(6));
+		
+		try {
+			account.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		account.setNumber(c.getString(2));
+		account.setBalance(c.getInt(3));
+	//	account.setCompany(c.getInt(4));
+		account.setType(c.getInt(5));
+		
+		try {
+			account.setExpiryDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(6)));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 		account.setMemo(c.getString(7));
 		account.setName(c.getString(8));
 		
-		FinancialCompany institution = new FinancialCompany();
-		institution.setID(c.getInt(9));
-		institution.setName(c.getString(10));
-		institution.setGroup(c.getInt(11));
-		account.setInstitution(institution);
+		FinancialCompany Company = new FinancialCompany();
+		Company.setID(c.getInt(9));
+		Company.setName(c.getString(10));
+		Company.setGroup(c.getInt(11));
+		account.setCompany(Company);
 
 		return account;
 	}

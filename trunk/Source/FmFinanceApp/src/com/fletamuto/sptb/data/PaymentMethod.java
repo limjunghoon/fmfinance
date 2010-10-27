@@ -1,6 +1,6 @@
 package com.fletamuto.sptb.data;
 
-public class PaymentMethod {
+public abstract class PaymentMethod {
 	public final static int CASH = 0;
 	public final static int CARD = 1;
 	public final static int ACCOUNT = 2;
@@ -8,6 +8,7 @@ public class PaymentMethod {
 	private int mID = -1;
 	private int mType = CASH;
 	
+	public abstract String getText();
 	
 	public void setId(int id) {
 		this.mID = id;
@@ -24,4 +25,5 @@ public class PaymentMethod {
 	public int getType() {
 		return mType;
 	}
+
 }

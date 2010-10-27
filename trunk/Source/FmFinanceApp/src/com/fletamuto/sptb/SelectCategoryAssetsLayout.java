@@ -8,12 +8,16 @@ import com.fletamuto.sptb.data.AssetsItem;
 public class SelectCategoryAssetsLayout extends SelectCategoryBaseLayout {
 //	private Category mMainCategory;
 	
+	public SelectCategoryAssetsLayout() {
+		 setType(AssetsItem.TYPE);
+	}
+	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setType(AssetsItem.TYPE);
-        getCategoryList();
-        setCategoryAdaper();
+       
+   //     getCategoryList();
+   //     setCategoryAdaper();
     }
     
     /*

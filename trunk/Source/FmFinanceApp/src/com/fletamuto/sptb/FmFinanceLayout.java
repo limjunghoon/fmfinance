@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.ExpenseItem;
@@ -26,7 +27,7 @@ public class FmFinanceLayout extends FmBaseActivity {
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main, true);
+        setContentView(R.layout.main, false);
         
         DBMgr.initialize(getApplicationContext());
         setTitleButtonListener();
@@ -34,13 +35,17 @@ public class FmFinanceLayout extends FmBaseActivity {
         updateViewText();
         
         setTitle(getResources().getString(R.string.app_name));
+        setIncomeExpenseProgress();
     }
 
-    /**
+    
+
+	/**
      * activity가 다시 시작할 때
      */
     protected void onResume() {
     	updateViewText();
+    	setIncomeExpenseProgress();
     	super.onResume();
     }
 
@@ -162,4 +167,37 @@ public class FmFinanceLayout extends FmBaseActivity {
 			startActivity(intent);
 	    }
     }
+    
+    /**
+     * 수입, 지출 프로그레스 바 설정
+     */
+    private void setIncomeExpenseProgress() {
+		ProgressBar progress = (ProgressBar)findViewById(R.id.IncomeExpensePrograss);
+		
+		long incomeAmount = DBMgr.getTotalAmount(IncomeItem.TYPE);
+		long expenseAmount = DBMgr.getTotalAmount(ExpenseItem.TYPE);
+		long sumAmount = incomeAmount - expenseAmount;
+		 
+		TextView tvIncomeExpense = (TextView)findViewById(R.id.TVIncomeExpenseAmount);
+		tvIncomeExpense.setText(String.format("%,d원", sumAmount));
+		
+		
+		if (sumAmount < 0) {
+			progress.setMax(100);
+			progress.setProgress(5);
+			tvIncomeExpense.setTextColor(Color.RED);
+		}
+		else {
+			// 테스트 코드
+			int max = (int)(incomeAmount/100);
+			int pos = (int)(expenseAmount/100);
+			
+			progress.setMax(max);
+			progress.setProgress(pos);
+			tvIncomeExpense.setTextColor(Color.BLUE);
+			
+		}
+			
+		
+	}
 }

@@ -11,44 +11,31 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
  * @version 1.0.0.1
  */
 public abstract class FinanceItem {
-	/**
-	 * 제목
-	 */
+	/** 제목 */
 	private String mTitle;
-	/**
-	 * 메모
-	 */
+	
+	/** 메모 */
 	private String mMemo;
-	/**
-	 * 만든날짜
-	 */
+	
+	/** 만든날짜 */
 	private Calendar mCreateDate = Calendar.getInstance();
 	
-	/**
-	 * 만든시간
-	 */
+	/** 만든시간 */
 	private Calendar mCreateTime = Calendar.getInstance();
 	
-	/**
-	 * 금액
-	 */
+	/** 금액 */
 	private long mAmount = 0L;
-	/**
-	 * 아이디
-	 */
+	
+	/** 아이디 */
 	private int	mID = -1;
-	/**
-	 * 상위 분류
-	 */
+	
+	/** 상위 분류 */
 	private final Category mCategory = new Category(-1, "");
 	
-	/**
-	 * 하위분류
-	 */
+	/** 하위분류 */
 	private final Category mSubCategory = new Category(-1, "");
-	/**
-	 * 반복
-	 */
+	
+	/** 반복 */
 	private final Repeat mRepeat = new Repeat();
 	
 	/**

@@ -43,4 +43,16 @@ public class SelectPayMethodLayout extends SelectGridBaseLayout {
 			return convertView;
 		}
 	}
+
+	@Override
+	public void getData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setAdaper() {
+		// TODO Auto-generated method stub
+		
+	}
 }

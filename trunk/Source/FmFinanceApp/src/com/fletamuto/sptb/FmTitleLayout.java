@@ -87,6 +87,10 @@ public class FmTitleLayout extends LinearLayout {
 	
 	
 	
+	/**
+	 * 뷰의 제목을 설정
+	 * @param title 설정할 뷰 제목
+	 */
 	public void setTitle(CharSequence title) {
 		if (TitleLayout == null) return;
 		tvTitle.setText(title);

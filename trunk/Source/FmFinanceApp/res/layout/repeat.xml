@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
+<LinearLayout android:id="@+id/LinearLayout01" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingTop="20dp" android:layout_marginLeft="5dp" android:layout_marginTop="10dp"><LinearLayout android:id="@+id/LinearLayout04" android:layout_height="wrap_content" android:layout_width="fill_parent"><RadioButton android:id="@+id/RadioButton01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="주간선택" android:textSize="25sp"></RadioButton><Button android:id="@+id/Button01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="평일" android:layout_marginLeft="30dp"></Button><Button android:id="@+id/Button02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="주말"></Button></LinearLayout><LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent" android:paddingTop="10dp" android:layout_marginLeft="15dp"><ToggleButton android:text="@+id/ToggleButton03" android:id="@+id/ToggleButton03" android:layout_height="wrap_content" android:textOff="월" android:layout_width="wrap_content"></ToggleButton><ToggleButton android:text="@+id/ToggleButton04" android:id="@+id/ToggleButton04" android:layout_height="wrap_content" android:textOff="화" android:textOn="화" android:layout_width="wrap_content"></ToggleButton><ToggleButton android:text="@+id/ToggleButton05" android:id="@+id/ToggleButton05" android:layout_height="wrap_content" android:textOff="수" android:textOn="수" android:layout_width="wrap_content"></ToggleButton>
+<ToggleButton android:text="@+id/ToggleButton06" android:id="@+id/ToggleButton06" android:layout_height="wrap_content" android:textOff="목" android:textOn="목" android:layout_width="wrap_content"></ToggleButton>
+<ToggleButton android:text="@+id/ToggleButton07" android:id="@+id/ToggleButton07" android:textOff="금" android:textOn="금" android:layout_width="wrap_content" android:layout_height="wrap_content"></ToggleButton>
+</LinearLayout><LinearLayout android:id="@+id/LinearLayout05" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginLeft="15dp" android:layout_marginTop="5dp"><ToggleButton android:text="@+id/ToggleButton08" android:id="@+id/ToggleButton08" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textOff="금" android:textOn="금"></ToggleButton><ToggleButton android:text="@+id/ToggleButton09" android:id="@+id/ToggleButton09" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textOn="토" android:textOff="토"></ToggleButton>
+</LinearLayout>
+
+
+
+
+</LinearLayout>
+<LinearLayout android:id="@+id/LinearLayout02" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:paddingTop="20dp" android:layout_marginLeft="5dp">
+
+
+<RadioButton android:id="@+id/RadioButton02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="월간반복" android:textSize="25sp"></RadioButton><LinearLayout android:id="@+id/LinearLayout06" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="10dp" android:layout_marginLeft="15dp" android:layout_gravity="center"><TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="매월" android:textSize="20sp"></TextView><EditText android:id="@+id/EditText01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:inputType="date" android:minWidth="40dp" android:layout_marginLeft="5dp" android:layout_marginRight="5dp"></EditText><TextView android:id="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="일 반복" android:textSize="20sp"></TextView></LinearLayout></LinearLayout>
+
+
+
+
+
+
+
+
+
+
+</LinearLayout>

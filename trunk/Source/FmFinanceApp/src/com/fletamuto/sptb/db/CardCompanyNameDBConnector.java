@@ -9,14 +9,14 @@ import android.database.sqlite.SQLiteDatabase;
 import com.fletamuto.sptb.data.CardCompenyName;
 
 public class CardCompanyNameDBConnector extends BaseDBConnector {
-	private static final String TABLE_NAME = "card_company_name";
+	private static final String TABLE_NAME = "card_company";
 	
 	public boolean addItem(CardCompenyName cardCompanyName) {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", cardCompanyName.getName());
-		rowItem.put("institution_id", cardCompanyName.getInstituionID());
+		rowItem.put("finance_compay_id", cardCompanyName.getCompanyID());
 		
 		db.insert(TABLE_NAME, null, rowItem);
 		db.close();
@@ -28,7 +28,7 @@ public class CardCompanyNameDBConnector extends BaseDBConnector {
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", cardCompanyName.getName());
-		rowItem.put("type", cardCompanyName.getInstituionID());
+		rowItem.put("finance_compay_id", cardCompanyName.getCompanyID());
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(cardCompanyName.getID())});
 		db.close();
@@ -69,7 +69,7 @@ public class CardCompanyNameDBConnector extends BaseDBConnector {
 		CardCompenyName cardCompanyName = new CardCompenyName();
 		cardCompanyName.setID(c.getInt(0));
 		cardCompanyName.setName(c.getString(1));
-		cardCompanyName.setInstituionID(c.getInt(2));
+		cardCompanyName.setCompanyID(c.getInt(2));
 		return cardCompanyName;
 	}
 }

@@ -205,4 +205,18 @@
 		<item>22일</item><item>23일</item><item>24일</item><item>25일</item><item>26일</item><item>27일</item><item>28일</item>
 		<item>29일</item><item>30일</item><item>말일</item>
 	</string-array>
+		<string-array name="select_installment_plan">
+		<item>일시불</item><item>2개월</item><item>3개월</item><item>4개월</item><item>5개월</item><item>6개월</item><item>7개월</item>
+		<item>8개월</item><item>9개월</item><item>10개월</item><item>11개월</item><item>12개월</item><item>13개월</item><item>14개월</item>
+		<item>15개월</item><item>16개월</item><item>17개월</item><item>18개월</item><item>19개월</item><item>20개월</item><item>21개월</item>
+		<item>22개월</item><item>23개월</item><item>24개월</item><item>26개월</item><item>27개월</item><item>28개월</item><item>29개월</item>
+		<item>30개월</item><item>31개월</item><item>32개월</item><item>33개월</item><item>34개월</item><item>35개월</item><item>36개월</item>
+	</string-array>
+	<string-array name="expense_default_tag_list">
+		<item>집</item>
+		<item>자동차</item>
+		<item>연애</item>
+		<item>학교</item>
+		<item>아기</item>
+	</string-array>
 </resources>

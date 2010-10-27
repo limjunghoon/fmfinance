@@ -3,7 +3,7 @@ package com.fletamuto.sptb.data;
 public class CardCompenyName extends UISelectItem{
 	private int mID = -1;
 	private String mName;
-	private int mInstituionID = -1;
+	private int mCompanyID = -1;
 	
 	public void setID(int id) {
 		this.mID = id;
@@ -17,10 +17,10 @@ public class CardCompenyName extends UISelectItem{
 	public String getName() {
 		return mName;
 	}
-	public void setInstituionID(int instituionID) {
-		this.mInstituionID = instituionID;
+	public void setCompanyID(int companyID) {
+		this.mCompanyID = companyID;
 	}
-	public int getInstituionID() {
-		return mInstituionID;
+	public int getCompanyID() {
+		return mCompanyID;
 	}
 }

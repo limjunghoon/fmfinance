@@ -24,8 +24,8 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 	CategoryButtonAdpter mAdapterCategory;
 	private int mType = -1;
 	
-	public final static int ACT_SUB_CATEGORY = 1;
-	public final static int ACT_EDIT_CATEGORY = 2;
+	public final static int ACT_SUB_CATEGORY = MsgDef.ActRequest.ACT_SUB_CATEGORY;
+	public final static int ACT_EDIT_CATEGORY = MsgDef.ActRequest.ACT_EDIT_CATEGORY;
 	
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,11 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
         setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
     }
 	
+	@Override
+	public void getData() {
+		getCategoryList();
+	}
+	
 	protected void getCategoryList() {
 		if (mType == -1) {
 			Log.e(LogTag.LAYOUT, "== invaild category type");
@@ -44,6 +49,11 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 		}
 		mArrCategory = DBMgr.getCategory(mType);
 		
+	}
+	
+	@Override
+	public void setAdaper() {
+		setCategoryAdaper();
 	}
 	
 	protected void setCategoryAdaper() {

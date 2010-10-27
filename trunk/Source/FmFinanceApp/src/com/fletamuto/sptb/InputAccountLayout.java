@@ -122,11 +122,6 @@ public class InputAccountLayout extends InputBaseLayout {
 		String number = ((TextView)findViewById(R.id.ETAccountNumber)).getText().toString();
 		mAccount.setNumber(number);
 		
-		Spinner AccountType = (Spinner)findViewById(R.id.SpAccountType);
-		int selectedPostion = AccountType.getSelectedItemPosition();
-		if (Spinner.INVALID_POSITION != selectedPostion){
-			mAccount.setType(selectedPostion);
-		}
 	}
 	
 	private FinancialCompany getInstitution(int id) {
@@ -159,13 +154,13 @@ public class InputAccountLayout extends InputBaseLayout {
 		
 	}
 
-	private void updateInstitution(FinancialCompany institution) {
-		if (institution == null){
+	private void updateInstitution(FinancialCompany company) {
+		if (company == null){
 			return;
 		}
 		
-		mAccount.setInstitution(institution);
-		((Button)findViewById(R.id.BtnAccountInstitution)).setText(institution.getName());
+		mAccount.setCompany(company);
+		((Button)findViewById(R.id.BtnAccountInstitution)).setText(company.getName());
 	}
 
 	
