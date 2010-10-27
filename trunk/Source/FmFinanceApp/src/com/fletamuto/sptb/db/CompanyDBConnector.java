@@ -8,15 +8,15 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.fletamuto.sptb.data.FinancialCompany;
 
-public class InstitutionDBConnector extends BaseDBConnector {
-	private static final String TABLE_NAME = "institution";
+public class CompanyDBConnector extends BaseDBConnector {
+	private static final String TABLE_NAME = "finance_company";
 	
-	public boolean addItem(FinancialCompany institution) {
+	public boolean addItem(FinancialCompany company) {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
-		rowItem.put("name", institution.getName());
-		rowItem.put("type", institution.getGroup());
+		rowItem.put("name", company.getName());
+		rowItem.put("type", company.getGroup());
 		
 		
 		db.insert(TABLE_NAME, null, rowItem);
@@ -24,14 +24,14 @@ public class InstitutionDBConnector extends BaseDBConnector {
 		return true;
 	}
 	
-	public boolean updateItem(FinancialCompany institution) {
+	public boolean updateItem(FinancialCompany company) {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
-		rowItem.put("name", institution.getName());
-		rowItem.put("type", institution.getGroup());
+		rowItem.put("name", company.getName());
+		rowItem.put("type", company.getGroup());
 		
-		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(institution.getID())});
+		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(company.getID())});
 		db.close();
 		return true;
 	}

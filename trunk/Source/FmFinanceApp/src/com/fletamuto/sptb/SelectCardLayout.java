@@ -10,53 +10,54 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class SelectAccountLayout extends Activity {
-	public static final int ACT_ADD_ACCOUNT = 0;
+public class SelectCardLayout extends Activity {
+	public static final int ACT_ADD_CARD = MsgDef.ActRequest.ACT_ADD_CARD;
 	
-	private ArrayList<AccountItem> mArrAccount;
-	protected CategoryItemAdapter mAdapterAccount;
+	private ArrayList<CardItem> mArrCard;
+	protected CategoryItemAdapter mAdapterCard;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-  //      requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.select_account);
+ //       requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.select_card);
         setAddButtonListener();
-        getAccountItems();
+        getCardItems();
         setAdapterList();
     }
 	
-	protected void getAccountItems() {
-		mArrAccount = DBMgr.getAccountAllItems();
+	protected void getCardItems() {
+		mArrCard = DBMgr.getCardItems();
     }
 	
 	protected void setAdapterList() {
-    	if (mArrAccount == null) return;
+    	if (mArrCard == null) return;
         
-    	final ListView listAccount = (ListView)findViewById(R.id.LVAccount);
-    	mAdapterAccount = new CategoryItemAdapter(this, R.layout.text_list, mArrAccount);
-    	listAccount.setAdapter(mAdapterAccount);
+    	final ListView listCard = (ListView)findViewById(R.id.LVCard);
+    	mAdapterCard = new CategoryItemAdapter(this, R.layout.text_list, mArrCard);
+    	listCard.setAdapter(mAdapterCard);
     	
-    	listAccount.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    	listCard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
-				AccountItem account = (AccountItem)view.getTag();
+				CardItem Card = (CardItem)view.getTag();
 				
 				Intent intent = new Intent();
-				intent.putExtra("ACCOUNT_ID", account.getID());
+				intent.putExtra(MsgDef.ExtraNames.CARD_ID, Card.getID());
 				setResult(RESULT_OK, intent);
 				finish();
 			}
@@ -64,38 +65,38 @@ public class SelectAccountLayout extends Activity {
     }
 
 	private void setAddButtonListener() {
-		Button btnAdd = (Button)findViewById(R.id.BtnAccountAdd);
+		Button btnAdd = (Button)findViewById(R.id.BtnCardAdd);
 		btnAdd.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(SelectAccountLayout.this, InputAccountLayout.class);		
-				startActivityForResult(intent, ACT_ADD_ACCOUNT);
+//				Intent intent = new Intent(SelectCardLayout.this, InputCardLayout.class);		
+//				startActivityForResult(intent, ACT_ADD_CARD);
 			}
 		});
 	}  
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == ACT_ADD_ACCOUNT) {
+		if (requestCode == ACT_ADD_CARD) {
 			if (resultCode == RESULT_OK) {
-				int accountID = data.getIntExtra("ACCOUNT_ID", -1);
-				if (accountID == -1) return;
+				int CardID = data.getIntExtra("Card_ID", -1);
+				if (CardID == -1) return;
 				
-				AccountItem account = DBMgr.getAccountItem(accountID);
-				if (account == null) return;
-				mAdapterAccount.add(account);
-				mAdapterAccount.notifyDataSetChanged();
+				CardItem Card = DBMgr.getCardItem(CardID);
+				if (Card == null) return;
+				mAdapterCard.add(Card);
+				mAdapterCard.notifyDataSetChanged();
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
-	public class CategoryItemAdapter extends ArrayAdapter<AccountItem> {
+	public class CategoryItemAdapter extends ArrayAdapter<CardItem> {
     	int mResource;
     	LayoutInflater mInflater;
 
 		public CategoryItemAdapter(Context context, int resource,
-				 List<AccountItem> objects) {
+				 List<CardItem> objects) {
 			super(context, resource, objects);
 			this.mResource = resource;
 			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -103,14 +104,14 @@ public class SelectAccountLayout extends Activity {
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			AccountItem item = (AccountItem)getItem(position);
+			CardItem item = (CardItem)getItem(position);
 			
 			if (convertView == null) {
 				convertView = mInflater.inflate(mResource, parent, false);
 			}
 			
-			TextView tvAccount = (TextView)convertView.findViewById(R.id.TVListItem);
-			tvAccount.setText(String.format("%s : %s", item.getCompany().getName(), item.getNumber()));
+			TextView tvCard = (TextView)convertView.findViewById(R.id.TVListItem);
+			tvCard.setText(String.format("%s : %s", item.getCompenyName().getName(), item.getNumber()));
 			
 			convertView.setTag(item);
 			

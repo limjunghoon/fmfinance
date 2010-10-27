@@ -11,6 +11,7 @@ import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardCompenyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.ExpenseTag;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.data.ItemDef;
@@ -31,7 +32,6 @@ public final class DBMgr {
 	 */
 	private DBMgr() {
 	}
-	
 	
 	/**
 	 * DB초기화 및 뷰와 연동한다.
@@ -71,8 +71,6 @@ public final class DBMgr {
 		if (DBMgr.checkFinanceItemType(item.getType()) == false) return -1; 
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).addItem(item);
 	}
-	
-	
 	
 	/**
 	 * DB에 아이템을  갱신한다.
@@ -286,12 +284,21 @@ public final class DBMgr {
 	public static int addCardItem(CardItem card) {
 		return mInstance.mDBConnector.addCard(card);
 	}
+	
+	public static ArrayList<CardItem> getCardItems() {
+		return mInstance.mDBConnector.getCardDBConnector().getAllItems();
+	}
 
 	public static ArrayList<CardItem> getCardItems(int type) {
-		return mInstance.mDBConnector.getCardItems(type);
+		return mInstance.mDBConnector.getCardDBConnector().getAllItems(type);
 	}
 
 	public static CardItem getCardItem(int id) {
-		return mInstance.mDBConnector.getCardItem(id);
+		return mInstance.mDBConnector.getCardDBConnector().getItem(id);
+	}
+
+
+	public static ArrayList<ExpenseTag> getTag() {
+		return mInstance.mDBConnector.getTagDBConnector().getAllItems();
 	}
 }

@@ -14,13 +14,11 @@ public class SelectSubCategoryLayout extends SelectCategoryBaseLayout {
 	private int mType = -1;
 	
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         mMainCagegoryID = getIntent().getIntExtra("MAIN_CATEGORY_ID", -1) ;
         mMainCagegoryName = getIntent().getStringExtra("MAIN_CATEGORY_NAME") ;
         mType = getIntent().getIntExtra("ITEM_TYPE", -1) ;
         
-        getCategoryList();
+        super.onCreate(savedInstanceState);
     }
     
     protected void getCategoryList() {

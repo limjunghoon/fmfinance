@@ -11,24 +11,54 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 	
 	protected InputMode mInputMode = InputMode.ADD_MODE;
 	
-	protected final static int ACT_AMOUNT = 0;
-	protected final static int ACT_CATEGORY = 1;
+	protected final static int ACT_AMOUNT = MsgDef.ActRequest.ACT_AMOUNT;
+	protected final static int ACT_CATEGORY = MsgDef.ActRequest.ACT_CATEGORY;
 	
 	protected enum InputMode{ADD_MODE, EDIT_MODE};
 	
+	/**
+	 * 입력한 아이템을 저장한다.
+	 */
 	protected abstract void saveItem();
+	
+	/**
+	 * 입력된 상태로 아이템을 갱신한다.
+	 */
 	protected abstract void updateItem();
+	
+	/**
+	 * 입력할 아이템을 생성한다.
+	 */
 	protected abstract void createItemInstance();
+	
+	/**
+	 * DB로 부터 아아템을 가져온다.
+	 * @param id에 가져올 아이템 아이디 
+	 * @return 실패시 null
+	 */
 	protected abstract boolean getItemInstance(int id);
+	
+	/**
+	 * 자신뷰의 상태(정보)를 갱신한다.
+	 */
 	protected abstract void updateChildView();
+	
+	/**
+	 * 입력된 아이템의 유효성을 확인한다.
+	 * @return 성공여부
+	 */
     public abstract boolean checkInputData();
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        
         initialize();
     }
 	
+	/**
+	 * 초기화
+	 */
 	private void initialize() {
 		int id  = getIntent().getIntExtra("EDIT_ITEM_ID", -1);
         if (id != -1) {
@@ -43,6 +73,10 @@ public abstract class InputBaseLayout extends FmBaseActivity {
         }
 	}
     
+	/**
+	 * 저장버튼 클릭시 리스너 설정
+	 * @param btnID 저장버튼 아이디
+	 */
     protected void setSaveBtnClickListener(int btnID) {
     	Button btnIncomeDate = (Button)findViewById(btnID);
 		 btnIncomeDate.setOnClickListener(new Button.OnClickListener() {
@@ -58,6 +92,10 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 		 });
     }
     
+    /**
+     * 알림메시지
+     * @param msg 알림문구
+     */
     public void displayAlertMessage(String msg) {
     	AlertDialog.Builder alert = new AlertDialog.Builder(InputBaseLayout.this);
     	alert.setMessage(msg);

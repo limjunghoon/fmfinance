@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
@@ -166,7 +165,7 @@ public class InputCreditCardLayout extends InputBaseLayout {
 		}
 		
 		mCreditCard.setAccountID(account.getID());
-		((Button)findViewById(R.id.BtnCreditCardAccount)).setText(String.format("%s : %s", account.getInstitution().getName(), account.getNumber()));
+		((Button)findViewById(R.id.BtnCreditCardAccount)).setText(String.format("%s : %s", account.getCompany().getName(), account.getNumber()));
 	}
 
 	private void updateCompenyName(CardCompenyName cardCompenyName) {

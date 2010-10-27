@@ -40,6 +40,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("main_category", item.getCategory().getId());
 		rowItem.put("sub_category", item.getSubCategory().getId());
 		rowItem.put("payment_method", 1); // 임시값
+		rowItem.put("tag", item.getTag().getID());
 		
 		long ret = db.insert("expense", null, rowItem);
 		db.close();
@@ -64,6 +65,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getId());
 		rowItem.put("sub_category", item.getSubCategory().getId());
+		rowItem.put("tag", item.getTag().getID());
 		
 		long ret = db.update("expense", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getId())});
 		db.close();
@@ -79,8 +81,8 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		
-		queryBilder.setTables("expense, expense_main_category, expense_sub_category");
-		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id ");
+		queryBilder.setTables("expense, expense_main_category, expense_sub_category, expense_tag");
+		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id AND expense.tag=expense_tag._id");
 		Cursor c = queryBilder.query(db, null, null, null, null, null, "create_date DESC");
 		
 		if (c.moveToFirst() != false) {
@@ -104,8 +106,8 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		
-		queryBilder.setTables("expense, expense_main_category, expense_sub_category");
-		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id ");
+		queryBilder.setTables("expense, expense_main_category, expense_sub_category, expense_tag");
+		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id AND expense.tag=expense_tag._id");
 		Cursor c = queryBilder.query(db, null, "strftime('%Y-%m-%d', create_date)=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
@@ -128,8 +130,8 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {String.valueOf(id)};
 		
-		queryBilder.setTables("expense, expense_main_category, expense_sub_category");
-		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id ");
+		queryBilder.setTables("expense, expense_main_category, expense_sub_category, expense_tag");
+		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id AND expense.tag=expense_tag._id");
 		Cursor c = queryBilder.query(db, null, "expense._id=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
@@ -146,6 +148,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	 * @return 지출 아이템
 	 */
 	public ExpenseItem CreateExpenseItem(Cursor c) {
+		
 		ExpenseItem item = new ExpenseItem();
 		item.setId(c.getInt(0));
 		try {
@@ -158,6 +161,8 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		item.setMemo(c.getString(5));
 		item.setCategory(c.getInt(6), c.getString(13));
 		item.setSubCategory(c.getInt(7), c.getString(17));
+		item.setTag(c.getInt(11), c.getString(22));
+		
 		return item;
 	}
 	
@@ -265,8 +270,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	public long getTotalAmountDay(Calendar calendar) {
 		long amount = 0L;
 		SQLiteDatabase db = getReadableDatabase();
-		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)) 
-				+ String.valueOf(calendar.get(Calendar.MONTH)) + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
+		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		String query = "SELECT SUM(amount) FROM expense WHERE strftime('%Y-%m-%d', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
 		
@@ -285,8 +289,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	public int getItemCount(Calendar calendar) {
 		int count = 0;
 		SQLiteDatabase db = getReadableDatabase();
-		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)) 
-				+ String.valueOf(calendar.get(Calendar.MONTH)) + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
+		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		String query = "SELECT COUNT(*) FROM expense WHERE strftime('%Y-%m-%d', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
 		

@@ -18,18 +18,18 @@ public class CardItemDBConnector extends BaseDBConnector {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
-		rowItem.put("type", card.getType());
+		rowItem.put("name", card.getName());
 		rowItem.put("number", card.getNumber());
+		rowItem.put("type", card.getType());
 		rowItem.put("account_id", card.getAccountID());
 		rowItem.put("company_name_id", card.getCompenyName().getID());
-		rowItem.put("name", card.getName());
 		rowItem.put("settlement_day", card.getSettlementDay());
 	//	rowItem.put("start_settlement_day", card.getStartSettlementDay());
 //		rowItem.put("start_settlement_month", card.getStartSettlementMonth());
 		//rowItem.put("end_settlement_day", card.getEndSettlementDay());
 		//rowItem.put("end_settlement_month", card.getEndSettlementMonth());
 		rowItem.put("memo", card.getMemo());
-		rowItem.put("balance", card.getBalance());
+		rowItem.put("maxiup_balance", card.getBalance());
 		
 		newID = (int)db.insert(TABLE_NAME, null, rowItem);
 		card.setID(newID);
@@ -59,13 +59,33 @@ public class CardItemDBConnector extends BaseDBConnector {
 		return true;
 	}
 	
+	public ArrayList<CardItem> getAllItems() {
+		ArrayList<CardItem> card = new ArrayList<CardItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		
+		queryBilder.setTables("card, card_company");
+		queryBilder.appendWhere("card.company_name_id=card_company._id");
+		Cursor c = queryBilder.query(db, null, null, null, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				card.add(CreateCardItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return card;
+	}
+	
+	
 	public  ArrayList<CardItem> getAllItems(int type) {
 		ArrayList<CardItem> card = new ArrayList<CardItem>();
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		
-		queryBilder.setTables("card, card_company_name");
-		queryBilder.appendWhere("card.company_name_id=card_company_name._id");
+		queryBilder.setTables("card, card_company");
+		queryBilder.appendWhere("card.company_name_id=card_company._id");
 		Cursor c = queryBilder.query(db, null, "card.type=?", new String[] {String.valueOf(type)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
@@ -83,8 +103,8 @@ public class CardItemDBConnector extends BaseDBConnector {
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		
-		queryBilder.setTables("card, card_company_name");
-		queryBilder.appendWhere("card.company_name_id=card_company_name._id");
+		queryBilder.setTables("card, card_company");
+		queryBilder.appendWhere("card.company_name_id=card_company._id");
 		Cursor c = queryBilder.query(db, null, "card._id=?", new String[] {String.valueOf(id)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
@@ -98,27 +118,29 @@ public class CardItemDBConnector extends BaseDBConnector {
 	
 	public CardItem CreateCardItem(Cursor c) {
 		
-		CardItem card = new CardItem(c.getInt(1));
+		CardItem card = new CardItem(c.getInt(3));
 		
 		card.setID(c.getInt(0));
+		card.setName(c.getString(1));
 		card.setNumber(c.getString(2));
-		card.setAccountID(c.getInt(3));
-		card.setName(c.getString(5));
+		card.setAccountID(c.getInt(4));
 		card.setSettlementDay(c.getInt(6));
 //		card.setStartSettlementDay(c.getInt(7));
 //		card.setStartSettlementMonth(c.getInt(8));
 //		card.setEndSettlementDay(c.getInt(9));
 //		card.setEndSettlementMonth(c.getInt(10));
-		card.setMemo(c.getString(11));
-		card.setBalance(c.getInt(12));
+		card.setMemo(c.getString(9));
+		card.setBalance(c.getInt(10));
 		
 		CardCompenyName compenyName = new CardCompenyName();
-		compenyName.setID(c.getInt(13));
-		compenyName.setName(c.getString(14));
-		compenyName.setInstituionID(c.getInt(15));
+		compenyName.setID(c.getInt(11));
+		compenyName.setName(c.getString(12));
+		compenyName.setCompanyID(c.getInt(13));
 		card.setCompenyName(compenyName);
 		
 		return card;
 		
 	}
+
+
 }

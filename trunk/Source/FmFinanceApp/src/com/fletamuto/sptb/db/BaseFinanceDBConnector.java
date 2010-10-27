@@ -68,4 +68,5 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	public int updateSubCategory(int id, String name) {
 		return 0;
 	}
+	
 }

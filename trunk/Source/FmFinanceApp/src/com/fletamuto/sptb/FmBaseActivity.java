@@ -5,15 +5,27 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class FmBaseActivity extends Activity {
+/**
+ * finance에서 기본이 되는 뷰 엑티비티
+ * @author yongbban
+ * @version 1.0.0.1
+ */
+public abstract class FmBaseActivity extends Activity {
 	private FmTitleLayout titleLayout;
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        
     }
     
+    /**
+     * 지정된 레이아웃 뷰에 타이틀바를 표시한다.
+     * @param layoutResID 표시할 레이아웃 아이디
+     * @param title 타이틀뷰 표시여부
+     */
     public void setContentView(int layoutResID, boolean title) {
     	if (title == true) {
     		titleLayout = new FmTitleLayout(this, layoutResID);
@@ -22,8 +34,21 @@ public class FmBaseActivity extends Activity {
     	else {
     		super.setContentView(layoutResID);
     	}
+    	
+    	setTitleBtn();
+    	setTitleButtonListener();
     }
     
+    /**
+     * 타이틀 버튼 설정을 한다.
+     */
+    protected  void setTitleBtn() {
+		
+	}
+    
+    
+    
+    /** 제목창 버튼 클릭시 리스너 설정 */
     protected void setTitleButtonListener() {
     	if (titleLayout == null) return;
     	
@@ -34,6 +59,8 @@ public class FmBaseActivity extends Activity {
 				finish();
 			}
 		});
+    	
+    	
     }
     
     protected void setTitleButtonListener(int btnIndex, View.OnClickListener listener) {
@@ -53,6 +80,10 @@ public class FmBaseActivity extends Activity {
     	button.setOnClickListener(listener);
     }
     
+    /**
+	 * 뷰의 제목을 설정
+	 * @param title 설정할 뷰 제목
+	 */
     public void setTitle(CharSequence title) {
     	if (titleLayout == null) return;
     	titleLayout.setTitle(title);

@@ -1,6 +1,9 @@
 package com.fletamuto.sptb.data;
 
 import java.util.Calendar;
+import java.util.Date;
+
+import com.fletamuto.sptb.util.FinanceDataFormat;
 
 public class AccountItem {
 	public final static int ORDINARY_DEPOSIT = 0;
@@ -8,7 +11,7 @@ public class AccountItem {
 	private int	mID = -1;
 	private String mNumber;
 	private long mBalance = 0L;
-	private FinancialCompany mInstitution;
+	private FinancialCompany mCompany;
 	private Calendar mCreateDate = Calendar.getInstance();
 	private Calendar mExpiryDate = Calendar.getInstance();
 	private String mMemo;
@@ -31,12 +34,12 @@ public class AccountItem {
 		return mNumber;
 	}
 	
-	public void setInstitution(FinancialCompany institution) {
-		this.mInstitution = institution;
+	public void setCompany(FinancialCompany Company) {
+		this.mCompany = Company;
 	}
 	
-	public FinancialCompany getInstitution() {
-		return mInstitution;
+	public FinancialCompany getCompany() {
+		return mCompany;
 	}
 	
 	public void setBalance(long balance) {
@@ -51,12 +54,25 @@ public class AccountItem {
 		this.mCreateDate = CreateDate;
 	}
 	
+	/**
+	 * 만든시간를 설정
+	 * @param date 만든시간
+	 */
+	public void setCreateDate(Date date) {
+		this.mCreateDate.setTime(date);
+	}
+	
 	public Calendar getCreateDate() {
 		return mCreateDate;
 	}
 	
 	public void setExpiryDate(Calendar expiryDate) {
 		this.mExpiryDate = expiryDate;
+	}
+	
+	
+	public void setExpiryDate(Date date) {
+		this.mExpiryDate.setTime(date);
 	}
 	
 	public Calendar getExpiryDate() {
@@ -85,5 +101,21 @@ public class AccountItem {
 
 	public int getType() {
 		return mType;
+	}
+	
+	/**
+	 * 날짜를 문자열 포멧으로 얻는다.
+	 * @return 날짜
+	 */
+	public String getCreateDateString() {
+		return FinanceDataFormat.getDateFormat(mCreateDate.getTime());
+	}
+	
+	/**
+	 * 만료날짜를 문자열 포멧으로 얻는다.
+	 * @return 날짜
+	 */
+	public String getExpiryDateString() {
+		return FinanceDataFormat.getDateFormat(mCreateDate.getTime());
 	}
 }

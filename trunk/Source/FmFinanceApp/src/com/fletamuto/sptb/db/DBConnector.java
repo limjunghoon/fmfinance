@@ -22,8 +22,9 @@ import com.fletamuto.sptb.data.FinancialCompany;
 public class DBConnector {
 	private CardCompanyNameDBConnector mCardCompanyNameDBConnector = new CardCompanyNameDBConnector();
 	private CardItemDBConnector mCardDBConnector = new CardItemDBConnector();
-	private InstitutionDBConnector mInstitutionDBConnector = new InstitutionDBConnector();
+	private CompanyDBConnector mInstitutionDBConnector = new CompanyDBConnector();
 	private AccountDBConnector mAccountDBConnector = new AccountDBConnector();
+	private TagDBConnector mTagDBConnector = new TagDBConnector();
 	private BaseFinanceDBConnector[] mDBConnector = {
 			new IncomeDBConnector(), 
 			new ExpenseDBConnector(), 
@@ -198,6 +199,7 @@ public class DBConnector {
 	public int addCard(CardItem card) {
 		return mCardDBConnector.addItem(card);
 	}
+	 
 
 	public ArrayList<CardItem> getCardItems(int type) {
 		if (type < CardItem.CREDIT_CARD  ||  type > CardItem.CASH_CARD) {
@@ -209,6 +211,14 @@ public class DBConnector {
 
 	public CardItem getCardItem(int id) {
 		return mCardDBConnector.getItem(id);
+	}
+	
+	public TagDBConnector getTagDBConnector() {
+		return mTagDBConnector;
+	}
+	
+	public CardItemDBConnector getCardDBConnector() {
+		return mCardDBConnector;
 	}
 }
 

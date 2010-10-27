@@ -152,7 +152,7 @@ public class InputCheckCardLayout extends InputBaseLayout {
 		}
 		
 		mCheckCard.setAccountID(account.getID());
-		((Button)findViewById(R.id.BtnCheckCardAccount)).setText(String.format("%s : %s", account.getInstitution().getName(), account.getNumber()));
+		((Button)findViewById(R.id.BtnCheckCardAccount)).setText(String.format("%s : %s", account.getCompany().getName(), account.getNumber()));
 	}
 
 	private void updateCompenyName(CardCompenyName cardCompenyName) {

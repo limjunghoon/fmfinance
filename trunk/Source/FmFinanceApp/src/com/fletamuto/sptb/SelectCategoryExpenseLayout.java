@@ -12,12 +12,16 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
 	
 	private Category mMainCategory;
 	
+	public SelectCategoryExpenseLayout() {
+		setType(ExpenseItem.TYPE);
+	}
+	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setType(ExpenseItem.TYPE);
-        getCategoryList();
-        setCategoryAdaper();
+        
+ //       getCategoryList();
+  //      setCategoryAdaper();
     }
     
     

@@ -829,9 +829,12 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 	 */
 	private void insertBaseItems(SQLiteDatabase db) {
 		insertCategoryTables(db);
-		insertInstitutionTable(db);
+		insertCompanyTable(db);
+		insertExpenseTagTable(db);
 	//	insertPaymentMethodTable(db);
 	}
+	
+
 	
 
 	/**
@@ -988,7 +991,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		}
 	}
 	*/
-	private void insertInstitutionTable(SQLiteDatabase db) {
+	private void insertCompanyTable(SQLiteDatabase db) {
 		ContentValues rowItem = new ContentValues();
 		String [] bakingNames = context.getResources().getStringArray(R.array.financial_institution_banking);
 		String [] cardNames = context.getResources().getStringArray(R.array.financial_institution_card);
@@ -1007,16 +1010,29 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		}
 	}
 	
-	private void insertCardCompanyNameTable(SQLiteDatabase db, String cardName, int instituionID) {
-		if (instituionID == -1) return;
+	private void insertCardCompanyNameTable(SQLiteDatabase db, String cardName, int companyID) {
+		if (companyID == -1) return;
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("card_name", cardName);
-		rowItem.put("finance_company_id", instituionID);
-		rowItem.put("prioritize", instituionID);
-		rowItem.put("image_index", instituionID);
+		rowItem.put("finance_company_id", companyID);
+		rowItem.put("prioritize", companyID);
+		rowItem.put("image_index", companyID);
 		if (db.insert("card_company", null, rowItem) == -1) {
 			Log.e(LogTag.DB, "== DB Insert ERROR ==");
+		}
+	}
+	
+	private void insertExpenseTagTable(SQLiteDatabase db) {
+		ContentValues rowItem = new ContentValues();
+		String [] tagNames = context.getResources().getStringArray(R.array.expense_default_tag_list);
+		int tagLenth = tagNames.length;
+		
+		for (int index = 0; index < tagLenth; index++) {
+			rowItem.put("name", tagNames[index]);
+			rowItem.put("prioritize", index+1);
+			rowItem.put("image_index", index+1);
+			db.insert("expense_tag", null, rowItem);
 		}
 	}
 	
