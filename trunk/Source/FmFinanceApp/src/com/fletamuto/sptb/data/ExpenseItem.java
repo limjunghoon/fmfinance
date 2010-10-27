@@ -21,6 +21,22 @@ public class ExpenseItem extends FinanceItem {
 	public void setWaste(boolean waste) {
 		this.mWaste = waste;
 	}
+	
+	public void setCard(CardItem card) {
+		if (mPaymentMethod == null || mPaymentMethod.getType() != PaymentMethod.CARD) {
+			return;
+		}
+		
+		((PaymentCardMethod)mPaymentMethod).setCard(card);
+	}
+	
+	public CardItem getCard() {
+		if (mPaymentMethod == null || mPaymentMethod.getType() != PaymentMethod.CARD) {
+			return null;
+		} 
+		
+		return ((PaymentCardMethod)mPaymentMethod).getCard();
+	}
 
 
 	public boolean isWaste() {

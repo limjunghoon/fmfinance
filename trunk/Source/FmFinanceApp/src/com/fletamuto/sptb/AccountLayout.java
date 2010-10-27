@@ -3,10 +3,6 @@ package com.fletamuto.sptb;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fletamuto.sptb.ReportAccountLayout.AccountItemAdapter;
-import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.db.DBMgr;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.db.DBMgr;
 
 /**
  * 카드 레이아웃 클레스

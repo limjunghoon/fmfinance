@@ -22,12 +22,16 @@ import com.fletamuto.sptb.db.DBMgr;
  */
 public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 	
-	protected FinanceItem mItem;
+	private FinanceItem mItem;
 	protected InputMode mInputMode = InputMode.ADD_MODE;
 	
 	protected abstract void updateDate();
 	protected abstract void updateCategory(int id, String name);
 	protected abstract void onCategoryClick();
+	
+	protected void setItem(FinanceItem item) {
+		mItem = item;
+	}
 	
 	DatePickerDialog.OnDateSetListener dateDlg = new DatePickerDialog.OnDateSetListener() {
 		

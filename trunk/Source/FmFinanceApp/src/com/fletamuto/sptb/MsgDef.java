@@ -11,6 +11,7 @@ public final class MsgDef {
 		public final static int ACT_ADD_CARD = 6;
 		public final static int ACT_ADD_ACCOUNT = 7;
 		public final static int ACT_CARD_SELECT = 8;
+		public final static int ACT_ACCOUNT_SELECT = 9;
 		
 		
 		
@@ -23,5 +24,7 @@ public final class MsgDef {
 		public static final String TAG_ID = "TAG_ID";
 		public static final String TAG_NAME = "TAG_NAME";
 		public static final String CARD_ID = "CARD_ID";
+		public static final String ACCOUNT_ID = "ACCOUNT_ID";
+		public static final String INSTALLMENT_PLAN = "INSTALLMENT_PLAN";
 	}
 }

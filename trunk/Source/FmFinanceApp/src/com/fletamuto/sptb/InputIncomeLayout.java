@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -14,6 +15,7 @@ import com.fletamuto.sptb.db.DBMgr;
  * @version 1.0.0.0
  */
 public class InputIncomeLayout extends InputFinanceItemBaseLayout {
+	private IncomeItem mIncomeItem;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_income, true);
@@ -48,13 +50,14 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 
 	@Override
 	protected void createItemInstance() {
-		mItem = new IncomeItem();
+		mIncomeItem = new IncomeItem();
+		setItem(mIncomeItem);
 	}
 	
 	@Override
 	protected boolean getItemInstance(int id) {
-		mItem = DBMgr.getItem(IncomeItem.TYPE, id);
-		if (mItem == null) return false;
+		mIncomeItem = (IncomeItem) DBMgr.getItem(IncomeItem.TYPE, id);
+		if (mIncomeItem == null) return false;
 		return true;
 	}
 
@@ -66,7 +69,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 	
 	@Override
 	protected void updateCategory(int id, String name) {
-		mItem.setCategory(id, name);
+		mIncomeItem.setCategory(id, name);
 		updateBtnCategoryText(R.id.BtnIncomeCategory);
 	}
 

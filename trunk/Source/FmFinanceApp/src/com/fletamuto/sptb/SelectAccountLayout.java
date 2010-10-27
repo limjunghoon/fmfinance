@@ -56,7 +56,7 @@ public class SelectAccountLayout extends Activity {
 				AccountItem account = (AccountItem)view.getTag();
 				
 				Intent intent = new Intent();
-				intent.putExtra("ACCOUNT_ID", account.getID());
+				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ID, account.getID());
 				setResult(RESULT_OK, intent);
 				finish();
 			}
@@ -78,7 +78,7 @@ public class SelectAccountLayout extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_ADD_ACCOUNT) {
 			if (resultCode == RESULT_OK) {
-				int accountID = data.getIntExtra("ACCOUNT_ID", -1);
+				int accountID = data.getIntExtra(MsgDef.ExtraNames.ACCOUNT_ID, -1);
 				if (accountID == -1) return;
 				
 				AccountItem account = DBMgr.getAccountItem(accountID);

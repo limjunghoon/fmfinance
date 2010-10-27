@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
+	private LiabilityItem mLiabilityItem;
+	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_liability, true);
@@ -42,13 +45,14 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
 
 	@Override
 	protected void createItemInstance() {
-		mItem = new LiabilityItem();
+		mLiabilityItem = new LiabilityItem();
+		setItem(mLiabilityItem);
 	}
 	
 	@Override
 	protected boolean getItemInstance(int id) {
-		mItem = DBMgr.getItem(LiabilityItem.TYPE, id);
-		if (mItem == null) return false;
+		mLiabilityItem = (LiabilityItem) DBMgr.getItem(LiabilityItem.TYPE, id);
+		if (mLiabilityItem == null) return false;
 		return true;
 	}
 	
@@ -61,7 +65,7 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
 	@Override
 	protected void updateCategory(int id, String name) {
 		// TODO Auto-generated method stub
-		mItem.setCategory(id, name);
+		mLiabilityItem.setCategory(id, name);
 		updateBtnCategoryText(R.id.BtnLiabilityCategory);
 	}
 
