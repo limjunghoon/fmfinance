@@ -12,15 +12,16 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.FinanceCurrentDate;
 
-public class ReportTodayIncomeLayout extends ReportBaseLayout {
+public class ReportCurrentIncomeLayout extends ReportBaseLayout {
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        if (getItemsFromDB(IncomeItem.TYPE, Calendar.getInstance()) == false) {
+        if (getItemsFromDB(IncomeItem.TYPE, FinanceCurrentDate.getDate()) == false) {
         	return;
         }
         

@@ -8,13 +8,18 @@
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:orientation="vertical">
 		<LinearLayout android:id="@+id/LinearLayout02" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="10" android:layout_marginTop="5dp">
 		<ProgressBar android:layout_width="fill_parent" android:id="@+id/IncomeExpensePrograss" style="?android:attr/progressBarStyleHorizontal" android:layout_height="fill_parent" android:max="100" android:layout_weight="2"></ProgressBar>
-<TextView android:id="@+id/TVIncomeExpenseAmount" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="4" android:textSize="17sp" android:gravity="right|center_vertical"></TextView>
+		<TextView android:id="@+id/TVIncomeExpenseAmount" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="4" android:textSize="17sp" android:gravity="right|center_vertical"></TextView>
+	</LinearLayout>
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/TodayLayout" android:orientation="vertical" android:layout_weight="7" android:layout_marginTop="5dp">
+			<LinearLayout android:id="@+id/LinearLayout05" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="2">
+			<Button android:layout_width="wrap_content" android:id="@+id/BtnPreviousDay" android:maxHeight="30dp" android:minHeight="30dp" android:layout_height="fill_parent" android:text="이전날"></Button>
+			<TextView android:layout_height="wrap_content" android:paddingTop="5dp" android:layout_marginLeft="5dp" android:textSize="17sp" android:id="@+id/TVCurrentday" android:layout_width="wrap_content" android:maxHeight="30dp" android:text="이전달"></TextView>
+			<Button android:layout_width="wrap_content" android:id="@+id/BtnNextDay" android:minHeight="30dp" android:maxHeight="30dp" android:layout_height="fill_parent" android:text="다음날"></Button>
+	</LinearLayout>
+			<Button android:layout_height="wrap_content" android:id="@+id/BtnTodayIncome" android:layout_width="fill_parent" android:gravity="left|center" android:layout_weight="1"></Button>
+			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnTodayExpense" android:gravity="left|center" android:layout_weight="1"></Button>
+		
 </LinearLayout>
-		<LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/TodayLayout" android:orientation="vertical" android:layout_weight="7">
-			<TextView android:layout_height="wrap_content" android:paddingTop="5dp" android:id="@+id/TVToday" android:layout_width="fill_parent" android:layout_marginLeft="5dp" android:textSize="17dp"></TextView>
-			<Button android:layout_height="wrap_content" android:id="@+id/BtnTodayIncome" android:layout_width="fill_parent" android:gravity="left|center"></Button>
-			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnTodayExpense" android:gravity="left|center"></Button>
-		</LinearLayout>
 	
 		<LinearLayout android:id="@+id/LinearLayout02" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="8">
 		</LinearLayout>

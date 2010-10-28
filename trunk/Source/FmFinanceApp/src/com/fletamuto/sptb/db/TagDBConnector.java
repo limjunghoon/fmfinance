@@ -9,7 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.fletamuto.sptb.data.ExpenseTag;
 
 public class TagDBConnector extends BaseDBConnector {
-private static final String TABLE_NAME = "expense_tag";
+	private static final String TABLE_NAME = "expense_tag";
+
 	
 	public int addItem(ExpenseTag tag) {
 		int insertID = -1;
@@ -45,6 +46,9 @@ private static final String TABLE_NAME = "expense_tag";
 		Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
 		
 		if (c.moveToFirst() != false) {
+			// 더미 테그 스킵
+			c.moveToNext();
+			
 			do {
 				tag.add(createExpenseTag(c));
 			} while (c.moveToNext());
@@ -56,6 +60,8 @@ private static final String TABLE_NAME = "expense_tag";
 	}
 	
 	public ExpenseTag getItem(int id) {
+		if (id == ExpenseTag.NONE_ID) return null;
+		
 		ExpenseTag tag = null;
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor c = db.query(TABLE_NAME, null, "_id=?", new String[]{String.valueOf(id)}, null, null, null);

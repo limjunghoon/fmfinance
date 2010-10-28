@@ -7,6 +7,7 @@ public abstract class PaymentMethod {
 	
 	private int mID = -1;
 	private int mType = CASH;
+	private String mMessage;
 	
 	public abstract String getText();
 	
@@ -24,6 +25,14 @@ public abstract class PaymentMethod {
 	
 	public int getType() {
 		return mType;
+	}
+
+	public void setDisplayMessage(String mMessage) {
+		this.mMessage = mMessage;
+	}
+
+	public String getDisplayMessage() {
+		return mMessage;
 	}
 
 }

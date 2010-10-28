@@ -213,6 +213,7 @@
 		<item>30개월</item><item>31개월</item><item>32개월</item><item>33개월</item><item>34개월</item><item>35개월</item><item>36개월</item>
 	</string-array>
 	<string-array name="expense_default_tag_list">
+		<item>none</item>
 		<item>집</item>
 		<item>자동차</item>
 		<item>연애</item>

@@ -745,7 +745,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"method_type INTEGER NOT NULL," +
 					"account INTEGER," +
 					"card INTEGER," +
-					"installment_plan INTEGER);");
+					"installment_plan INTEGER," +
+					"message TEXT);");
 		}catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}

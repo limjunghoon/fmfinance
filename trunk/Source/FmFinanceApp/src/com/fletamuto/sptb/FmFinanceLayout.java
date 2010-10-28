@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.FinanceCurrentDate;
 
 /**
  * 메인 레이아웃 클레스
@@ -22,6 +23,7 @@ import com.fletamuto.sptb.db.DBMgr;
  * @version  1.0.0.1
  */
 public class FmFinanceLayout extends FmBaseActivity {  	
+	//private FinanceCurrentDate mCurrentDay;
 	private ChangeActivity startActivity = new ChangeActivity();
 	
     /** Called when the activity is first created. */
@@ -37,7 +39,6 @@ public class FmFinanceLayout extends FmBaseActivity {
         setTitle(getResources().getString(R.string.app_name));
         setIncomeExpenseProgress();
     }
-
     
 
 	/**
@@ -63,31 +64,54 @@ public class FmFinanceLayout extends FmBaseActivity {
     	setChangeActivityBtnClickListener(R.id.BtnBudget);
     	setChangeActivityBtnClickListener(R.id.BtnPurpose);
     	setChangeActivityBtnClickListener(R.id.BtnSearch);
+    	
+    	setCurrentButtonListener();
+    	
     }
     
     /**
+     * 현재날짜 이동 버튼 클릭시
+     */
+    private void setCurrentButtonListener() {
+    	Button btnPrevious = (Button)findViewById(R.id.BtnPreviousDay);
+    	btnPrevious.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				moveCurrentDay(-1);
+			}
+		});
+    	
+    	Button btnNext = (Button)findViewById(R.id.BtnNextDay);
+    	btnNext.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				moveCurrentDay(1);
+			}
+		});
+	}
+    
+	protected void moveCurrentDay(int dayValue) {
+		FinanceCurrentDate.moveCurrentDay(dayValue);
+		updateViewText();
+	}
+
+
+	/**
      * 버튼 클릭시  Activity화면 전환 설정
      * @param id 버튼 아이디
      */
     protected void setChangeActivityBtnClickListener(int id) {
     	((Button)findViewById(id)).setOnClickListener(startActivity);
     }
-    
-    /** 화면 텍스트 초기화 */
-    protected void InitViewText() {
-    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-    	TextView tvToday = (TextView)findViewById(R.id.TVToday);
-    	tvToday.setText(dateFormat.format(Calendar.getInstance().getTime()));
-    	
-    }
+
     
     /** 화면 텍스트 갱신 */
     protected void updateViewText() {
     	updateTotalIncomeText();
     	updateTotalExpenseText();
-    	updateTodayDateText();
-    	updateTodayIncomeText();
-    	updateTodayExpenseText();
+    	updateCurrentDateText();
+    	updateCurrentIncomeText();
+    	updateCurrentExpenseText();
     }
     
     /** 총 수입 액수 갱신 */
@@ -106,27 +130,27 @@ public class FmFinanceLayout extends FmBaseActivity {
     	totalExpense.setTextColor(Color.RED);
 	}
     
-    /** 오늘 날짜 갱신 */
-    protected void updateTodayDateText() {
-    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-    	TextView tvToday = (TextView)findViewById(R.id.TVToday);
-    	tvToday.setText(dateFormat.format(Calendar.getInstance().getTime()));
+    /** 현재 날짜 갱신 */
+    protected void updateCurrentDateText() {
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+    	TextView tvCurrentDay = (TextView)findViewById(R.id.TVCurrentday);
+    	tvCurrentDay.setText(dateFormat.format(FinanceCurrentDate.getTime()));
 	}
     
-    /** 오늘 수입 정보갱신 */
-    protected void updateTodayIncomeText() {
-    	int count = DBMgr.getItemCount(IncomeItem.TYPE, Calendar.getInstance());
-    	long amount = DBMgr.getTotalAmountDay(IncomeItem.TYPE, Calendar.getInstance());
-    	Button incomeToday = (Button)findViewById(R.id.BtnTodayIncome);
-    	incomeToday.setText(String.format("수입(%d건) \t\t\t\t\t %,d원", count, amount));
+    /** 현재 수입 정보갱신 */
+    protected void updateCurrentIncomeText() {
+    	int count = DBMgr.getItemCount(IncomeItem.TYPE, FinanceCurrentDate.getDate());
+    	long amount = DBMgr.getTotalAmountDay(IncomeItem.TYPE, FinanceCurrentDate.getDate());
+    	Button incomeCurrnet = (Button)findViewById(R.id.BtnTodayIncome);
+    	incomeCurrnet.setText(String.format("수입(%d건) \t\t\t\t\t %,d원", count, amount));
 	}
     
-    /** 오늘 지출 정보갱신 */
-    protected void updateTodayExpenseText() {
-    	int count = DBMgr.getItemCount(ExpenseItem.TYPE, Calendar.getInstance());
-    	long amount = DBMgr.getTotalAmountDay(ExpenseItem.TYPE, Calendar.getInstance());
-    	Button expenseToday = (Button)findViewById(R.id.BtnTodayExpense);
-    	expenseToday.setText(String.format("지출(%d건) \t\t\t\t\t %,d원", count, -amount));
+    /** 현재 지출 정보갱신 */
+    protected void updateCurrentExpenseText() {
+    	int count = DBMgr.getItemCount(ExpenseItem.TYPE, FinanceCurrentDate.getDate());
+    	long amount = DBMgr.getTotalAmountDay(ExpenseItem.TYPE, FinanceCurrentDate.getDate());
+    	Button expenseCurrnet = (Button)findViewById(R.id.BtnTodayExpense);
+    	expenseCurrnet.setText(String.format("지출(%d건) \t\t\t\t\t %,d원", count, -amount));
 	}
     
     /**
@@ -150,8 +174,8 @@ public class FmFinanceLayout extends FmBaseActivity {
 			else if (id == R.id.BtnInputIncome) changeClass = InputIncomeLayout.class;
 			else if (id == R.id.BtnAssetsLiability) changeClass = InputAssetsOrLiability.class;
 			else if (id == R.id.BtnReport) 	changeClass = MainReportLayout.class;
-			else if (id == R.id.BtnTodayExpense) changeClass = ReportTodayExpenseLayout.class;
-			else if (id == R.id.BtnTodayIncome) changeClass = ReportTodayIncomeLayout.class;
+			else if (id == R.id.BtnTodayExpense) changeClass = ReportCurrentExpenseLayout.class;
+			else if (id == R.id.BtnTodayIncome) changeClass = ReportCurrentIncomeLayout.class;
 			else if (id == R.id.BtnSetting) changeClass = MainSettingLayout.class;
 			else if (id == R.id.BtnCard) changeClass = CardLayout.class;
 			else if (id == R.id.BtnAccount) changeClass = AccountLayout.class;
@@ -190,7 +214,7 @@ public class FmFinanceLayout extends FmBaseActivity {
 		else {
 			// 테스트 코드
 			int max = (int)(incomeAmount/100);
-			int pos = (int)(expenseAmount/100);
+			int pos = max - (int)(expenseAmount/100);
 			
 			progress.setMax(max);
 			progress.setProgress(pos);

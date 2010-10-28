@@ -46,11 +46,11 @@ public class ExpenseItem extends FinanceItem {
 	/**
 	 * 瘤阂规过 按眉甫 积己茄促.
 	 * @param paymentSelected 积己茄 摹阂规过
-	 * @return 己傍咯何
+	 * @return PaymentCardMethod
 	 */
-	public boolean createPaymentMethod(int paymentSelected) {
+	public PaymentMethod createPaymentMethod(int paymentSelected) {
 		if ((mPaymentMethod != null) && (mPaymentMethod.getType() == paymentSelected)) {
-			return true;
+			return null;
 		}
 		
 		if (paymentSelected == PaymentMethod.CASH) {
@@ -64,10 +64,11 @@ public class ExpenseItem extends FinanceItem {
 		}
 		else {
 			Log.e(LogTag.DATA, ":: invalid payment");
-			return false;
+			return null;
 		}
+		mPaymentMethod.setType(paymentSelected);
 		
-		return true;
+		return mPaymentMethod;
 	}
 
 	public void setPaymentMethod(PaymentMethod paymentMethod) {

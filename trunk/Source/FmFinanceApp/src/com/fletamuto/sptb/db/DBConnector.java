@@ -1,18 +1,9 @@
 
 package com.fletamuto.sptb.db;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import android.util.Log;
 
 import com.fletamuto.sptb.LogTag;
-import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.CardCompenyName;
-import com.fletamuto.sptb.data.CardItem;
-import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.FinancialCompany;
 
 /**
  * DB와 연동하여 데이타를 관리한다.

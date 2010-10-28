@@ -194,7 +194,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	
 	public boolean isValidTag() {
 		ExpenseTag tag = mExpensItem.getTag();
-		return  !(tag == null || tag.getID() == -1);
+		return  !(tag == null || tag.getID() == ExpenseTag.NONE_ID);
 	}
 
 
@@ -243,7 +243,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	}
 	
 	public PaymentMethod createPaymentMethod(int paymentMethodSelected) {
-		if (mExpensItem.createPaymentMethod(paymentMethodSelected) == false) {
+		if (mExpensItem.createPaymentMethod(paymentMethodSelected) == null) {
 			return null;
 		}
 		return mExpensItem.getPaymentMethod();

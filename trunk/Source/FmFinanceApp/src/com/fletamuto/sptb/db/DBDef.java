@@ -26,5 +26,6 @@ final class DBDef {
 		public static final int NULL_ERR = 1;
 		public static final int MAIN_CATEGORY_INVAlID = 2;
 		public static final int SUB_CATEGORY_INVAlID = 3;
+		public static final int SUB_PAYMENT_METHOD_INVAlID = 4;
 	}
 }
