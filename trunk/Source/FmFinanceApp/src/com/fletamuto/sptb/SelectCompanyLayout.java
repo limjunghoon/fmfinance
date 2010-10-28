@@ -16,9 +16,9 @@ import android.widget.GridView;
 import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class SelectInstitutionLayout extends FmBaseActivity {
-	protected ArrayList<FinancialCompany> mArrInstitution = null;
-	InstitutionButtonAdpter mAdapterInstituion;
+public class SelectCompanyLayout extends FmBaseActivity {
+	protected ArrayList<FinancialCompany> mArrCompany = null;
+	CompanyButtonAdpter mAdapterInstituion;
 	
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -30,42 +30,42 @@ public class SelectInstitutionLayout extends FmBaseActivity {
         setTitle(getResources().getString(R.string.btn_category_select));
         setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
         
-        getInstitutionList();
-        setInstitutionAdaper();
+        getCompanyList();
+        setCompanyAdaper();
     }
 	
-	protected void getInstitutionList() {
-		mArrInstitution = DBMgr.getInstitutions();
+	protected void getCompanyList() {
+		mArrCompany = DBMgr.getCompany();
 	}
 	
-	protected void setInstitutionAdaper() {
-		if (mArrInstitution == null) return;
+	protected void setCompanyAdaper() {
+		if (mArrCompany == null) return;
         
-    	final GridView gridInstitution = (GridView)findViewById(R.id.GVSelect);
-    	mAdapterInstituion = new InstitutionButtonAdpter(this, R.layout.grid_select, mArrInstitution);
-    	gridInstitution.setAdapter(mAdapterInstituion);
+    	final GridView gridCompany = (GridView)findViewById(R.id.GVSelect);
+    	mAdapterInstituion = new CompanyButtonAdpter(this, R.layout.grid_select, mArrCompany);
+    	gridCompany.setAdapter(mAdapterInstituion);
     	
 	}
 	
-	protected void updateAdapterInstitution() {
-		if (mArrInstitution != null) {
-			mArrInstitution.clear();
+	protected void updateAdapterCompany() {
+		if (mArrCompany != null) {
+			mArrCompany.clear();
 		}
-		getInstitutionList();
-		setInstitutionAdaper();
+		getCompanyList();
+		setCompanyAdaper();
 	}
 	
-	protected void onClickInstitutionButton(FinancialCompany institution) {
+	protected void onClickCompanyButton(FinancialCompany Company) {
 		Intent intent = new Intent();
-		intent.putExtra("INSTITUTION_ID", institution.getID());
+		intent.putExtra("Company_ID", Company.getID());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
 
-    View.OnClickListener institutionListener = new View.OnClickListener() {
+    View.OnClickListener CompanyListener = new View.OnClickListener() {
 		public void onClick(View v) {
-			FinancialCompany institution = (FinancialCompany)v.getTag();
-			onClickInstitutionButton(institution);
+			FinancialCompany Company = (FinancialCompany)v.getTag();
+			onClickCompanyButton(Company);
 		}
 	};
 	
@@ -77,11 +77,11 @@ public class SelectInstitutionLayout extends FmBaseActivity {
 		});
 	}
 
-	private class InstitutionButtonAdpter extends ArrayAdapter<FinancialCompany> {
+	private class CompanyButtonAdpter extends ArrayAdapter<FinancialCompany> {
 		int mResource;
     	LayoutInflater mInflater;
     	
-		public InstitutionButtonAdpter(Context context, int resource,
+		public CompanyButtonAdpter(Context context, int resource,
 				 List<FinancialCompany> objects) {
 			super(context, resource, objects);
 			this.mResource = resource;
@@ -99,7 +99,7 @@ public class SelectInstitutionLayout extends FmBaseActivity {
 			
 			Button button = (Button)convertView.findViewById(R.id.BtnGridItem);
 			button.setText(instituion.getName());
-			button.setOnClickListener(institutionListener);
+			button.setOnClickListener(CompanyListener);
 			button.setTag(instituion);
 			
 			return convertView;

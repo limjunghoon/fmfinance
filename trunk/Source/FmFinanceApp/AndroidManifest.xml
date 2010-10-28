@@ -30,29 +30,29 @@
 		<activity android:label="하위분류 선택" android:name=".SelectSubCategoryLayout" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".ReportTodayExpenseLayout" android:label="금일 지출목록" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:label="금일 수입목록" android:name=".ReportTodayIncomeLayout" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
-<activity android:name=".EditCategoryLayout" android:theme="@android:style/Theme.NoTitleBar" android:label="분류편집"></activity>
-<activity android:label="설정" android:name=".MainSettingLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
-<activity android:name=".SettingRegstrationLayout" android:label="등록" android:theme="@android:style/Theme.NoTitleBar"></activity>
-<activity android:name=".InputAccountLayout" android:label="계좌등록" android:theme="@android:style/Theme.NoTitleBar"></activity>
-
-<activity android:label="금융기관 선택" android:name=".SelectInstitutionLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
-<activity android:label="계좌" android:name=".ReportAccountLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
-<activity android:name=".SelectCardCompanyLayout" android:label="카드사선택" android:theme="@android:style/Theme.NoTitleBar"></activity>
-<activity android:name=".InputCreditCardLayout" android:label="신용카드 등록" android:theme="@android:style/Theme.NoTitleBar"></activity>
-<activity android:theme="@android:style/Theme.Dialog" android:label="계좌선택" android:name=".SelectAccountLayout"></activity>
-<activity android:name=".ReportCreditCardLayout" android:label="신용카드 목록"></activity>
-<activity android:name=".InputCheckCardLayout" android:label="체크카드 입력"></activity>
-<activity android:name=".InputPrepaidCardLayout" android:label="선불카드 입력"></activity>
-<activity android:name=".ReportCheckCardLayout" android:label="체크카드 목록"></activity>
-<activity android:name=".ReportPrepaidCardLayout" android:label="선불카드 목록"></activity>
-<activity android:name=".CardLayout" android:label="카드"></activity>
-<activity android:name=".AccountLayout"></activity>
-<activity android:name=".BudgetLayout"></activity>
-<activity android:name=".SearchLayout"></activity>
-<activity android:name=".SelectTagLayout"></activity>
-<activity android:name=".RepeatLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
-<activity android:name=".PurposeLayout"></activity>
-<activity android:name=".SelectCardLayout" android:theme="@android:style/Theme.Dialog" android:label="카드선택"></activity>
+		<activity android:name=".EditCategoryLayout" android:theme="@android:style/Theme.NoTitleBar" android:label="분류편집"></activity>
+		<activity android:label="설정" android:name=".MainSettingLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name=".SettingRegstrationLayout" android:label="등록" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name=".InputAccountLayout" android:label="계좌등록" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		
+		<activity android:label="금융기관 선택" android:name=".SelectCompanyLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:label="계좌" android:name=".ReportAccountLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name=".SelectCardCompanyLayout" android:label="카드사선택" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name=".InputCreditCardLayout" android:label="신용카드 등록" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:theme="@android:style/Theme.Dialog" android:label="계좌선택" android:name=".SelectAccountLayout"></activity>
+		<activity android:name=".ReportCreditCardLayout" android:label="신용카드 목록"></activity>
+		<activity android:name=".InputCheckCardLayout" android:label="체크카드 입력"></activity>
+		<activity android:name=".InputPrepaidCardLayout" android:label="선불카드 입력"></activity>
+		<activity android:name=".ReportCheckCardLayout" android:label="체크카드 목록"></activity>
+		<activity android:name=".ReportPrepaidCardLayout" android:label="선불카드 목록"></activity>
+		<activity android:name=".CardLayout" android:label="카드"></activity>
+		<activity android:name=".AccountLayout"></activity>
+		<activity android:name=".BudgetLayout"></activity>
+		<activity android:name=".SearchLayout"></activity>
+		<activity android:name=".SelectTagLayout"></activity>
+		<activity android:name=".RepeatLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name=".PurposeLayout"></activity>
+		<activity android:name=".SelectCardLayout" android:theme="@android:style/Theme.Dialog" android:label="카드선택"></activity>
 </application>
 
 

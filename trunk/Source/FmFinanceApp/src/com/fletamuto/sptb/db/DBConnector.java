@@ -22,7 +22,7 @@ import com.fletamuto.sptb.data.FinancialCompany;
 public class DBConnector {
 	private CardCompanyNameDBConnector mCardCompanyNameDBConnector = new CardCompanyNameDBConnector();
 	private CardItemDBConnector mCardDBConnector = new CardItemDBConnector();
-	private CompanyDBConnector mInstitutionDBConnector = new CompanyDBConnector();
+	private CompanyDBConnector mCompanyDBConnector = new CompanyDBConnector();
 	private AccountDBConnector mAccountDBConnector = new AccountDBConnector();
 	private TagDBConnector mTagDBConnector = new TagDBConnector();
 	private BaseFinanceDBConnector[] mDBConnector = {
@@ -38,7 +38,28 @@ public class DBConnector {
 		}
 		return mDBConnector[itemType];
 	}
-	  
+	public CompanyDBConnector getCompanyDBConnector() {
+		return mCompanyDBConnector;
+	}
+	
+	public AccountDBConnector getAccountDBConnector() {
+		return mAccountDBConnector;
+	}
+	
+	public CardCompanyNameDBConnector getCardCompanyNameDBConnector() {
+		return mCardCompanyNameDBConnector;
+	}
+	
+	
+	public TagDBConnector getTagDBConnector() {
+		return mTagDBConnector;
+	}
+	
+	public CardItemDBConnector getCardDBConnector() {
+		return mCardDBConnector;
+	}
+	
+	/*  
 	public long addFinanceItem(FinanceItem item) {
 		Log.i(LogTag.DB, "== DBConnector AddFinanceItem type : " + item.getType());
 		if (item.getType() >= mDBConnector.length) {
@@ -212,14 +233,9 @@ public class DBConnector {
 	public CardItem getCardItem(int id) {
 		return mCardDBConnector.getItem(id);
 	}
+
 	
-	public TagDBConnector getTagDBConnector() {
-		return mTagDBConnector;
-	}
-	
-	public CardItemDBConnector getCardDBConnector() {
-		return mCardDBConnector;
-	}
+*/
 }
 
 

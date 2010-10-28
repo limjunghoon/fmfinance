@@ -43,7 +43,7 @@ public class InputAccountLayout extends InputBaseLayout {
 		button.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(InputAccountLayout.this, SelectInstitutionLayout.class);
+				Intent intent = new Intent(InputAccountLayout.this, SelectCompanyLayout.class);
 		    	startActivityForResult(intent, ACT_SELECT_INSTITUTION);
 			}
 		});
@@ -129,7 +129,7 @@ public class InputAccountLayout extends InputBaseLayout {
 			return null;
 		}
 		
-		return DBMgr.getInstitution(id);
+		return DBMgr.getCompany(id);
 	}
     
 	@Override
