@@ -9,6 +9,6 @@ public class PaymentCashMethod extends PaymentMethod {
 	@Override
 	public String getText() {
 		// TODO Auto-generated method stub
-		return "";
+		return "Çö±Ý";
 	}
 }

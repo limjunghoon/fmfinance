@@ -39,6 +39,7 @@ public class ReportExpenseLayout extends ReportBaseLayout {
 		String categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText("분류 : " + categoryText);
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListTag)).setText("태그 : " + item.getTag().getName());
+		((TextView)convertView.findViewById(R.id.TVExpenseReportListPaymentMethod)).setText("결제 : " + item.getPaymentMethod().getText());
 	}
     
     protected void setDeleteBtnListener(View convertView, int itemId, int position) {

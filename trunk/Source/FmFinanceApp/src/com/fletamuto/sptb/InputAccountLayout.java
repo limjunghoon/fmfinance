@@ -19,7 +19,7 @@ import com.fletamuto.sptb.db.DBMgr;
  * @version  1.0.0.1
  */
 public class InputAccountLayout extends InputBaseLayout {
-	public final static int ACT_SELECT_INSTITUTION = 1;
+	public final static int ACT_COMPANY_SELECT = MsgDef.ActRequest.ACT_COMPANY_SELECT;
 	public final static int MIN_DIGIT = 10;
 	
 	private AccountItem mAccount;
@@ -44,7 +44,7 @@ public class InputAccountLayout extends InputBaseLayout {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(InputAccountLayout.this, SelectCompanyLayout.class);
-		    	startActivityForResult(intent, ACT_SELECT_INSTITUTION);
+		    	startActivityForResult(intent, ACT_COMPANY_SELECT);
 			}
 		});
 		
@@ -105,7 +105,7 @@ public class InputAccountLayout extends InputBaseLayout {
     	}
 		
 		Intent intent = new Intent();
-		intent.putExtra("ACCOUNT_ID", mAccount.getID());
+		intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ID, mAccount.getID());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
@@ -134,9 +134,9 @@ public class InputAccountLayout extends InputBaseLayout {
     
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == ACT_SELECT_INSTITUTION) {
+		if (requestCode == ACT_COMPANY_SELECT) {
     		if (resultCode == RESULT_OK) {
-    			updateInstitution( getInstitution(data.getIntExtra("INSTITUTION_ID", -1)));
+    			updateInstitution( getInstitution(data.getIntExtra(MsgDef.ExtraNames.COMPANY_ID, -1)));
     		}
     	}
 		else if (requestCode == ACT_AMOUNT) {

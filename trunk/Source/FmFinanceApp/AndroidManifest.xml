@@ -28,8 +28,8 @@
 		<activity android:name=".SelectCategoryLiabilityLayout" android:label="분류선택" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="com.fletamuto.common.control.InputAmountDialog" android:theme="@android:style/Theme.Dialog" android:label="금액입력" android:screenOrientation="portrait"></activity>
 		<activity android:label="하위분류 선택" android:name=".SelectSubCategoryLayout" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:name=".ReportTodayExpenseLayout" android:label="금일 지출목록" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:label="금일 수입목록" android:name=".ReportTodayIncomeLayout" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name=".ReportCurrentExpenseLayout" android:label="금일 지출목록" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:label="금일 수입목록" android:name=".ReportCurrentIncomeLayout" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".EditCategoryLayout" android:theme="@android:style/Theme.NoTitleBar" android:label="분류편집"></activity>
 		<activity android:label="설정" android:name=".MainSettingLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".SettingRegstrationLayout" android:label="등록" android:theme="@android:style/Theme.NoTitleBar"></activity>

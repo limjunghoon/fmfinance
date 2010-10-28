@@ -57,7 +57,7 @@ public class SelectCompanyLayout extends FmBaseActivity {
 	
 	protected void onClickCompanyButton(FinancialCompany Company) {
 		Intent intent = new Intent();
-		intent.putExtra("Company_ID", Company.getID());
+		intent.putExtra(MsgDef.ExtraNames.COMPANY_ID, Company.getID());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
