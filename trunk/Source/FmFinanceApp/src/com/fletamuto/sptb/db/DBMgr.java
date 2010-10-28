@@ -41,6 +41,16 @@ public final class DBMgr {
 		DBMgr.mDBHelper = new FinanceDBHelper(context);
 	}
 	
+	
+	/**
+	 * DBHelper 객체를 얻는다.
+	 * @return DBHelper 객체
+	 */
+	public static FinanceDBHelper getDBHelper() {
+		return DBMgr.mDBHelper;
+	}
+	
+	
 	/**
 	 * 수입관련 DB컨넥터를 얻는다.
 	 * @return IncomeDBConnector
@@ -79,7 +89,8 @@ public final class DBMgr {
 	 */
 	public static long updateFinanceItem(FinanceItem item) {
 		if (DBMgr.checkFinanceItemType(item.getType()) == false) return -1;
-		return mInstance.mDBConnector.updateFinanceItem(item);
+		//return mInstance.mDBConnector.updateFinanceItem(item);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).updateItem(item);
 	}
 	
 	/**
@@ -91,7 +102,8 @@ public final class DBMgr {
 	 */
 	public static int updateCategory(int itemType, int id, String name) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return 0;
-		return mInstance.mDBConnector.updateCategory(itemType, id, name);
+		//return mInstance.mDBConnector.updateCategory(itemType, id, name);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).updateCategory(id, name);
 	}
 	
 	/**
@@ -103,7 +115,8 @@ public final class DBMgr {
 	 */
 	public static int updateSubCategory(int itemType, int id, String name) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return 0;
-		return mInstance.mDBConnector.updateSubCategory(itemType, id, name);
+//		return mInstance.mDBConnector.updateSubCategory(itemType, id, name);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).updateSubCategory(id, name);
 	}
 	
 	/**
@@ -113,7 +126,8 @@ public final class DBMgr {
 	 */
 	public static ArrayList<FinanceItem> getAllItems(int itemType) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
-		return mInstance.mDBConnector.getFinanceAllItems(itemType);
+		//return mInstance.mDBConnector.getFinanceAllItems(itemType);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getAllItems();
 	}
 	
 	/**
@@ -124,7 +138,8 @@ public final class DBMgr {
 	 */
 	public static ArrayList<FinanceItem> getItems(int itemType, Calendar calendar) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
-		return mInstance.mDBConnector.getItems(itemType, calendar);
+	//	return mInstance.mDBConnector.getItems(itemType, calendar);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItems(calendar);
 	}
 	
 	/**
@@ -135,7 +150,8 @@ public final class DBMgr {
 	 */
 	public static FinanceItem getItem(int itemType, int id) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
-		return mInstance.mDBConnector.getItem(itemType, id);
+//		return mInstance.mDBConnector.getItem(itemType, id);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItem(id);
 	}
 	
 	/**
@@ -146,7 +162,8 @@ public final class DBMgr {
 	 */
 	public static int deleteItem(int itemType, int id) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return -1;
-		return mInstance.mDBConnector.deleteItem(itemType, id);
+		//return mInstance.mDBConnector.deleteItem(itemType, id);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).deleteItem(id);
 	}
 	
 	/**
@@ -156,7 +173,8 @@ public final class DBMgr {
 	 */
 	public static long getTotalAmount(int itemType) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return -1;
-		return mInstance.mDBConnector.getTotalAmount(itemType);
+		//return mInstance.mDBConnector.getTotalAmount(itemType);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmount();
 	}
 	
 	/**
@@ -167,7 +185,8 @@ public final class DBMgr {
 	 */
 	public static long getTotalAmountDay(int itemType, Calendar calendar) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return 0L;
-		return mInstance.mDBConnector.getTotalAmountDay(itemType, calendar);
+	//	return mInstance.mDBConnector.getTotalAmountDay(itemType, calendar);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountDay(calendar);
 	}
 	
 	/**
@@ -178,16 +197,10 @@ public final class DBMgr {
 	 */
 	public static int getItemCount(int itemType, Calendar calendar) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return -1;
-		return mInstance.mDBConnector.getItemCount(itemType, calendar);
+		//return mInstance.mDBConnector.getItemCount(itemType, calendar);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItemCount(calendar);
 	}
-	
-	/**
-	 * DBHelper 객체를 얻는다.
-	 * @return DBHelper 객체
-	 */
-	public static FinanceDBHelper getDBHelper() {
-		return DBMgr.mDBHelper;
-	}
+
 	
 	/**
 	 * 새로운 분류를 추가한다.
@@ -197,7 +210,7 @@ public final class DBMgr {
 	 */
 	public static int addCategory(int itemType, String name) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return -1;
-		return (int)mInstance.mDBConnector.addCategory(itemType, name);
+		return (int)mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).addCategory(name);
 	}
 	
 	/**
@@ -209,7 +222,8 @@ public final class DBMgr {
 	 */
 	public static int addSubCategory(int itemType, long mainCategoryID, String name) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return -1;
-		return (int)mInstance.mDBConnector.addSubCategory(itemType, mainCategoryID, name);
+		//return (int)mInstance.mDBConnector.addSubCategory(itemType, mainCategoryID, name);
+		return (int)mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).addSubCategory(mainCategoryID, name);
 	}
 	
 	/**
@@ -219,7 +233,8 @@ public final class DBMgr {
 	 */
 	public static ArrayList<Category> getCategory(int itemType) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
-		return mInstance.mDBConnector.getCategory(itemType);
+		//return mInstance.mDBConnector.getCategory(itemType);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getCategory();
 	}
 	
 	/**
@@ -230,7 +245,8 @@ public final class DBMgr {
 	 */
 	public static ArrayList<Category> getSubCategory(int itemType, long mainCategoryId) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
-		return mInstance.mDBConnector.getSubCategory(itemType, mainCategoryId);
+//		return mInstance.mDBConnector.getSubCategory(itemType, mainCategoryId);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getSubCategory(mainCategoryId);
 	}
 	
 	/**
@@ -241,55 +257,66 @@ public final class DBMgr {
 	 */
 	public static int deleteCategory(int itemType, int itemID) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return 0;
-		return mInstance.mDBConnector.deleteCategory(itemType, itemID);
+		//return mInstance.mDBConnector.deleteCategory(itemType, itemID);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).deleteCategory(itemID);
 	}
 	
 	public static int deleteSubCategory(int itemType, int itemID) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return 0;
-		return mInstance.mDBConnector.deleteSubCategory(itemType, itemID);
+		//return mInstance.mDBConnector.deleteSubCategory(itemType, itemID);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).deleteSubCategory(itemID);
 	}
 
-	public static ArrayList<FinancialCompany> getInstitutions() {
-		return mInstance.mDBConnector.getInstitutions();
+	public static ArrayList<FinancialCompany> getCompany() {
+		//return mInstance.mDBConnector.getInstitutions();
+		return mInstance.mDBConnector.getCompanyDBConnector().getAllItems();
 	}
 
-	public static FinancialCompany getInstitution(int id) {
-		return mInstance.mDBConnector.getInstitution(id);
+	public static FinancialCompany getCompany(int id) {
+		return mInstance.mDBConnector.getCompanyDBConnector().getItem(id);
 	}
 	
 	public static int addAccountItem(AccountItem account) {
-		return mInstance.mDBConnector.addAccountItem(account);
+		return mInstance.mDBConnector.getAccountDBConnector().addItem(account);
 	}
 	
 	public static AccountItem getAccountItem(int id) {
-		return mInstance.mDBConnector.getAccountItem(id);
+		//return mInstance.mDBConnector.getAccountItem(id);
+		return mInstance.mDBConnector.getAccountDBConnector().getItem(id);
 	}
 	
 	public static ArrayList<AccountItem> getAccountAllItems() {
-		return mInstance.mDBConnector.getAccountAllItems();
+	//	return mInstance.mDBConnector.getAccountAllItems();
+		return mInstance.mDBConnector.getAccountDBConnector().getAllItems();
 	}
 	
 	public static int deleteAccount(int id) {
-		return mInstance.mDBConnector.deleteAccount(id);
+	//	return mInstance.mDBConnector.deleteAccount(id);
+		return mInstance.mDBConnector.getAccountDBConnector().deleteAccountItem(id);
 	}
 
 	public static ArrayList<CardCompenyName> getCardCompanyNames() {
-		return mInstance.mDBConnector.getCardCompanyNames();
+		//return mInstance.mDBConnector.getCardCompanyNames();
+		return mInstance.mDBConnector.getCardCompanyNameDBConnector().getAllItems();
 	}
 
 	public static CardCompenyName getCardCompanyName(int id) {
-		return mInstance.mDBConnector.getCardCompanyName(id);
+//		return mInstance.mDBConnector.getCardCompanyName(id);
+		return mInstance.mDBConnector.getCardCompanyNameDBConnector().getItem(id);
 	}
 
 	public static int addCardItem(CardItem card) {
-		return mInstance.mDBConnector.addCard(card);
+		//return mInstance.mDBConnector.addCard(card);
+		return mInstance.mDBConnector.getCardDBConnector().addItem(card);
 	}
 	
 	public static ArrayList<CardItem> getCardItems() {
+		//return mInstance.mDBConnector.getCardDBConnector().getAllItems();
 		return mInstance.mDBConnector.getCardDBConnector().getAllItems();
 	}
 
 	public static ArrayList<CardItem> getCardItems(int type) {
+		//return mInstance.mDBConnector.getCardDBConnector().getAllItems(type);
 		return mInstance.mDBConnector.getCardDBConnector().getAllItems(type);
 	}
 
