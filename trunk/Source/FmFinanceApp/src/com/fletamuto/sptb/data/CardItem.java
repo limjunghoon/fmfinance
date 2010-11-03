@@ -7,10 +7,10 @@ public class CardItem {
 	public final static int CASH_CARD = 4;
 	
 	private int mID = -1;
-	private CardCompenyName mCompenyName;
+	private CardCompenyName mCompenyName = new CardCompenyName();
 	private String mName;
 	private String mNumber;
-	private int mAccountID;
+	private AccountItem mAccount = new AccountItem();
 	private String mMemo;
 	private int mType = CREDIT_CARD;
 	private long mBalance;
@@ -54,12 +54,12 @@ public class CardItem {
 		return mNumber;
 	}
 
-	public void setAccountID(int accountID) {
-		this.mAccountID = accountID;
+	public void setAccount(AccountItem account) {
+		this.mAccount = account;
 	}
 
-	public int getAccountID() {
-		return mAccountID;
+	public AccountItem getAccount() {
+		return mAccount;
 	}
 
 	public void setMemo(String memo) {

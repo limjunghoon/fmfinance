@@ -591,7 +591,10 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"type INTEGER NOT NULL," +
 					"day INTEGER," +
 					"weekly INTEGER," +
-					"term INTEGER);");
+					"term INTEGER," +
+					"item_type INTEGER NOT NULL," +
+					"origin_item_id INTEGER NOT NULL," +
+					"last_apply_date DATE NOT NULL);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}

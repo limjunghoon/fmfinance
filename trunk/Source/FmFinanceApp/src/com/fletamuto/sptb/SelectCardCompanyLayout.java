@@ -16,43 +16,35 @@ import android.widget.GridView;
 import com.fletamuto.sptb.data.CardCompenyName;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class SelectCardCompanyLayout extends FmBaseActivity {
+public class SelectCardCompanyLayout extends SelectGridBaseLayout {
 	protected ArrayList<CardCompenyName> mCardCompenyNames = null;
 	CardCompenyNameButtonAdpter mAdapterCardCompenyName;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      
-        setContentView(R.layout.select_grid_base, true);
-        setTitleButtonListener();
-        setEditButtonListener();
-        setTitle(getResources().getString(R.string.btn_category_select));
-        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
-        
-        getInstitutionList();
-        setInstitutionAdaper();
+    
     }
 	
-	protected void getInstitutionList() {
+	protected void getCardCompenyNameList() {
 		mCardCompenyNames = DBMgr.getCardCompanyNames();
+		
 	}
 	
-	protected void setInstitutionAdaper() {
+	@Override
+	public void getData() {
+		getCardCompenyNameList();
+	}
+
+	@Override
+	public void setAdaper() {
 		if (mCardCompenyNames == null) return;
         
-    	final GridView gridInstitution = (GridView)findViewById(R.id.GVSelect);
+    	final GridView gridCategory = (GridView)findViewById(R.id.GVSelect);
     	mAdapterCardCompenyName = new CardCompenyNameButtonAdpter(this, R.layout.grid_select, mCardCompenyNames);
-    	gridInstitution.setAdapter(mAdapterCardCompenyName);
-    	
+    	gridCategory.setAdapter(mAdapterCardCompenyName);
 	}
 	
-	protected void updateAdapterInstitution() {
-		if (mCardCompenyNames != null) {
-			mCardCompenyNames.clear();
-		}
-		getInstitutionList();
-		setInstitutionAdaper();
-	}
+
 	
 	protected void onClickCardCompenyNameButton(CardCompenyName cardCompenyName) {
 		Intent intent = new Intent();

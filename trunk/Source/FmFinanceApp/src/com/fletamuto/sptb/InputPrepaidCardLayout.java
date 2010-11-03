@@ -29,15 +29,21 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_prepaid_card, true);
         
-        setTitleButtonListener();
-        
         updateChildView();
-        setTitleButtonListener();
-        setTitle(getResources().getString(R.string.input_prepaid_card_title));
         setSelectCardCompenyNameBtnClickListener();
-        setSaveBtnClickListener(R.id.BtnPrepaidCardSave);
         setBalanceBtnClickListener(R.id.BtnPrepaidCardBalance);
     }
+    
+    @Override
+	protected void setTitleBtn() {
+		setTitle(getResources().getString(R.string.input_prepaid_card_title));
+		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "완료");
+		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+		
+		setSaveBtnClickListener(R.id.BtnTitleRigth01);
+		
+		super.setTitleBtn();
+	}
 
 	private void setSelectCardCompenyNameBtnClickListener() {
 		Button button = (Button)findViewById(R.id.BtnPrepaidCardCompany);
@@ -64,7 +70,10 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 
 	@Override
 	public boolean checkInputData() {
-		// TODO Auto-generated method stub
+		if (mPrepaidCard.getCompenyName().getID() == -1) {
+			displayAlertMessage("카드사가 선택되지 않았습니다.");
+			return false;
+		}
 		return true;
 	}
 
@@ -101,14 +110,14 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
     	}
 		
 		Intent intent = new Intent();
-		intent.putExtra("CARD_ID", mPrepaidCard.getID());
+		intent.putExtra(MsgDef.ExtraNames.CARD_ID, mPrepaidCard.getID());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
 
 	@Override
 	protected void updateChildView() {
-		// TODO Auto-generated method stub
+		updateCompenyNameText();
 		
 	}
 
@@ -163,7 +172,20 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 		}
 		
 		mPrepaidCard.setCompenyName(cardCompenyName);
-		((Button)findViewById(R.id.BtnPrepaidCardCompany)).setText(cardCompenyName.getName());
+		updateCompenyNameText();
+	}
+	
+	/**
+	 * 카드사이름을 갱신한다.
+	 */
+	private void updateCompenyNameText() {
+		if (mPrepaidCard.getCompenyName().getID() == -1) {
+			((Button)findViewById(R.id.BtnPrepaidCardCompany)).setText("카드사를 선택해 주세요");
+		}
+		else {
+			((Button)findViewById(R.id.BtnPrepaidCardCompany)).setText(mPrepaidCard.getCompenyName().getName());
+		}
+		
 	}
 	
 	protected void setAccountBtnClickListener(int btnID) {

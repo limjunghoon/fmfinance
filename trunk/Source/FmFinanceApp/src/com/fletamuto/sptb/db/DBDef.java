@@ -27,5 +27,7 @@ final class DBDef {
 		public static final int MAIN_CATEGORY_INVAlID = 2;
 		public static final int SUB_CATEGORY_INVAlID = 3;
 		public static final int SUB_PAYMENT_METHOD_INVAlID = 4;
+		public static final int CARD_ITEM_INVAlID = 5;
+		public static final int ACCOUNT_ITEM_INVAlID = 6;
 	}
 }

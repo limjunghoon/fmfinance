@@ -20,7 +20,7 @@ import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public abstract class ReportBaseCardLayout extends FmBaseActivity {
-	public static final int ACT_ADD_CARD = 0;
+	public static final int ACT_ADD_CARD = MsgDef.ActRequest.ACT_ADD_CARD;
 	
 	protected int mType = -1;
 	private ArrayList<CardItem> mArrCard;
@@ -132,7 +132,7 @@ public abstract class ReportBaseCardLayout extends FmBaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_ADD_CARD) {
 			if (resultCode == RESULT_OK) {
-				int cardID = data.getIntExtra("CARD_ID", -1);
+				int cardID = data.getIntExtra(MsgDef.ExtraNames.CARD_ID, -1);
 				if (cardID == -1) return;
 				
 				CardItem card = DBMgr.getCardItem(cardID);

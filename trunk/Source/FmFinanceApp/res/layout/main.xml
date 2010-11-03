@@ -12,9 +12,9 @@
 	</LinearLayout>
 		<LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/TodayLayout" android:orientation="vertical" android:layout_weight="7" android:layout_marginTop="5dp">
 			<LinearLayout android:id="@+id/LinearLayout05" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="2">
-			<Button android:layout_width="wrap_content" android:id="@+id/BtnPreviousDay" android:maxHeight="30dp" android:minHeight="30dp" android:layout_height="fill_parent" android:text="이전날"></Button>
-			<TextView android:layout_height="wrap_content" android:paddingTop="5dp" android:layout_marginLeft="5dp" android:textSize="17sp" android:id="@+id/TVCurrentday" android:layout_width="wrap_content" android:maxHeight="30dp" android:text="이전달"></TextView>
-			<Button android:layout_width="wrap_content" android:id="@+id/BtnNextDay" android:minHeight="30dp" android:maxHeight="30dp" android:layout_height="fill_parent" android:text="다음날"></Button>
+			<Button android:layout_width="wrap_content" android:id="@+id/BtnPreviousDay" android:maxHeight="30dp" android:minHeight="30dp" android:layout_height="fill_parent" android:text="이전날" android:textSize="11sp"></Button>
+			<TextView android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:id="@+id/TVCurrentday" android:layout_width="wrap_content" android:text="이전달" android:layout_marginRight="5dp"></TextView>
+			<Button android:layout_width="wrap_content" android:id="@+id/BtnNextDay" android:minHeight="30dp" android:maxHeight="30dp" android:layout_height="fill_parent" android:text="다음날" android:textSize="11sp"></Button>
 	</LinearLayout>
 			<Button android:layout_height="wrap_content" android:id="@+id/BtnTodayIncome" android:layout_width="fill_parent" android:gravity="left|center" android:layout_weight="1"></Button>
 			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnTodayExpense" android:gravity="left|center" android:layout_weight="1"></Button>

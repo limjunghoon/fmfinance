@@ -11,7 +11,7 @@ public class AccountItem {
 	private int	mID = -1;
 	private String mNumber;
 	private long mBalance = 0L;
-	private FinancialCompany mCompany;
+	private FinancialCompany mCompany = new FinancialCompany();
 	private Calendar mCreateDate = Calendar.getInstance();
 	private Calendar mExpiryDate = Calendar.getInstance();
 	private String mMemo;

@@ -56,17 +56,7 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
         setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "¿Ï·á");
         
-        setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				updateItem();
-				
-				if (checkInputData() == true) {
-					saveItem();		
-					finish();
-		    	}
-			}
-		});
+        setSaveBtnClickListener(R.id.BtnTitleRigth01);
 		
 		super.setTitleBtn();
 	}

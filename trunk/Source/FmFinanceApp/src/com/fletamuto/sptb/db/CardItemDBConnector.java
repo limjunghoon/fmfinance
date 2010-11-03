@@ -6,7 +6,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.util.Log;
 
+import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.CardCompenyName;
 import com.fletamuto.sptb.data.CardItem;
 
@@ -14,6 +16,8 @@ public class CardItemDBConnector extends BaseDBConnector {
 	private static final String TABLE_NAME = "card";
 	
 	public int addItem(CardItem card) {
+		if (checkCardVaildItem(card) != DBDef.ValidError.SUCCESS) return -1;
+		
 		int newID = -1;
 		SQLiteDatabase db = getWritableDatabase();
 		
@@ -21,13 +25,9 @@ public class CardItemDBConnector extends BaseDBConnector {
 		rowItem.put("name", card.getName());
 		rowItem.put("number", card.getNumber());
 		rowItem.put("type", card.getType());
-		rowItem.put("account_id", card.getAccountID());
+		rowItem.put("account_id", card.getAccount().getID());
 		rowItem.put("company_name_id", card.getCompenyName().getID());
 		rowItem.put("settlement_day", card.getSettlementDay());
-	//	rowItem.put("start_settlement_day", card.getStartSettlementDay());
-//		rowItem.put("start_settlement_month", card.getStartSettlementMonth());
-		//rowItem.put("end_settlement_day", card.getEndSettlementDay());
-		//rowItem.put("end_settlement_month", card.getEndSettlementMonth());
 		rowItem.put("memo", card.getMemo());
 		rowItem.put("maxiup_balance", card.getBalance());
 		
@@ -37,20 +37,19 @@ public class CardItemDBConnector extends BaseDBConnector {
 		return newID;
 	}
 	
+	
+
 	public boolean updateItem(CardItem card) {
+		if (checkCardVaildItem(card) != DBDef.ValidError.SUCCESS) return false;
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("type", card.getType());
 		rowItem.put("number", card.getNumber());
-		rowItem.put("account_id", card.getAccountID());
+		rowItem.put("company_name_id", card.getCompenyName().getID());
 		rowItem.put("company_name_id", card.getCompenyName().getID());
 		rowItem.put("name", card.getName());
 		rowItem.put("settlement_day", card.getSettlementDay());
-////		rowItem.put("start_settlement_day", card.getStartSettlementDay());
-//		rowItem.put("start_settlement_month", card.getStartSettlementMonth());
-////		rowItem.put("end_settlement_day", card.getEndSettlementDay());
-//		rowItem.put("end_settlement_month", card.getEndSettlementMonth());
 		rowItem.put("memo", card.getMemo());
 		rowItem.put("balance", card.getBalance());
 		
@@ -115,6 +114,14 @@ public class CardItemDBConnector extends BaseDBConnector {
 		return card;
 	}
 	
+	public int deleteItem(int id) {
+		int result = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		result = db.delete(TABLE_NAME, "_id=?", new String[] {String.valueOf(id)});
+		db.close();
+		return result;
+	}
+	
 	
 	public CardItem CreateCardItem(Cursor c) {
 		
@@ -123,7 +130,7 @@ public class CardItemDBConnector extends BaseDBConnector {
 		card.setID(c.getInt(0));
 		card.setName(c.getString(1));
 		card.setNumber(c.getString(2));
-		card.setAccountID(c.getInt(4));
+		card.getAccount().setID(c.getInt(4));
 		card.setSettlementDay(c.getInt(6));
 //		card.setStartSettlementDay(c.getInt(7));
 //		card.setStartSettlementMonth(c.getInt(8));
@@ -140,6 +147,14 @@ public class CardItemDBConnector extends BaseDBConnector {
 		
 		return card;
 		
+	}
+	
+	private int checkCardVaildItem(CardItem card) {
+		if (card.getCompenyName() == null || card.getCompenyName().getID() == -1) {
+			Log.e(LogTag.DB, ":: CARD ITEM INVAILD");
+			return DBDef.ValidError.CARD_ITEM_INVAlID;
+		}
+		return DBDef.ValidError.SUCCESS; 
 	}
 
 

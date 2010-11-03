@@ -16,7 +16,6 @@ import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.PaymentAccountMethod;
 import com.fletamuto.sptb.data.PaymentCardMethod;
-import com.fletamuto.sptb.data.PaymentCashMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 
@@ -54,6 +53,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("tag", item.getTag().getID());
 		
 		long ret = db.insert("expense", null, rowItem);
+		item.setId((int)ret);
 		db.close();
 		
 		return ret;
@@ -202,6 +202,9 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
+		//임시코드
+		rowItem.put("prioritize", 0);
+		rowItem.put("image_index", 0);
 		
 		ret = db.insert("expense_main_category", null, rowItem);
 		db.close();
@@ -221,6 +224,9 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		
 		rowItem.put("name", name);
 		rowItem.put("main_id", mainCategoryID);
+		//임시코드
+		rowItem.put("prioritize", 0);
+		rowItem.put("image_index", 0);
 		
 		ret = db.insert("expense_sub_category", null, rowItem);
 		db.close();
@@ -392,6 +398,9 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
+		//임시코드
+		rowItem.put("prioritize", 0);
+		rowItem.put("image_index", 0);
 		
 		int result = db.update("expense_main_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
 		db.close();
@@ -409,6 +418,9 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
+		//임시코드
+		rowItem.put("prioritize", 0);
+		rowItem.put("image_index", 0);
 		
 		int result = db.update("expense_sub_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
 		db.close();

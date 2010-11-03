@@ -36,7 +36,7 @@ public abstract class FinanceItem {
 	private final Category mSubCategory = new Category(-1, "");
 	
 	/** 반복 */
-	private final Repeat mRepeat = new Repeat();
+	private Repeat mRepeat = new Repeat();
 	
 	/**
 	 * 수입, 지출, 자산, 부채 타입을 얻는다.
@@ -179,14 +179,10 @@ public abstract class FinanceItem {
 		return mRepeat;
 	}
 	
-	public void setWeeklyRepeat(int weekly) {
+	public void setRepeatWeekly(int weekly) {
 		mRepeat.setWeeklyRepeat(weekly);
 	}
-	
-	public void setMonthlyRepeat(int day) {
-		mRepeat.setDailyRepeat(day);
-	}
-	
+
 
 	/**
 	 * 만든 시간를 설정
@@ -210,5 +206,9 @@ public abstract class FinanceItem {
 	 */
 	public Calendar getCreateTime() {
 		return mCreateDate;
+	}
+	
+	public void setRepeatMonthly(int day) {
+		mRepeat.setMonthlyRepeat(day);
 	}
 }

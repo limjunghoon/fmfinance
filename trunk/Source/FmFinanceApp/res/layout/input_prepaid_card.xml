@@ -4,39 +4,38 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
   
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
-		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:text="@string/input_prepaid_card_compant" android:layout_width="80dp" android:id="@+id/TVPrepaidCardCompany">
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="40dp">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:text="@string/input_prepaid_card_compant" android:layout_width="80dp" android:id="@+id/TVPrepaidCardCompany">
 		</TextView>
 		<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:numeric="integer" android:id="@+id/BtnPrepaidCardCompany">
 		</Button>
 	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
-		<TextView android:layout_height="wrap_content" android:textSize="18dp" android:gravity="center" android:text="@string/input_prepaid_card_name" android:id="@+id/TVPrepaidCardName" android:layout_width="80dp">
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:text="@string/input_prepaid_card_name" android:id="@+id/TVPrepaidCardName" android:layout_width="80dp">
 		</TextView>
-		<EditText android:layout_height="wrap_content" android:textSize="18dp" android:layout_width="fill_parent" android:id="@+id/ETPrepaidCardName">
+		<EditText android:layout_height="wrap_content" android:textSize="18sp" android:layout_width="fill_parent" android:id="@+id/ETPrepaidCardName">
 		</EditText>
 	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
-		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:text="@string/input_prepaid_card_number" android:id="@+id/TVPrepaidCardNumber" android:layout_width="80dp">
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:text="@string/input_prepaid_card_number" android:id="@+id/TVPrepaidCardNumber" android:layout_width="80dp">
 		</TextView>
 		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/ETPrepaidCardNumber" android:singleLine="true" android:numeric="integer">
 		</EditText>
 	</LinearLayout>
 	
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
-		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:text="@string/input_prepaid_card_balance" android:layout_width="80dp" android:id="@+id/TVPrepaidCardBalance">
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:text="@string/input_prepaid_card_balance" android:layout_width="80dp" android:id="@+id/TVPrepaidCardBalance">
 		</TextView>
 		<Button android:id="@+id/BtnPrepaidCardBalance" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		</Button>
 	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
-		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:text="@string/input_prepaid_card_memo" android:id="@+id/TVPrepaidCardMemo" android:layout_width="80dp">
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:text="@string/input_prepaid_card_memo" android:id="@+id/TVPrepaidCardMemo" android:layout_width="80dp">
 		</TextView>
 		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/ETPrepaidCardMemo" android:singleLine="true">
 		</EditText>
 	</LinearLayout>
-	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="20dp" android:text="@string/input_prepaid_card_save" android:id="@+id/BtnPrepaidCardSave">
-	</Button>
+	
   
   
 </LinearLayout>
