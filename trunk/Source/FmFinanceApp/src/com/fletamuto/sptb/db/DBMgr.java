@@ -15,6 +15,8 @@ import com.fletamuto.sptb.data.ExpenseTag;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.data.ItemDef;
+import com.fletamuto.sptb.data.Repeat;
+import com.fletamuto.sptb.util.FinanceDataFormat;
 
 /**
  * 레이아웃과  DB를 연동하는 클래스
@@ -50,7 +52,50 @@ public final class DBMgr {
 		return DBMgr.mDBHelper;
 	}
 	
+	/**
+	 * 반복 아이템을 추가
+	 * 경우에 따라 속도개선 필요
+	 * @return
+	 */
+	public static boolean addRepeatItems() {
+		ArrayList<Repeat> repeatItems = mInstance.mDBConnector.getRepeatDBConnector().getAllItems();
+		if (repeatItems == null) return true;
+		
+		int length = repeatItems.size();
+		Calendar today = Calendar.getInstance();
+		
+		for (int index = 0; index < length; index++) {
+			Repeat repeat = repeatItems.get(index);
+			Calendar lastApplyDate = repeat.getLastApplyDate();
+			
+			while (isAfterDay(today, lastApplyDate)) {
+				lastApplyDate.add(Calendar.DAY_OF_MONTH, 1);
+				
+				if (repeat.isRepeatDay(lastApplyDate) == false) {
+					continue;
+				}
+				
+				FinanceItem item = DBMgr.getItem(repeat.getItemType(), repeat.getItemID());
+				if (item == null) {
+					Log.e(LogTag.DB, ":: Fail to Repeat Item " + repeat.getItemID());
+					continue;
+				}
+				item.setCreateDate(lastApplyDate);
+				DBMgr.addFinanceItem(item);
+			}
+			
+			repeat.setLastApplyDay(lastApplyDate);
+			DBMgr.updateRepeat(repeat);
+			
+		}
+		return true;
+	}
 	
+	
+	private static boolean isAfterDay(Calendar today, Calendar lastApplyDate) {
+		return (Integer.parseInt(FinanceDataFormat.getNumverDateFormat(today.getTime())) > Integer.parseInt(FinanceDataFormat.getNumverDateFormat(lastApplyDate.getTime())));
+	}
+
 	/**
 	 * 수입관련 DB컨넥터를 얻는다.
 	 * @return IncomeDBConnector
@@ -101,7 +146,7 @@ public final class DBMgr {
 	 * @return 성공여부
 	 */
 	public static int updateCategory(int itemType, int id, String name) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return 0;
+		if (checkFinanceItemType(itemType) == false) return 0;
 		//return mInstance.mDBConnector.updateCategory(itemType, id, name);
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).updateCategory(id, name);
 	}
@@ -323,9 +368,25 @@ public final class DBMgr {
 	public static CardItem getCardItem(int id) {
 		return mInstance.mDBConnector.getCardDBConnector().getItem(id);
 	}
+	
+	public static int deleteCardItem(int id) {
+		return mInstance.mDBConnector.getCardDBConnector().deleteItem(id);
+	}
 
 
 	public static ArrayList<ExpenseTag> getTag() {
 		return mInstance.mDBConnector.getTagDBConnector().getAllItems();
+	}
+	
+	public static int addRepeat(Repeat repeat) {
+		return mInstance.mDBConnector.getRepeatDBConnector().addItem(repeat);
+	}
+	
+	public static boolean updateRepeat(Repeat repeat) {
+		return mInstance.mDBConnector.getRepeatDBConnector().updateItem(repeat);
+	}
+	
+	public static int deleteRepeat(int id) {
+		return mInstance.mDBConnector.getRepeatDBConnector().deleteRepeat(id);
 	}
 }

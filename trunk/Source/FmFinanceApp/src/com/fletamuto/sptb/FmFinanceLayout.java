@@ -1,7 +1,6 @@
 package com.fletamuto.sptb;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -32,6 +31,8 @@ public class FmFinanceLayout extends FmBaseActivity {
         setContentView(R.layout.main, false);
         
         DBMgr.initialize(getApplicationContext());
+        DBMgr.addRepeatItems();
+        
         setTitleButtonListener();
         setBtnClickListener();
         updateViewText();

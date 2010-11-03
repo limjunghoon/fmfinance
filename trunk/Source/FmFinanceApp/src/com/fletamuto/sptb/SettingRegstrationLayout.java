@@ -12,7 +12,7 @@ import android.widget.Button;
  * @version  1.0.0.1
  */
 public class SettingRegstrationLayout extends FmBaseActivity {
-	private ChangeActivity changeActivity = new ChangeActivity();
+	private final ChangeActivity changeActivity = new ChangeActivity();
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

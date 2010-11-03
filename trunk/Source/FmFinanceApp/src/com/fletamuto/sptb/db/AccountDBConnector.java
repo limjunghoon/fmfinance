@@ -7,7 +7,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.util.Log;
 
+import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.util.FinanceDataFormat;
@@ -16,7 +18,7 @@ public class AccountDBConnector extends BaseDBConnector {
 	private static final String TABLE_NAME = "account";
 	
 	public int addItem(AccountItem account) {
-		int insertID = -1;
+		if (checkAccountVaildItem(account) != DBDef.ValidError.SUCCESS) return -1;
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
@@ -29,13 +31,15 @@ public class AccountDBConnector extends BaseDBConnector {
 		rowItem.put("memo", account.getMemo());
 		rowItem.put("name", account.getName());
 		
-		insertID = (int)db.insert(TABLE_NAME, null, rowItem);
+		int insertID = (int)db.insert(TABLE_NAME, null, rowItem);
 		account.setID(insertID);
 		db.close();
 		return insertID;
 	}
 	
+
 	public boolean updateItem(AccountItem account) {
+		if (checkAccountVaildItem(account) != DBDef.ValidError.SUCCESS) return false;
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
@@ -130,4 +134,13 @@ public class AccountDBConnector extends BaseDBConnector {
 		db.close();
 		return result;
 	}
+	
+	private int checkAccountVaildItem(AccountItem account) {
+		if (account.getCompany() == null || account.getCompany().getID() == -1) {
+			Log.e(LogTag.DB, ":: CARD ITEM INVAILD");
+			return DBDef.ValidError.ACCOUNT_ITEM_INVAlID;
+		}
+		return DBDef.ValidError.SUCCESS; 
+	}
+
 }

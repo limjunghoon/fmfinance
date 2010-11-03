@@ -40,6 +40,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("sub_category", item.getSubCategory().getId());
 		
 		long ret = db.insert("assets", null, rowItem);
+		item.setId((int)ret);
 		db.close();
 		return ret;
 	}
@@ -168,6 +169,9 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
+		//임시코드
+		rowItem.put("prioritize", 0);
+		rowItem.put("image_index", 0);
 		
 		ret = db.insert("assets_main_category", null, rowItem);
 		db.close();
@@ -187,6 +191,9 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		
 		rowItem.put("name", name);
 		rowItem.put("main_id", mainCategoryID);
+		//임시코드
+		rowItem.put("prioritize", 0);
+		rowItem.put("image_index", 0);
 		
 		ret = db.insert("assets_sub_category", null, rowItem);
 		db.close();
@@ -360,6 +367,9 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
+		//임시코드
+		rowItem.put("prioritize", 0);
+		rowItem.put("image_index", 0);
 		
 		int result = db.update("assets_main_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
 		db.close();
@@ -377,6 +387,9 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
+		//임시코드
+		rowItem.put("prioritize", 0);
+		rowItem.put("image_index", 0);
 		
 		int result = db.update("assets_sub_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
 		db.close();

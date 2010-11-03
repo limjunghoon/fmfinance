@@ -28,18 +28,24 @@ public class InputCheckCardLayout extends InputBaseLayout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_check_card, true);
         
-        setTitleButtonListener();
-        
         updateChildView();
-        setTitleButtonListener();
-        setTitle(getResources().getString(R.string.input_check_card_title));
         setSelectCardCompenyNameBtnClickListener();
-        setSaveBtnClickListener(R.id.BtnCheckCardSave);
         setAccountBtnClickListener(R.id.BtnCheckCardAccount);
     }
+    
+    @Override
+	protected void setTitleBtn() {
+		setTitle(getResources().getString(R.string.input_check_card_title));
+		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "완료");
+		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+		
+		setSaveBtnClickListener(R.id.BtnTitleRigth01);
+		
+		super.setTitleBtn();
+	}
 
 	private void setSelectCardCompenyNameBtnClickListener() {
-		Button button = (Button)findViewById(R.id.BtnPrepaidCardCompany);
+		Button button = (Button)findViewById(R.id.BtnCheckCardCompany);
 		button.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
@@ -52,7 +58,10 @@ public class InputCheckCardLayout extends InputBaseLayout {
 
 	@Override
 	public boolean checkInputData() {
-		// TODO Auto-generated method stub
+		if (mCheckCard.getCompenyName().getID() == -1) {
+			displayAlertMessage("카드사가 선택되지 않았습니다.");
+			return false;
+		}
 		return true;
 	}
 
@@ -89,15 +98,16 @@ public class InputCheckCardLayout extends InputBaseLayout {
     	}
 		
 		Intent intent = new Intent();
-		intent.putExtra("CARD_ID", mCheckCard.getID());
+		intent.putExtra(MsgDef.ExtraNames.CARD_ID, mCheckCard.getID());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
 
 	@Override
 	protected void updateChildView() {
-		// TODO Auto-generated method stub
-		
+		updateCompenyNameText();
+		updateAccountText();
+	
 	}
 
 	@Override
@@ -151,8 +161,8 @@ public class InputCheckCardLayout extends InputBaseLayout {
 			return;
 		}
 		
-		mCheckCard.setAccountID(account.getID());
-		((Button)findViewById(R.id.BtnCheckCardAccount)).setText(String.format("%s : %s", account.getCompany().getName(), account.getNumber()));
+		mCheckCard.setAccount(account);
+		updateAccountText();
 	}
 
 	private void updateCompenyName(CardCompenyName cardCompenyName) {
@@ -161,7 +171,7 @@ public class InputCheckCardLayout extends InputBaseLayout {
 		}
 		
 		mCheckCard.setCompenyName(cardCompenyName);
-		((Button)findViewById(R.id.BtnCheckCardCompany)).setText(cardCompenyName.getName());
+		updateCompenyNameText();
 	}
 	
 	protected void setAccountBtnClickListener(int btnID) {
@@ -174,5 +184,32 @@ public class InputCheckCardLayout extends InputBaseLayout {
 			}
 		 });
     }
+	
+
+	/**
+	 * 카드사이름을 갱신한다.
+	 */
+	private void updateCompenyNameText() {
+		if (mCheckCard.getCompenyName().getID() == -1) {
+			((Button)findViewById(R.id.BtnCheckCardCompany)).setText("카드사를 선택해 주세요");
+		}
+		else {
+			((Button)findViewById(R.id.BtnCheckCardCompany)).setText(mCheckCard.getCompenyName().getName());
+		}
+		
+	}
+	
+	/**
+	 * 결제할 계좌 은행이름을 갱신한다.
+	 */
+	private void updateAccountText() {
+		if (mCheckCard.getAccount().getID() == -1) {
+			((Button)findViewById(R.id.BtnCheckCardAccount)).setText("계좌를 선택해 주세요");
+		}
+		else {
+			((Button)findViewById(R.id.BtnCheckCardAccount)).setText(String.format("%s : %s", mCheckCard.getAccount().getCompany().getName(), mCheckCard.getAccount().getNumber()));
+		}
+		
+	}
 	
 }

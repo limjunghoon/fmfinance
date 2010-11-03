@@ -31,18 +31,9 @@ public class CardLayout extends FmBaseActivity {
 	private ArrayList<CardItem> mArrCard;
 	protected CardItemAdapter mAdapterCard;
 	
-//	public abstract void setType();
-//	public abstract void AddCardItem();
-
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-//        setType();
         setContentView(R.layout.empty_list, true);
-        
-        
-        setAddButtonListener();
-        
         
         getCardItems();
         setAdapterList();
@@ -52,6 +43,7 @@ public class CardLayout extends FmBaseActivity {
 	protected void setTitleBtn() {
 		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "Ãß°¡");
 		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+		setAddButtonListener();
 		
 		super.setTitleBtn();
 	}
@@ -81,7 +73,8 @@ public class CardLayout extends FmBaseActivity {
 		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
-//				AddCardItem();
+				Intent intent = new Intent(CardLayout.this, SelectInputCardLayout.class);		
+				startActivityForResult(intent, ACT_ADD_CARD);
 			}
 		});
 	}
@@ -130,7 +123,7 @@ public class CardLayout extends FmBaseActivity {
 		btnDelete.setOnClickListener(new View.OnClickListener() {
 	
 			public void onClick(View v) {
-				if (DBMgr.deleteAccount(ItemID) == 0 ) {
+				if (DBMgr.deleteCardItem(ItemID) == 0 ) {
 					Log.e(LogTag.LAYOUT, "can't delete accoutn Item  ID : " + ItemID);
 				}
 				mArrCard.remove(Itempsition);
@@ -144,7 +137,7 @@ public class CardLayout extends FmBaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_ADD_CARD) {
 			if (resultCode == RESULT_OK) {
-				int cardID = data.getIntExtra("CARD_ID", -1);
+				int cardID = data.getIntExtra(MsgDef.ExtraNames.CARD_ID, -1);
 				if (cardID == -1) return;
 				
 				CardItem card = DBMgr.getCardItem(cardID);

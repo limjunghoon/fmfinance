@@ -13,6 +13,7 @@ public final class MsgDef {
 		public final static int ACT_CARD_SELECT = 8;
 		public final static int ACT_ACCOUNT_SELECT = 9;
 		public final static int ACT_COMPANY_SELECT = 10;
+		public final static int ACT_CARD_INPUT_SELECT = 11;
 		
 		
 		
@@ -28,5 +29,9 @@ public final class MsgDef {
 		public static final String ACCOUNT_ID = "ACCOUNT_ID";
 		public static final String INSTALLMENT_PLAN = "INSTALLMENT_PLAN";
 		public static final String COMPANY_ID = "COMPANY_ID";
+		public static final String RPEAT_TYPE = "RPEAT_TYPE";
+		public static final String RPEAT_WEEKLY = "RPEAT_WEEKLY";
+		public static final String RPEAT_DAILY = "RPEAT_DAILY";
+		
 	}
 }

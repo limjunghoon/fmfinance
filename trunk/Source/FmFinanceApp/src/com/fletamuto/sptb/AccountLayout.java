@@ -37,14 +37,18 @@ public static final int ACT_ADD_ACCOUNT = 0;
         
         setContentView(R.layout.empty_list, true);
         
-        setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "추가");
-        setTitleButtonListener();
-        setAddButtonListener();
-        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
-        
         getAccountItems();
         setAdapterList();
     }
+	
+	@Override
+	protected void setTitleBtn() {
+		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "추가");
+		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+		setAddButtonListener();
+		
+		super.setTitleBtn();
+	}
 	
 	protected void getAccountItems() {
 		mArrAccount = DBMgr.getAccountAllItems();

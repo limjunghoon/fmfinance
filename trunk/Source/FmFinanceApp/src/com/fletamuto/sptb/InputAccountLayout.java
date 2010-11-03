@@ -28,17 +28,24 @@ public class InputAccountLayout extends InputBaseLayout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_account, true);
         
-        setTitleButtonListener();
-        
         updateChildView();
-        setTitleButtonListener();
-        setTitle(getResources().getString(R.string.input_account_title));
-        setSaveBtnClickListener(R.id.BtnAccountSave);
         setAmountBtnClickListener(R.id.BtnAccountAmount);
-        setSelectInstitutionBtnClickListener();
+        setSelectCompanyBtnClickListener();
     }
+    
+	@Override
+	protected void setTitleBtn() {
+		setTitle(getResources().getString(R.string.input_account_title));
+		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "완료");
+		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+		
+		setSaveBtnClickListener(R.id.BtnTitleRigth01);
+		
+		super.setTitleBtn();
+	}
+	
 
-	private void setSelectInstitutionBtnClickListener() {
+	private void setSelectCompanyBtnClickListener() {
 		Button button = (Button)findViewById(R.id.BtnAccountInstitution);
 		button.setOnClickListener(new View.OnClickListener() {
 			
@@ -63,8 +70,10 @@ public class InputAccountLayout extends InputBaseLayout {
 
 	@Override
 	public boolean checkInputData() {
-		if (mAccount.getNumber().length() == MIN_DIGIT)
+		if (mAccount.getCompany().getID() == -1) {
+			displayAlertMessage("회사가 선택되지 않았습니다.");
 			return false;
+		}
 		
 		return true;
 	}
@@ -112,7 +121,7 @@ public class InputAccountLayout extends InputBaseLayout {
 
 	@Override
 	protected void updateChildView() {
-		// TODO Auto-generated method stub
+		updateCompanyNameText();
 		
 	}
 
@@ -136,7 +145,7 @@ public class InputAccountLayout extends InputBaseLayout {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_COMPANY_SELECT) {
     		if (resultCode == RESULT_OK) {
-    			updateInstitution( getInstitution(data.getIntExtra(MsgDef.ExtraNames.COMPANY_ID, -1)));
+    			updateCompany( getInstitution(data.getIntExtra(MsgDef.ExtraNames.COMPANY_ID, -1)));
     		}
     	}
 		else if (requestCode == ACT_AMOUNT) {
@@ -153,14 +162,26 @@ public class InputAccountLayout extends InputBaseLayout {
 		
 	}
 
-	private void updateInstitution(FinancialCompany company) {
+	private void updateCompany(FinancialCompany company) {
 		if (company == null){
 			return;
 		}
 		
 		mAccount.setCompany(company);
-		((Button)findViewById(R.id.BtnAccountInstitution)).setText(company.getName());
+		updateCompanyNameText();
 	}
 
+	/**
+	 * 결제할 계좌 은행이름을 갱신한다.
+	 */
+	private void updateCompanyNameText() {
+		if (mAccount.getCompany().getID() == -1) {
+			((Button)findViewById(R.id.BtnAccountInstitution)).setText("회사를 선택해 주세요");
+		}
+		else {
+			((Button)findViewById(R.id.BtnAccountInstitution)).setText(String.format("%s", mAccount.getCompany().getName()));
+		}
+		
+	}
 	
 }

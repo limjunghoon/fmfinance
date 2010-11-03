@@ -27,7 +27,6 @@ public class SelectTagLayout extends SelectGridBaseLayout {
 	}
 	
 	protected void getTagList() {
-
 		mArrTag = DBMgr.getTag();
 		
 	}

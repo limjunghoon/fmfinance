@@ -14,7 +14,7 @@ import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 /**
- * 계좌등록
+ * 신용카드 등록
  * @author yongbban
  * @version  1.0.0.1
  */
@@ -28,15 +28,21 @@ public class InputCreditCardLayout extends InputBaseLayout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_credit_card, true);
         
-        setTitleButtonListener();
-        
         updateChildView();
-        setTitleButtonListener();
-        setTitle(getResources().getString(R.string.input_credit_card_title));
         setSelectCardCompenyNameBtnClickListener();
-        setSaveBtnClickListener(R.id.BtnCreditCardSave);
         setAccountBtnClickListener(R.id.BtnCreditCardAccount);
     }
+    
+	@Override
+	protected void setTitleBtn() {
+		setTitle(getResources().getString(R.string.input_credit_card_title));
+		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "완료");
+		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+		
+		setSaveBtnClickListener(R.id.BtnTitleRigth01);
+		
+		super.setTitleBtn();
+	}
 
 	private void setSelectCardCompenyNameBtnClickListener() {
 		Button button = (Button)findViewById(R.id.BtnCreditCardCompany);
@@ -52,7 +58,10 @@ public class InputCreditCardLayout extends InputBaseLayout {
 
 	@Override
 	public boolean checkInputData() {
-		// TODO Auto-generated method stub
+		if (mCreditCard.getCompenyName().getID() == -1) {
+			displayAlertMessage("카드사가 선택되지 않았습니다.");
+			return false;
+		}
 		return true;
 	}
 
@@ -89,14 +98,15 @@ public class InputCreditCardLayout extends InputBaseLayout {
     	}
 		
 		Intent intent = new Intent();
-		intent.putExtra("CARD_ID", mCreditCard.getID());
+		intent.putExtra(MsgDef.ExtraNames.CARD_ID, mCreditCard.getID());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
 
 	@Override
 	protected void updateChildView() {
-		// TODO Auto-generated method stub
+		updateCompenyNameText();
+		updateAccountText();
 		
 	}
 
@@ -110,19 +120,6 @@ public class InputCreditCardLayout extends InputBaseLayout {
 		
 		String memo = ((TextView)findViewById(R.id.ETCreditCardMemo)).getText().toString();
 		mCreditCard.setMemo(memo);
-/*		
-		Spinner startPeriodMonth = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodMonth);
-		int selectedMonthPostion = startPeriodMonth.getSelectedItemPosition();
-		if (Spinner.INVALID_POSITION != selectedMonthPostion){
-			mCreditCard.setStartSettlementMonth(selectedMonthPostion);
-		}
-		
-		Spinner startPeriodDay = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodDay);
-		int selectedDayPostion = startPeriodDay.getSelectedItemPosition();
-		if (Spinner.INVALID_POSITION != selectedDayPostion){
-			mCreditCard.setStartSettlementDay(selectedDayPostion);
-		}
-*/
 	}
 	
 	@Override
@@ -164,8 +161,8 @@ public class InputCreditCardLayout extends InputBaseLayout {
 			return;
 		}
 		
-		mCreditCard.setAccountID(account.getID());
-		((Button)findViewById(R.id.BtnCreditCardAccount)).setText(String.format("%s : %s", account.getCompany().getName(), account.getNumber()));
+		mCreditCard.setAccount(account);
+		updateAccountText();
 	}
 
 	private void updateCompenyName(CardCompenyName cardCompenyName) {
@@ -174,8 +171,36 @@ public class InputCreditCardLayout extends InputBaseLayout {
 		}
 		
 		mCreditCard.setCompenyName(cardCompenyName);
-		((Button)findViewById(R.id.BtnCreditCardCompany)).setText(cardCompenyName.getName());
+		updateCompenyNameText();
+		
 	}
+	
+	/**
+	 * 카드사이름을 갱신한다.
+	 */
+	private void updateCompenyNameText() {
+		if (mCreditCard.getCompenyName().getID() == -1) {
+			((Button)findViewById(R.id.BtnCreditCardCompany)).setText("카드사를 선택해 주세요");
+		}
+		else {
+			((Button)findViewById(R.id.BtnCreditCardCompany)).setText(mCreditCard.getCompenyName().getName());
+		}
+		
+	}
+	
+	/**
+	 * 결제할 계좌 은행이름을 갱신한다.
+	 */
+	private void updateAccountText() {
+		if (mCreditCard.getAccount().getID() == -1) {
+			((Button)findViewById(R.id.BtnCreditCardAccount)).setText("계좌를 선택해 주세요");
+		}
+		else {
+			((Button)findViewById(R.id.BtnCreditCardAccount)).setText(String.format("%s : %s", mCreditCard.getAccount().getCompany().getName(), mCreditCard.getAccount().getNumber()));
+		}
+		
+	}
+	
 	
 	protected void setAccountBtnClickListener(int btnID) {
     	Button btnAccount = (Button)findViewById(btnID);

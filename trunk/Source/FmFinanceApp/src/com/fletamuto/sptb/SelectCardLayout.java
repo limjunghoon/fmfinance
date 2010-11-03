@@ -23,6 +23,7 @@ import com.fletamuto.sptb.db.DBMgr;
 
 public class SelectCardLayout extends Activity {
 	public static final int ACT_ADD_CARD = MsgDef.ActRequest.ACT_ADD_CARD;
+	public static final int ACT_CARD_INPUT_SELECT = MsgDef.ActRequest.ACT_CARD_INPUT_SELECT;
 	
 	private ArrayList<CardItem> mArrCard;
 	protected CategoryItemAdapter mAdapterCard;
@@ -111,8 +112,8 @@ public class SelectCardLayout extends Activity {
 		btnAdd.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-//				Intent intent = new Intent(SelectCardLayout.this, InputCardLayout.class);		
-//				startActivityForResult(intent, ACT_ADD_CARD);
+				Intent intent = new Intent(SelectCardLayout.this, SelectInputCardLayout.class);		
+				startActivityForResult(intent, ACT_ADD_CARD);
 			}
 		});
 	}  
@@ -121,7 +122,7 @@ public class SelectCardLayout extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_ADD_CARD) {
 			if (resultCode == RESULT_OK) {
-				int CardID = data.getIntExtra("Card_ID", -1);
+				int CardID = data.getIntExtra(MsgDef.ExtraNames.CARD_ID, -1);
 				if (CardID == -1) return;
 				
 				CardItem Card = DBMgr.getCardItem(CardID);

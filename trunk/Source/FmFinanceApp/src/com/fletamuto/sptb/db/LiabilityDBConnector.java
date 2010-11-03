@@ -39,6 +39,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("main_category", item.getCategory().getId());
 		
 		long ret = db.insert("liability", null, rowItem);
+		item.setId((int)ret);
 		db.close();
 		return ret;
 	}
@@ -167,6 +168,9 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
+		//임시코드
+		rowItem.put("prioritize", 0);
+		rowItem.put("image_index", 0);
 		
 		ret = db.insert("liability_main_category", null, rowItem);
 		db.close();
@@ -186,6 +190,9 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		rowItem.put("name", name);
 		rowItem.put("main_id", mainCategoryID);
+		//임시코드
+		rowItem.put("prioritize", 0);
+		rowItem.put("image_index", 0);
 		
 		ret = db.insert("liability_sub_category", null, rowItem);
 		db.close();
@@ -311,6 +318,9 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
+		//임시코드
+		rowItem.put("prioritize", 0);
+		rowItem.put("image_index", 0);
 		
 		int result = db.update("liability_main_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
 		db.close();

@@ -11,12 +11,13 @@ import com.fletamuto.sptb.LogTag;
  * @version 1.0.0.1
  */
 public class DBConnector {
-	private CardCompanyNameDBConnector mCardCompanyNameDBConnector = new CardCompanyNameDBConnector();
-	private CardItemDBConnector mCardDBConnector = new CardItemDBConnector();
-	private CompanyDBConnector mCompanyDBConnector = new CompanyDBConnector();
-	private AccountDBConnector mAccountDBConnector = new AccountDBConnector();
-	private TagDBConnector mTagDBConnector = new TagDBConnector();
-	private BaseFinanceDBConnector[] mDBConnector = {
+	private final CardCompanyNameDBConnector mCardCompanyNameDBConnector = new CardCompanyNameDBConnector();
+	private final CardItemDBConnector mCardDBConnector = new CardItemDBConnector();
+	private final CompanyDBConnector mCompanyDBConnector = new CompanyDBConnector();
+	private final AccountDBConnector mAccountDBConnector = new AccountDBConnector();
+	private final TagDBConnector mTagDBConnector = new TagDBConnector();
+	private final RepeatDBConnector mRepeatDBConnector = new RepeatDBConnector();
+	private final BaseFinanceDBConnector[] mDBConnector = {
 			new IncomeDBConnector(), 
 			new ExpenseDBConnector(), 
 			new AssetsDBConnector(), 
@@ -41,13 +42,15 @@ public class DBConnector {
 		return mCardCompanyNameDBConnector;
 	}
 	
-	
 	public TagDBConnector getTagDBConnector() {
 		return mTagDBConnector;
 	}
 	
 	public CardItemDBConnector getCardDBConnector() {
 		return mCardDBConnector;
+	}
+	public RepeatDBConnector getRepeatDBConnector() {
+		return mRepeatDBConnector;
 	}
 	
 	/*  
