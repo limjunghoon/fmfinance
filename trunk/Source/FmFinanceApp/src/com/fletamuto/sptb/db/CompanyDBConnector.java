@@ -11,17 +11,18 @@ import com.fletamuto.sptb.data.FinancialCompany;
 public class CompanyDBConnector extends BaseDBConnector {
 	private static final String TABLE_NAME = "finance_company";
 	
-	public boolean addItem(FinancialCompany company) {
+	public int addItem(FinancialCompany company) {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", company.getName());
 		rowItem.put("type", company.getGroup());
+		rowItem.put("prioritize", 1);
+		rowItem.put("image_index", 1);
 		
-		
-		db.insert(TABLE_NAME, null, rowItem);
+		int ret = (int)db.insert(TABLE_NAME, null, rowItem);
 		db.close();
-		return true;
+		return ret;
 	}
 	
 	public boolean updateItem(FinancialCompany company) {
@@ -30,6 +31,8 @@ public class CompanyDBConnector extends BaseDBConnector {
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", company.getName());
 		rowItem.put("type", company.getGroup());
+		rowItem.put("prioritize", 1);
+		rowItem.put("image_index", 1);
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(company.getID())});
 		db.close();
@@ -72,5 +75,13 @@ public class CompanyDBConnector extends BaseDBConnector {
 		institution.setName(c.getString(1));
 		institution.setGroup(c.getInt(2));
 		return institution;
+	}
+	
+	public int deleteItem(int id) {
+		int result = 0;
+		SQLiteDatabase db = getWritableDatabase();
+		result = db.delete(TABLE_NAME, "_id=?", new String[] {String.valueOf(id)});
+		db.close();
+		return result;
 	}
 }
