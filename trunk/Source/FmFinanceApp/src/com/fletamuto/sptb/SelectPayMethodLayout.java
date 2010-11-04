@@ -55,4 +55,17 @@ public class SelectPayMethodLayout extends SelectGridBaseLayout {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	protected void onEditButtonClick() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void clearAdapter() {
+		if (mAdapterCategory != null) {
+			mAdapterCategory.clear();
+		}
+	}
 }

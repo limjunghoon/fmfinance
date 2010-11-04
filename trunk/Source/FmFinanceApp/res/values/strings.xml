@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="btn_back">BACK</string>	
-    <string name="btn_edit">EDIT</string>
+    <string name="btn_back">뒤로</string>	
+    <string name="btn_edit">편집</string>
     <string name="btn_favo">Favo</string>
-    <string name="btn_add">Add</string>
+    <string name="btn_add">추가</string>
     <string name="btn_category">분류</string>
     <string name="btn_category_select">분류선택</string>
     <string name="btn_save">저장</string>
+    <string name="tag_edit_select">태그편집</string>
 	<string name="input_amount_remove_all">전체지움</string>
 	<string name="input_amount_remove">지움</string>
 	<string name="input_assets_name">지출입력</string>

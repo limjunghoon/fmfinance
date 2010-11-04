@@ -3,7 +3,6 @@ package com.fletamuto.sptb.data;
 import java.util.Calendar;
 import java.util.Date;
 
-import android.content.res.Resources.Theme;
 import android.util.Log;
 
 import com.fletamuto.sptb.LogTag;

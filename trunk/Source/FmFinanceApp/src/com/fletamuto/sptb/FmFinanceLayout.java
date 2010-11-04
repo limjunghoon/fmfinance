@@ -33,7 +33,6 @@ public class FmFinanceLayout extends FmBaseActivity {
         DBMgr.initialize(getApplicationContext());
         DBMgr.addRepeatItems();
         
-        setTitleButtonListener();
         setBtnClickListener();
         updateViewText();
         

@@ -18,7 +18,6 @@ public class SettingRegstrationLayout extends FmBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting_registration, true);
       
-        setTitleButtonListener();
         setBtnClickListener();
     }
 

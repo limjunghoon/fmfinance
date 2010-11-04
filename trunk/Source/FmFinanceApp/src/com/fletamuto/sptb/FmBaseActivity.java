@@ -49,7 +49,7 @@ public abstract class FmBaseActivity extends Activity {
     
     
     /** 제목창 버튼 클릭시 리스너 설정 */
-    protected void setTitleButtonListener() {
+    private void setTitleButtonListener() {
     	if (titleLayout == null) return;
     	
     	Button btnBack = titleLayout.getButton(FmTitleLayout.BTN_LEFT_01);

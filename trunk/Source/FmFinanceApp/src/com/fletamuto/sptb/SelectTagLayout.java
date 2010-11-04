@@ -16,9 +16,15 @@ import android.widget.GridView;
 import com.fletamuto.sptb.data.ExpenseTag;
 import com.fletamuto.sptb.db.DBMgr;
 
+/**
+ * 태그를 선택하는 레이아웃
+ * @author yongbban
+ * @version 1.0.0.1
+ */
 public class SelectTagLayout extends SelectGridBaseLayout {
+	public static final int ACT_TAG_EDIT = MsgDef.ActRequest.ACT_TAG_EDIT;
 	protected ArrayList<ExpenseTag> mArrTag = null;
-	TagButtonAdpter mAdapterTag;
+	private TagButtonAdpter mAdapterTag;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -90,6 +96,35 @@ public class SelectTagLayout extends SelectGridBaseLayout {
 			return convertView;
 		}
 	}
+
+
+	@Override
+	protected void onEditButtonClick() {
+		Intent intent = new Intent(SelectTagLayout.this, EditSelecTagLayout.class);
+		startActivityForResult(intent, ACT_TAG_EDIT);
+		
+		
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ACT_TAG_EDIT) {
+			if (resultCode == RESULT_OK) {
+			
+				updateAdapter();
+
+    		}
+    	}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	protected void clearAdapter() {
+		if (mAdapterTag != null) {
+			mAdapterTag.clear();
+		}
+	}
+
+
 
 
 	

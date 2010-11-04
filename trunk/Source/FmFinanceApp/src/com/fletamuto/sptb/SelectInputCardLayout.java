@@ -1,8 +1,5 @@
 package com.fletamuto.sptb;
 
-import com.fletamuto.sptb.data.CardItem;
-import com.fletamuto.sptb.db.DBMgr;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
