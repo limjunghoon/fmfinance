@@ -7,7 +7,7 @@ public class CardItem {
 	public final static int CASH_CARD = 4;
 	
 	private int mID = -1;
-	private CardCompenyName mCompenyName = new CardCompenyName();
+	private CardCompanyName mCompenyName = new CardCompanyName();
 	private String mName;
 	private String mNumber;
 	private AccountItem mAccount = new AccountItem();
@@ -30,11 +30,11 @@ public class CardItem {
 		return mID;
 	}
 
-	public void setCompenyName(CardCompenyName compenyName) {
+	public void setCompenyName(CardCompanyName compenyName) {
 		this.mCompenyName = compenyName;
 	}
 
-	public CardCompenyName getCompenyName() {
+	public CardCompanyName getCompenyName() {
 		return mCompenyName;
 	}
 
