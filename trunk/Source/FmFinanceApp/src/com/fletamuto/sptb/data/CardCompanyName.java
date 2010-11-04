@@ -1,6 +1,6 @@
 package com.fletamuto.sptb.data;
 
-public class CardCompenyName extends UISelectItem{
+public class CardCompanyName extends UISelectItem{
 	private int mID = -1;
 	private String mName;
 	private int mCompanyID = -1;

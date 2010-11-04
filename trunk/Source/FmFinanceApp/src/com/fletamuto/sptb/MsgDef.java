@@ -16,6 +16,8 @@ public final class MsgDef {
 		public final static int ACT_CARD_INPUT_SELECT = 11;
 		public final static int ACT_TAG_EDIT = 12;
 		public final static int ACT_TAG_ADD = 13;
+		public final static int ACT_COMPANY_CARD_NAME_EDIT = 14;
+		public final static int ACT_COMPANY_CARD_NAME_ADD = 15;
 	}
 	
 	public static final class ExtraNames {

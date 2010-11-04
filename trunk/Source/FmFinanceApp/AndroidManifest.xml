@@ -55,6 +55,7 @@
 		<activity android:name=".SelectCardLayout" android:theme="@android:style/Theme.Dialog" android:label="카드선택"></activity>
 <activity android:label="카드종류선택" android:name=".SelectInputCardLayout" android:theme="@android:style/Theme.Dialog"></activity>
 <activity android:name="EditSelecTagLayout"></activity>
+<activity android:name=".EditSelecCardCompanyNameLayout"></activity>
 </application>
 
 

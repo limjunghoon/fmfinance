@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import com.fletamuto.sptb.LogTag;
-import com.fletamuto.sptb.data.CardCompenyName;
+import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
 
 public class CardItemDBConnector extends BaseDBConnector {
@@ -139,7 +139,7 @@ public class CardItemDBConnector extends BaseDBConnector {
 		card.setMemo(c.getString(9));
 		card.setBalance(c.getInt(10));
 		
-		CardCompenyName compenyName = new CardCompenyName();
+		CardCompanyName compenyName = new CardCompanyName();
 		compenyName.setID(c.getInt(11));
 		compenyName.setName(c.getString(12));
 		compenyName.setCompanyID(c.getInt(13));

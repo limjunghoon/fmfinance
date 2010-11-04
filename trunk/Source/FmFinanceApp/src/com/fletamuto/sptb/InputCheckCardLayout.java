@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.CardCompenyName;
+import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -148,8 +148,8 @@ public class InputCheckCardLayout extends InputBaseLayout {
 		return account;
 	}
 
-	private CardCompenyName getCompenyName(int id) {
-		CardCompenyName cardCompenyName = DBMgr.getCardCompanyName(id);
+	private CardCompanyName getCompenyName(int id) {
+		CardCompanyName cardCompenyName = DBMgr.getCardCompanyName(id);
 		if (cardCompenyName == null) {
 			Log.e(LogTag.LAYOUT, ":: not found cardcompany item ID :" + id);
 		}
@@ -165,7 +165,7 @@ public class InputCheckCardLayout extends InputBaseLayout {
 		updateAccountText();
 	}
 
-	private void updateCompenyName(CardCompenyName cardCompenyName) {
+	private void updateCompenyName(CardCompanyName cardCompenyName) {
 		if (cardCompenyName == null){
 			return;
 		}

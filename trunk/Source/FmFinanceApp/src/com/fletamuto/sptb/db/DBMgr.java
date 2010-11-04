@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.CardCompenyName;
+import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseTag;
@@ -339,15 +339,27 @@ public final class DBMgr {
 	//	return mInstance.mDBConnector.deleteAccount(id);
 		return mInstance.mDBConnector.getAccountDBConnector().deleteAccountItem(id);
 	}
+	
+	public static int addCardCompanyName(CardCompanyName cardCompanyName) {
+		return mInstance.mDBConnector.getCardCompanyNameDBConnector().addItem(cardCompanyName);
+	}
+	
+	public static boolean updateCardCompanyName(CardCompanyName cardCompanyName) {
+		return mInstance.mDBConnector.getCardCompanyNameDBConnector().updateItem(cardCompanyName);
+	}
 
-	public static ArrayList<CardCompenyName> getCardCompanyNames() {
+	public static ArrayList<CardCompanyName> getCardCompanyNames() {
 		//return mInstance.mDBConnector.getCardCompanyNames();
 		return mInstance.mDBConnector.getCardCompanyNameDBConnector().getAllItems();
 	}
 
-	public static CardCompenyName getCardCompanyName(int id) {
+	public static CardCompanyName getCardCompanyName(int id) {
 //		return mInstance.mDBConnector.getCardCompanyName(id);
 		return mInstance.mDBConnector.getCardCompanyNameDBConnector().getItem(id);
+	}
+	
+	public static int deleteCardCompanyName(int id) {
+		return mInstance.mDBConnector.getCardCompanyNameDBConnector().deleteItem(id);
 	}
 
 	public static int addCardItem(CardItem card) {

@@ -138,7 +138,6 @@ public class EditSelecTagLayout extends EditSelectItemBaseLayout {
 			super(context, resource, objects);
 			this.mResource = resource;
 			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			
 		}
 		
 		@Override
@@ -153,22 +152,9 @@ public class EditSelecTagLayout extends EditSelectItemBaseLayout {
 			tagName.setText(tag.getName());
 			
 			setDeleteBtnListener(convertView, tag.getID(), position);
-			setEditBtnListener(convertView, tag, position);
+			setEditBtnListener(convertView, tag.getID(), tag.getName() ,position);
 			
 			return convertView;
 		}
 	}
-
-
-
-
-
-
-
-
-
-	
-
-	
-	
 }

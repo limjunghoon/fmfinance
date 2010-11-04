@@ -13,11 +13,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 
-import com.fletamuto.sptb.data.CardCompenyName;
+import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class SelectCardCompanyLayout extends SelectGridBaseLayout {
-	protected ArrayList<CardCompenyName> mCardCompenyNames = null;
+	public static final int ACT_COMPANY_CARD_NAME_EDIT = MsgDef.ActRequest.ACT_COMPANY_CARD_NAME_EDIT;
+	protected ArrayList<CardCompanyName> mCardCompenyNames = null;
 	private CardCompenyNameButtonAdpter mAdapterCardCompenyName;
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -27,11 +28,11 @@ public class SelectCardCompanyLayout extends SelectGridBaseLayout {
 	
 	protected void getCardCompenyNameList() {
 		mCardCompenyNames = DBMgr.getCardCompanyNames();
-		
 	}
 	
 	@Override
 	public void getData() {
+		
 		getCardCompenyNameList();
 	}
 
@@ -44,9 +45,7 @@ public class SelectCardCompanyLayout extends SelectGridBaseLayout {
     	gridCategory.setAdapter(mAdapterCardCompenyName);
 	}
 	
-
-	
-	protected void onClickCardCompenyNameButton(CardCompenyName cardCompenyName) {
+	protected void onClickCardCompenyNameButton(CardCompanyName cardCompenyName) {
 		Intent intent = new Intent();
 		intent.putExtra("CARD_COMPENY_NAME_ID", cardCompenyName.getID());
 		setResult(RESULT_OK, intent);
@@ -55,25 +54,19 @@ public class SelectCardCompanyLayout extends SelectGridBaseLayout {
 
     View.OnClickListener cardCompenyNameListener = new View.OnClickListener() {
 		public void onClick(View v) {
-			CardCompenyName cardCompenyName = (CardCompenyName)v.getTag();
+			CardCompanyName cardCompenyName = (CardCompanyName)v.getTag();
 			onClickCardCompenyNameButton(cardCompenyName);
 		}
 	};
 	
-	public void setEditButtonListener() {
-		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
-			
-			public void onClick(View v) {
-			}
-		});
-	}
 
-	private class CardCompenyNameButtonAdpter extends ArrayAdapter<CardCompenyName> {
+
+	private class CardCompenyNameButtonAdpter extends ArrayAdapter<CardCompanyName> {
 		int mResource;
     	LayoutInflater mInflater;
     	
 		public CardCompenyNameButtonAdpter(Context context, int resource,
-				 List<CardCompenyName> objects) {
+				 List<CardCompanyName> objects) {
 			super(context, resource, objects);
 			this.mResource = resource;
 			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -82,7 +75,7 @@ public class SelectCardCompanyLayout extends SelectGridBaseLayout {
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			CardCompenyName cardCompanyName = (CardCompenyName)getItem(position);
+			CardCompanyName cardCompanyName = (CardCompanyName)getItem(position);
 			
 			if (convertView == null) {
 				convertView = mInflater.inflate(mResource, parent, false);
@@ -99,8 +92,17 @@ public class SelectCardCompanyLayout extends SelectGridBaseLayout {
 
 	@Override
 	protected void onEditButtonClick() {
-		// TODO Auto-generated method stub
-		
+		Intent intent = new Intent(SelectCardCompanyLayout.this, EditSelecCardCompanyNameLayout.class);
+		startActivityForResult(intent, ACT_COMPANY_CARD_NAME_EDIT);
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ACT_COMPANY_CARD_NAME_EDIT) {
+			if (resultCode == RESULT_OK) {
+				updateAdapter();
+    		}
+    	}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override

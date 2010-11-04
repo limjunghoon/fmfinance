@@ -102,8 +102,6 @@ public class SelectTagLayout extends SelectGridBaseLayout {
 	protected void onEditButtonClick() {
 		Intent intent = new Intent(SelectTagLayout.this, EditSelecTagLayout.class);
 		startActivityForResult(intent, ACT_TAG_EDIT);
-		
-		
 	}
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -123,9 +121,4 @@ public class SelectTagLayout extends SelectGridBaseLayout {
 			mAdapterTag.clear();
 		}
 	}
-
-
-
-
-	
 }

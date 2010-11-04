@@ -10,13 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.fletamuto.sptb.data.ExpenseTag;
-
 /**
+ * 그리드로 선택하는 아이템 편집창의 기본 클래스
  * @author yongbban
- *
+ * @version 1.0.0.1
  */
 public abstract class EditSelectItemBaseLayout  extends FmBaseActivity {  	
+	
 	
 	private Button mVisibleDeleteButton;
 	
@@ -61,13 +61,13 @@ public abstract class EditSelectItemBaseLayout  extends FmBaseActivity {
 		});
     }
     
-    protected void setEditBtnListener(View convertView, final ExpenseTag tag, final int position)  {
+    protected void setEditBtnListener(View convertView, final int itemID, final String itemName, final int position)  {
     	final Button btnEdit = (Button)convertView.findViewById(R.id.BtnEditSelectEdit);
     	
     	btnEdit.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				onEditButtonClick(tag.getID(), tag.getName(), position);
+				onEditButtonClick(itemID, itemName, position);
 //				updateCategory(editCategory, position);
 			}
 		});
