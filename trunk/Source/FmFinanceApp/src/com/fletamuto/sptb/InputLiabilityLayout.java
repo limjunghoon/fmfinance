@@ -51,6 +51,7 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
 	protected boolean getItemInstance(int id) {
 		mLiabilityItem = (LiabilityItem) DBMgr.getItem(LiabilityItem.TYPE, id);
 		if (mLiabilityItem == null) return false;
+		setItem(mLiabilityItem);
 		return true;
 	}
 	

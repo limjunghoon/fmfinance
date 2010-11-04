@@ -57,6 +57,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 	protected boolean getItemInstance(int id) {
 		mIncomeItem = (IncomeItem) DBMgr.getItem(IncomeItem.TYPE, id);
 		if (mIncomeItem == null) return false;
+		setItem(mIncomeItem);
 		return true;
 	}
 
