@@ -19,7 +19,6 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
         setAmountBtnClickListener(R.id.BtnLiabilityAmount);
         setSaveBtnClickListener(R.id.BtnLiabilitySave);
         setCategoryClickListener(R.id.BtnLiabilityCategory);
-        setTitleButtonListener();
         setTitle(getResources().getString(R.string.input_liability_name));
     }
     

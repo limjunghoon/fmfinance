@@ -25,7 +25,6 @@ public class SelectCompanyLayout extends FmBaseActivity {
         super.onCreate(savedInstanceState);
       
         setContentView(R.layout.select_grid_base, true);
-        setTitleButtonListener();
         setEditButtonListener();
         setTitle(getResources().getString(R.string.btn_category_select));
         setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);

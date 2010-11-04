@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="wrap_content" android:layout_width="fill_parent">
+	  <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/BtnEditSelectDelete" android:layout_alignParentLeft="true" android:text="Delete" android:focusable="false" android:visibility="invisible" /> 
+	  <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_toRightOf="@+id/BtnEditSelectDelete" android:id="@+id/TVEditSelectItem" android:text="Category" android:textSize="18sp" android:paddingLeft="20dp" android:gravity="left" android:layout_centerVertical="true" /> 
+	  <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentRight="true" android:id="@+id/BtnEditSelectEdit" android:layout_marginRight="5dp" android:focusable="false" android:text="편집"/> 
+  </RelativeLayout>

@@ -85,7 +85,7 @@ public class TagDBConnector extends BaseDBConnector {
 		return tag;
 	}
 	
-	public int deleteExpenseTag(int id) {
+	public int deleteItem(int id) {
 		int result = 0;
 		SQLiteDatabase db = getWritableDatabase();
 		result = db.delete(TABLE_NAME, "_id=?", new String[] {String.valueOf(id)});

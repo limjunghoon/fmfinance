@@ -49,12 +49,38 @@ public class EditCategoryLayout  extends FmBaseActivity {
         	setContentView(R.layout.category_edit_has_main, true);
         }
         
-        initTitle();
         setMainText();
         getCategoryItems();
         setAdapterList();
         setViewListener();
         updateView();
+    }
+    
+    @Override
+    protected void setTitleBtn() {
+    	setTitle("분류 편집");
+        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01,View.VISIBLE);
+        setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, getResources().getString(R.string.btn_add));
+        
+        setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				if (mHasSubCategory == true) {
+					Intent intent = new Intent(EditCategoryLayout.this, EditCategoryLayout.class);
+					intent.putExtra("CATEGORY_TYPE", mType);
+					if (mHasSubCategory) {
+						intent.putExtra("CATEGORY_HAS_WITH_MAIN", true);
+					}
+					
+					startActivityForResult(intent, SelectCategoryBaseLayout.ACT_EDIT_CATEGORY);
+				}
+				else {
+					makeCategory();
+				}
+			}
+		});
+        
+    	super.setTitleBtn();
     }
     
     protected void setMainText() {
@@ -277,30 +303,6 @@ public class EditCategoryLayout  extends FmBaseActivity {
         mMainCategoryID = getIntent().getIntExtra("CATEGORY_MAIN_CATEGORY_ID", -1) ;
     }
     
-    protected void initTitle() {
-    	setTitle("분류 편집");
-        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01,View.VISIBLE);
-        setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, getResources().getString(R.string.btn_add));
-        setTitleButtonListener();
-        
-        setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				if (mHasSubCategory == true) {
-					Intent intent = new Intent(EditCategoryLayout.this, EditCategoryLayout.class);
-					intent.putExtra("CATEGORY_TYPE", mType);
-					if (mHasSubCategory) {
-						intent.putExtra("CATEGORY_HAS_WITH_MAIN", true);
-					}
-					
-					startActivityForResult(intent, SelectCategoryBaseLayout.ACT_EDIT_CATEGORY);
-				}
-				else {
-					makeCategory();
-				}
-			}
-		});
-    }
     
     private void makeCategory() {
     	final EditText edit = new EditText(EditCategoryLayout.this);
@@ -505,11 +507,6 @@ public class EditCategoryLayout  extends FmBaseActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
     
-    @Override
-    public void onBackPressed() {
-    	
-    	super.onBackPressed();
-    }
     
     @Override
     public void finish() {

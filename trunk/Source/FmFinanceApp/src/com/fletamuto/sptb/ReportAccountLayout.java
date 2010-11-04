@@ -32,7 +32,6 @@ public class ReportAccountLayout extends FmBaseActivity {
         setContentView(R.layout.empty_list, true);
         
         setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "Ãß°¡");
-        setTitleButtonListener();
         setAddButtonListener();
         setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
         

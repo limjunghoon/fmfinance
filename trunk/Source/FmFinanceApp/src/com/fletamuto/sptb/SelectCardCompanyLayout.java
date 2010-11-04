@@ -18,7 +18,7 @@ import com.fletamuto.sptb.db.DBMgr;
 
 public class SelectCardCompanyLayout extends SelectGridBaseLayout {
 	protected ArrayList<CardCompenyName> mCardCompenyNames = null;
-	CardCompenyNameButtonAdpter mAdapterCardCompenyName;
+	private CardCompenyNameButtonAdpter mAdapterCardCompenyName;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +94,19 @@ public class SelectCardCompanyLayout extends SelectGridBaseLayout {
 			button.setTag(cardCompanyName);
 			
 			return convertView;
+		}
+	}
+
+	@Override
+	protected void onEditButtonClick() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void clearAdapter() {
+		if (mAdapterCardCompenyName != null) {
+			mAdapterCardCompenyName.clear();
 		}
 	}
 }

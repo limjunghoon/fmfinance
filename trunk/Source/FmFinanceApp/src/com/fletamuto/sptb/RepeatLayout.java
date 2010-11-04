@@ -1,9 +1,5 @@
 package com.fletamuto.sptb;
 
-import java.util.Calendar;
-
-import com.fletamuto.sptb.data.Repeat;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.ToggleButton;
+
+import com.fletamuto.sptb.data.Repeat;
 
 /**
  * 카드 레이아웃 클레스

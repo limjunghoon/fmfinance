@@ -376,7 +376,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		Button btnRepeat = (Button)findViewById(R.id.BtnExpenseRepeat);
 		
 		if (type == Repeat.MONTHLY) {
-			
 			btnRepeat.setText(String.format("매월 %d일 반복", repeat.getDayofMonth()));
 		}
 		else if (type == Repeat.WEEKLY) {

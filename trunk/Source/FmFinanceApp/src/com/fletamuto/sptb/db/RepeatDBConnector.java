@@ -2,7 +2,6 @@ package com.fletamuto.sptb.db;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import android.content.ContentValues;
 import android.database.Cursor;

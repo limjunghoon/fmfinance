@@ -373,9 +373,24 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getCardDBConnector().deleteItem(id);
 	}
 
+	public static int addTag(ExpenseTag tag) {
+		return mInstance.mDBConnector.getTagDBConnector().addItem(tag);
+	}
+	
+	public static boolean updateTag(ExpenseTag tag) {
+		return mInstance.mDBConnector.getTagDBConnector().updateItem(tag);
+	}
 
 	public static ArrayList<ExpenseTag> getTag() {
 		return mInstance.mDBConnector.getTagDBConnector().getAllItems();
+	}
+	
+	public static ExpenseTag getTag(int id) {
+		return mInstance.mDBConnector.getTagDBConnector().getItem(id);
+	}
+	
+	public static int deleteTag(int id) {
+		return mInstance.mDBConnector.getTagDBConnector().deleteItem(id);
 	}
 	
 	public static int addRepeat(Repeat repeat) {

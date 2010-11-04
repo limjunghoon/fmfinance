@@ -31,11 +31,20 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       
-        setTitleButtonListener();
-        setEditButtonListener();
-        setTitle(getResources().getString(R.string.btn_category_select));
-        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+        
     }
+	
+	protected void onEditButtonClick() {
+		Intent intent = new Intent(SelectCategoryBaseLayout.this, EditCategoryLayout.class);
+		intent.putExtra("CATEGORY_TYPE", mType);
+		if (mType == ExpenseItem.TYPE || mType == AssetsItem.TYPE) {
+			intent.putExtra("CATEGORY_HAS_SUB", true);
+		}
+		
+		startActivityForResult(intent, ACT_EDIT_CATEGORY);
+	}
+	
+	
 	
 	@Override
 	public void getData() {
@@ -87,20 +96,7 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 		}
 	};
 	
-	public void setEditButtonListener() {
-		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				Intent intent = new Intent(SelectCategoryBaseLayout.this, EditCategoryLayout.class);
-				intent.putExtra("CATEGORY_TYPE", mType);
-				if (mType == ExpenseItem.TYPE || mType == AssetsItem.TYPE) {
-					intent.putExtra("CATEGORY_HAS_SUB", true);
-				}
-				
-				startActivityForResult(intent, ACT_EDIT_CATEGORY);
-			}
-		});
-	}
+	
     
     public void setType(int type) {
 		this.mType = type;
@@ -148,5 +144,12 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
     		}
     	}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	@Override
+	protected void clearAdapter() {
+		if (mAdapterCategory != null) {
+			mAdapterCategory.clear();
+		}
 	}
 }
