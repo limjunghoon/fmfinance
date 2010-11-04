@@ -57,6 +57,8 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
 	protected boolean getItemInstance(int id) {
 		mAssetsItem = (AssetsItem) DBMgr.getItem(AssetsItem.TYPE, id);
 		if (mAssetsItem == null) return false;
+		setItem(mAssetsItem);
+		
 		return true;
 	}
 
