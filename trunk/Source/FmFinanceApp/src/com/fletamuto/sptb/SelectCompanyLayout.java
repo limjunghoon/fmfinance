@@ -16,71 +16,53 @@ import android.widget.GridView;
 import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class SelectCompanyLayout extends FmBaseActivity {
-	protected ArrayList<FinancialCompany> mArrCompany = null;
-	CompanyButtonAdpter mAdapterInstituion;
-	
+public class SelectCompanyLayout extends SelectGridBaseLayout {
+	public static final int ACT_COMPANY_NAME_EDIT = MsgDef.ActRequest.ACT_COMPANY_NAME_EDIT;
+	protected ArrayList<FinancialCompany> mCompanyNames = null;
+	private CompenyNameButtonAdpter mAdapterCompanyName;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      
-        setContentView(R.layout.select_grid_base, true);
-        setEditButtonListener();
-        setTitle(getResources().getString(R.string.btn_category_select));
-        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
-        
-        getCompanyList();
-        setCompanyAdaper();
+    
     }
 	
-	protected void getCompanyList() {
-		mArrCompany = DBMgr.getCompany();
+	protected void getCompanyNameList() {
+		mCompanyNames = DBMgr.getCompanys();
 	}
 	
-	protected void setCompanyAdaper() {
-		if (mArrCompany == null) return;
+	@Override
+	public void getData() {
+		getCompanyNameList();
+	}
+
+	@Override
+	public void setAdaper() {
+		if (mCompanyNames == null) return;
         
-    	final GridView gridCompany = (GridView)findViewById(R.id.GVSelect);
-    	mAdapterInstituion = new CompanyButtonAdpter(this, R.layout.grid_select, mArrCompany);
-    	gridCompany.setAdapter(mAdapterInstituion);
-    	
+    	final GridView gridCategory = (GridView)findViewById(R.id.GVSelect);
+    	mAdapterCompanyName = new CompenyNameButtonAdpter(this, R.layout.grid_select, mCompanyNames);
+    	gridCategory.setAdapter(mAdapterCompanyName);
 	}
 	
-	protected void updateAdapterCompany() {
-		if (mArrCompany != null) {
-			mArrCompany.clear();
-		}
-		getCompanyList();
-		setCompanyAdaper();
-	}
-	
-	protected void onClickCompanyButton(FinancialCompany Company) {
+	protected void onClickCompanyNameButton(FinancialCompany cardCompenyName) {
 		Intent intent = new Intent();
-		intent.putExtra(MsgDef.ExtraNames.COMPANY_ID, Company.getID());
+		intent.putExtra(MsgDef.ExtraNames.COMPANY_ID, cardCompenyName.getID());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
 
-    View.OnClickListener CompanyListener = new View.OnClickListener() {
+    View.OnClickListener compenyNameListener = new View.OnClickListener() {
 		public void onClick(View v) {
-			FinancialCompany Company = (FinancialCompany)v.getTag();
-			onClickCompanyButton(Company);
+			FinancialCompany compenyName = (FinancialCompany)v.getTag();
+			onClickCompanyNameButton(compenyName);
 		}
 	};
-	
-	public void setEditButtonListener() {
-		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
-			
-			public void onClick(View v) {
-			}
-		});
-	}
 
-	private class CompanyButtonAdpter extends ArrayAdapter<FinancialCompany> {
+	private class CompenyNameButtonAdpter extends ArrayAdapter<FinancialCompany> {
 		int mResource;
     	LayoutInflater mInflater;
     	
-		public CompanyButtonAdpter(Context context, int resource,
+		public CompenyNameButtonAdpter(Context context, int resource,
 				 List<FinancialCompany> objects) {
 			super(context, resource, objects);
 			this.mResource = resource;
@@ -90,18 +72,40 @@ public class SelectCompanyLayout extends FmBaseActivity {
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			FinancialCompany instituion = (FinancialCompany)getItem(position);
+			FinancialCompany FinancialCompany = (FinancialCompany)getItem(position);
 			
 			if (convertView == null) {
 				convertView = mInflater.inflate(mResource, parent, false);
 			}
 			
 			Button button = (Button)convertView.findViewById(R.id.BtnGridItem);
-			button.setText(instituion.getName());
-			button.setOnClickListener(CompanyListener);
-			button.setTag(instituion);
+			button.setText(FinancialCompany.getName());
+			button.setOnClickListener(compenyNameListener);
+			button.setTag(FinancialCompany);
 			
 			return convertView;
+		}
+	}
+
+	@Override
+	protected void onEditButtonClick() {
+		Intent intent = new Intent(SelectCompanyLayout.this, EditSelecCompanyLayout.class);
+		startActivityForResult(intent, ACT_COMPANY_NAME_EDIT);
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ACT_COMPANY_NAME_EDIT) {
+			if (resultCode == RESULT_OK) {
+				updateAdapter();
+    		}
+    	}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	protected void clearAdapter() {
+		if (mAdapterCompanyName != null) {
+			mAdapterCompanyName.clear();
 		}
 	}
 }

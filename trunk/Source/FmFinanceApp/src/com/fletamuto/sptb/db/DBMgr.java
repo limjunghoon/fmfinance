@@ -311,8 +311,16 @@ public final class DBMgr {
 		//return mInstance.mDBConnector.deleteSubCategory(itemType, itemID);
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).deleteSubCategory(itemID);
 	}
+	
+	public static int addCompany(FinancialCompany company) {
+		return mInstance.mDBConnector.getCompanyDBConnector().addItem(company);
+	}
+	
+	public static boolean updateCompany(FinancialCompany company) {
+		return mInstance.mDBConnector.getCompanyDBConnector().updateItem(company);
+	}
 
-	public static ArrayList<FinancialCompany> getCompany() {
+	public static ArrayList<FinancialCompany> getCompanys() {
 		//return mInstance.mDBConnector.getInstitutions();
 		return mInstance.mDBConnector.getCompanyDBConnector().getAllItems();
 	}
@@ -320,6 +328,11 @@ public final class DBMgr {
 	public static FinancialCompany getCompany(int id) {
 		return mInstance.mDBConnector.getCompanyDBConnector().getItem(id);
 	}
+	
+	public static int deleteCompany(int id) {
+		//	return mInstance.mDBConnector.deleteAccount(id);
+			return mInstance.mDBConnector.getCompanyDBConnector().deleteItem(id);
+		}
 	
 	public static int addAccountItem(AccountItem account) {
 		return mInstance.mDBConnector.getAccountDBConnector().addItem(account);

@@ -32,7 +32,6 @@ public class SelectCardCompanyLayout extends SelectGridBaseLayout {
 	
 	@Override
 	public void getData() {
-		
 		getCardCompenyNameList();
 	}
 
