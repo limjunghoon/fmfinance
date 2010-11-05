@@ -318,4 +318,15 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		db.close();
 		return result;
 	}
+	
+	public long updateRepeat(int expenseID, int repeatID) {
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+
+		rowItem.put("repeat", repeatID); // ÀÓ½Ã°ª
+		
+		long ret = db.update("income", rowItem, "_id=?", new String[] {String.valueOf(expenseID)});
+		db.close();
+		return ret;
+	}
 }

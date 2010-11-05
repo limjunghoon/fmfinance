@@ -38,6 +38,7 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	public abstract int deleteItem(int id);
 	public abstract int deleteCategory(int id);
 	public abstract int updateCategory(int id, String name);
+	public abstract long updateRepeat(int itemID, int repeatID);
 	
 	public int checkVaildItem(FinanceItem item) {
 		if (item == null) {
@@ -68,5 +69,7 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	public int updateSubCategory(int id, String name) {
 		return 0;
 	}
+	
+
 	
 }

@@ -326,4 +326,15 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		db.close();
 		return result;
 	}
+	
+	public long updateRepeat(int expenseID, int repeatID) {
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+
+		rowItem.put("repeat", repeatID); // ÀÓ½Ã°ª
+		
+		long ret = db.update("liability", rowItem, "_id=?", new String[] {String.valueOf(expenseID)});
+		db.close();
+		return ret;
+	}
 }

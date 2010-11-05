@@ -8,6 +8,8 @@ public abstract class PaymentMethod {
 	private int mID = -1;
 	private int mType = CASH;
 	private String mMessage;
+	/** 카드나 계좌 아이디*/
+	private int mMethodItemID = -1;
 	
 	public abstract String getText();
 	
@@ -33,6 +35,14 @@ public abstract class PaymentMethod {
 
 	public String getDisplayMessage() {
 		return mMessage;
+	}
+
+	public void setMethodItemID(int methodItemID) {
+		this.mMethodItemID = methodItemID;
+	}
+
+	public int getMethodItemID() {
+		return mMethodItemID;
 	}
 
 }

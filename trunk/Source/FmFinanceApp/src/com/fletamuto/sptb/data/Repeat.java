@@ -137,6 +137,11 @@ public class Repeat {
 		return mItemID;
 	}
 
+	/**
+	 * 반복에 해당하는 날짜인지  확인한다.
+	 * @param date 대상 날짜
+	 * @return 반복에 지정된 날짜이면 True
+	 */
 	public boolean isRepeatDay(Calendar date) {
 		if (mType == ONCE) {
 			return false;
@@ -174,5 +179,81 @@ public class Repeat {
 			Log.e(LogTag.DATA, ":: invalid repeat type");
 			return false;
 		}
+	}
+	
+	/**
+	 * 요일관련 캘린더 타임을 Repeat타입으로 변환한다.
+	 * @param weekOfDay
+	 * @return Repeat 요일 타입
+	 */
+	public static int getCalendarWeekToRepeatWeek(int weekOfDay) {
+		if (Calendar.SUNDAY == weekOfDay)			return SUNDAY;
+		else if (Calendar.MONDAY == weekOfDay) 		return MONDAY;
+		else if (Calendar.TUESDAY == weekOfDay)		return TUESDAY;
+		else if (Calendar.WEDNESDAY == weekOfDay) 	return WEDNESDAY;
+		else if (Calendar.THURSDAY == weekOfDay) 	return THURSDAY;
+		else if (Calendar.FRIDAY == weekOfDay) 		return FRIDAY;
+		else if (Calendar.SATURDAY == weekOfDay) 	return SATURDAY;
+		else {
+			return getCalendarWeekToRepeatWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+		}
+	}
+	
+	/**
+	 * 반복이 설정된 상태를 매시지를 얻는다.
+	 * @return 메시지
+	 */
+	public String getRepeatMessage() {
+		String message = "반복이 설정되지 않았습니다.";
+		
+		if (mType == WEEKLY) {
+			if (isEveryDayRepeat())			return "매일 반복";
+			else if (isWeekEndRepeat()) 	return "주말 반복";
+			else if (isNormalWeekRepeat()) 	return "평일 반복";
+			else {
+				message = "매주";
+				if (((mWeeklyRepeat & MONDAY) 	!= 0))	message += " 월";
+				if (((mWeeklyRepeat & TUESDAY) 	!= 0)) 	message += " 화";
+				if (((mWeeklyRepeat & WEDNESDAY)!= 0)) 	message += " 수";
+				if (((mWeeklyRepeat & THURSDAY) != 0)) 	message += " 목";
+				if (((mWeeklyRepeat & FRIDAY) 	!= 0)) 	message += " 금";
+				if (((mWeeklyRepeat & SATURDAY) != 0)) 	message += " 토";
+				if (((mWeeklyRepeat & SUNDAY) 	!= 0)) 	message += " 일";
+				message += " 요일반복";
+			}
+		}
+		else if (mType == MONTHLY) {
+			if (mDayofMonth >= 31) message = String.format("매월  말 반복");
+			else message = String.format("매월 %d일 반복", mDayofMonth);
+		}
+		else {
+			message = "반복이 설정되지 않았습니다.";
+		}
+		
+		return message;
+	}
+
+	/**
+	 * 매일 반복확인
+	 * @return 매일 반복이면 true
+	 */
+	private boolean isEveryDayRepeat() {
+		return (mWeeklyRepeat == (MONDAY | TUESDAY | WEDNESDAY | THURSDAY | FRIDAY | SATURDAY | SUNDAY));
+	}
+
+	/**
+	 * 평일 반복확인
+	 * @return 평일 반복이면 true
+	 */
+	private boolean isNormalWeekRepeat() {
+		return (mWeeklyRepeat == (MONDAY | TUESDAY | WEDNESDAY | THURSDAY | FRIDAY));
+	}
+
+	/**
+	 * 주말 반복확인
+	 * @return 주말 반복이면 true
+	 */
+	private boolean isWeekEndRepeat() {
+		return (mWeeklyRepeat == (SATURDAY | SUNDAY));
 	}
 }
