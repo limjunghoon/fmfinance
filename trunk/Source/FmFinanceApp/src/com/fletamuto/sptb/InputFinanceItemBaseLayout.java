@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 
 /**
@@ -23,7 +24,6 @@ import com.fletamuto.sptb.db.DBMgr;
 public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 	
 	private FinanceItem mItem;
-	protected InputMode mInputMode = InputMode.ADD_MODE;
 	
 	protected abstract void updateDate();
 	protected abstract void updateCategory(int id, String name);
@@ -200,5 +200,14 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     	}
     	
     	super.onActivityResult(requestCode, resultCode, data);
+    }
+    
+    protected void loadRepeat() {
+    	if (mItem == null) return;
+    	
+    	Repeat repeat = mItem.getRepeat();
+    	if (repeat.getID() == -1 || repeat.getItemID() != -1) return;
+    
+    	mItem.setRepeat(DBMgr.getRepeat(mItem.getRepeat().getID()));
     }
 }

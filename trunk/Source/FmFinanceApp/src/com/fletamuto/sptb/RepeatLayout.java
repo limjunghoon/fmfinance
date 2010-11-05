@@ -1,5 +1,7 @@
 package com.fletamuto.sptb;
 
+import java.util.Calendar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.RadioButton;
 import android.widget.ToggleButton;
 
 import com.fletamuto.sptb.data.Repeat;
+import com.fletamuto.sptb.util.FinanceCurrentDate;
 
 /**
  * 카드 레이아웃 클레스
@@ -22,13 +25,60 @@ public class RepeatLayout extends FmBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.repeat, true);
         
-        
-        setButtonListener();
-        
-        setTitle("반복설정");
+        updateRepeatView();
     }
-    
-    protected void setButtonListener() {
+
+	private void updateRepeatView() {
+		RadioButton rbWeekly = (RadioButton)findViewById(R.id.RBWeekly);
+		RadioButton rbMonthly = (RadioButton)findViewById(R.id.RBMonthly);
+		EditText etDaily = (EditText)findViewById(R.id.ETMonthly);
+		int type = getIntent().getIntExtra(MsgDef.ExtraNames.RPEAT_TYPE, -1) ;
+        int value = 0;
+        
+        if (type == Repeat.WEEKLY) {
+        	rbWeekly.setChecked(true);
+        	value = getIntent().getIntExtra(MsgDef.ExtraNames.RPEAT_WEEKLY, Repeat.getCalendarWeekToRepeatWeek(FinanceCurrentDate.getDate().get(Calendar.DAY_OF_WEEK))) ;
+        	updateWeekButton(value);
+        	etDaily.setText(String.valueOf(FinanceCurrentDate.getDate().get(Calendar.DAY_OF_MONTH)));
+        }
+        else if (type == Repeat.MONTHLY) {
+        	rbMonthly.setChecked(true);
+        	value = getIntent().getIntExtra(MsgDef.ExtraNames.RPEAT_DAILY, 1) ;
+        	updateWeekButton(Repeat.getCalendarWeekToRepeatWeek(FinanceCurrentDate.getDate().get(Calendar.DAY_OF_WEEK)));
+        	etDaily.setText(String.valueOf(value));
+        }
+        else {
+        	rbWeekly.setChecked(true);
+        	updateWeekButton(Repeat.getCalendarWeekToRepeatWeek(FinanceCurrentDate.getDate().get(Calendar.DAY_OF_WEEK)));
+        	etDaily.setText(String.valueOf(FinanceCurrentDate.getDate().get(Calendar.DAY_OF_MONTH)));
+        }
+	}
+
+	protected void updateWeekButton(int weekly) {
+		if (((weekly & Repeat.MONDAY) != 0)) {
+			((ToggleButton)findViewById(R.id.TBMonDay)).setChecked(true);
+		}
+		if (((weekly & Repeat.TUESDAY) != 0)) {
+			((ToggleButton)findViewById(R.id.TBTuesday)).setChecked(true);	
+		}
+		if (((weekly & Repeat.WEDNESDAY) != 0)) {
+			((ToggleButton)findViewById(R.id.TBWndnesDay)).setChecked(true);
+		}
+		if (((weekly & Repeat.THURSDAY) != 0)) {
+			((ToggleButton)findViewById(R.id.TBThursDay)).setChecked(true);
+		}
+		if (((weekly & Repeat.FRIDAY) != 0)) {
+			((ToggleButton)findViewById(R.id.TBFriDay)).setChecked(true);
+		}
+		if (((weekly & Repeat.SATURDAY) != 0)) {
+			((ToggleButton)findViewById(R.id.TBSaturDay)).setChecked(true);
+		}
+		if (((weekly & Repeat.SUNDAY) != 0)) {
+			((ToggleButton)findViewById(R.id.TBSunDay)).setChecked(true);
+		}
+	}
+
+	protected void setButtonListener() {
     	final Button btnNormal = (Button)findViewById(R.id.BtnRepeatNormal);
     	final Button btnWeekend = (Button)findViewById(R.id.BtnRepeatWeekend);
     	final ToggleButton tbMonDay = (ToggleButton)findViewById(R.id.TBMonDay);
@@ -74,6 +124,9 @@ public class RepeatLayout extends FmBaseActivity {
 
 	@Override
 	protected void setTitleBtn() {
+        setButtonListener();
+        setTitle("반복설정");
+        
 		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
         setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "완료");
         
@@ -92,35 +145,24 @@ public class RepeatLayout extends FmBaseActivity {
 				
 				if (rbWeekly.isChecked()) {
 					int weekly = 0;
-					if (tbMonDay.isChecked()) {
-						weekly |= Repeat.MONDAY;
-					}
-					if (tbTuesDay.isChecked()) {
-						weekly |= Repeat.TUESDAY;
-					}
-					if (tbWendesDay.isChecked()) {
-						weekly |= Repeat.WEDNESDAY;
-					}
-					if (tbThursDay.isChecked()) {
-						weekly |= Repeat.THURSDAY;
-					}
-					if (tbFriDay.isChecked()) {
-						weekly |= Repeat.FRIDAY;
-					}
-					if (tbSaturDay.isChecked()) {
-						weekly |= Repeat.SATURDAY;
-					}
-					if (tbSunDay.isChecked()) {
-						weekly |= Repeat.SUNDAY;
-					}
+					if (tbMonDay.isChecked()) 	weekly |= Repeat.MONDAY;
+					if (tbTuesDay.isChecked()) 	weekly |= Repeat.TUESDAY;
+					if (tbWendesDay.isChecked())weekly |= Repeat.WEDNESDAY;
+					if (tbThursDay.isChecked()) weekly |= Repeat.THURSDAY;
+					if (tbFriDay.isChecked()) 	weekly |= Repeat.FRIDAY;
+					if (tbSaturDay.isChecked()) weekly |= Repeat.SATURDAY;
+					if (tbSunDay.isChecked()) 	weekly |= Repeat.SUNDAY;
+					
 					intent.putExtra(MsgDef.ExtraNames.RPEAT_TYPE, Repeat.WEEKLY);
 					intent.putExtra(MsgDef.ExtraNames.RPEAT_WEEKLY, weekly);
 					
 				} else {
 					EditText etDaily = (EditText)findViewById(R.id.ETMonthly);
 					String daily = etDaily.getText().toString();
+					int dayOfMonth = Integer.parseInt(daily);
+					if (dayOfMonth > 31) dayOfMonth = 31;
 					intent.putExtra(MsgDef.ExtraNames.RPEAT_TYPE, Repeat.MONTHLY);
-					intent.putExtra(MsgDef.ExtraNames.RPEAT_DAILY, Integer.parseInt(daily));
+					intent.putExtra(MsgDef.ExtraNames.RPEAT_DAILY, dayOfMonth);
 				}
 				
 				setResult(RESULT_OK, intent);

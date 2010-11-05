@@ -179,6 +179,10 @@ public abstract class FinanceItem {
 		return mRepeat;
 	}
 	
+	public void setRepeat(Repeat repeat) {
+		mRepeat = repeat;
+	}
+	
 	public void setRepeatWeekly(int weekly) {
 		mRepeat.setWeeklyRepeat(weekly);
 	}

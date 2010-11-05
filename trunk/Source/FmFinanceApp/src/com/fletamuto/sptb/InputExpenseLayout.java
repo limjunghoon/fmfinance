@@ -64,6 +64,8 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     			if (DBMgr.addRepeat(repeat) == -1) {
     				Log.e(LogTag.LAYOUT, ":: Fail to insert Repeat");
     			}
+    			
+    			DBMgr.updateRepeat(mExpensItem.getType(), mExpensItem.getId(), repeat.getID());
     		}
     	}
     	else if (mInputMode == InputMode.EDIT_MODE){
@@ -88,9 +90,37 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	@Override
 	protected boolean getItemInstance(int id) {
 		mExpensItem = (ExpenseItem)DBMgr.getItem(ExpenseItem.TYPE, id);
-		setItem(mExpensItem);
 		if (mExpensItem == null) return false;
+		
+		setItem(mExpensItem);
+		
+		loadPaymnetMethod();
+		loadRepeat();
+		
 		return true;
+	}
+
+	/**
+	 * 지불방법을 DB로부터 가져온다.
+	 */
+	private boolean loadPaymnetMethod() {
+		if (mExpensItem == null) return false;
+		PaymentMethod paymentMethod = mExpensItem.getPaymentMethod();
+		
+		if (paymentMethod.getType() == PaymentMethod.CARD) {
+			PaymentCardMethod cardMethod = (PaymentCardMethod) paymentMethod;
+			if (cardMethod.getCard() == null) {
+				cardMethod.setCard(DBMgr.getCardItem(paymentMethod.getMethodItemID()));
+			}
+		}
+		else if (paymentMethod.getType() == PaymentMethod.ACCOUNT) {
+			PaymentAccountMethod accountMethod = (PaymentAccountMethod) paymentMethod;
+			if (accountMethod.getAccount() == null) {
+				accountMethod.setAccount(DBMgr.getAccountItem(paymentMethod.getMethodItemID()));
+			}
+		}
+		return true;
+		
 	}
 
 	@Override
@@ -149,7 +179,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				updatePaymentMethod();
 			}
 		}
-		
 		else if (requestCode == ACT_ACCOUNT_SELECT) {
 			if (resultCode == RESULT_OK) {
 				int selectedID = data.getIntExtra(MsgDef.ExtraNames.ACCOUNT_ID, -1);
@@ -162,7 +191,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				updatePaymentMethod();
 			}
 		}
-		
 		else if (requestCode == ACT_REPEAT) {
 			if (resultCode == RESULT_OK) {
 				int repeatType = data.getIntExtra(MsgDef.ExtraNames.RPEAT_TYPE, -1);
@@ -182,10 +210,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				else {
 					return;
 				}
-					
-				
-				
-				
 			}
 		}
 		
@@ -205,11 +229,8 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	protected void updateCard(CardItem card) {
 		PaymentCardMethod paymentMethod = (PaymentCardMethod) mExpensItem.getPaymentMethod();
 		if (paymentMethod == null) return;
-		
 		paymentMethod.setCard(card);
-		
 		updatePaymentMethod();
-		
 	}
 
 	protected void updateTag(int id, String name) {
@@ -232,7 +253,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		ExpenseTag tag = mExpensItem.getTag();
 		return  !(tag == null || tag.getID() == ExpenseTag.NONE_ID);
 	}
-
 
 	/**
 	 * 지불방법 토글버튼 클릭 시 
@@ -314,7 +334,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			btnCard.setChecked(false);
 			btnAccount.setChecked(true);
 		}
-		
 		updatePaymentMethodText();
 	}
 	
@@ -355,7 +374,23 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     	((Button)findViewById(R.id.BtnExpenseRepeat)).setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
+				Repeat repeat = mExpensItem.getRepeat();
+				int repeatType = repeat.getType();
 				Intent intent = new Intent(InputExpenseLayout.this, RepeatLayout.class);
+				
+				if (repeatType != Repeat.ONCE) {
+					intent.putExtra(MsgDef.ExtraNames.RPEAT_TYPE, repeatType);
+					
+					if (repeatType == Repeat.WEEKLY) {
+						intent.putExtra(MsgDef.ExtraNames.RPEAT_TYPE, repeatType);
+						intent.putExtra(MsgDef.ExtraNames.RPEAT_WEEKLY, repeat.getWeeklyRepeat());
+					}
+					else if (repeatType == Repeat.MONTHLY) {
+						intent.putExtra(MsgDef.ExtraNames.RPEAT_TYPE, repeatType);
+						intent.putExtra(MsgDef.ExtraNames.RPEAT_DAILY, repeat.getDayofMonth());
+					}
+				}
+				
 				startActivityForResult(intent, ACT_REPEAT);
 			}
 		});
@@ -377,10 +412,10 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		Button btnRepeat = (Button)findViewById(R.id.BtnExpenseRepeat);
 		
 		if (type == Repeat.MONTHLY) {
-			btnRepeat.setText(String.format("매월 %d일 반복", repeat.getDayofMonth()));
+			btnRepeat.setText(repeat.getRepeatMessage());
 		}
 		else if (type == Repeat.WEEKLY) {
-			btnRepeat.setText(String.format("주간 반복", repeat.getDayofMonth()));
+			btnRepeat.setText(repeat.getRepeatMessage());
 		}
 		else {
 			btnRepeat.setText("반복을 설정합니다.");
@@ -393,5 +428,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     	getItem().setMemo(memo);
 	}
 	
+
 	
 }

@@ -211,6 +211,14 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).deleteItem(id);
 	}
 	
+	public static long updateRepeat(int itemType, int itemID, int repeatID) {
+		if (DBMgr.checkFinanceItemType(itemType) == false) return -1;
+		//return mInstance.mDBConnector.deleteItem(itemType, id);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).updateRepeat(itemID, repeatID);
+	}
+	
+	
+	
 	/**
 	 * DB에 입력된 수입, 지출, 자산, 부채 중 하나의 총 액수를 얻는다.
 	 * @param itemType 수입, 지출, 자산, 부채 타입
@@ -416,6 +424,10 @@ public final class DBMgr {
 	
 	public static int deleteTag(int id) {
 		return mInstance.mDBConnector.getTagDBConnector().deleteItem(id);
+	}
+	
+	public static Repeat getRepeat(int id) {
+		return mInstance.mDBConnector.getRepeatDBConnector().getItem(id);
 	}
 	
 	public static int addRepeat(Repeat repeat) {

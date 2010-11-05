@@ -50,6 +50,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("main_category", item.getCategory().getId());
 		rowItem.put("sub_category", item.getSubCategory().getId());
 		rowItem.put("payment_method", item.getPaymentMethod().getId()); // 임시값
+		rowItem.put("repeat", item.getRepeat().getID()); // 임시값
 		rowItem.put("tag", item.getTag().getID());
 		
 		long ret = db.insert("expense", null, rowItem);
@@ -78,6 +79,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getId());
 		rowItem.put("sub_category", item.getSubCategory().getId());
+		rowItem.put("repeat", item.getRepeat().getID()); // 임시값
 		rowItem.put("tag", item.getTag().getID());
 		
 		long ret = db.update("expense", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getId())});
@@ -174,6 +176,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		item.setMemo(c.getString(5));
 		item.setCategory(c.getInt(6), c.getString(13));
 		item.setSubCategory(c.getInt(7), c.getString(17));
+		item.getRepeat().setID(c.getInt(9));
 		item.setTag(c.getInt(11), c.getString(22));
 		
 		 createPaymentMethod(item, c);
@@ -188,6 +191,12 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		if (paymentMethod == null) return null;
 		
 		paymentMethod.setId(c.getInt(25));
+		if (type == PaymentMethod.CARD) {
+			paymentMethod.setMethodItemID(c.getInt(28));
+		}
+		else if (type == PaymentMethod.ACCOUNT) {
+			paymentMethod.setMethodItemID(c.getInt(27));
+		}
 		return paymentMethod;
 	}
 	
@@ -521,5 +530,16 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		
 		deleteSubCategoryFromMainID(id);
 		return result;
+	}
+	
+	public long updateRepeat(int expenseID, int repeatID) {
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+
+		rowItem.put("repeat", repeatID); // 임시값
+		
+		long ret = db.update("expense", rowItem, "_id=?", new String[] {String.valueOf(expenseID)});
+		db.close();
+		return ret;
 	}
 }
