@@ -8,7 +8,7 @@ import android.util.Log;
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 
-public class Repeat {
+public class Repeat extends BaseItem {
 
 	
 	public static final int ONCE = 0;
@@ -39,7 +39,6 @@ public class Repeat {
 	/** 월간 반복 날짜 지정 */
 	private int mDayofMonth = 1;
 	
-	private int mID = -1;
 	
 	private Calendar mLastApplyDay = Calendar.getInstance();
 	
@@ -83,14 +82,6 @@ public class Repeat {
 	
 	public int getDayofMonth() {
 		return mDayofMonth;
-	}
-
-	public void setID(int id) {
-		this.mID = id;
-	}
-
-	public int getID() {
-		return mID;
 	}
 
 	/**

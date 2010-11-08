@@ -83,7 +83,7 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 	
 	protected void onClickCategoryButton(Category category) {
 		Intent intent = new Intent();
-		intent.putExtra("CATEGORY_ID", category.getId());
+		intent.putExtra("CATEGORY_ID", category.getID());
 		intent.putExtra("CATEGORY_NAME", category.getName());
 		setResult(RESULT_OK, intent);
 		finish();

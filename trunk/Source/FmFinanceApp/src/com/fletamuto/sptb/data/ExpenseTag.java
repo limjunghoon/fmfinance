@@ -1,20 +1,15 @@
 package com.fletamuto.sptb.data;
 
-public class ExpenseTag {
+public class ExpenseTag extends BaseItem{
 	public static final int NONE_ID = 1; 
-	private int mID = NONE_ID;
 	private String mName;
 	private int mPrioritize = -1;
 	private int mImageIndex = -1;
 	
-	public void setID(int mID) {
-		this.mID = mID;
+	public ExpenseTag() {
+		setID(NONE_ID);
 	}
-	
-	public int getID() {
-		return mID;
-	}
-	
+
 	public void setName(String mName) {
 		this.mName = mName;
 	}

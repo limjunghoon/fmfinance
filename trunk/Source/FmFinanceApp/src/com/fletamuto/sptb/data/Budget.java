@@ -1,7 +1,6 @@
 package com.fletamuto.sptb.data;
 
-public class Budget {
-	private int mID = -1;
+public class Budget extends BaseItem {
 	private int mTotalAmount = 0;
 	private int mYear = 0;
 	private int mMonth = 0;
@@ -9,14 +8,6 @@ public class Budget {
 	private BudgetCategory mMainCategory;
 	private BudgetCategory mSubCategory;
 	
-	public void setID(int mID) {
-		this.mID = mID;
-	}
-
-	public int getID() {
-		return mID;
-	}
-
 	public void setTotalAmount(int totalAmount) {
 		this.mTotalAmount = totalAmount;
 	}

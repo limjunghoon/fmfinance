@@ -7,7 +7,7 @@ import java.util.Calendar;
  * @author yongbban
  * @version 1.0.0.0
  */
-public class Receipt {
+public class Receipt extends BaseItem {
 	/**
 	 * 생성날짜
 	 */

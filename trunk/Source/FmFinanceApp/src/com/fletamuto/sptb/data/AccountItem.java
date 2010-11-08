@@ -5,10 +5,9 @@ import java.util.Date;
 
 import com.fletamuto.sptb.util.FinanceDataFormat;
 
-public class AccountItem {
+public class AccountItem extends BaseItem {
 	public final static int ORDINARY_DEPOSIT = 0;
 	
-	private int	mID = -1;
 	private String mNumber;
 	private long mBalance = 0L;
 	private FinancialCompany mCompany = new FinancialCompany();
@@ -17,14 +16,7 @@ public class AccountItem {
 	private String mMemo;
 	private String mName;
 	private int mType = ORDINARY_DEPOSIT;
-	
-	public void setID(int mID) {
-		this.mID = mID;
-	}
-	
-	public int getID() {
-		return mID;
-	}
+
 	
 	public void setNumber(String number) {
 		this.mNumber = number;

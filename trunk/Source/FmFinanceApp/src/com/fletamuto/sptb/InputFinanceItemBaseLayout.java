@@ -133,7 +133,7 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     protected boolean saveNewItem(Class<?> cls) {
 
     	if (DBMgr.addFinanceItem(mItem) == -1) {
-    		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mItem.getId());
+    		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mItem.getID());
     		return false;
     	}
     	
@@ -144,12 +144,12 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     
     protected void saveUpdateItem() {
     	if (DBMgr.updateFinanceItem(mItem) == 0) {
-    		Log.e(LogTag.LAYOUT, "== UPDATE fail to the save item : " + mItem.getId());
+    		Log.e(LogTag.LAYOUT, "== UPDATE fail to the save item : " + mItem.getID());
     		return;
     	}
 		
 		Intent intent = new Intent();
-		intent.putExtra("EDIT_ITEM_ID", mItem.getId());
+		intent.putExtra("EDIT_ITEM_ID", mItem.getID());
 		setResult(RESULT_OK, intent);
 		finish();
     }

@@ -45,7 +45,7 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 			Log.e(LogTag.DB, "== null point error == ");
 			return DBDef.ValidError.NULL_ERR;
 		}
-		if (item.getCategory() == null || item.getCategory().getId() == -1) {
+		if (item.getCategory() == null || item.getCategory().getID() == -1) {
 			Log.e(LogTag.DB, "== invaild main category error == ");
 			return DBDef.ValidError.MAIN_CATEGORY_INVAlID;
 		}

@@ -27,7 +27,7 @@ public class ReportIncomeLayout extends ReportBaseLayout {
     
     protected void onListItemClick(ListView l, View v, int position, long id) {
     	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
-    	startEditInputActivity(InputIncomeLayout.class, item.getId());
+    	startEditInputActivity(InputIncomeLayout.class, item.getID());
     	super.onListItemClick(l, v, position, id);
     }
     

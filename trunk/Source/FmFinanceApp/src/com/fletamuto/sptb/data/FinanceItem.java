@@ -10,7 +10,7 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
  * @author yongbban
  * @version 1.0.0.1
  */
-public abstract class FinanceItem {
+public abstract class FinanceItem extends BaseItem {
 	/** 제목 */
 	private String mTitle;
 	
@@ -26,8 +26,6 @@ public abstract class FinanceItem {
 	/** 금액 */
 	private long mAmount = 0L;
 	
-	/** 아이디 */
-	private int	mID = -1;
 	
 	/** 상위 분류 */
 	private final Category mCategory = new Category(-1, "");
@@ -44,22 +42,7 @@ public abstract class FinanceItem {
 	 */
 	public abstract int getType();
 	
-	/**
-	 * 아이디를 설정
-	 * @param id 아이디
-	 */
-	public void setId(int id) {
-		this.mID = id;
-	}
 
-	/**
-	 * 아이디를 얻는다.
-	 * @return 아이티
-	 */
-	public int getId() {
-		return mID;
-	}
-	
 	/**
 	 * 제목을 설정
 	 * @param title 설정할 제목
@@ -121,7 +104,7 @@ public abstract class FinanceItem {
 	 * @return 유효할 경우 true 
 	 */
 	public boolean isVaildCatetory() {
-		if (mCategory.getId() == -1 || mCategory.getName() == "") {
+		if (mCategory.getID() == -1 || mCategory.getName() == "") {
 			return false;
 		}
 		return true;

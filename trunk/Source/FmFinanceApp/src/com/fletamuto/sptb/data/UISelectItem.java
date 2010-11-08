@@ -5,7 +5,7 @@ package com.fletamuto.sptb.data;
  * @author yongbban
  *
  */
-public abstract class UISelectItem {
+public abstract class UISelectItem extends BaseItem {
 	private int mPrioritize = -1;
 	private int mImageIndex = -1;
 	

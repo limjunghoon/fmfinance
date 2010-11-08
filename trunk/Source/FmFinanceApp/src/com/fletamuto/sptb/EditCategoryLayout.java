@@ -403,7 +403,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 		intent.putExtra("CATEGORY_HAS_SUB", true);
 		intent.putExtra("CATEGORY_HAS_WITH_MAIN", true);
 		intent.putExtra("CATEGORY_MAIN_CATEGORY_NAME", category.getName());
-		intent.putExtra("CATEGORY_MAIN_CATEGORY_ID", category.getId());
+		intent.putExtra("CATEGORY_MAIN_CATEGORY_ID", category.getID());
 		
 		startActivityForResult(intent, SelectCategoryBaseLayout.ACT_EDIT_CATEGORY);
 	}
@@ -411,7 +411,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 	private void updateSingleCategory(Category category, int position) {
     	final EditText edit = new EditText(EditCategoryLayout.this);
     	final int editPosition = position;
-    	final int editCategoryID = category.getId();
+    	final int editCategoryID = category.getID();
     	
     	edit.setText(category.getName());
 		new AlertDialog.Builder(EditCategoryLayout.this)
@@ -485,7 +485,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 			TextView categoryName = (TextView)convertView.findViewById(R.id.TVCategoryItem);
 			categoryName.setText(item.getName());
 			
-			setDeleteBtnListener(convertView, item.getId(), position);
+			setDeleteBtnListener(convertView, item.getID(), position);
 			setEditBtnListener(convertView, item, position);
 			
 			return convertView;

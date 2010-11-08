@@ -2,19 +2,13 @@ package com.fletamuto.sptb.data;
 
 import java.util.Calendar;
 
-public class ExpenseSMS {
-	private int mID = -1;
+public class ExpenseSMS extends BaseItem{
 	private Calendar mCreateDate = Calendar.getInstance();
 	private CardItem mCard;
 	private String mMessage;
 	private boolean mDone = false;
 	private String mReceiveNmuber;
-	public void setID(int mID) {
-		this.mID = mID;
-	}
-	public int getID() {
-		return mID;
-	}
+
 	public void setCreateDate(Calendar createDate) {
 		this.mCreateDate = createDate;
 	}

@@ -36,10 +36,10 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
-		rowItem.put("main_category", item.getCategory().getId());
+		rowItem.put("main_category", item.getCategory().getID());
 		
 		long ret = db.insert("liability", null, rowItem);
-		item.setId((int)ret);
+		item.setID((int)ret);
 		db.close();
 		return ret;
 	}
@@ -59,9 +59,9 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
-		rowItem.put("main_category", item.getCategory().getId());
+		rowItem.put("main_category", item.getCategory().getID());
 		
-		long ret = db.update("liability", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getId())});
+		long ret = db.update("liability", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getID())});
 		db.close();
 		return ret;
 	}
@@ -143,7 +143,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 */
 	public LiabilityItem CreateLiabilityItem(Cursor c) {
 		LiabilityItem item = new LiabilityItem();
-		item.setId(c.getInt(0));
+		item.setID(c.getInt(0));
 		try {
 			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
 		} catch (ParseException e) {
