@@ -2,7 +2,7 @@ package com.fletamuto.sptb.data;
 
 import java.util.Calendar;
 
-public class Purpose {
+public class Purpose extends BaseItem {
 	private long mAmount;
 	private Calendar mStartDate = Calendar.getInstance();
 	private Calendar mEndDate = Calendar.getInstance();

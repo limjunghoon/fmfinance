@@ -58,14 +58,14 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     			Repeat repeat = mExpensItem.getRepeat();
     			if (repeat.getType() == Repeat.ONCE) return;
     			
-    			repeat.setItemID(mExpensItem.getId());
+    			repeat.setItemID(mExpensItem.getID());
     			repeat.setItemType(mExpensItem.getType());
     			
     			if (DBMgr.addRepeat(repeat) == -1) {
     				Log.e(LogTag.LAYOUT, ":: Fail to insert Repeat");
     			}
     			
-    			DBMgr.updateRepeat(mExpensItem.getType(), mExpensItem.getId(), repeat.getID());
+    			DBMgr.updateRepeat(mExpensItem.getType(), mExpensItem.getID(), repeat.getID());
     		}
     	}
     	else if (mInputMode == InputMode.EDIT_MODE){

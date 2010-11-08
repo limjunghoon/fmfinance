@@ -35,10 +35,10 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
-		rowItem.put("main_category", item.getCategory().getId());
+		rowItem.put("main_category", item.getCategory().getID());
 	
 		long ret = db.insert("income", null, rowItem);
-		item.setId((int)ret);
+		item.setID((int)ret);
 		db.close();
 		
 		return ret;
@@ -58,9 +58,9 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("create_date", item.getCreateDateString());
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("memo", item.getMemo());
-		rowItem.put("main_category", item.getCategory().getId());
+		rowItem.put("main_category", item.getCategory().getID());
 		
-		long ret = db.update("income", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getId())});
+		long ret = db.update("income", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getID())});
 		db.close();
 		return ret;
 	}
@@ -142,7 +142,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 */
 	public IncomeItem CreateIncomeItem(Cursor c) {
 		IncomeItem item = new IncomeItem();
-		item.setId(c.getInt(0));
+		item.setID(c.getInt(0));
 		
 		try {
 			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));

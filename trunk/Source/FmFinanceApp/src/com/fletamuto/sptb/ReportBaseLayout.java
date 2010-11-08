@@ -93,7 +93,7 @@ public abstract class ReportBaseLayout extends ListActivity {
 			}
 			
 			setListViewText(item, reportListView);
-			setDeleteBtnListener(reportListView, item.getId(), position);
+			setDeleteBtnListener(reportListView, item.getID(), position);
 			
 			return reportListView;
 		}

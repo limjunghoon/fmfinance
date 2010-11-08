@@ -27,7 +27,7 @@ public class ReportCurrentExpenseLayout extends ReportBaseLayout {
     
     protected void onListItemClick(ListView l, View v, int position, long id) {
     	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
-    	startEditInputActivity(InputExpenseLayout.class, item.getId());
+    	startEditInputActivity(InputExpenseLayout.class, item.getID());
     	super.onListItemClick(l, v, position, id);
     }
     

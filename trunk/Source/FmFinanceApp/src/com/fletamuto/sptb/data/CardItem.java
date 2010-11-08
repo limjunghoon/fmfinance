@@ -1,6 +1,6 @@
 package com.fletamuto.sptb.data;
 
-public class CardItem {
+public class CardItem extends BaseItem{
 	public final static int CREDIT_CARD = 1;
 	public final static int CHECK_CARD = 2;
 	public final static int PREPAID_CARD = 3;
@@ -22,13 +22,6 @@ public class CardItem {
 		mType = type;
 	}
 
-	public void setID(int id) {
-		this.mID = id;
-	}
-
-	public int getID() {
-		return mID;
-	}
 
 	public void setCompenyName(CardCompanyName compenyName) {
 		this.mCompenyName = compenyName;

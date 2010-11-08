@@ -47,14 +47,14 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
-		rowItem.put("main_category", item.getCategory().getId());
-		rowItem.put("sub_category", item.getSubCategory().getId());
-		rowItem.put("payment_method", item.getPaymentMethod().getId()); // 임시값
+		rowItem.put("main_category", item.getCategory().getID());
+		rowItem.put("sub_category", item.getSubCategory().getID());
+		rowItem.put("payment_method", item.getPaymentMethod().getID()); // 임시값
 		rowItem.put("repeat", item.getRepeat().getID()); // 임시값
 		rowItem.put("tag", item.getTag().getID());
 		
 		long ret = db.insert("expense", null, rowItem);
-		item.setId((int)ret);
+		item.setID((int)ret);
 		db.close();
 		
 		return ret;
@@ -77,12 +77,12 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
-		rowItem.put("main_category", item.getCategory().getId());
-		rowItem.put("sub_category", item.getSubCategory().getId());
+		rowItem.put("main_category", item.getCategory().getID());
+		rowItem.put("sub_category", item.getSubCategory().getID());
 		rowItem.put("repeat", item.getRepeat().getID()); // 임시값
 		rowItem.put("tag", item.getTag().getID());
 		
-		long ret = db.update("expense", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getId())});
+		long ret = db.update("expense", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getID())});
 		db.close();
 		return ret;
 	}
@@ -165,7 +165,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	public ExpenseItem CreateExpenseItem(final Cursor c) {
 		
 		ExpenseItem item = new ExpenseItem();
-		item.setId(c.getInt(0));
+		item.setID(c.getInt(0));
 		try {
 			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
 		} catch (ParseException e) {
@@ -190,7 +190,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		PaymentMethod paymentMethod = item.createPaymentMethod(type);
 		if (paymentMethod == null) return null;
 		
-		paymentMethod.setId(c.getInt(25));
+		paymentMethod.setID(c.getInt(25));
 		if (type == PaymentMethod.CARD) {
 			paymentMethod.setMethodItemID(c.getInt(28));
 		}
@@ -446,7 +446,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		if (ret != DBDef.ValidError.SUCCESS) {
 			return ret;
 		}
-		if (item.getSubCategory() == null || item.getSubCategory().getId() == -1) {
+		if (item.getSubCategory() == null || item.getSubCategory().getID() == -1) {
 			Log.e(LogTag.DB, "== sub category invalid == ");
 			return DBDef.ValidError.SUB_CATEGORY_INVAlID;
 		}
@@ -500,7 +500,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("method_type", type);
 		
 		long ret = db.insert("payment_method", null, rowItem);
-		paymentMethod.setId((int)ret);
+		paymentMethod.setID((int)ret);
 		db.close();
 		return ret;
 	}

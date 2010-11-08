@@ -1,20 +1,11 @@
 package com.fletamuto.sptb.data;
 
-public class BudgetCategory {
-	private int mID = -1;
+public class BudgetCategory extends BaseItem{
 	private int mAmount = 0;
 	private int mYear = 0;
 	private int mMonth = 0;
 	
 	private Category mExpenseCategory;
-
-	public void setID(int mID) {
-		this.mID = mID;
-	}
-
-	public int getID() {
-		return mID;
-	}
 
 	public void setAmount(int amount) {
 		this.mAmount = amount;

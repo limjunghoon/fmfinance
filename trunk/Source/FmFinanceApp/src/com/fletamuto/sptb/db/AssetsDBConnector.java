@@ -36,11 +36,11 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
-		rowItem.put("main_category", item.getCategory().getId());
-		rowItem.put("sub_category", item.getSubCategory().getId());
+		rowItem.put("main_category", item.getCategory().getID());
+		rowItem.put("sub_category", item.getSubCategory().getID());
 		
 		long ret = db.insert("assets", null, rowItem);
-		item.setId((int)ret);
+		item.setID((int)ret);
 		db.close();
 		return ret;
 	}
@@ -60,10 +60,10 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
-		rowItem.put("main_category", item.getCategory().getId());
-		rowItem.put("sub_category", item.getSubCategory().getId());
+		rowItem.put("main_category", item.getCategory().getID());
+		rowItem.put("sub_category", item.getSubCategory().getID());
 		
-		long ret = db.update("assets", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getId())});
+		long ret = db.update("assets", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getID())});
 		db.close();
 		return ret;
 	}
@@ -145,7 +145,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	 */
 	public AssetsItem CreateAssetsItem(Cursor c) {
 		AssetsItem item = new AssetsItem();
-		item.setId(c.getInt(0));
+		item.setID(c.getInt(0));
 		try {
 			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
 		} catch (ParseException e) {
@@ -406,7 +406,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		if (ret != DBDef.ValidError.SUCCESS) {
 			return ret;
 		}
-		if (item.getSubCategory() == null || item.getSubCategory().getId() == -1) {
+		if (item.getSubCategory() == null || item.getSubCategory().getID() == -1) {
 			return DBDef.ValidError.SUB_CATEGORY_INVAlID;
 		}
 		return DBDef.ValidError.SUCCESS; 

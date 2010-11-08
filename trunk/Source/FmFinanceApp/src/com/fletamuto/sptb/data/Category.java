@@ -7,10 +7,9 @@ package com.fletamuto.sptb.data;
  */
 public class Category extends UISelectItem {
 	private String mName;
-	private int mID = -1; 
 	
 	public Category(int id, String name) {
-		this.mID = id;
+		setID(id);
 		this.mName = name;
 	}
 	public void setName(String name) {
@@ -19,15 +18,9 @@ public class Category extends UISelectItem {
 	public String getName() {
 		return mName;
 	}
-	public void setId(int id) {
-		this.mID = id;
-	}
-	public int getId() {
-		return mID;
-	}
-	
+
 	public void set(int id, String name) {
-		this.mID = id;
+		setID(id);
 		this.mName = name;
 	}
 	
