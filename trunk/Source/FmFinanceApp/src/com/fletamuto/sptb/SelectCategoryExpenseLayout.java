@@ -19,9 +19,6 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        
- //       getCategoryList();
-  //      setCategoryAdaper();
     }
     
     
@@ -39,7 +36,6 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
 		if (requestCode == ACT_SUB_CATEGORY) {
 			if (resultCode == RESULT_OK) {
 				Intent intent = new Intent();
-				
 				intent.putExtra("CATEGORY_ID", mMainCategory.getID());
 				intent.putExtra("CATEGORY_NAME", mMainCategory.getName());
 				intent.putExtra("SUB_CATEGORY_ID", data.getIntExtra("SUB_CATEGORY_ID", -1));

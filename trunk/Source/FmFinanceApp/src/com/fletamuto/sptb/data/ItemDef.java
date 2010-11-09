@@ -17,6 +17,7 @@ public final class ItemDef {
 	
 	/**	 학장된 수입 리스트*/
 	public static final class ExtendIncome {
-		public static final int SALARY = 0;
+		public static final int NONE = 0;
+		public static final int SALARY = 1;
 	}
 }

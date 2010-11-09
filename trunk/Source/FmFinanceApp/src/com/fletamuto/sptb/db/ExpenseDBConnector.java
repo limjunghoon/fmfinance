@@ -205,15 +205,16 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	 * @param name 분류 이름
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred 
 	 */
-	public long addCategory(String name) {
+	public long addCategory(Category category) {
 		long ret = -1;
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues rowItem = new ContentValues();
 		
-		rowItem.put("name", name);
+		rowItem.put("name", category.getName());
 		//임시코드
 		rowItem.put("prioritize", 0);
 		rowItem.put("image_index", 0);
+		rowItem.put("extend_type", category.getExtndType());
 		
 		ret = db.insert("expense_main_category", null, rowItem);
 		db.close();
@@ -236,6 +237,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		//임시코드
 		rowItem.put("prioritize", 0);
 		rowItem.put("image_index", 0);
+		rowItem.put("extend_type", 0);
 		
 		ret = db.insert("expense_sub_category", null, rowItem);
 		db.close();

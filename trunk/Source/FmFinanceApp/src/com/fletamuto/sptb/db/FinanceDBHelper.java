@@ -12,6 +12,7 @@ import android.util.Log;
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.R;
 import com.fletamuto.sptb.data.FinancialCompany;
+import com.fletamuto.sptb.data.ItemDef;
 
 /**
  * DB 생성되거나 버전이 업데이트 될 경우 
@@ -549,13 +550,15 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"name TEXT NOT NULL," +
 					"prioritize INTEGER NOT NULL," +
-					"image_index INTEGER NOT NULL);");
+					"image_index INTEGER NOT NULL," +
+					"extend_type INTEGER);");
 			
 			db.execSQL("CREATE TABLE expense_main_category ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"name TEXT NOT NULL," +
 					"prioritize INTEGER NOT NULL," +
-					"image_index INTEGER NOT NULL);");
+					"image_index INTEGER NOT NULL," +
+					"extend_type INTEGER);");
 			
 			db.execSQL("CREATE TABLE expense_sub_category ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -568,13 +571,15 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"name TEXT NOT NULL," +
 					"prioritize INTEGER NOT NULL," +
-					"image_index INTEGER NOT NULL);");
+					"image_index INTEGER NOT NULL," +
+					"extend_type INTEGER);");
 			
 			db.execSQL("CREATE TABLE liability_main_category ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"name TEXT NOT NULL," +
 					"prioritize INTEGER NOT NULL," +
-					"image_index INTEGER NOT NULL);");
+					"image_index INTEGER NOT NULL," +
+					"extend_type INTEGER);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -865,6 +870,10 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			rowItem.put("name", baseMainCategory[index]);
 			rowItem.put("prioritize", index+1);
 			rowItem.put("image_index", index+1);
+			
+			if (index == 0) rowItem.put("extend_type", ItemDef.ExtendIncome.SALARY);
+			else rowItem.put("extend_type", ItemDef.ExtendIncome.NONE);
+			
 			if (db.insert("income_main_category", null, rowItem) == -1) {
 				Log.e(LogTag.DB, "== DB Insert ERROR ==");
 			}

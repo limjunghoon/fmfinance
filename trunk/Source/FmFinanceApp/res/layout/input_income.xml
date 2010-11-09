@@ -9,12 +9,7 @@
 		<Button android:layout_height="wrap_content" android:id="@+id/BtnIncomeDate" android:textSize="18dp" android:layout_width="fill_parent">
 		</Button>
 	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
-		<TextView android:id="@+id/TVIncomeCategory" android:text="@string/input_income_category_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:layout_width="70dp">
-		</TextView>
-		<Button android:id="@+id/BtnIncomeCategory" android:layout_height="wrap_content" android:layout_width="fill_parent">
-		</Button>
-	</LinearLayout>
+	
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		<TextView android:id="@+id/TVIncomeAmount" android:text="@string/input_income_amount_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18dp" android:layout_width="70dp">
 		</TextView>
@@ -27,7 +22,12 @@
 		<EditText android:id="@+id/ETIncomeMemo" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		</EditText>
 	</LinearLayout>
-	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnIncomeSave" android:text="@string/input_income_btn_save" android:layout_marginTop="20dp">
-	</Button>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:id="@+id/TVIncomeRepeat" android:text="@string/input_income_repeat_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
+		</TextView>
+		<Button android:id="@+id/BtnIncomeRepeat" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	
 	
 </LinearLayout>

@@ -36,6 +36,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getID());
+		
 	
 		long ret = db.insert("income", null, rowItem);
 		item.setID((int)ret);
@@ -160,15 +161,16 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 * @param name 분류 이름
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred 
 	 */
-	public long addCategory(String name) {
+	public long addCategory(Category category) {
 		long ret = -1;
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues rowItem = new ContentValues();
 		
-		rowItem.put("name", name);
+		rowItem.put("name", category.getName());
 		//임시코드
 		rowItem.put("prioritize", 0);
 		rowItem.put("image_index", 0);
+		rowItem.put("extend_type", category.getExtndType());
 		
 		ret = db.insert("income_main_category", null, rowItem);
 		db.close();
@@ -191,6 +193,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		//임시코드
 		rowItem.put("prioritize", 0);
 		rowItem.put("image_index", 0);
+		rowItem.put("extend_type", 0);
 		
 		ret = db.insert("income_sub_category", null, rowItem);
 		db.close();
@@ -210,6 +213,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		if (c.moveToFirst() != false) {
 			do {
 				Category item = new Category(c.getInt(0), c.getString(1));
+				item.setExtndType(c.getInt(4));
 				category.add(item);
 			} while (c.moveToNext());
 		}
