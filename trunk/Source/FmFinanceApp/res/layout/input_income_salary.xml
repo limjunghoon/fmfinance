@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
+
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="30dp">
+		<TextView android:id="@+id/TVSalaryDate" android:text="@string/input_income_date_name" android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:layout_width="70dp">
+		</TextView>
+		<Button android:layout_height="wrap_content" android:textSize="18sp" android:layout_width="fill_parent" android:id="@+id/BtnSalaryDate">
+		</Button>
+	</LinearLayout>
+	
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:id="@+id/TVSalaryAmount" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp" android:text="총액">
+		</TextView>
+		<Button android:id="@+id/BtnSalaryAmount" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:id="@+id/TVSalaryTotalAmount" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp" android:text="실수령액">
+		</TextView>
+		<Button android:id="@+id/BtnSalaryTakeHomePay" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:id="@+id/TVSalaryMemo" android:text="@string/input_income_memo_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
+		</TextView>
+		<EditText android:id="@+id/ETSalaryMemo" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</EditText>
+	</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:id="@+id/TVSalaryRepeat" android:text="@string/input_income_repeat_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
+		</TextView>
+		<Button android:id="@+id/BtnSalaryRepeat" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	
+	
+</LinearLayout>
