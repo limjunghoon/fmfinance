@@ -6,15 +6,24 @@ package com.fletamuto.sptb.data;
  *
  */
 public class Category extends UISelectItem {
+	public static final int EXTEND_NONE = 0;
+	
 	private String mName;
+	private int	mExtndType = EXTEND_NONE;
+	
+	public Category(String name) {
+		this.mName = name;
+	}
 	
 	public Category(int id, String name) {
 		setID(id);
 		this.mName = name;
 	}
+	
 	public void setName(String name) {
 		this.mName = name;
 	}
+	
 	public String getName() {
 		return mName;
 	}
@@ -22,6 +31,14 @@ public class Category extends UISelectItem {
 	public void set(int id, String name) {
 		setID(id);
 		this.mName = name;
+	}
+	
+	public void setExtndType(int extndType) {
+		this.mExtndType = extndType;
+	}
+	
+	public int getExtndType() {
+		return mExtndType;
 	}
 	
 }

@@ -124,11 +124,14 @@ public class EditCategoryLayout  extends FmBaseActivity {
     
     private Category createMainCategory(String categoryName) {
     	String name = categoryName;
-		if (checkCategoryName(name) == false || mType == -1) {
+		if (checkCategoryName(categoryName) == false || mType == -1) {
 			return null;
 		}
 		
-		mMainCategoryID = DBMgr.addCategory(mType, name);
+		Category category = new Category(categoryName);
+		
+		mMainCategoryID = DBMgr.addCategory(mType, category);
+		category.setID(mMainCategoryID);
 		
 		if (mMainCategoryID == -1) {
 			return null;
@@ -139,7 +142,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 			makeSubCategory();
 		}
 		
-		return new Category(mMainCategoryID, mMainCategoryName);
+		return category;
 	}
     
     private void makeSubCategory() {

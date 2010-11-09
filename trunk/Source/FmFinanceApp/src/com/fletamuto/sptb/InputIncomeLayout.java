@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 
 /**
@@ -22,12 +23,17 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         updateChildView();
         setDateBtnClickListener(R.id.BtnIncomeDate); 
         setAmountBtnClickListener(R.id.BtnIncomeAmount);
-        setSaveBtnClickListener(R.id.BtnIncomeSave);
-        setCategoryClickListener(R.id.BtnIncomeCategory);
-        
-        setTitle(getResources().getString(R.string.input_income_name));
+        setTitle(mIncomeItem.getCategory().getName());
     }
   
+    protected void initialize() {
+    	super.initialize();
+    	int categoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1) ;
+        String categoryName = getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME);
+        
+        updateCategory(categoryID, categoryName);
+	}
+    
     protected void updateDate() {
     	updateBtnDateText(R.id.BtnIncomeDate);
     }
@@ -70,13 +76,11 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 	@Override
 	protected void updateCategory(int id, String name) {
 		mIncomeItem.setCategory(id, name);
-		updateBtnCategoryText(R.id.BtnIncomeCategory);
 	}
 
 	@Override
 	protected void updateChildView() {
 		updateDate();
-		updateBtnCategoryText(R.id.BtnIncomeCategory);
 		updateBtnAmountText(R.id.BtnIncomeAmount);
 		updateEditMemoText(R.id.ETIncomeMemo);
 	}

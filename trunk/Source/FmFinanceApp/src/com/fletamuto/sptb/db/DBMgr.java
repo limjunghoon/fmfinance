@@ -261,9 +261,9 @@ public final class DBMgr {
 	 * @param name  분류이름
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
-	public static int addCategory(int itemType, String name) {
+	public static int addCategory(int itemType, Category category) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return -1;
-		return (int)mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).addCategory(name);
+		return (int)mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).addCategory(category);
 	}
 	
 	/**

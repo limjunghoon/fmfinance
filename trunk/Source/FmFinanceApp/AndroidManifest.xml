@@ -57,6 +57,7 @@
 <activity android:name="EditSelecTagLayout"></activity>
 <activity android:name=".EditSelecCardCompanyNameLayout"></activity>
 <activity android:name=".EditSelecCompanyLayout"></activity>
+<activity android:name=".InputIncomeSelaryLayout"></activity>
 </application>
 
 
