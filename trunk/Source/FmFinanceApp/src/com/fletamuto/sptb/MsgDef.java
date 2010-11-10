@@ -20,6 +20,12 @@ public final class MsgDef {
 		public final static int ACT_COMPANY_CARD_NAME_ADD = 15;
 		public final static int ACT_COMPANY_NAME_EDIT = 16;
 		public final static int ACT_COMPANY_NAME_ADD = 17;
+		public final static int ACT_TAKE_HOME_PAY = 18;
+		public final static int ACT_TAKE_HOME_PAY_INSURANCE_AMOUNT = 19;
+		public final static int ACT_TAKE_HOME_PAY_TAX_AMOUNT = 20;
+		public final static int ACT_TAKE_HOME_PAY_ETC_AMOUNT = 21;
+		public final static int ACT_TAKE_HOME_PAY_PENSION_AMOUNT = 22;
+		public final static int ACT_ADD_INCOME = 23;
 	}
 	
 	public static final class ExtraNames {
@@ -34,6 +40,11 @@ public final class MsgDef {
 		public static final String RPEAT_TYPE = "RPEAT_TYPE";
 		public static final String RPEAT_WEEKLY = "RPEAT_WEEKLY";
 		public static final String RPEAT_DAILY = "RPEAT_DAILY";
+		public static final String SALARY_TOTAL_AMOUNT = "SALARY_TOTAL_AMOUNT";
+		public static final String TAKE_HOME_PAY_INSURANCE = "TAKE_HOME_PAY_INSURANCE";
+		public static final String TAKE_HOME_PAY_TAX = "TAKE_HOME_PAY_TAX";
+		public static final String TAKE_HOME_PAY_ETC = "TAKE_HOME_PAY_ETC";
+		public static final String TAKE_HOME_PAY_PENSION = "TAKE_HOME_PAY_PENSION";
 		
 	}
 }

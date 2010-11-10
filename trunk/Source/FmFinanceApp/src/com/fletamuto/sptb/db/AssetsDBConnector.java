@@ -38,6 +38,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getID());
 		rowItem.put("sub_category", item.getSubCategory().getID());
+		rowItem.put("extend", item.getExtendID());
 		
 		long ret = db.insert("assets", null, rowItem);
 		item.setID((int)ret);
@@ -62,6 +63,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getID());
 		rowItem.put("sub_category", item.getSubCategory().getID());
+		rowItem.put("extend", item.getExtendID());
 		
 		long ret = db.update("assets", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getID())});
 		db.close();
@@ -173,6 +175,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("prioritize", 0);
 		rowItem.put("image_index", 0);
 		rowItem.put("extend_type", category.getExtndType());
+		rowItem.put("type", category.getUIType());
 		
 		ret = db.insert("assets_main_category", null, rowItem);
 		db.close();
@@ -221,6 +224,21 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		db.close();
 		
 		return category;
+	}
+	
+	@Override
+	public Category getCategory(int extendItem) {
+		Category item = null;
+		SQLiteDatabase db = getReadableDatabase();
+		
+		Cursor c = db.query("assets_main_category", null, "extend_type=?", new String[]{String.valueOf(extendItem)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			item = new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
+		}
+		c.close();
+		db.close();
+		return item;
 	}
 
 	/**

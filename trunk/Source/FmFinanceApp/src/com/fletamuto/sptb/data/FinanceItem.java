@@ -26,7 +26,6 @@ public abstract class FinanceItem extends BaseItem {
 	/** 금액 */
 	private long mAmount = 0L;
 	
-	
 	/** 상위 분류 */
 	private final Category mCategory = new Category(-1, "");
 	
@@ -35,6 +34,9 @@ public abstract class FinanceItem extends BaseItem {
 	
 	/** 반복 */
 	private Repeat mRepeat = new Repeat();
+	
+	/** 확장아이디 */
+	private int mExtendID = -1;
 	
 	/**
 	 * 수입, 지출, 자산, 부채 타입을 얻는다.
@@ -84,6 +86,10 @@ public abstract class FinanceItem extends BaseItem {
 		mCategory.set(id, name);
 	}
 	
+	public void setCategory(int id, String name, int prioritize, int imageIndex, int extendType, int UIType) {
+		mCategory.set(id, name, prioritize, imageIndex, extendType, UIType);
+	}
+	
 	/**
 	 * 상위 분류객체를 얻는다.
 	 * @return 상위 분류
@@ -94,6 +100,10 @@ public abstract class FinanceItem extends BaseItem {
 	
 	public void setSubCategory(int id, String name) {
 		this.mSubCategory.set(id, name);
+	}
+	
+	public void setSubCategory(int id, String name, int prioritize, int imageIndex, int extendType, int UIType) {
+		mSubCategory.set(id, name, prioritize, imageIndex, extendType, UIType);
 	}
 	public Category getSubCategory() {
 		return mSubCategory;
@@ -197,5 +207,15 @@ public abstract class FinanceItem extends BaseItem {
 	
 	public void setRepeatMonthly(int day) {
 		mRepeat.setMonthlyRepeat(day);
+	}
+
+
+	public void setExtendID(int extendID) {
+		this.mExtendID = extendID;
+	}
+
+
+	public int getExtendID() {
+		return mExtendID;
 	}
 }

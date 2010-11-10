@@ -32,10 +32,12 @@
 		<item>취미/문화</item>
 		<item>자동차</item>
 		<item>교육비/육아</item>
+		<item>경조사/모임</item>
 		<item>세금/이자</item>
 		<item>보험</item>
 		<item>자산</item>
 		<item>부채상환</item>
+		<item>급여</item>
 	</string-array>
 	<string-array name="expense_base_sub_category_1">
 		<item>주식</item>
@@ -141,6 +143,12 @@
 	<string-array name="expense_base_sub_category_14">
 		<item>보장성 보험</item>
 		<item>자동차 보험</item>
+		<item>기타</item>
+	</string-array>
+	<string-array name="expense_salary_sub_category">
+		<item>보험</item>
+		<item>세금</item>
+		<item>연금</item>
 		<item>기타</item>
 	</string-array>
 	<string-array name="assets_base_main_category">

@@ -9,6 +9,7 @@ import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 
 public class SelectCategoryIncomeLayout extends InputAfterSelectCategoryLayout {
+	public static final int ACT_ADD_INCOME = MsgDef.ActRequest.ACT_ADD_INCOME;
 	
 	public SelectCategoryIncomeLayout() {
 		setType(IncomeItem.TYPE);
@@ -31,6 +32,20 @@ public class SelectCategoryIncomeLayout extends InputAfterSelectCategoryLayout {
 		
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, category.getID());
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, category.getName());
-		startActivity(intent);
+		startActivityForResult(intent, MsgDef.ActRequest.ACT_ADD_INCOME);
+	}
+	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ACT_ADD_INCOME) {
+			if (resultCode == RESULT_OK) {
+				finish();
+				Intent intent = new Intent(SelectCategoryIncomeLayout.this, ReportIncomeLayout.class);
+				startActivity(intent);
+				
+    		}
+    	}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 }
