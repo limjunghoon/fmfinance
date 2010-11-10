@@ -6,8 +6,19 @@ package com.fletamuto.sptb.data;
  *
  */
 public abstract class UISelectItem extends BaseItem {
+	static public final int NORMAL = 0;
+	static public final int HIDE = 1;
+	static public final int NOT_DELETE = 2;
+	
 	private int mPrioritize = -1;
 	private int mImageIndex = -1;
+	private int mUIType = NORMAL;
+	
+	public void setUI(int prioritize, int imageIndex, int UIType) {
+		mPrioritize = prioritize;
+		mImageIndex = imageIndex;
+		mUIType = UIType;
+	}
 	
 	public void setPrioritize(int prioritize) {
 		this.mPrioritize = prioritize;
@@ -22,6 +33,14 @@ public abstract class UISelectItem extends BaseItem {
 	
 	public int getImageIndex() {
 		return mImageIndex;
+	}
+	
+	public void setUIType(int UIType) {
+		this.mUIType = UIType;
+	}
+	
+	public int getUIType() {
+		return mUIType;
 	}
 	
 }

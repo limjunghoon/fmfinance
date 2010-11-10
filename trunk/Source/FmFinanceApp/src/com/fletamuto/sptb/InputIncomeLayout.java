@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.IncomeItem;
-import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 
 /**
@@ -40,7 +39,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
     
     protected void saveItem() {
     	if (mInputMode == InputMode.ADD_MODE) {
-    		saveNewItem(ReportIncomeLayout.class);
+    		saveNewItem(null);
     	}
     	else if (mInputMode == InputMode.EDIT_MODE){
     		saveUpdateItem();

@@ -20,6 +20,13 @@ public class Category extends UISelectItem {
 		this.mName = name;
 	}
 	
+	public Category(int id, String name, int prioritize, int imageIndex, int extendType, int UIType) {
+		setID(id);
+		setUI(prioritize, imageIndex, UIType);
+		mExtndType = extendType; 
+		this.mName = name;
+	}
+	
 	public void setName(String name) {
 		this.mName = name;
 	}
@@ -30,6 +37,13 @@ public class Category extends UISelectItem {
 
 	public void set(int id, String name) {
 		setID(id);
+		this.mName = name;
+	}
+	
+	public void set(int id, String name, int prioritize, int imageIndex, int extendType, int UIType) {
+		setID(id);
+		setUI(prioritize, imageIndex, UIType);
+		mExtndType = extendType; 
 		this.mName = name;
 	}
 	

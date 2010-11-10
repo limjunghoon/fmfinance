@@ -17,6 +17,7 @@ import android.widget.GridView;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.UISelectItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {

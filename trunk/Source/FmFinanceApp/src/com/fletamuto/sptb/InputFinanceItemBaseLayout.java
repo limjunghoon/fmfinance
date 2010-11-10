@@ -137,8 +137,16 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     		return false;
     	}
     	
-    	Intent intent = new Intent(InputFinanceItemBaseLayout.this, cls);
-		startActivity(intent);
+    	if (cls != null) {
+    		Intent intent = new Intent(InputFinanceItemBaseLayout.this, cls);
+    		startActivity(intent);
+    	}
+    	else {
+    		Intent intent = new Intent();
+			setResult(RESULT_OK, intent);
+			finish();
+    	}
+    	
 		return true;
     }
     

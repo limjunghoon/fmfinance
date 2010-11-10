@@ -17,6 +17,7 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.PaymentAccountMethod;
 import com.fletamuto.sptb.data.PaymentCardMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
+import com.fletamuto.sptb.data.UISelectItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 
 /**
@@ -150,7 +151,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		Cursor c = queryBilder.query(db, null, "expense._id=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
-				item = CreateExpenseItem(c);
+			item = CreateExpenseItem(c);
 		}
 		c.close();
 		db.close();
@@ -174,28 +175,29 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		item.setAmount(c.getLong(3));
 		item.setTitle(c.getString(4));
 		item.setMemo(c.getString(5));
-		item.setCategory(c.getInt(6), c.getString(13));
-		item.setSubCategory(c.getInt(7), c.getString(17));
+		item.setCategory(c.getInt(6), c.getString(13), c.getInt(14), c.getInt(15), c.getInt(16), c.getInt(17));
+		item.setSubCategory(c.getInt(7), c.getString(19), c.getInt(20), c.getInt(21), c.getInt(22), c.getInt(23));
 		item.getRepeat().setID(c.getInt(9));
-		item.setTag(c.getInt(11), c.getString(22));
+		item.setTag(c.getInt(11), c.getString(26));
 		
-		 createPaymentMethod(item, c);
-		
+		createPaymentMethod(item, c);
 		
 		return item;
 	}
-	
-	protected PaymentMethod createPaymentMethod(ExpenseItem item, final Cursor c) {
-		int type = c.getInt(26);
+
+
+
+	protected PaymentMethod createPaymentMethod(final ExpenseItem item, final Cursor c) {
+		int type = c.getInt(30);
 		PaymentMethod paymentMethod = item.createPaymentMethod(type);
 		if (paymentMethod == null) return null;
 		
-		paymentMethod.setID(c.getInt(25));
+		paymentMethod.setID(c.getInt(28));
 		if (type == PaymentMethod.CARD) {
-			paymentMethod.setMethodItemID(c.getInt(28));
+			paymentMethod.setMethodItemID(c.getInt(31));
 		}
 		else if (type == PaymentMethod.ACCOUNT) {
-			paymentMethod.setMethodItemID(c.getInt(27));
+			paymentMethod.setMethodItemID(c.getInt(30));
 		}
 		return paymentMethod;
 	}
@@ -215,6 +217,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("prioritize", 0);
 		rowItem.put("image_index", 0);
 		rowItem.put("extend_type", category.getExtndType());
+		rowItem.put("type", category.getUIType());
 		
 		ret = db.insert("expense_main_category", null, rowItem);
 		db.close();
@@ -238,6 +241,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("prioritize", 0);
 		rowItem.put("image_index", 0);
 		rowItem.put("extend_type", 0);
+		rowItem.put("type", 0);
 		
 		ret = db.insert("expense_sub_category", null, rowItem);
 		db.close();
@@ -256,14 +260,32 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		
 		if (c.moveToFirst() != false) {
 			do {
-				Category item = new Category(c.getInt(0), c.getString(1));
-				category.add(item);
+				Category item = new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
+				
+				if (item.getUIType() != UISelectItem.HIDE) {
+					category.add(item);
+				}
 			} while (c.moveToNext());
 		}
 		c.close();
 		db.close();
 		
 		return category;
+	}
+	
+	@Override
+	public Category getCategory(int extendItem) {
+		Category item = null;
+		SQLiteDatabase db = getReadableDatabase();
+		
+		Cursor c = db.query("expense_main_category", null, "extend_type=?", new String[]{String.valueOf(extendItem)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			item = new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
+		}
+		c.close();
+		db.close();
+		return item;
 	}
 
 	/**
@@ -544,4 +566,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		db.close();
 		return ret;
 	}
+
+
+
 }

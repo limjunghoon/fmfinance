@@ -36,6 +36,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getID());
+		rowItem.put("extend", item.getExtendID());
 		
 	
 		long ret = db.insert("income", null, rowItem);
@@ -60,6 +61,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getID());
+		rowItem.put("extend", item.getExtendID());
 		
 		long ret = db.update("income", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getID())});
 		db.close();
@@ -171,6 +173,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("prioritize", 0);
 		rowItem.put("image_index", 0);
 		rowItem.put("extend_type", category.getExtndType());
+		rowItem.put("type", category.getUIType());
 		
 		ret = db.insert("income_main_category", null, rowItem);
 		db.close();
@@ -194,6 +197,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("prioritize", 0);
 		rowItem.put("image_index", 0);
 		rowItem.put("extend_type", 0);
+		rowItem.put("type", 0);
 		
 		ret = db.insert("income_sub_category", null, rowItem);
 		db.close();
@@ -221,6 +225,21 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		db.close();
 		
 		return category;
+	}
+	
+	@Override
+	public Category getCategory(int extendItem) {
+		Category item = null;
+		SQLiteDatabase db = getReadableDatabase();
+		
+		Cursor c = db.query("income_main_category", null, "extend_type=?", new String[]{String.valueOf(extendItem)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			item = new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
+		}
+		c.close();
+		db.close();
+		return item;
 	}
 
 	/**
@@ -331,6 +350,25 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		
 		long ret = db.update("income", rowItem, "_id=?", new String[] {String.valueOf(expenseID)});
 		db.close();
+		return ret;
+	}
+	
+	/**
+	 * 수입을 DB테이블에 추가
+	 * @param item 수입 아이템
+	 * @return the row ID of the newly inserted row, or -1 if an error occurred
+	 */
+	public long addExendSalary(int expenseInsuranceID, int expenseTaxID, int expensePensionID, int expenseEtcID) { 
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("pension", expensePensionID);
+		rowItem.put("tax", expenseTaxID);
+		rowItem.put("assurance", expenseInsuranceID);
+		rowItem.put("etc", expenseEtcID);
+		long ret = db.insert("income_salary", null, rowItem);
+		db.close();
+		
 		return ret;
 	}
 }

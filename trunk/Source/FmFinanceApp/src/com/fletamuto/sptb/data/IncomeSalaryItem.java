@@ -3,21 +3,20 @@ package com.fletamuto.sptb.data;
 public class IncomeSalaryItem extends IncomeItem {
 	public final static int EXEND_TYPE = ItemDef.ExtendIncome.SALARY;
 	
-	private int mExtendID = -1;
 	private int mSalaryID = -1;
 	
+	/** 연금 */
 	private ExpenseItem mExpensePension;
-	private ExpenseItem mExpenseTex;
+	
+	/** 세금*/
+	private ExpenseItem mExpenseTax;
+	
+	/** 보험*/
 	private ExpenseItem mExpenseAssurance;
+	
+	/** 기타*/
 	private ExpenseItem mExpenseEtc;
-	
-	public void setExtendID(int extendID) {
-		this.mExtendID = extendID;
-	}
-	
-	public int getExtendID() {
-		return mExtendID;
-	}
+
 
 	public void setSalaryID(int salaryID) {
 		this.mSalaryID = salaryID;
@@ -35,12 +34,12 @@ public class IncomeSalaryItem extends IncomeItem {
 		return mExpensePension;
 	}
 
-	public void setExpenseTex(ExpenseItem expenseTex) {
-		this.mExpenseTex = expenseTex;
+	public void setExpenseTax(ExpenseItem expenseTax) {
+		this.mExpenseTax = expenseTax;
 	}
 
-	public ExpenseItem getExpenseTex() {
-		return mExpenseTex;
+	public ExpenseItem getExpenseTax() {
+		return mExpenseTax;
 	}
 
 	public void setExpenseAssurance(ExpenseItem mExpenseAssurance) {

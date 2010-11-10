@@ -32,6 +32,7 @@ public class EditSelecCardCompanyNameLayout extends EditSelectItemBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
    
+        
     }
 
 	@Override

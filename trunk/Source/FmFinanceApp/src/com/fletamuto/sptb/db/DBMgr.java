@@ -3,6 +3,7 @@ package com.fletamuto.sptb.db;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import android.R.integer;
 import android.content.Context;
 import android.util.Log;
 
@@ -11,9 +12,12 @@ import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.ExpenseTag;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.FinancialCompany;
+import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.IncomeSalaryItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.util.FinanceDataFormat;
@@ -25,8 +29,12 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
  * @version 1.0.0.1
  */
 public final class DBMgr {
+	/** 유일한 DB접근 인스턴스 */
 	private static final DBMgr mInstance = new DBMgr();
+	
+	/** DB테이블 컨넥터*/
 	private final DBConnector mDBConnector = new DBConnector();
+	
 	private static FinanceDBHelper mDBHelper = null; 
 	
 	/**
@@ -50,6 +58,10 @@ public final class DBMgr {
 	 */
 	public static FinanceDBHelper getDBHelper() {
 		return DBMgr.mDBHelper;
+	}
+	
+	public static IncomeDBConnector getIncomeDBConnecter() {
+		return (IncomeDBConnector)mInstance.mDBConnector.getBaseFinanceDBInstance(IncomeItem.TYPE);
 	}
 	
 	/**
@@ -291,6 +303,17 @@ public final class DBMgr {
 	}
 	
 	/**
+	 * DB에 입력된 분류 리스트를 가져온다.
+	 * @param itemType 수입, 지출, 자산, 부채 타입
+	 * @return 분류 리스트
+	 */
+	public static Category getCategory(int itemType, int extendItem) {
+		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		//return mInstance.mDBConnector.getCategory(itemType);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getCategory(extendItem);
+	}
+	
+	/**
 	 * DB에 입력된 지출, 자산의 분류 중 하위 분류 리스트를 가져온다. 
 	 * @param itemType 지출, 자산  타입
 	 * @param mainCategoryId 상위 분류
@@ -440,5 +463,25 @@ public final class DBMgr {
 	
 	public static int deleteRepeat(int id) {
 		return mInstance.mDBConnector.getRepeatDBConnector().deleteRepeat(id);
+	}
+	
+	public static long addExtendIncomeSalary(IncomeSalaryItem salary) {
+		ExpenseItem assurance =  salary.getExpenseAssurance();
+		ExpenseItem etc =  salary.getExpenseEtc();
+		ExpenseItem pension =  salary.getExpensePension();
+		ExpenseItem tax =  salary.getExpenseTax();
+		int assuranceID = -1;
+		int etcID = -1;
+		int pensionID = -1;
+		int taxID = -1;
+		
+		if (assurance != null) assuranceID = (int)addFinanceItem(assurance);
+		if (etc != null) etcID = (int)addFinanceItem(etc);
+		if (pension != null) pensionID = (int)addFinanceItem(pension);
+		if (tax != null) taxID = (int)addFinanceItem(tax);
+		
+		long extendID = getIncomeDBConnecter().addExendSalary(assuranceID, taxID, pensionID, etcID);
+		salary.setExtendID((int)extendID);
+		return addFinanceItem(salary);
 	}
 }

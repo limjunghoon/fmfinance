@@ -1,7 +1,6 @@
 package com.fletamuto.sptb;
 
-import com.fletamuto.sptb.InputBaseLayout.InputMode;
-
+import android.content.Intent;
 import android.os.Bundle;
 
 public abstract class InputIncomeExtendLayout extends InputFinanceItemBaseLayout {
@@ -11,7 +10,7 @@ public abstract class InputIncomeExtendLayout extends InputFinanceItemBaseLayout
 		
 	    
 	}
-	
+
 	@Override
 	protected void setTitleBtn() {
 		 setTitle(getItem().getCategory().getName());
@@ -38,11 +37,16 @@ public abstract class InputIncomeExtendLayout extends InputFinanceItemBaseLayout
 	@Override
 	protected void saveItem() {
 		if (mInputMode == InputMode.ADD_MODE) {
-    		saveNewItem(ReportIncomeLayout.class);
+    		if (saveNewItem(null) == true) {
+    			Intent intent = new Intent();
+    			setResult(RESULT_OK, intent);
+    			finish();
+    		}
     	}
     	else if (mInputMode == InputMode.EDIT_MODE){
     		saveUpdateItem();
     	}
 	}
+
 	
 }

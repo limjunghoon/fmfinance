@@ -13,6 +13,7 @@ import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.R;
 import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.data.ItemDef;
+import com.fletamuto.sptb.data.UISelectItem;
 
 /**
  * DB 생성되거나 버전이 업데이트 될 경우 
@@ -551,35 +552,41 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"name TEXT NOT NULL," +
 					"prioritize INTEGER NOT NULL," +
 					"image_index INTEGER NOT NULL," +
-					"extend_type INTEGER);");
+					"extend_type INTEGER," +
+					"type INTEGER);");
 			
 			db.execSQL("CREATE TABLE expense_main_category ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"name TEXT NOT NULL," +
 					"prioritize INTEGER NOT NULL," +
 					"image_index INTEGER NOT NULL," +
-					"extend_type INTEGER);");
+					"extend_type INTEGER," +
+					"type INTEGER);");
 			
 			db.execSQL("CREATE TABLE expense_sub_category ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"name TEXT NOT NULL," +
 					"prioritize INTEGER NOT NULL," +
 					"image_index INTEGER NOT NULL," +
-					"main_id INTEGER NOT NULL);");
+					"main_id INTEGER NOT NULL," +
+					"extend_type INTEGER," +
+					"type INTEGER);");
 			
 			db.execSQL("CREATE TABLE assets_main_category ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"name TEXT NOT NULL," +
 					"prioritize INTEGER NOT NULL," +
 					"image_index INTEGER NOT NULL," +
-					"extend_type INTEGER);");
+					"extend_type INTEGER," +
+					"type INTEGER);");
 			
 			db.execSQL("CREATE TABLE liability_main_category ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"name TEXT NOT NULL," +
 					"prioritize INTEGER NOT NULL," +
 					"image_index INTEGER NOT NULL," +
-					"extend_type INTEGER);");
+					"extend_type INTEGER," +
+					"type INTEGER);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -888,11 +895,18 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		ContentValues rowItem = new ContentValues();
 		String [] baseMainCategory = context.getResources().getStringArray(R.array.expense_base_main_category);
 		int categoryLenth = baseMainCategory.length;
+		int salaryCategory = categoryLenth-1;
 		
 		for (int index = 0; index < categoryLenth; index++) {
 			rowItem.put("name", baseMainCategory[index]);
 			rowItem.put("prioritize", index+1);
 			rowItem.put("image_index", index+1);
+			
+			if (salaryCategory == index) {
+				rowItem.put("type", UISelectItem.HIDE);
+				rowItem.put("extend_type", ItemDef.ExtendIncome.SALARY);
+			}
+			
 			if (db.insert("expense_main_category", null, rowItem) == -1) {
 				Log.e(LogTag.DB, "== DB Insert ERROR ==");
 			}
@@ -900,6 +914,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		
 		insertExpenseSubCategoryTable(db);
 	}
+	
 	
 	/**
 	 * 기본적인 자산 상위  분류 항목을 추가한다.
@@ -929,10 +944,12 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		String [] baseMainCategory = context.getResources().getStringArray(R.array.liability_base_main_category);
 		int categoryLenth = baseMainCategory.length;
 		
+		
 		for (int index = 0; index < categoryLenth; index++) {
 			rowItem.put("name", baseMainCategory[index]);
 			rowItem.put("prioritize", index+1);
 			rowItem.put("image_index", index+1);
+			
 			if (db.insert("liability_main_category", null, rowItem) == -1) {
 				Log.e(LogTag.DB, "== DB Insert ERROR ==");
 			}
@@ -962,6 +979,9 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_13));
 		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_14));
 		baseSubCategorys.add(context.getResources().getStringArray(R.array.assets_base_main_category));
+		baseSubCategorys.add(context.getResources().getStringArray(R.array.liability_base_main_category));
+		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_salary_sub_category));
+		
 		
 		int subCategoryArrLenth = baseSubCategorys.size();
 		
@@ -974,6 +994,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 				rowItem.put("prioritize", i+1);
 				rowItem.put("image_index", i+1);
 				rowItem.put("main_id", i+1);
+				
 				if (db.insert("expense_sub_category", null, rowItem) == -1) {
 					Log.e(LogTag.DB, "== DB Insert ERROR ==");
 				}

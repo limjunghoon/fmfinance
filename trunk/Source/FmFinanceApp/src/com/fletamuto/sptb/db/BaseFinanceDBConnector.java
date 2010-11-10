@@ -31,6 +31,7 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	public abstract long addSubCategory(long mainCategoryID, String name);
 	public abstract long addCategory(Category category);
 	public abstract ArrayList<Category> getCategory();
+	public abstract Category getCategory(int extendItem);
 	public abstract long getTotalAmount();
 	public abstract long getTotalAmountDay(Calendar calendar);
 	public abstract int getItemCount(Calendar calendar);
@@ -69,6 +70,8 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	public int updateSubCategory(int id, String name) {
 		return 0;
 	}
+
+
 	
 
 	
