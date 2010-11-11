@@ -3,7 +3,6 @@ package com.fletamuto.sptb.db;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import android.R.integer;
 import android.content.Context;
 import android.util.Log;
 

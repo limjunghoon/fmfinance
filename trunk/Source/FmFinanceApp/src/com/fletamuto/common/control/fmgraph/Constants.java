@@ -1,6 +1,5 @@
 package com.fletamuto.common.control.fmgraph;
 
-import android.graphics.Color;
 
 public class Constants {
 	

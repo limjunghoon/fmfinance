@@ -3,8 +3,6 @@ package com.fletamuto.sptb;
 import java.util.Calendar;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
