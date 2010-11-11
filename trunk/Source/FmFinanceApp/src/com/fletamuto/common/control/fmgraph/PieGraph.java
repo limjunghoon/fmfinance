@@ -1,9 +1,13 @@
 package com.fletamuto.common.control.fmgraph;
 
-import android.view.*;
-import android.graphics.*;
-import android.content.*;
-import android.util.*;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.View;
 
 public class PieGraph extends View {
 	

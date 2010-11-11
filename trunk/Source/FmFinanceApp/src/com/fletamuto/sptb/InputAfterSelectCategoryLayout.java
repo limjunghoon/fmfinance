@@ -1,6 +1,5 @@
 package com.fletamuto.sptb;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.fletamuto.sptb.data.Category;
