@@ -5,6 +5,7 @@
 		<item>수입내역 목록</item>
 		<item>자산내역 목록</item>
 		<item>부채내역 목록</item>
+		<item>1. 연간 월별 수입/지출 비교</item>
 	</string-array>
 	<string-array name="income_base_main_category">
 		<item>급여</item>
