@@ -45,6 +45,7 @@ public class BarGraph extends View {
 	
 	private int[] defaultGraphColors = new int[]{Color.BLUE, Color.RED, Color.YELLOW, Color.GRAY, Color.CYAN,
 		Color.GREEN, Color.MAGENTA, Color.DKGRAY, Color.WHITE, Color.LTGRAY, Color.BLUE, Color.RED, Color.YELLOW, Color.GRAY, Color.CYAN,
+		Color.GREEN, Color.MAGENTA, Color.DKGRAY, Color.WHITE, Color.LTGRAY, Color.BLUE, Color.RED, Color.YELLOW, Color.GRAY, Color.CYAN,
 		Color.GREEN, Color.MAGENTA, Color.DKGRAY, Color.WHITE, Color.LTGRAY};
 	
 	private int axisXLength; //X축들의 길이
