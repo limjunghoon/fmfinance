@@ -254,6 +254,11 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountDay(calendar);
 	}
 	
+	public static long getTotalAmountMonth(int itemType, int year, int month) {
+		if (DBMgr.checkFinanceItemType(itemType) == false) return 0L;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountMonth(year, month);
+	}
+	
 	/**
 	 * DB에 입력된 수입, 지출, 자산, 부채 중 해당 날짜의 입력된 아이템 갯수를 얻는다.
 	 * @param itemType  수입, 지출, 자산, 부채 타입

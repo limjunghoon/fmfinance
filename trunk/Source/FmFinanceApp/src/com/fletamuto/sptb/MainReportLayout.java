@@ -27,6 +27,7 @@ public class MainReportLayout extends ListActivity {
         mReportList.add(ReportIncomeLayout.class);
         mReportList.add(ReportAssetsLayout.class);
         mReportList.add(ReportLiabilityLayout.class);
+        mReportList.add(ReportMonthOfYearLayout.class);
     }
     
     protected void onListItemClick(ListView l, View v, int position, long id) {

@@ -103,7 +103,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		
 		if (c.moveToFirst() != false) {
 			do {
-				expenseItems.add(CreateExpenseItem(c));
+				expenseItems.add(createExpenseItem(c));
 			} while (c.moveToNext());
 		}
 		c.close();
@@ -128,7 +128,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		
 		if (c.moveToFirst() != false) {
 			do {
-				expenseItems.add(CreateExpenseItem(c));
+				expenseItems.add(createExpenseItem(c));
 			} while (c.moveToNext());
 		}
 		c.close();
@@ -151,7 +151,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		Cursor c = queryBilder.query(db, null, "expense._id=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
-			item = CreateExpenseItem(c);
+			item = createExpenseItem(c);
 		}
 		c.close();
 		db.close();
@@ -163,7 +163,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	 * @param c Cursor
 	 * @return 지출 아이템
 	 */
-	public ExpenseItem CreateExpenseItem(final Cursor c) {
+	public ExpenseItem createExpenseItem(final Cursor c) {
 		
 		ExpenseItem item = new ExpenseItem();
 		item.setID(c.getInt(0));
@@ -336,6 +336,22 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		SQLiteDatabase db = getReadableDatabase();
 		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		String query = "SELECT SUM(amount) FROM expense WHERE strftime('%Y-%m-%d', create_date)=?";
+		Cursor c = db.rawQuery(query, params);
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		db.close();
+		return amount;
+	}
+	
+	public long getTotalAmountMonth(int year, int month) {
+		long amount = 0L;
+		SQLiteDatabase db = getReadableDatabase();
+//		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
+		String[] params = {String.format("%d-%02d", year, month)};
+		String query = "SELECT SUM(amount) FROM expense WHERE strftime('%Y-%m', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
 		
 		if (c.moveToFirst() != false) {
