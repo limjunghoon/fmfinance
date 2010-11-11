@@ -293,6 +293,21 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		db.close();
 		return amount;
 	}
+	
+	public long getTotalAmountYear(int year) {
+		long amount = 0L;
+		SQLiteDatabase db = getReadableDatabase();
+		String[] params = {String.format("%d", year)};
+		String query = "SELECT SUM(amount) FROM liability WHERE strftime('%Y', create_date)=?";
+		Cursor c = db.rawQuery(query, params);
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		db.close();
+		return amount;
+	}
 
 	/**
 	 * 지정된 날짜의 추가된 부채 아이템 갯수를 얻는다.

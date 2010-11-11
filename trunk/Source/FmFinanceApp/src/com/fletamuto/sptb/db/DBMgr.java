@@ -250,13 +250,17 @@ public final class DBMgr {
 	 */
 	public static long getTotalAmountDay(int itemType, Calendar calendar) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return 0L;
-	//	return mInstance.mDBConnector.getTotalAmountDay(itemType, calendar);
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountDay(calendar);
 	}
 	
 	public static long getTotalAmountMonth(int itemType, int year, int month) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return 0L;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountMonth(year, month);
+	}
+	
+	public static long getTotalAmountYear(int itemType, int year) {
+		if (DBMgr.checkFinanceItemType(itemType) == false) return 0L;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountYear(year);
 	}
 	
 	/**
