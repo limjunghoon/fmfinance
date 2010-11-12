@@ -3,8 +3,10 @@ package com.fletamuto.sptb;
 import java.util.Calendar;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fletamuto.common.control.fmgraph.BarGraph;
 import com.fletamuto.common.control.fmgraph.Constants;
@@ -26,6 +28,27 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
     	updateChildView();
 //    	setBunClickListener();
     }
+    
+	@Override
+	protected void setTitleBtn() {
+    	setTitle("연간 월별 수입/지출 비교");
+    	setChangeButtonListener();
+        setTitle(getResources().getString(R.string.btn_category_select));
+        setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "변경");
+        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+        
+		super.setTitleBtn();
+	}
+	
+	public void setChangeButtonListener() {
+		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				Toast toast = Toast.makeText(getApplicationContext(), "변경버튼 클릭", Toast.LENGTH_SHORT);
+				toast.show();
+			}
+		});
+	}
     
 //    private void setBunClickListener() {
 //		Button btnPreviusYear = (Button)findViewById(R.id.BtnPreviousYear);
@@ -61,12 +84,6 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 		TextView tvExpenseYear = (TextView)findViewById(R.id.TVTotalExpense);
 		tvExpenseYear.setText(String.format("총 지출 : %,d원", expenseYear));
 	}
-
-	@Override
-    protected void setTitleBtn() {
-    	setTitle("연간 월별 수입/지출 비교");
-    	super.setTitleBtn();
-    }
 
 	private void updateBarGraph() {
 		PieGraph pg;
