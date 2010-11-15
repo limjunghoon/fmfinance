@@ -136,6 +136,26 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		return expenseItems;
 	}
 	
+	public ArrayList<FinanceItem> getItems(int year, int month) {
+		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.format("%d-%d", year, month)};
+		
+		queryBilder.setTables("expense, expense_main_category, expense_sub_category, expense_tag, payment_method");
+		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id AND expense.tag=expense_tag._id AND expense.payment_method=payment_method._id");
+		Cursor c = queryBilder.query(db, null, "strftime('%Y-%m', create_date)=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				assetsItems.add(createExpenseItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return assetsItems;
+	}
+	
 	/**
 	 * 지정된 아이디의 지출 아이템을 가져온다.
 	 * @param id 가져올 지출 아이디
