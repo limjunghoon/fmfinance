@@ -116,6 +116,26 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		return incomeItems;
 	}
 	
+	public ArrayList<FinanceItem> getItems(int year, int month) {
+		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.format("%d-%d", year, month)};
+		
+		queryBilder.setTables("income, income_main_category");
+		queryBilder.appendWhere("income.main_category=income_main_category._id");
+		Cursor c = queryBilder.query(db, null, "strftime('%Y-%m', create_date)=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				assetsItems.add(CreateIncomeItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return assetsItems;
+	}
+	
 	/**
 	 * 지정된 아이디의 수입 아이템을 가져온다.
 	 * @param id 가져올 수입 아이디

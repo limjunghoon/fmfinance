@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AccountItem;
@@ -196,6 +197,11 @@ public final class DBMgr {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
 	//	return mInstance.mDBConnector.getItems(itemType, calendar);
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItems(calendar);
+	}
+	
+	public static ArrayList<FinanceItem> getItems(int itemType, int year, int month) {
+		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItems(year, month);
 	}
 	
 	/**
@@ -492,4 +498,5 @@ public final class DBMgr {
 		salary.setExtendID((int)extendID);
 		return addFinanceItem(salary);
 	}
+
 }

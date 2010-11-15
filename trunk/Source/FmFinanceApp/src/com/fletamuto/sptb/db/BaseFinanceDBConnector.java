@@ -38,6 +38,7 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	public abstract long getTotalAmountYear(int year);
 	public abstract int getItemCount(Calendar calendar);
 	public abstract ArrayList<FinanceItem> getItems(Calendar calendar);
+	public abstract ArrayList<FinanceItem> getItems(int year, int month);
 	public abstract int deleteItem(int id);
 	public abstract int deleteCategory(int id);
 	public abstract int updateCategory(int id, String name);

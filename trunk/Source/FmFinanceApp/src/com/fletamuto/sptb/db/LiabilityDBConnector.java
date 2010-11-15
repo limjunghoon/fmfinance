@@ -116,6 +116,26 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return LiabilityItems;
 	}
 	
+	public ArrayList<FinanceItem> getItems(int year, int month) {
+		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.format("%d-%d", year, month)};
+		
+		queryBilder.setTables("liability, liability_main_category");
+		queryBilder.appendWhere("liability.main_category=liability_main_category._id");
+		Cursor c = queryBilder.query(db, null, "strftime('%Y-%m', create_date)=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				assetsItems.add(CreateLiabilityItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return assetsItems;
+	}
+	
 	/**
 	 * 지정된 아이디의 부채 아이템을 가져온다.
 	 * @param id 가져올 부채 아이디
