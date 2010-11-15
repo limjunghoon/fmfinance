@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.*;
 
 import com.fletamuto.common.control.fmgraph.BarGraph;
 import com.fletamuto.common.control.fmgraph.Constants;
@@ -147,6 +148,25 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 	       
 	        bg.setLayoutParams(params);
 	        
+	        bg.setOnTouchListener(new View.OnTouchListener() {
+				
+	        	public boolean onTouch(View v, MotionEvent event) {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			    		int sel;
+			    		sel = bg.FindTouchItemID((int)event.getX(), (int)event.getY());
+
+			    		if (sel == -1) {
+			    			return true;
+			    		} else {
+			    			Toast.makeText(bg.getContext(), "ID = " + sel + " 그래프 터치됨", Toast.LENGTH_SHORT).show();
+			    			return true;
+			    		}
+			    	}
+					return false;
+				}
+			});
+
+	        
 	/*
 	        pg = (PieGraph) findViewById (R.id.pgraph);
 	        pg.setItemValues(iv);
@@ -157,9 +177,7 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 					if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			    		int sel;
 			    		sel = pg.FindTouchItemID((int)event.getX(), (int)event.getY());
-			    		Log.d("jptest1", "onTouchEvent = " + sel);
-			    		Log.d("jptest1", "getRawX" + (int)event.getXPrecision());
-			    		Log.d("jptest1", "getRawY" + (int)event.getYPrecision());
+
 			    		if (sel == -1) {
 			    			return true;
 			    		} else {
@@ -220,5 +238,23 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
         params.height = (350 > bg.getBarGraphHeight()) ? 320 : bg.getBarGraphHeight();
        
         bg.setLayoutParams(params);
+        
+        bg.setOnTouchListener(new View.OnTouchListener() {
+			
+        	public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+		    		int sel;
+		    		sel = bg.FindTouchItemID((int)event.getX(), (int)event.getY());
+
+		    		if (sel == -1) {
+		    			return true;
+		    		} else {
+		    			Toast.makeText(bg.getContext(), "ID = " + sel + " 그래프 터치됨", Toast.LENGTH_SHORT).show();
+		    			return true;
+		    		}
+		    	}
+				return false;
+			}
+		});
 	}
 }
