@@ -5,21 +5,33 @@
     android:layout_height="fill_parent"
    	android:scrollbarStyle="outsideOverlay">
    	
-	
-	
-   	
-   	    
-<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="horizontal"><ToggleButton android:id="@+id/ToggleButton01" android:layout_height="wrap_content" android:textOff="월별" android:layout_weight="1" android:layout_width="fill_parent"></ToggleButton><ToggleButton android:text="@+id/ToggleButton02" android:id="@+id/ToggleButton02" android:layout_height="wrap_content" android:textOff="일별" android:layout_weight="1" android:layout_width="fill_parent"></ToggleButton></LinearLayout>
-
-
-
-
-
-
-<FrameLayout android:id="@+id/FrameLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent"><LinearLayout android:id="@+id/LinearLayout02" android:layout_width="wrap_content" android:layout_height="wrap_content"><TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="수입"></TextView></LinearLayout><LinearLayout android:id="@+id/LinearLayout03" android:layout_width="wrap_content" android:layout_height="wrap_content"><TextView android:id="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="일별 수입화면"></TextView></LinearLayout></FrameLayout>
-
-
-
-
-
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="horizontal">
+		<ToggleButton android:layout_height="wrap_content" android:textOff="월별" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/TBMonth" android:textOn="월별">
+		</ToggleButton>
+		<ToggleButton android:text="@+id/ToggleButton02" android:layout_height="wrap_content" android:textOff="일별" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/TBDayOfMonth" android:textOn="일별">
+		</ToggleButton>
+	</LinearLayout>
+	<FrameLayout android:id="@+id/FrameLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<ScrollView android:id="@+id/ScrollView01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+			<LinearLayout android:layout_height="wrap_content" android:id="@+id/LLMonth" android:orientation="vertical" android:layout_width="fill_parent" android:gravity="center_horizontal">
+				<TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="월별">
+				</TextView>
+				<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center">
+			   		<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/BtnPreviusMonth" android:text="이전달">
+			   		</Button>
+			   		<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="년도" android:textSize="20sp" android:id="@+id/TVCurrentMonth" android:layout_marginLeft="10dp" android:layout_marginRight="10dp">
+			   		</TextView>
+			   		<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/BtnNextMonth" android:text="다음달">
+			   		</Button>
+				</LinearLayout>
+				<com.fletamuto.common.control.fmgraph.PieGraph android:id="@+id/pgraph" android:layout_width="210dp" android:layout_height="210dp" />
+				<LinearLayout android:id="@+id/LLItemButtons" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical">
+				</LinearLayout>
+			</LinearLayout>
+		</ScrollView>
+		<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/LLDayofMonth" android:orientation="vertical">
+			<ListView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/LVIncomeDayOfMonth">
+			</ListView>
+		</LinearLayout>
+	</FrameLayout>
 </LinearLayout>

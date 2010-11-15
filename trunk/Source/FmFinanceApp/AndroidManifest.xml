@@ -61,9 +61,9 @@
 <activity android:name=".ReportMonthOfYearLayout"></activity>
 
 <activity android:name=".InputTakeHomePayLayout"></activity>
-<activity android:name=".ReportMonthCompareExpenseToIncomeLayout"></activity>
-<activity android:name=".ReportMonthCompareExpenseLayout"></activity>
-<activity android:name=".ReportMonthCompareIncomeLayout"></activity>
+<activity android:name=".ReportMonthCompareExpenseToIncomeLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".ReportMonthCompareExpenseLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".ReportMonthCompareIncomeLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 
