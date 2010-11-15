@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fletamuto.common.control.fmgraph.PieGraph;
 import com.fletamuto.sptb.data.ExpenseItem;
@@ -87,8 +88,14 @@ public class ReportMonthCompareIncomeLayout extends FmBaseActivity {
 
 			public boolean onTouch(View arg0, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-		    		pieGraph.FindTouchItemID((int)event.getX(), (int)event.getY());
-		    		return true;
+					int sel;
+		    		sel = pieGraph.FindTouchItemID((int)event.getX(), (int)event.getY());
+		    		if (sel == -1) {
+		    			return true;
+		    		} else {
+		    			Toast.makeText(pieGraph.getContext(), "ID = " + sel + " 그래프 터치됨", Toast.LENGTH_SHORT).show();
+		    			return true;
+		    		}
 		    	}
 				return false;
 			}
