@@ -17,7 +17,9 @@ import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportMonthOfYearLayout extends FmBaseActivity {
 	private int mYear = Calendar.getInstance().get(Calendar.YEAR);
-
+	
+	private BarGraph bg;
+	private boolean barGraphDifferenceMode = false;
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,14 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Toast toast = Toast.makeText(getApplicationContext(), "변경버튼 클릭", Toast.LENGTH_SHORT);
-				toast.show();
+//				Toast toast = Toast.makeText(getApplicationContext(), "변경버튼 클릭", Toast.LENGTH_SHORT);
+//				toast.show();
+				if (barGraphDifferenceMode == false)
+				{
+					updateBarGraphDifferenceMode();
+				} else {
+					updateBarGraph();
+				}
 			}
 		});
 	}
@@ -86,8 +94,9 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 	}
 
 	private void updateBarGraph() {
-		PieGraph pg;
-		BarGraph bg;
+		barGraphDifferenceMode = false;
+//		PieGraph pg;
+//		BarGraph bg;
 //    	
 //    	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 //    	for (int index = 0; index < Calendar.DECEMBER; index++) {
@@ -125,7 +134,7 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 	        int[] ap = new int[] {Constants.BAR_AXIS_X_BOTTOM, Constants.BAR_AXIS_Y_LEFT};
 	        String[] at = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
 
-	        setContentView(R.layout.report_month_of_year, true);
+//	        setContentView(R.layout.report_month_of_year, true);
 	        
 	        bg = (BarGraph) findViewById (R.id.bgraph);
 	 
@@ -163,5 +172,53 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 			});
 	*/
 		
+	}
+	
+	private void updateBarGraphDifferenceMode() {
+		barGraphDifferenceMode = true;
+		
+		long[] iv = new long[] {
+			 	DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 1) -
+        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 1), 
+        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 2) -
+        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 2), 
+        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 3) -
+        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 3), 
+        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 4) -
+        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 4), 
+        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 5) -
+        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 5), 
+        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 6) -
+        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 6), 
+        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 7) -
+        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 7), 
+        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 8) -
+        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 8), 
+        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 9) - 
+        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 9), 
+        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 10) -
+        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 10), 
+        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 11) -
+        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 11), 
+        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 12) -
+        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 12)}; 
+        
+      
+       
+        int[] ap = new int[] {Constants.BAR_AXIS_X_CENTER, Constants.BAR_AXIS_Y_LEFT};
+        String[] at = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
+
+//        setContentView(R.layout.report_month_of_year, true);
+        
+        bg = (BarGraph) findViewById (R.id.bgraph);
+ 
+        bg.makeUserTypeGraph(ap, Constants.BAR_AXIS_X_CENTER, iv, 1, at);
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bg.getLayoutParams();
+
+        params.width = (320 > bg.getBarGraphWidth()) ? 320 : bg.getBarGraphWidth();
+        params.height = (350 > bg.getBarGraphHeight()) ? 320 : bg.getBarGraphHeight();
+       
+        bg.setLayoutParams(params);
 	}
 }
