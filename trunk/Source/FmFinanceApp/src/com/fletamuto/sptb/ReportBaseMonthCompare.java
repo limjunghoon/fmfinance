@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -39,7 +40,8 @@ public class ReportBaseMonthCompare extends FmBaseActivity {
     	setAdapterList();
     	updateChildView();
     	
-    	addButtonInLayout();
+
+  //  	addButtonInLayout();
     }
     
 	private void setButtonClickListener() {
@@ -73,8 +75,11 @@ public class ReportBaseMonthCompare extends FmBaseActivity {
 			public void onClick(View v) {
 				
 				LinearLayout ll = (LinearLayout)findViewById(R.id.LLItemButtons);
-				ll.removeAllViewsInLayout();
+				ll.removeAllViews();
 				ll.invalidate();
+				
+		    //	ScrollView sv = (ScrollView)findViewById(R.id.ScrollView01);
+		    //	sv.invalidate();
 			}
 		});
 		
@@ -82,6 +87,10 @@ public class ReportBaseMonthCompare extends FmBaseActivity {
 			
 			public void onClick(View v) {
 				addButtonInLayout();
+				
+		    //	ScrollView sv = (ScrollView)findViewById(R.id.ScrollView01);
+		    //	sv.invalidate();
+		    	
 			}
 		});
 	}
