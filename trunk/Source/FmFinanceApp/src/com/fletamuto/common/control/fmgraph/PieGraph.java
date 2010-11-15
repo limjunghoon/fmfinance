@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 public class PieGraph extends View {
@@ -288,7 +287,7 @@ public class PieGraph extends View {
         
 		for (int i=0; i<pieGraphItem.length; i++) {
 			sumDegree += pieGraphItem[i].itemAngle;
-			Log.d("jptest10", "[" + i+ "]sumDegree = " + sumDegree);
+			
 			if (sumDegree > degreeAngle) {
 				if (touchX > centerPointX && touchY > centerPointY) {
 					if (touchX < pieX && touchY < pieY) {

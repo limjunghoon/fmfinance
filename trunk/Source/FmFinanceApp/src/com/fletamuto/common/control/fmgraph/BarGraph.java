@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
+import android.util.Log;
 
 public class BarGraph extends View {
 	
@@ -53,6 +54,9 @@ public class BarGraph extends View {
 	
 	private int axisXLength; //X축들의 길이
 	private int axisYLength; //Y축들의 길이
+	
+	Paint[] barPaint;
+	RectF[] bar;
 	
 		
 	/* =============================== 생성자 =================================*/
@@ -459,8 +463,8 @@ public class BarGraph extends View {
 		}
 		
 		//그래프 그리기
-		Paint[] barPaint = new Paint[graphItemValues.length];
-		RectF[] bar = new RectF[graphItemValues.length];
+		barPaint = new Paint[graphItemValues.length];
+		bar = new RectF[graphItemValues.length];
 		
 		int tempX = bargroupAndBargroupGap + barGraphMargin;
 		int tempY = bargroupAndBargroupGap;
@@ -536,12 +540,7 @@ public class BarGraph extends View {
 			} else {
 				titleXTemp = titleXTemp + bargroupAndBargroupGap + ((barWidth*barGroupMemberCount + (barGroupMemberCount-1) * barAndBarGapInBargroup));
 			}
-		}
-
-		
-		
-		
-		
+		}		
 	}
 	
 	
@@ -549,6 +548,11 @@ public class BarGraph extends View {
 
 	public int FindTouchItemID (int touchX, int touchY) {
 		
+		for (int i=0; i<bar.length; i++) {
+			if (bar[i].contains(touchX, touchY)) {
+				return i;
+			}
+		}
 		return -1;
 	}
 	
