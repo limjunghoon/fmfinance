@@ -1,5 +1,7 @@
 package com.fletamuto.sptb;
 
+import java.util.Calendar;
+
 public final class MsgDef {
 	public static final class ActRequest {
 		public static final int ACT_AMOUNT = 0;
@@ -45,6 +47,8 @@ public final class MsgDef {
 		public static final String TAKE_HOME_PAY_TAX = "TAKE_HOME_PAY_TAX";
 		public static final String TAKE_HOME_PAY_ETC = "TAKE_HOME_PAY_ETC";
 		public static final String TAKE_HOME_PAY_PENSION = "TAKE_HOME_PAY_PENSION";
-		
+		public static final String CALENDAR_YEAR = "CALENDAR_YEAR";
+		public static final String CALENDAR_MONTH = "CANLENDER_MONTH";
+		public static final String CALENDAR_DAY = "CANLENDER_DAY";
 	}
 }

@@ -1,10 +1,16 @@
 package com.fletamuto.sptb;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,35 +20,56 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.fletamuto.common.control.fmgraph.PieGraph;
+import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class ReportBaseMonthCompare extends FmBaseActivity {
+public abstract class ReportBaseMonthCompare extends FmBaseActivity {
 	
-	private ArrayList<FinanceItem> mIncomeItems;
+	private int mType;
+	private int mMonth;
+	private int mYear;
+	private ArrayList<FinanceItem> mFinanceItems;
 	protected ItemAdapter mAdapterItem;
+	private long mTotalAmout = 0L;
+	private Map<Integer, CategoryAmount> mCategoryAmount = new HashMap<Integer, CategoryAmount>();
+	
+	protected abstract void setAdapterList();
+	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
+	
+	protected void setItemType(int itemType) {
+		mType = itemType;
+	}
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	
-    	setContentView(R.layout.report_month_compare_income, true);
+    	setContentView(R.layout.report_month_compare, true);
     	
     	getData();
     	setButtonClickListener();
-    	
     	setAdapterList();
     	updateChildView();
-    	
-
-  //  	addButtonInLayout();
     }
+    
+    
+	private void getData() {
+		mFinanceItems = DBMgr.getItems(mType, mYear, mMonth);
+		mTotalAmout = DBMgr.getTotalAmountMonth(mType, mYear, mMonth);
+		updateMapCategory();
+	}
+    
+    @Override
+    protected void initialize() {
+    	mMonth = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_MONTH, Calendar.getInstance().get(Calendar.MONTH)+1);
+    	mYear = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_YEAR, Calendar.getInstance().get(Calendar.YEAR));
+    }
+    
     
 	private void setButtonClickListener() {
 		final ToggleButton tbMonth = (ToggleButton)findViewById(R.id.TBMonth);
@@ -73,43 +100,26 @@ public class ReportBaseMonthCompare extends FmBaseActivity {
 		btnPreviousMonth.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				
-				LinearLayout ll = (LinearLayout)findViewById(R.id.LLItemButtons);
-				ll.removeAllViews();
-				ll.invalidate();
-				
-		    //	ScrollView sv = (ScrollView)findViewById(R.id.ScrollView01);
-		    //	sv.invalidate();
+				updateChildView();
 			}
 		});
 		
 		btnNextMonth.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				addButtonInLayout();
-				
-		    //	ScrollView sv = (ScrollView)findViewById(R.id.ScrollView01);
-		    //	sv.invalidate();
-		    	
+				updateChildView();
 			}
 		});
-	}
-
-	private void getData() {
-		mIncomeItems = DBMgr.getItems(IncomeItem.TYPE, 2010, 11);
-	}
-
-	@Override
-	protected void setTitleBtn() {
-    	setTitle("월 수입");
-
-		super.setTitleBtn();
 	}
 
 	private void updateChildView() {
 		LinearLayout monthLayout = (LinearLayout)findViewById(R.id.LLMonth);
 		LinearLayout dayOfMonthLayout = (LinearLayout)findViewById(R.id.LLDayofMonth);
 		ToggleButton tbMonth = (ToggleButton)findViewById(R.id.TBMonth);
+		TextView tvMonth = (TextView)findViewById(R.id.TVCurrentMonth);
+		tvMonth.setText(String.format("%d년 %d월", mYear, mMonth));
+		TextView tvTotalAmount = (TextView)findViewById(R.id.TVTotalAmount);
+		tvTotalAmount.setText(String.format("금액 : %,d", mTotalAmout));
 		
 		monthLayout.setVisibility(View.INVISIBLE);
 		dayOfMonthLayout.setVisibility(View.INVISIBLE);
@@ -122,6 +132,7 @@ public class ReportBaseMonthCompare extends FmBaseActivity {
 		}
 		
 		updateBarGraph();
+		addButtonInLayout();
 	}
 
 	private void updateBarGraph() {
@@ -141,12 +152,26 @@ public class ReportBaseMonthCompare extends FmBaseActivity {
 		});
 		
 	}
+
+	public void addButtonInLayout() {
+		LinearLayout ll = (LinearLayout)findViewById(R.id.LLItemButtons);
+		ll.removeAllViews();
+		
+		Collection<CategoryAmount> categoryAmountItems = mCategoryAmount.values();
+		
+		for (CategoryAmount iterator:categoryAmountItems) {
+			Button btnItem = new Button(getApplicationContext());
+			btnItem.setText(String.format("%s    : %,d원", iterator.getName(), iterator.getTotalAmount()));
+			ll.addView(btnItem);
+		}
+		ll.invalidate();
+	}
 	
-	protected void setAdapterList() {
-    	if (mIncomeItems == null) return;
+	protected void setAdapterList(int resource) {
+    	if (mFinanceItems == null) return;
         
     	final ListView listCard = (ListView)findViewById(R.id.LVIncomeDayOfMonth);
-    	mAdapterItem = new ItemAdapter(this, R.layout.report_list_income, mIncomeItems);
+    	mAdapterItem = new ItemAdapter(this, resource, mFinanceItems);
     	listCard.setAdapter(mAdapterItem);
     	
     	listCard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -158,8 +183,8 @@ public class ReportBaseMonthCompare extends FmBaseActivity {
     }
 	
 	public class ItemAdapter extends ArrayAdapter<FinanceItem> {
-    	int mResource;
-    	LayoutInflater mInflater;
+    	private int mResource;
+    	private LayoutInflater mInflater;
 
 		public ItemAdapter(Context context, int resource,
 				 List<FinanceItem> objects) {
@@ -177,27 +202,59 @@ public class ReportBaseMonthCompare extends FmBaseActivity {
 				
 				setListViewText(item, convertView);	
 			}
-			
 			return convertView;
 		}
     }
 	
-    protected void setListViewText(FinanceItem financeItem, View convertView) {
-    	IncomeItem item = (IncomeItem)financeItem;
-    	((TextView)convertView.findViewById(R.id.TVIncomeReportListDate)).setText("날짜 : " + item.getCreateDateString());			
-		((TextView)convertView.findViewById(R.id.TVIncomeReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
-		((TextView)convertView.findViewById(R.id.TVIncomeReportListMemo)).setText("메모 : " + item.getMemo());
-		((TextView)convertView.findViewById(R.id.TVIncomeReportListCategory)).setText("분류 : " + item.getCategory().getName());
-	}
-    
-	
-	public void addButtonInLayout() {
-		LinearLayout ll = (LinearLayout)findViewById(R.id.LLItemButtons);
+	public class CategoryAmount {
+		private int mCategoryID;
+		private long mTotalAmount;
+		private String mName;
 		
-		for (int index = 0; index < 10; index++) {
-			Button btn = new Button(getApplicationContext());
-			ll.addView(btn);
+		public int getCategoryID() {
+			return mCategoryID;
+		}
+
+		public long getTotalAmount() {
+			return mTotalAmount;
+		}
+		public String getName() {
+			return mName;
 		}
 		
+		public void addAmount(long amount) {
+			mTotalAmount += amount;
+		}
+		
+		public void set(int id, String name, long amount) {
+			mCategoryID = id;
+			mName = name;
+			mTotalAmount = amount;
+		}
+	}
+	
+	public void updateMapCategory() {
+		mCategoryAmount.clear();
+		
+		int itemSize = mFinanceItems.size();
+		for (int index = 0; index < itemSize; index++) {
+			FinanceItem item = mFinanceItems.get(index);
+			Category category = item.getCategory();
+			if (category == null) {
+				Log.w(LogTag.LAYOUT, ":: INVAILD CATEGORU :: ");
+				continue;
+			}
+			Integer categoryID = category.getID();
+			
+			CategoryAmount categoryAmount = mCategoryAmount.get(categoryID);
+			if (categoryAmount == null) {
+				categoryAmount = new CategoryAmount();
+				categoryAmount.set(categoryID, category.getName(), item.getAmount());
+				mCategoryAmount.put(categoryID, categoryAmount);
+			}
+			else {
+				categoryAmount.addAmount(item.getAmount());
+			}
+		}
 	}
 }
