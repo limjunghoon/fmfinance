@@ -9,6 +9,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class BarGraph extends View {
 	
 	private int currentAreaWidth = getMeasuredWidth(); //그래프가 그려질 영역의 Width
@@ -16,20 +18,23 @@ public class BarGraph extends View {
 	
 	private int barGraphMargin = 20;
 		
-	private int[] axisPositions = null; //그릴 축 
+//	private int[] axisPositions = null; //그릴 축 
+	private ArrayList<Integer> axisPositions = new ArrayList<Integer>(); 
 	private int standardAxis = Constants.BAR_AXIS_X_BOTTOM; //그래프가 시작할 기준이 되는 축
 	
 	private int bargroupAndBargroupGap = Constants.BAR_DEFAULT_BARGROUP_AND_BARGROUP_GAP; //Bar 그룹과 bar 그룹의 간격
 	private int barAndBarGapInBargroup = Constants.BAR_DEFAULT_BAR_AND_BAR_GAP_IN_BAR_GROUP; //bar 그룹 안의 bar 간격
 	private int barWidth = Constants.BAR_DEFAULT_BAR_WIDTH; //bar 의 폭
 	
-	private String[] standardAxisTitles = null; //그래프가 놓여질 축의 타이틀 값
+//	private String[] standardAxisTitles = null; //그래프가 놓여질 축의 타이틀 값
+	private ArrayList<String> standardAxisTitles = new ArrayList<String>();
 	private int standardAxisTitlesCount;
 	
 	private int gradationCount = Constants.BAR_DEFAULT_GRADATION_COUNT; //눈금 갯수
 	private int gradationMode = Constants.BAR_GRADATION_MODE_NONE; //눈금 모드
 	
-	private String[] gradationTitles = null; //눈금 타이틀
+//	private String[] gradationTitles = null; //눈금 타이틀
+	private ArrayList<String> gradationTitles = new ArrayList<String>();
 	
 	private int barGroupMemberCount = Constants.BAR_DEFAULT_GROUP_MEMBER_COUNT; //bar 그룹의 멤버 갯수
 	private int barGraphGroupCount; //바 그래프 그룹 갯수
@@ -41,11 +46,13 @@ public class BarGraph extends View {
 	private int axisColor = Color.WHITE;
 	private int gradationColor = Color.WHITE;
 	
-	private long[] graphItemValues = null; //그래프로 그려질 항목들에 대한 값
+//	private long[] graphItemValues = null; //그래프로 그려질 항목들에 대한 값
+	private ArrayList<Long> graphItemValues = new ArrayList<Long>();
 	
 	private long mexGraphItemValue; //그래프로 그려질 항목의 최고 값
 	
-	private String[] barTitles = null; //bar 에 표시 될 타이틀 값들
+//	private String[] barTitles = null; //bar 에 표시 될 타이틀 값들
+	private ArrayList<String> barTitles = new ArrayList<String>();
 	
 	private int[] defaultGraphColors = new int[]{Color.BLUE, Color.RED, Color.YELLOW, Color.GRAY, Color.CYAN,
 		Color.GREEN, Color.MAGENTA, Color.DKGRAY, Color.WHITE, Color.LTGRAY, Color.BLUE, Color.RED, Color.YELLOW, Color.GRAY, Color.CYAN,
@@ -55,8 +62,8 @@ public class BarGraph extends View {
 	private int axisXLength; //X축들의 길이
 	private int axisYLength; //Y축들의 길이
 	
-	Paint[] barPaint;
-	RectF[] bar;
+	private Paint[] barPaint;
+	private RectF[] bar;
 	
 		
 	/* =============================== 생성자 =================================*/
@@ -106,15 +113,16 @@ public class BarGraph extends View {
 	}	
 	
 	/* =============================== SET Method =================================*/
-	public void setAxisPositions (int[] axis_Positions) {
-		if (axisPositions != null) {
-			axisPositions = null;
+	public void setAxisPositions (ArrayList<Integer> axis_Positions) {
+		
+		if (axisPositions.isEmpty() == false) {
+			axisPositions.clear();
 		}
 		
-		axisPositions = new int[axis_Positions.length];
-		for (int i=0; i<axis_Positions.length; i++) {
-			axisPositions[i] = axis_Positions[i];
+		for (int i=0; i<axis_Positions.size(); i++) {
+			axisPositions.add(axis_Positions.get(i));
 		}		
+		
 	}
 	public void setStandardAxis (int standard_Axis) {
 		standardAxis = standard_Axis;
@@ -133,14 +141,14 @@ public class BarGraph extends View {
 	public void setBarWidth  (int bar_Width) {
 		barWidth = bar_Width;
 	}
-	public void setStandardAxisTitles  (String[] standard_Axis_Titles ) {
-		if (standardAxisTitles  != null) {
-			standardAxisTitles  = null;
+	public void setStandardAxisTitles  (ArrayList<String> standard_Axis_Titles ) {
+		if (standardAxisTitles.isEmpty() == false) {
+			standardAxisTitles.clear();
 		}
-		standardAxisTitles = new String[standard_Axis_Titles.length];
-		standardAxisTitlesCount = standard_Axis_Titles.length;
-		for (int i=0; i<standard_Axis_Titles.length; i++) {
-			standardAxisTitles[i] = standard_Axis_Titles[i];
+
+		standardAxisTitlesCount = standard_Axis_Titles.size();
+		for (int i=0; i<standard_Axis_Titles.size(); i++) {
+			standardAxisTitles.add(standard_Axis_Titles.get(i));
 		}
 		
 	}
@@ -150,14 +158,14 @@ public class BarGraph extends View {
 	public void setGradationMode (int gradation_Mode) {
 		gradationMode =gradation_Mode;
 	}
-	public void setGradationTitles  (String[] gradation_Titles ) {
-		if (gradationTitles  != null) {
-			gradationTitles  = null;
+	public void setGradationTitles  (ArrayList<String> gradation_Titles ) {
+		if (gradationTitles.isEmpty() == false) {
+			gradationTitles.clear();
 		}
-		gradationTitles = new String[gradation_Titles.length];
-		gradationCount = gradation_Titles.length;
-		for (int i=0; i<gradation_Titles.length; i++) {
-			gradationTitles[i] = gradation_Titles[i];
+
+		gradationCount = gradation_Titles.size();
+		for (int i=0; i<gradation_Titles.size(); i++) {
+			gradationTitles.add(gradation_Titles.get(i));
 		}
 		
 	}
@@ -183,44 +191,47 @@ public class BarGraph extends View {
 	public void setGradationColor (int gradation_Color) {
 		gradationColor =gradation_Color;
 	}
-	public void setGraphItemValues  (long[] graph_Item_Values ) {
-		if (graphItemValues  != null) {
-			graphItemValues  = null;
+	public void setGraphItemValues  (ArrayList<Long> graph_Item_Values ) {
+		if (graphItemValues.isEmpty() == false) {
+			graphItemValues.clear();
 		}
-		graphItemValues = new long[graph_Item_Values.length];
-		for (int i=0; i<graph_Item_Values.length; i++) {
-			graphItemValues[i] = graph_Item_Values[i];
+		
+		for (int i=0; i<graph_Item_Values.size(); i++) {
+			
+			graphItemValues.add(graph_Item_Values.get(i));
 		}
+		
 		long temp = 0;
 		long negativeTemp = 0;
-		for (int i=0; i<graphItemValues.length; i++) {
+		for (int i=0; i<graphItemValues.size(); i++) {
 			if (i == 0) {
-				if (graphItemValues[0] >= 0) {
-					temp = graphItemValues[0];
+				if (graphItemValues.get(i) >= 0) {
+					temp = graphItemValues.get(i);
 				} else {
-					negativeTemp = graphItemValues[0];
+					negativeTemp = graphItemValues.get(i);
 				}
 			} else {
-				if (graphItemValues[i] >= 0) {
-					temp = (temp > graphItemValues[i]) ? temp : graphItemValues[i];
+				if (graphItemValues.get(i) >= 0) {
+					temp = (temp > graphItemValues.get(i)) ? temp : graphItemValues.get(i);
 				} else {
-					negativeTemp = (negativeTemp < graphItemValues[i]) ? negativeTemp : graphItemValues[i];
+					negativeTemp = (negativeTemp < graphItemValues.get(i)) ? negativeTemp : graphItemValues.get(i);
 				}
 			}			
 		}
+		
 		if (negativeTemp == 0) {
 			mexGraphItemValue = temp;
 		} else {
 			mexGraphItemValue = (temp > (negativeTemp * (-1))) ? temp : negativeTemp * (-1);
 		}
 	}
-	public void setBarTitles  (String[] bar_Titles ) {
-		if (barTitles  != null) {
-			barTitles  = null;
+	public void setBarTitles  (ArrayList<String> bar_Titles ) {
+		if (barTitles.isEmpty() == false) {
+			barTitles.clear();
 		}
-		barTitles = new String[bar_Titles.length];
-		for (int i=0; i<bar_Titles.length; i++) {
-			barTitles[i] = bar_Titles[i];
+
+		for (int i=0; i<bar_Titles.size(); i++) {
+			barTitles.add(bar_Titles.get(i));
 		}
 	}
 	
@@ -233,7 +244,7 @@ public class BarGraph extends View {
 	}
 
 	/* =============================== GET Method =================================*/
-	public int[] getAxisPositions () {
+	public ArrayList<Integer> getAxisPositions () {
 		return 	axisPositions;
 	}
 	public int getStandardAxis () {
@@ -251,7 +262,7 @@ public class BarGraph extends View {
 	public int getBarWidth  () {
 		return barWidth;
 	}
-	public String[] getStandardAxisTitles  () {
+	public ArrayList<String> getStandardAxisTitles  () {
 		return standardAxisTitles;
 
 	}
@@ -264,16 +275,16 @@ public class BarGraph extends View {
 	public int getGradationMode () {
 		return gradationMode;
 	}
-	public String[] getGradationTitles  () {
+	public ArrayList<String> getGradationTitles  () {
 		return gradationTitles;
 	}
-	public long[] getGraphItemValues () {
+	public ArrayList<Long> getGraphItemValues () {
 		return graphItemValues;	
 	}
 	public long getMexGraphItemValue () {
 		return mexGraphItemValue;	
 	}
-	public String[] getBarTitles () {
+	public ArrayList<String> getBarTitles () {
 		return barTitles;
 
 	}
@@ -286,7 +297,7 @@ public class BarGraph extends View {
 			return 0;
 		}
 		if (barGroupMemberCount == 1) {
-			return (bargroupAndBargroupGap * (graphItemValues.length + 1)) + (barWidth * graphItemValues.length) + barGraphMargin*2;
+			return (bargroupAndBargroupGap * (graphItemValues.size() + 1)) + (barWidth * graphItemValues.size()) + barGraphMargin*2;
 		} else {
 			return (bargroupAndBargroupGap * (barGraphGroupCount + 1)) + 
 				(((barWidth * barGroupMemberCount) + ((barGroupMemberCount - 1) * barAndBarGapInBargroup)))*barGraphGroupCount + barGraphMargin*2;
@@ -297,7 +308,7 @@ public class BarGraph extends View {
 			return 0;
 		}
 		if (barGroupMemberCount == 1) {
-			return (bargroupAndBargroupGap * (graphItemValues.length + 1)) + (barWidth * graphItemValues.length) + barGraphMargin*2;
+			return (bargroupAndBargroupGap * (graphItemValues.size() + 1)) + (barWidth * graphItemValues.size()) + barGraphMargin*2;
 		} else {
 			return (bargroupAndBargroupGap * (barGraphGroupCount + 1)) + 
 			(((barWidth * barGroupMemberCount) + ((barGroupMemberCount - 1) * barAndBarGapInBargroup)))*barGraphGroupCount + + barGraphMargin*2;
@@ -305,28 +316,28 @@ public class BarGraph extends View {
 	}
 	/* =============================== Methods =================================*/
 	
-	public void makeUserTypeGraph (int[] axis_Positions, int standard_Axis, long[] graph_Item_Values, int bar_Group_Member_Count, 
-			String[] standard_Axis_Titles) {
+	public void makeUserTypeGraph (ArrayList<Integer> axis_Positions, int standard_Axis, ArrayList<Long> graph_Item_Values, int bar_Group_Member_Count, 
+			ArrayList<String> standard_Axis_Titles) {
 		
-		if (axis_Positions.length < 1) {
+		if (axis_Positions.size() < 1) {
 			return;
 		}
 		
-		if (graph_Item_Values.length < 1) {
+		if (graph_Item_Values.size() < 1) {
 			return;
 		}
 
 		setAxisPositions(axis_Positions);
-
+		
 		setStandardAxis(standard_Axis);
 
 		setGraphItemValues (graph_Item_Values);
-
+		
 		setBarGroupMemberCount(bar_Group_Member_Count);
 
 		setStandardAxisTitles(standard_Axis_Titles);
 
-		setBarGraphGroupCount(graphItemValues.length, barGroupMemberCount);
+		setBarGraphGroupCount(graphItemValues.size(), barGroupMemberCount);
 		
 	}
 
@@ -334,7 +345,7 @@ public class BarGraph extends View {
 	@Override
 	public void onDraw(Canvas canvas) {
 
-		if (graphItemValues == null) {
+		if (graphItemValues.isEmpty() == true) {
 			return;
 		}
 		if (barAndBarGapInBargroup < 1) {
@@ -343,8 +354,8 @@ public class BarGraph extends View {
 		canvas.drawColor(backgroundColor);
 		
 		//그래프 축 그리기
-		Paint[] axisPaint = new Paint[axisPositions.length];
-		RectF[] axisLine = new RectF[axisPositions.length]; 
+		Paint[] axisPaint = new Paint[axisPositions.size()];
+		RectF[] axisLine = new RectF[axisPositions.size()]; 
 		
 		if (standardAxis == Constants.BAR_AXIS_X_BOTTOM || standardAxis == Constants.BAR_AXIS_X_TOP || standardAxis == Constants.BAR_AXIS_X_CENTER) {
 			axisXLength = getBarGraphWidth() - barGraphMargin*2;
@@ -359,18 +370,18 @@ public class BarGraph extends View {
 			axisYLength = getMeasuredHeight() - barGraphMargin*2;
 		}
 
-		for(int i=0; i<axisPositions.length; i++) {
-			if (axisPositions[i] == Constants.BAR_AXIS_X_BOTTOM) {
+		for(int i=0; i<axisPositions.size(); i++) {
+			if (axisPositions.get(i) == Constants.BAR_AXIS_X_BOTTOM) {
 				axisLine[i] = new RectF(barGraphMargin, axisYLength + barGraphMargin , axisXLength + barGraphMargin, axisYLength + barGraphMargin - axisThickness);
-			} else if (axisPositions[i] == Constants.BAR_AXIS_X_TOP) {
+			} else if (axisPositions.get(i) == Constants.BAR_AXIS_X_TOP) {
 				axisLine[i] = new RectF(barGraphMargin, barGraphMargin, axisXLength + barGraphMargin, barGraphMargin + axisThickness);
-			} else if (axisPositions[i] == Constants.BAR_AXIS_X_CENTER) {
+			} else if (axisPositions.get(i) == Constants.BAR_AXIS_X_CENTER) {
 				axisLine[i] = new RectF(barGraphMargin, getMeasuredHeight()/2, axisXLength + barGraphMargin, (getMeasuredHeight()/2) + axisThickness);
-			} else if (axisPositions[i] == Constants.BAR_AXIS_Y_LEFT) {
+			} else if (axisPositions.get(i) == Constants.BAR_AXIS_Y_LEFT) {
 				axisLine[i] = new RectF(barGraphMargin, barGraphMargin, barGraphMargin + axisThickness, axisYLength + barGraphMargin);
-			} else if (axisPositions[i] == Constants.BAR_AXIS_Y_RIGHT) {
+			} else if (axisPositions.get(i) == Constants.BAR_AXIS_Y_RIGHT) {
 				axisLine[i] = new RectF(axisXLength + barGraphMargin, barGraphMargin , axisXLength + barGraphMargin - axisThickness, axisYLength + barGraphMargin);
-			} else if (axisPositions[i] == Constants.BAR_AXIS_Y_CENTER) {
+			} else if (axisPositions.get(i) == Constants.BAR_AXIS_Y_CENTER) {
 				axisLine[i] = new RectF(getMeasuredWidth()/2, barGraphMargin, (getMeasuredWidth()/2) + axisThickness, axisYLength + barGraphMargin);
 			}
 			axisPaint[i] = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -463,16 +474,16 @@ public class BarGraph extends View {
 		}
 		
 		//그래프 그리기
-		barPaint = new Paint[graphItemValues.length];
-		bar = new RectF[graphItemValues.length];
+		barPaint = new Paint[graphItemValues.size()];
+		bar = new RectF[graphItemValues.size()];
 		
 		int tempX = bargroupAndBargroupGap + barGraphMargin;
 		int tempY = bargroupAndBargroupGap;
 
-		for (int i=0; i<graphItemValues.length; i++) {
+		for (int i=0; i<graphItemValues.size(); i++) {
 			
 			if (standardAxis == Constants.BAR_AXIS_X_BOTTOM) {
-				bar[i] = new RectF( axisThickness + tempX, (axisYLength + barGraphMargin) - (((axisYLength) * graphItemValues[i])) / (mexGraphItemValue), 
+				bar[i] = new RectF( axisThickness + tempX, (axisYLength + barGraphMargin) - (((axisYLength) * graphItemValues.get(i))) / (mexGraphItemValue), 
 						(axisThickness + tempX) + barWidth, axisYLength + barGraphMargin - axisThickness);
 				if (((i+1)%barGroupMemberCount == 0)) {
 					tempX = tempX + barWidth + bargroupAndBargroupGap;
@@ -482,31 +493,31 @@ public class BarGraph extends View {
 
 			} else if (standardAxis == Constants.BAR_AXIS_X_TOP) {
 				bar[i] = new RectF( axisThickness + tempX, barGraphMargin + axisThickness, (axisThickness + tempX) + barWidth, 
-						(((axisYLength + barGraphMargin) * graphItemValues[i]) / mexGraphItemValue));
+						(((axisYLength + barGraphMargin) * graphItemValues.get(i)) / mexGraphItemValue));
 				tempX = tempX + barWidth + bargroupAndBargroupGap;
 			} else if (standardAxis == Constants.BAR_AXIS_X_CENTER) {
-				if (graphItemValues[i] >= 0) {
-					bar[i] = new RectF( axisThickness + tempX, (axisYLength/2 + barGraphMargin) - (((axisYLength/2) * graphItemValues[i]) / mexGraphItemValue), 
+				if (graphItemValues.get(i) >= 0) {
+					bar[i] = new RectF( axisThickness + tempX, (axisYLength/2 + barGraphMargin) - (((axisYLength/2) * graphItemValues.get(i)) / mexGraphItemValue), 
 							(axisThickness + tempX) + barWidth, (getMeasuredHeight()/2));
 				} else {
 					bar[i] = new RectF( axisThickness + tempX, (axisYLength/2 + barGraphMargin) + axisThickness, (axisThickness + tempX) + barWidth, 
-							(axisYLength/2 + barGraphMargin) - (((axisYLength/2) * graphItemValues[i]) / mexGraphItemValue));
+							(axisYLength/2 + barGraphMargin) - (((axisYLength/2) * graphItemValues.get(i)) / mexGraphItemValue));
 				}				
 				tempX = tempX + barWidth + bargroupAndBargroupGap;
 			} else if (standardAxis == Constants.BAR_AXIS_Y_LEFT) {
 				bar[i] = new RectF( barGraphMargin + axisThickness, axisYLength + barGraphMargin  - axisThickness - tempY, 
-						axisXLength + barGraphMargin - ((axisXLength * graphItemValues[i]) / mexGraphItemValue), (axisYLength + barGraphMargin - axisThickness - tempY) - barWidth);
+						axisXLength + barGraphMargin - ((axisXLength * graphItemValues.get(i)) / mexGraphItemValue), (axisYLength + barGraphMargin - axisThickness - tempY) - barWidth);
 				tempY = tempY + barWidth + bargroupAndBargroupGap;
 			} else if (standardAxis == Constants.BAR_AXIS_Y_RIGHT) {
-				bar[i] = new RectF( axisXLength + barGraphMargin- (axisXLength + barGraphMargin - ((axisXLength * graphItemValues[i]) / mexGraphItemValue)), axisYLength + barGraphMargin - axisThickness - tempY, 
+				bar[i] = new RectF( axisXLength + barGraphMargin- (axisXLength + barGraphMargin - ((axisXLength * graphItemValues.get(i)) / mexGraphItemValue)), axisYLength + barGraphMargin - axisThickness - tempY, 
 						axisXLength + barGraphMargin - axisThickness, (axisYLength + barGraphMargin - axisThickness - tempY) - barWidth);
 				tempY = tempY + barWidth + bargroupAndBargroupGap;
 			} else if (standardAxis == Constants.BAR_AXIS_Y_CENTER) {
-				if (graphItemValues[i] >= 0) {
+				if (graphItemValues.get(i) >= 0) {
 					bar[i] = new RectF( getMeasuredWidth()/2 + axisThickness, axisYLength + barGraphMargin - axisThickness - tempY, 
-							(getMeasuredWidth()/2) + (((axisXLength/2) * graphItemValues[i]) / mexGraphItemValue), (axisYLength + barGraphMargin - axisThickness - tempY) - barWidth);
+							(getMeasuredWidth()/2) + (((axisXLength/2) * graphItemValues.get(i)) / mexGraphItemValue), (axisYLength + barGraphMargin - axisThickness - tempY) - barWidth);
 				} else {
-					bar[i] = new RectF( (getMeasuredWidth()/2)- ((axisXLength/2) + (((axisXLength/2) * graphItemValues[i]) / mexGraphItemValue)), axisYLength + barGraphMargin - axisThickness - tempY, 
+					bar[i] = new RectF( (getMeasuredWidth()/2)- ((axisXLength/2) + (((axisXLength/2) * graphItemValues.get(i)) / mexGraphItemValue)), axisYLength + barGraphMargin - axisThickness - tempY, 
 							(getMeasuredWidth()/2), (axisYLength + barGraphMargin - axisThickness - tempY) - barWidth);
 				}
 				tempY = tempY + barWidth + bargroupAndBargroupGap;
@@ -521,7 +532,7 @@ public class BarGraph extends View {
 		}
 		
 		//타이틀 그리기
-		Paint[] titlePaint = new Paint[standardAxisTitles.length];
+		Paint[] titlePaint = new Paint[standardAxisTitles.size()];
 		
 		int titleXTemp;
 		if (barGroupMemberCount == 1) {
@@ -531,10 +542,10 @@ public class BarGraph extends View {
 		}
 		
 		
-		for (int i=0; i<standardAxisTitles.length; i++) {
+		for (int i=0; i<standardAxisTitles.size(); i++) {
 			titlePaint[i] = new Paint(Paint.ANTI_ALIAS_FLAG);
 			titlePaint[i].setColor(Color.WHITE);
-			canvas.drawText(standardAxisTitles[i], titleXTemp, getMeasuredHeight()-5, titlePaint[i]);
+			canvas.drawText(standardAxisTitles.get(i), titleXTemp, getMeasuredHeight()-5, titlePaint[i]);
 			if (barGroupMemberCount == 1) {
 				titleXTemp = titleXTemp + bargroupAndBargroupGap + barWidth ;
 			} else {
