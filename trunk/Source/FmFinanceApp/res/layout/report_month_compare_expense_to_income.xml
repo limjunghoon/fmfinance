@@ -17,8 +17,8 @@
   		<LinearLayout android:id="@+id/hsv" android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">
       		<com.fletamuto.common.control.fmgraph.PieGraph android:id="@+id/pgraph" android:layout_width="210dp" android:layout_height="210dp"/>
 		</LinearLayout>
-   	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnTotalMonthIncome" android:textSize="18sp">
+   	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnTotalMonthIncome" android:textSize="18sp" android:gravity="left|center_vertical">
    	</Button>
-   	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnTotalMonthExpense" android:textSize="18sp">
+   	<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnTotalMonthExpense" android:textSize="18sp" android:gravity="left|center_vertical">
    	</Button>    
 </LinearLayout>

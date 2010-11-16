@@ -39,6 +39,8 @@ public class ReportMonthCompareExpenseToIncomeLayout extends FmBaseActivity {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(ReportMonthCompareExpenseToIncomeLayout.this, ReportMonthCompareExpenseLayout.class);
+				intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, currentCalendar.get(Calendar.MONTH)+1);
+				intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, currentCalendar.get(Calendar.YEAR));
 				startActivity(intent);
 			}
 		});
@@ -70,7 +72,7 @@ public class ReportMonthCompareExpenseToIncomeLayout extends FmBaseActivity {
 		updateBarGraph();
 		
 		TextView tvCurrentMonth = (TextView)findViewById(R.id.TVCurrentMonth);
-		tvCurrentMonth.setText(String.format("%d년 %d월",  currentCalendar.get(Calendar.YEAR), currentCalendar.get(Calendar.MONTH)));
+		tvCurrentMonth.setText(String.format("%d년 %d월",  currentCalendar.get(Calendar.YEAR), currentCalendar.get(Calendar.MONTH)+1));
 		
 		TextView btnProfit = (TextView)findViewById(R.id.TVMonthProfit);
 		btnProfit.setText(String.format("소득 : %,d원", monthTotalIncome - monthTotalExpense));

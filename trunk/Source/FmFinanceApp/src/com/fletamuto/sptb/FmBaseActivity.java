@@ -35,7 +35,7 @@ public abstract class FmBaseActivity extends Activity {
     		super.setContentView(layoutResID);
     	}
     	
-    	initChildView();
+    	initialize();
     	setTitleBtn();
     	setTitleButtonListener();
     }
@@ -47,7 +47,7 @@ public abstract class FmBaseActivity extends Activity {
 		
 	}
     
-    protected void initChildView() {
+    protected void initialize() {
     	
     }
     

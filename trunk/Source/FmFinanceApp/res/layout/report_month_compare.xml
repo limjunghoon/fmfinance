@@ -14,7 +14,7 @@
 	<FrameLayout android:id="@+id/FrameLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		<ScrollView android:id="@+id/ScrollView01" android:layout_height="wrap_content" android:layout_width="fill_parent">
 			<LinearLayout android:layout_height="wrap_content" android:id="@+id/LLMonth" android:orientation="vertical" android:layout_width="fill_parent" android:gravity="center_horizontal">
-				<TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="월별">
+				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="월별" android:id="@+id/TVTotalAmount" android:textSize="20sp">
 				</TextView>
 				<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center">
 			   		<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/BtnPreviusMonth" android:text="이전달">
@@ -30,7 +30,7 @@
 			</LinearLayout>
 		</ScrollView>
 		<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/LLDayofMonth" android:orientation="vertical">
-			<ListView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/LVIncomeDayOfMonth">
+			<ListView android:layout_height="wrap_content" android:id="@+id/LVIncomeDayOfMonth" android:layout_width="fill_parent">
 			</ListView>
 		</LinearLayout>
 	</FrameLayout>
