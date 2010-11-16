@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.IncomeItem;
 
 public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
 
