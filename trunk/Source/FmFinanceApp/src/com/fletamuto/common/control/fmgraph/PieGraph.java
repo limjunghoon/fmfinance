@@ -8,6 +8,8 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class PieGraph extends View {
 	
 	private int centerPointX = getMeasuredWidth()/2; //원점 X
@@ -73,6 +75,7 @@ public class PieGraph extends View {
 	
 	//아이템 값 설정
 	public void setItemValues (long[] item_Values) {
+
 		pieGraphItem = new PieGraphItem[item_Values.length];
 		
 		long sum = 0;

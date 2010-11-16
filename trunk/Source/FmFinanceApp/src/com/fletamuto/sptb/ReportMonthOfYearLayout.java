@@ -1,8 +1,10 @@
 package com.fletamuto.sptb;
 
 import java.util.Calendar;
+import java.util.ArrayList;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -96,6 +98,7 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 
 	private void updateBarGraph() {
 		barGraphDifferenceMode = false;
+		
 //		PieGraph pg;
 //		BarGraph bg;
 //    	
@@ -104,36 +107,18 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 //    		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, currentYear, index);
 //    	}
 		
-		 long[] iv = new long[] {
-	        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 1), 
-	        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 1), 
-	        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 2), 
-	        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 2), 
-	        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 3), 
-	        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 3), 
-	        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 4), 
-	        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 4), 
-	        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 5), 
-	        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 5), 
-	        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 6), 
-	        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 6), 
-	        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 7), 
-	        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 7),
-	        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 8), 
-	        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 8), 
-	        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 9), 
-	        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 9), 
-	        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 10), 
-	        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 10),
-	        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 11), 
-	        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 11),
-	        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 12), 
-	        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 12)}; 
-	        
-	      
-	       
-	        int[] ap = new int[] {Constants.BAR_AXIS_X_BOTTOM, Constants.BAR_AXIS_Y_LEFT};
-	        String[] at = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
+		ArrayList<Long> iv = new ArrayList<Long>();
+		ArrayList<Integer> ap = new ArrayList<Integer>();
+		ArrayList<String> at = new ArrayList<String>();
+		
+			for (int i=0; i<12; i++) {
+				iv.add(DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, i+1));
+				iv.add(DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, i+1));
+				at.add(String.valueOf(i+1));
+			}
+			
+			ap.add(Constants.BAR_AXIS_X_BOTTOM);
+			ap.add(Constants.BAR_AXIS_Y_LEFT);
 
 //	        setContentView(R.layout.report_month_of_year, true);
 	        
@@ -195,38 +180,19 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 	private void updateBarGraphDifferenceMode() {
 		barGraphDifferenceMode = true;
 		
-		long[] iv = new long[] {
-			 	DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 1) -
-        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 1), 
-        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 2) -
-        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 2), 
-        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 3) -
-        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 3), 
-        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 4) -
-        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 4), 
-        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 5) -
-        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 5), 
-        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 6) -
-        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 6), 
-        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 7) -
-        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 7), 
-        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 8) -
-        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 8), 
-        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 9) - 
-        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 9), 
-        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 10) -
-        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 10), 
-        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 11) -
-        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 11), 
-        		DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, 12) -
-        		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, 12)}; 
-        
-      
-       
-        int[] ap = new int[] {Constants.BAR_AXIS_X_CENTER, Constants.BAR_AXIS_Y_LEFT};
-        String[] at = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
+		ArrayList<Long> iv = new ArrayList<Long>();
+		ArrayList<Integer> ap = new ArrayList<Integer>();
+		ArrayList<String> at = new ArrayList<String>();
+		
+			for (int i=0; i<12; i++) {
+				iv.add(DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, i+1) - DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, i+1));
+				at.add(String.valueOf(i+1));
+			}
+			
+			ap.add(Constants.BAR_AXIS_X_CENTER);
+			ap.add(Constants.BAR_AXIS_Y_LEFT);
 
-//        setContentView(R.layout.report_month_of_year, true);
+			//        setContentView(R.layout.report_month_of_year, true);
         
         bg = (BarGraph) findViewById (R.id.bgraph);
  
