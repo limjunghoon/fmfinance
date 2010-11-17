@@ -157,6 +157,26 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return assetsItems;
 	}
 	
+	public ArrayList<FinanceItem> getItemsFromCategoryID(int mainCategoryID) {
+		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.valueOf(mainCategoryID)};
+		
+		queryBilder.setTables("liability, liability_main_category");
+		queryBilder.appendWhere("liability.main_category=liability_main_category._id");
+		Cursor c = queryBilder.query(db, null, "liability.main_category=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				assetsItems.add(CreateLiabilityItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return assetsItems;
+	}
+	
 	public ArrayList<FinanceItem> getItemsFromSubCategoryID(int subCategoryID, int year, int month) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();

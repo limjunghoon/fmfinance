@@ -8,8 +8,6 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
-import java.util.ArrayList;
-
 public class PieGraph extends View {
 	
 	private int centerPointX = getMeasuredWidth()/2; //¿øÁ¡ X

@@ -172,7 +172,8 @@ public class FmFinanceLayout extends FmBaseActivity {
 			
 			if (id == R.id.BtnInputExpense)	changeClass = InputExpenseLayout.class;
 			else if (id == R.id.BtnInputIncome) changeClass = SelectCategoryIncomeLayout.class;
-			else if (id == R.id.BtnAssetsLiability) changeClass = InputAssetsOrLiability.class;
+//			else if (id == R.id.BtnAssetsLiability) changeClass = InputAssetsOrLiability.class;
+			else if (id == R.id.BtnAssetsLiability) changeClass = MainAssetsLayout.class;
 			else if (id == R.id.BtnReport) 	changeClass = MainReportLayout.class;
 			else if (id == R.id.BtnTodayExpense) changeClass = ReportCurrentExpenseLayout.class;
 			else if (id == R.id.BtnTodayIncome) changeClass = ReportCurrentIncomeLayout.class;

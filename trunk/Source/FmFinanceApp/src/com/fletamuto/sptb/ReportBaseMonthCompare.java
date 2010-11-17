@@ -1,17 +1,11 @@
 package com.fletamuto.sptb;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,28 +16,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.fletamuto.common.control.fmgraph.PieGraph;
-import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public abstract class ReportBaseMonthCompare extends FmBaseActivity {
+public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 	
-	protected int mType;
 	protected int mMonth;
 	protected int mYear;
-	protected ArrayList<FinanceItem> mFinanceItems;
 	protected ItemAdapter mAdapterItem;
-	protected long mTotalAmout = 0L;
-	protected  Map<Integer, CategoryAmount> mCategoryAmount = new HashMap<Integer, CategoryAmount>();
 	
 	protected abstract void setAdapterList();
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
-	protected abstract void onClickCategoryButton(CategoryAmount categoryAmount);
 	
-	protected void setItemType(int itemType) {
-		mType = itemType;
-	}
 	
 	public int getMonth() {
 		return mMonth;
@@ -144,47 +128,6 @@ public abstract class ReportBaseMonthCompare extends FmBaseActivity {
 		
 		setAdapterList();
 	}
-
-	private void updateBarGraph() {
-		final PieGraph pieGraph;	
-       
-		pieGraph = (PieGraph) findViewById (R.id.pgraph);
-		pieGraph.setItemValues(new long[] {100, 100});
-		pieGraph.setOnTouchListener(new View.OnTouchListener() {
-
-			public boolean onTouch(View arg0, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-		    		pieGraph.FindTouchItemID((int)event.getX(), (int)event.getY());
-		    		return true;
-		    	}
-				return false;
-			}
-		});
-		
-	}
-
-	public void addButtonInLayout() {
-		LinearLayout ll = (LinearLayout)findViewById(R.id.LLItemButtons);
-		ll.removeAllViews();
-		
-		Collection<CategoryAmount> categoryAmountItems = mCategoryAmount.values();
-		
-		for (CategoryAmount iterator:categoryAmountItems) {
-			Button btnItem = new Button(getApplicationContext());
-			btnItem.setText(String.format("%s    : %,d¿ø", iterator.getName(), iterator.getTotalAmount()));
-			btnItem.setOnClickListener(categoryListener);
-			btnItem.setTag(iterator);
-			ll.addView(btnItem);
-		}
-		ll.invalidate();
-	}
-	
-    View.OnClickListener categoryListener = new View.OnClickListener() {
-		public void onClick(View v) {
-			CategoryAmount categoryAmount = (CategoryAmount)v.getTag();
-			onClickCategoryButton(categoryAmount);
-		}
-	};
 	
 	
 	
@@ -227,58 +170,6 @@ public abstract class ReportBaseMonthCompare extends FmBaseActivity {
 		}
     }
 	
-	public class CategoryAmount {
-		private int mCategoryID;
-		private long mTotalAmount;
-		private String mName;
-		
-		public int getCategoryID() {
-			return mCategoryID;
-		}
-
-		public long getTotalAmount() {
-			return mTotalAmount;
-		}
-		public String getName() {
-			return mName;
-		}
-		
-		public void addAmount(long amount) {
-			mTotalAmount += amount;
-		}
-		
-		public void set(int id, String name, long amount) {
-			mCategoryID = id;
-			mName = name;
-			mTotalAmount = amount;
-		}
-	}
-	
-	public void updateMapCategory() {
-		mCategoryAmount.clear();
-		
-		int itemSize = mFinanceItems.size();
-		for (int index = 0; index < itemSize; index++) {
-			FinanceItem item = mFinanceItems.get(index);
-			Category category = getCategory(item);
-			if (category == null) {
-				Log.w(LogTag.LAYOUT, ":: INVAILD CATEGORU :: ");
-				continue;
-			}
-			Integer categoryID = category.getID();
-			
-			CategoryAmount categoryAmount = mCategoryAmount.get(categoryID);
-			if (categoryAmount == null) {
-				categoryAmount = new CategoryAmount();
-				categoryAmount.set(categoryID, category.getName(), item.getAmount());
-				mCategoryAmount.put(categoryID, categoryAmount);
-			}
-			else {
-				categoryAmount.addAmount(item.getAmount());
-			}
-		}
-	}
-	
 	public void moveNextMonth() {
 		if (12 == mMonth) {
 			mYear++;
@@ -303,10 +194,4 @@ public abstract class ReportBaseMonthCompare extends FmBaseActivity {
 		getData();
 		updateChildView();
 	}
-	
-	public Category getCategory(FinanceItem item) {
-		if (item == null) return null;
-		return item.getCategory();
-	}
-
 }

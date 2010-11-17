@@ -65,6 +65,9 @@
 <activity android:name=".ReportMonthCompareExpenseLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".ReportMonthCompareIncomeLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".ReportMonthCompareExpenseSubLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".MainAssetsLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".ReportCompareAssetsLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportCompareLiabilityLayout"></activity>
 </application>
 
 
