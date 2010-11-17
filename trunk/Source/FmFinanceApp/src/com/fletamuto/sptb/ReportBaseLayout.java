@@ -26,6 +26,9 @@ public abstract class ReportBaseLayout extends ListActivity {
 	protected ArrayList<FinanceItem> mItems = null;
 	protected ReportItemAdapter mItemAdapter = null;
 	private int mLatestSelectPosition = -1;
+	protected int mMonth = -1;
+	protected int mYear = -1;
+	protected int mCategoryID = -1;
 	
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
 	protected abstract void setDeleteBtnListener(View convertView, int itemId, int position);
@@ -35,7 +38,15 @@ public abstract class ReportBaseLayout extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        initialize();
     }
+	
+	public void initialize() {
+		mYear = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_YEAR, -1);
+		mMonth = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_MONTH, -1);
+		mCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1);
+	}
+	
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		mLatestSelectPosition = position;
     }
@@ -47,7 +58,13 @@ public abstract class ReportBaseLayout extends ListActivity {
 	}
 	
 	protected boolean getItemsFromDB(int itemType) {
-    	mItems = DBMgr.getAllItems(itemType);
+		if (mYear != -1 && mMonth != -1 && mCategoryID != -1) {
+			mItems = DBMgr.getItemsFromCategoryID(itemType, mCategoryID, mYear, mMonth);
+		}
+		else {
+			mItems = DBMgr.getAllItems(itemType);
+		}
+    	
         if (mItems == null) {
         	return false;
         }

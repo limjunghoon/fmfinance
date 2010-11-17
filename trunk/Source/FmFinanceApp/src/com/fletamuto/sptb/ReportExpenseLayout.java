@@ -24,6 +24,8 @@ public class ReportExpenseLayout extends ReportBaseLayout {
         setListAdapter(R.layout.report_list_expense);
     }
     
+    
+    
     protected void onListItemClick(ListView l, View v, int position, long id) {
     	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
     	startEditInputActivity(InputExpenseLayout.class, item.getID());
@@ -58,5 +60,19 @@ public class ReportExpenseLayout extends ReportBaseLayout {
 	protected FinanceItem getItemInstance(int id) {
 		return DBMgr.getItem(ExpenseItem.TYPE, id);
 	}
+	
+	protected boolean getItemsFromDB(int itemType) {
+		if (mYear != -1 && mMonth != -1 && mCategoryID != -1) {
+			mItems = DBMgr.getItemsFromSubCategoryID(itemType, mCategoryID, mYear, mMonth);
+		}
+		else {
+			mItems = DBMgr.getAllItems(itemType);
+		}
+    	
+        if (mItems == null) {
+        	return false;
+        }
+        return true;
+    }
 
 }

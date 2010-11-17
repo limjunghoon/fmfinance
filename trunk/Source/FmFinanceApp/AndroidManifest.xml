@@ -64,6 +64,7 @@
 <activity android:name=".ReportMonthCompareExpenseToIncomeLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".ReportMonthCompareExpenseLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".ReportMonthCompareIncomeLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".ReportMonthCompareExpenseSubLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 

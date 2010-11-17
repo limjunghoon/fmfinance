@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,19 +29,28 @@ import com.fletamuto.sptb.db.DBMgr;
 
 public abstract class ReportBaseMonthCompare extends FmBaseActivity {
 	
-	private int mType;
-	private int mMonth;
-	private int mYear;
-	private ArrayList<FinanceItem> mFinanceItems;
+	protected int mType;
+	protected int mMonth;
+	protected int mYear;
+	protected ArrayList<FinanceItem> mFinanceItems;
 	protected ItemAdapter mAdapterItem;
-	private long mTotalAmout = 0L;
-	private Map<Integer, CategoryAmount> mCategoryAmount = new HashMap<Integer, CategoryAmount>();
+	protected long mTotalAmout = 0L;
+	protected  Map<Integer, CategoryAmount> mCategoryAmount = new HashMap<Integer, CategoryAmount>();
 	
 	protected abstract void setAdapterList();
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
+	protected abstract void onClickCategoryButton(CategoryAmount categoryAmount);
 	
 	protected void setItemType(int itemType) {
 		mType = itemType;
+	}
+	
+	public int getMonth() {
+		return mMonth;
+	}
+	
+	public int getYear() {
+		return mYear;
 	}
 	
     /** Called when the activity is first created. */
@@ -53,12 +61,12 @@ public abstract class ReportBaseMonthCompare extends FmBaseActivity {
     	
     	getData();
     	setButtonClickListener();
-    	setAdapterList();
+    	
     	updateChildView();
     }
     
     
-	private void getData() {
+    protected void getData() {
 		mFinanceItems = DBMgr.getItems(mType, mYear, mMonth);
 		mTotalAmout = DBMgr.getTotalAmountMonth(mType, mYear, mMonth);
 		updateMapCategory();
@@ -100,14 +108,14 @@ public abstract class ReportBaseMonthCompare extends FmBaseActivity {
 		btnPreviousMonth.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				updateChildView();
+				movePreviousMonth();
 			}
 		});
 		
 		btnNextMonth.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				updateChildView();
+				moveNextMonth();
 			}
 		});
 	}
@@ -133,6 +141,8 @@ public abstract class ReportBaseMonthCompare extends FmBaseActivity {
 		
 		updateBarGraph();
 		addButtonInLayout();
+		
+		setAdapterList();
 	}
 
 	private void updateBarGraph() {
@@ -162,10 +172,21 @@ public abstract class ReportBaseMonthCompare extends FmBaseActivity {
 		for (CategoryAmount iterator:categoryAmountItems) {
 			Button btnItem = new Button(getApplicationContext());
 			btnItem.setText(String.format("%s    : %,d¿ø", iterator.getName(), iterator.getTotalAmount()));
+			btnItem.setOnClickListener(categoryListener);
+			btnItem.setTag(iterator);
 			ll.addView(btnItem);
 		}
 		ll.invalidate();
 	}
+	
+    View.OnClickListener categoryListener = new View.OnClickListener() {
+		public void onClick(View v) {
+			CategoryAmount categoryAmount = (CategoryAmount)v.getTag();
+			onClickCategoryButton(categoryAmount);
+		}
+	};
+	
+	
 	
 	protected void setAdapterList(int resource) {
     	if (mFinanceItems == null) return;
@@ -239,7 +260,7 @@ public abstract class ReportBaseMonthCompare extends FmBaseActivity {
 		int itemSize = mFinanceItems.size();
 		for (int index = 0; index < itemSize; index++) {
 			FinanceItem item = mFinanceItems.get(index);
-			Category category = item.getCategory();
+			Category category = getCategory(item);
 			if (category == null) {
 				Log.w(LogTag.LAYOUT, ":: INVAILD CATEGORU :: ");
 				continue;
@@ -257,4 +278,35 @@ public abstract class ReportBaseMonthCompare extends FmBaseActivity {
 			}
 		}
 	}
+	
+	public void moveNextMonth() {
+		if (12 == mMonth) {
+			mYear++;
+			mMonth = 1;
+		}
+		else {
+			mMonth++;
+		}
+		
+		getData();
+		updateChildView();
+	}
+	
+	public void movePreviousMonth() {
+		if (1 == mMonth) {
+			mYear--;
+			mMonth = 12;
+		}
+		else {
+			mMonth--;
+		}
+		getData();
+		updateChildView();
+	}
+	
+	public Category getCategory(FinanceItem item) {
+		if (item == null) return null;
+		return item.getCategory();
+	}
+
 }

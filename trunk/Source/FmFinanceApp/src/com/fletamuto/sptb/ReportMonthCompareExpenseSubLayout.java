@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.db.DBMgr;
 
-public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
-
+public class ReportMonthCompareExpenseSubLayout extends ReportBaseMonthCompare {
+	private int mMainCategoryID = -1;
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -19,13 +21,32 @@ public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
     
     @Override
     protected void initialize() {
-    	setItemType(ExpenseItem.TYPE);
+    	setItemType(ExpenseItem.TYPE);        
+    	mMainCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1);
     	super.initialize();
     }
     
+	protected void getData() {
+		if (mMainCategoryID == -1) return;
+		
+		mFinanceItems = DBMgr.getItemsFromCategoryID(mType, mMainCategoryID, mYear, mMonth);
+		
+		int itemSize = mFinanceItems.size();
+		for (int index = 0; index < itemSize; index++) {
+			mTotalAmout += mFinanceItems.get(index).getAmount();
+		}
+//		mTotalAmout = DBMgr.getTotalAmountMonth(mType, mYear, mMonth);
+		updateMapCategory();
+	}
+	
+	public Category getCategory(FinanceItem item) {
+		if (item == null) return null;
+		return item.getSubCategory();
+	}
+	
 	@Override
 	protected void setTitleBtn() {
-    	setTitle("¿ù ÁöÃâ");
+    	setTitle(getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME));
 
 		super.setTitleBtn();
 	}
@@ -49,11 +70,10 @@ public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
 	}
 	
 	protected void onClickCategoryButton(CategoryAmount categoryAmount) {
-		Intent intent = new Intent(ReportMonthCompareExpenseLayout.this, ReportMonthCompareExpenseSubLayout.class);
+		Intent intent = new Intent(ReportMonthCompareExpenseSubLayout.this, ReportExpenseLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, getYear());
 		intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, getMonth());
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, categoryAmount.getCategoryID());
-		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, categoryAmount.getName());
 		startActivity(intent);
 	}
 }
