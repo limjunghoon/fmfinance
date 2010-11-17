@@ -5,7 +5,6 @@ import java.util.Calendar;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.LinearLayout;
 
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AccountItem;
@@ -207,6 +206,11 @@ public final class DBMgr {
 	public static ArrayList<FinanceItem> getItemsFromCategoryID(int itemType, int mainCategoryID, int year, int month) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItemsFromCategoryID(mainCategoryID, year, month);
+	}
+	
+	public static ArrayList<FinanceItem> getItemsFromCategoryID(int itemType, int mainCategoryID) {
+		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItemsFromCategoryID(mainCategoryID);
 	}
 	
 	public static ArrayList<FinanceItem> getItemsFromSubCategoryID(int itemType, int subCategoryID, int year, int month) {

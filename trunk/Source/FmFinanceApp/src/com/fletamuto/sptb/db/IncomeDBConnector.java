@@ -156,6 +156,26 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		return assetsItems;
 	}
 	
+	public ArrayList<FinanceItem> getItemsFromCategoryID(int mainCategoryID) {
+		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.valueOf(mainCategoryID)};
+		
+		queryBilder.setTables("income, income_main_category");
+		queryBilder.appendWhere("income.main_category=income_main_category._id");
+		Cursor c = queryBilder.query(db, null, "income.main_category=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				assetsItems.add(CreateIncomeItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return assetsItems;
+	}
+	
 	public ArrayList<FinanceItem> getItemsFromSubCategoryID(int subCategoryID, int year, int month) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();

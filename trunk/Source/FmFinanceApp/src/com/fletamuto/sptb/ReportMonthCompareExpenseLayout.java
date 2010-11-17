@@ -56,4 +56,5 @@ public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, categoryAmount.getName());
 		startActivity(intent);
 	}
+
 }

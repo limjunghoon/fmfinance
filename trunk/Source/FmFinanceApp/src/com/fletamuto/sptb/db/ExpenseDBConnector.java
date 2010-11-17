@@ -176,6 +176,26 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		return expenseItems;
 	}
 	
+	public ArrayList<FinanceItem> getItemsFromCategoryID(int mainCategoryID) {
+		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.valueOf(mainCategoryID)};
+		
+		queryBilder.setTables("expense, expense_main_category, expense_sub_category, expense_tag, payment_method");
+		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id AND expense.tag=expense_tag._id AND expense.payment_method=payment_method._id");
+		Cursor c = queryBilder.query(db, null, "expense.main_category=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				expenseItems.add(createExpenseItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return expenseItems;
+	}
+	
 	public ArrayList<FinanceItem> getItemsFromSubCategoryID(int subCategoryID, int year, int month) {
 		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();

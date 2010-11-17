@@ -61,6 +61,9 @@ public abstract class ReportBaseLayout extends ListActivity {
 		if (mYear != -1 && mMonth != -1 && mCategoryID != -1) {
 			mItems = DBMgr.getItemsFromCategoryID(itemType, mCategoryID, mYear, mMonth);
 		}
+		else if (mCategoryID != -1) {
+			mItems = DBMgr.getItemsFromCategoryID(itemType, mCategoryID);
+		}
 		else {
 			mItems = DBMgr.getAllItems(itemType);
 		}
