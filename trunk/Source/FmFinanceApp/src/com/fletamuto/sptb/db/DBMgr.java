@@ -204,6 +204,16 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItems(year, month);
 	}
 	
+	public static ArrayList<FinanceItem> getItemsFromCategoryID(int itemType, int mainCategoryID, int year, int month) {
+		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItemsFromCategoryID(mainCategoryID, year, month);
+	}
+	
+	public static ArrayList<FinanceItem> getItemsFromSubCategoryID(int itemType, int subCategoryID, int year, int month) {
+		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItemsFromSubCategoryID(subCategoryID, year, month);
+	}
+	
 	/**
 	 * DB에 입력된 수입, 지출, 자산, 부채 중 해당 ID의 아이템을 가져온다.
 	 * @param itemType 가져올 수입, 지출, 자산, 부채 타입

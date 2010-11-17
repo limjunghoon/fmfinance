@@ -123,11 +123,51 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
-		String[] params = {String.format("%d-%d", year, month)};
+		String[] params = {String.format("%d-%02d", year, month)};
 		
 		queryBilder.setTables("assets, assets_main_category");
 		queryBilder.appendWhere("assets.main_category=assets_main_category._id");
 		Cursor c = queryBilder.query(db, null, "strftime('%Y-%m', create_date)=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				assetsItems.add(CreateAssetsItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return assetsItems;
+	}
+	
+	public ArrayList<FinanceItem> getItemsFromCategoryID(int mainCategoryID, int year, int month) {
+		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.format("%d-%02d", year, month), String.valueOf(mainCategoryID)};
+		
+		queryBilder.setTables("assets, assets_main_category");
+		queryBilder.appendWhere("assets.main_category=assets_main_category._id");
+		Cursor c = queryBilder.query(db, null, "strftime('%Y-%m', create_date)=? AND assets.main_category=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				assetsItems.add(CreateAssetsItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return assetsItems;
+	}
+	
+	public ArrayList<FinanceItem> getItemsFromSubCategoryID(int subCategoryID, int year, int month) {
+		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.format("%d-%02d", year, month), String.valueOf(subCategoryID)};
+		
+		queryBilder.setTables("assets, assets_main_category");
+		queryBilder.appendWhere("assets.main_category=assets_main_category._id");
+		Cursor c = queryBilder.query(db, null, "strftime('%Y-%m', create_date)=? AND assets.sub_category=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			do {

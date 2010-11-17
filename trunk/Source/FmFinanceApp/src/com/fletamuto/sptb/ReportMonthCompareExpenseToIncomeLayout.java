@@ -54,6 +54,22 @@ public class ReportMonthCompareExpenseToIncomeLayout extends FmBaseActivity {
 			}
 		});
 		
+		Button btnPreviousMonth = (Button)findViewById(R.id.BtnPreviousMonth);
+		Button btnNextMonth = (Button)findViewById(R.id.BtnNextMonth);
+		
+		btnPreviousMonth.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				movePreviousMonth();
+			}
+		});
+		
+		btnNextMonth.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				moveNextMonth();
+			}
+		});
 	}
 
 	private void getData() {
@@ -106,5 +122,17 @@ public class ReportMonthCompareExpenseToIncomeLayout extends FmBaseActivity {
 			}
 		});
 		
+	}
+	
+	public void moveNextMonth() {
+		currentCalendar.add(Calendar.MONTH, 1);
+		getData();
+    	updateChildView();
+	}
+	
+	public void movePreviousMonth() {
+		currentCalendar.add(Calendar.MONTH, -1);
+		getData();
+    	updateChildView();
 	}
 }

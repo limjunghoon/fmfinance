@@ -1,6 +1,5 @@
 package com.fletamuto.sptb;
 
-import java.util.Calendar;
 
 public final class MsgDef {
 	public static final class ActRequest {

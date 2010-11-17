@@ -1,19 +1,17 @@
 package com.fletamuto.sptb;
 
-import java.util.Calendar;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.*;
 
 import com.fletamuto.common.control.fmgraph.BarGraph;
 import com.fletamuto.common.control.fmgraph.Constants;
-import com.fletamuto.common.control.fmgraph.PieGraph;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
@@ -49,10 +47,8 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
-//				Toast toast = Toast.makeText(getApplicationContext(), "변경버튼 클릭", Toast.LENGTH_SHORT);
-//				toast.show();
-				if (barGraphDifferenceMode == false)
-				{
+				
+				if (barGraphDifferenceMode == false) {
 					updateBarGraphDifferenceMode();
 				} else {
 					updateBarGraph();
@@ -98,83 +94,48 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 
 	private void updateBarGraph() {
 		barGraphDifferenceMode = false;
-		
-//		PieGraph pg;
-//		BarGraph bg;
-//    	
-//    	int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-//    	for (int index = 0; index < Calendar.DECEMBER; index++) {
-//    		DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, currentYear, index);
-//    	}
-		
+	
 		ArrayList<Long> iv = new ArrayList<Long>();
 		ArrayList<Integer> ap = new ArrayList<Integer>();
 		ArrayList<String> at = new ArrayList<String>();
 		
-			for (int i=0; i<12; i++) {
-				iv.add(DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, i+1));
-				iv.add(DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, i+1));
-				at.add(String.valueOf(i+1));
-			}
-			
-			ap.add(Constants.BAR_AXIS_X_BOTTOM);
-			ap.add(Constants.BAR_AXIS_Y_LEFT);
-
-//	        setContentView(R.layout.report_month_of_year, true);
-	        
-	        bg = (BarGraph) findViewById (R.id.bgraph);
-	 
-	        bg.makeUserTypeGraph(ap, Constants.BAR_AXIS_X_BOTTOM, iv, 2, at);
-
-	        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bg.getLayoutParams();
-
-	        params.width = (320 > bg.getBarGraphWidth()) ? 320 : bg.getBarGraphWidth();
-	        params.height = (350 > bg.getBarGraphHeight()) ? 320 : bg.getBarGraphHeight();
-	       
-	        bg.setLayoutParams(params);
-	        
-	        bg.setOnTouchListener(new View.OnTouchListener() {
-				
-	        	public boolean onTouch(View v, MotionEvent event) {
-					if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			    		int sel;
-			    		sel = bg.FindTouchItemID((int)event.getX(), (int)event.getY());
-
-			    		if (sel == -1) {
-			    			return true;
-			    		} else {
-			    			Toast.makeText(bg.getContext(), "ID = " + sel + " 그래프 터치됨", Toast.LENGTH_SHORT).show();
-			    			return true;
-			    		}
-			    	}
-					return false;
-				}
-			});
-
-	        
-	/*
-	        pg = (PieGraph) findViewById (R.id.pgraph);
-	        pg.setItemValues(iv);
-	        pg.setOnTouchListener(new View.OnTouchListener() {
-				
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			    		int sel;
-			    		sel = pg.FindTouchItemID((int)event.getX(), (int)event.getY());
-
-			    		if (sel == -1) {
-			    			return true;
-			    		} else {
-			    			Toast.makeText(pg.getContext(), "ID = " + sel + " Value = " + pg.getItemValue(sel) + " Color = " + pg.getItemColor(sel), Toast.LENGTH_SHORT).show();
-			    			return true;
-			    		}
-			    	}
-					return false;
-				}
-			});
-	*/
+		for (int i=0; i<12; i++) {
+			iv.add(DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, i+1));
+			iv.add(DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, i+1));
+			at.add(String.valueOf(i+1));
+		}
 		
+		ap.add(Constants.BAR_AXIS_X_BOTTOM);
+		ap.add(Constants.BAR_AXIS_Y_LEFT);
+    
+        bg = (BarGraph) findViewById (R.id.bgraph);
+ 
+        bg.makeUserTypeGraph(ap, Constants.BAR_AXIS_X_BOTTOM, iv, 2, at);
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bg.getLayoutParams();
+
+        params.width = (320 > bg.getBarGraphWidth()) ? 320 : bg.getBarGraphWidth();
+        params.height = (350 > bg.getBarGraphHeight()) ? 320 : bg.getBarGraphHeight();
+       
+        bg.setLayoutParams(params);
+        
+        bg.setOnTouchListener(new View.OnTouchListener() {
+			
+        	public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+		    		int sel;
+		    		sel = bg.FindTouchItemID((int)event.getX(), (int)event.getY());
+
+		    		if (sel == -1) {
+		    			return true;
+		    		} else {
+		    			Toast.makeText(bg.getContext(), "ID = " + sel + " 그래프 터치됨", Toast.LENGTH_SHORT).show();
+		    			return true;
+		    		}
+		    	}
+				return false;
+			}
+		});
 	}
 	
 	private void updateBarGraphDifferenceMode() {

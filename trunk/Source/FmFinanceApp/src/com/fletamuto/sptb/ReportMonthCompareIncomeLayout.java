@@ -1,5 +1,6 @@
 package com.fletamuto.sptb;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -38,5 +39,13 @@ public class ReportMonthCompareIncomeLayout extends ReportBaseMonthCompare {
 		((TextView)convertView.findViewById(R.id.TVIncomeReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
 		((TextView)convertView.findViewById(R.id.TVIncomeReportListMemo)).setText("메모 : " + item.getMemo());
 		((TextView)convertView.findViewById(R.id.TVIncomeReportListCategory)).setText("분류 : " + item.getCategory().getName());
+	}
+    
+	protected void onClickCategoryButton(CategoryAmount categoryAmount) {
+		Intent intent = new Intent(ReportMonthCompareIncomeLayout.this, ReportIncomeLayout.class);
+		intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, getYear());
+		intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, getMonth());
+		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, categoryAmount.getCategoryID());
+		startActivity(intent);
 	}
 }
