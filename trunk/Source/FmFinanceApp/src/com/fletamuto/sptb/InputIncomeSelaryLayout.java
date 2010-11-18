@@ -15,6 +15,7 @@ import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeSalaryItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.PaymentMethod;
+import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 
 /**
@@ -39,6 +40,7 @@ public class InputIncomeSelaryLayout extends InputIncomeExtendLayout {
         updateChildView();
         setDateBtnClickListener(R.id.BtnSalaryDate); 
         setAmountBtnClickListener(R.id.BtnSalaryAmount);
+        setRepeatBtnClickListener(R.id.BtnSalaryRepeat);
         takeHomePayBtnClickListener();
     }
 
@@ -63,6 +65,7 @@ public class InputIncomeSelaryLayout extends InputIncomeExtendLayout {
 		updateDate();
 		updateBtnAmountText(R.id.BtnSalaryAmount);
 		updateEditMemoText(R.id.ETSalaryMemo);
+		updateRepeatText(R.id.BtnSalaryRepeat);
 		updateBtnTakeHomePayText();
 	}
 
@@ -159,4 +162,18 @@ public class InputIncomeSelaryLayout extends InputIncomeExtendLayout {
 		
 		return item;
 	} 
+	
+	protected void updateRepeat(int type, int value) {
+		
+		if (type == Repeat.MONTHLY) {
+			mSalary.setRepeatMonthly(value);
+		}
+		else if (type == Repeat.WEEKLY) {
+			mSalary.setRepeatWeekly(value);
+		}
+		else {
+			
+		}
+		updateRepeatText(R.id.BtnSalaryRepeat);
+	}
 }

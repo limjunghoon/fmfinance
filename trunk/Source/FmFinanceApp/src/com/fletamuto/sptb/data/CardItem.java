@@ -6,7 +6,6 @@ public class CardItem extends BaseItem{
 	public final static int PREPAID_CARD = 3;
 	public final static int CASH_CARD = 4;
 	
-	private int mID = -1;
 	private CardCompanyName mCompenyName = new CardCompanyName();
 	private String mName;
 	private String mNumber;

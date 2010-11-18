@@ -3,7 +3,6 @@ package com.fletamuto.sptb;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,7 +26,6 @@ import com.fletamuto.sptb.db.DBMgr;
 public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	private ExpenseItem mExpensItem;
 	protected final static int ACT_TAG_SELECTED = MsgDef.ActRequest.ACT_TAG_SELECTED;
-	protected final static int ACT_REPEAT = MsgDef.ActRequest.ACT_REPEAT;
 	protected final static int ACT_CARD_SELECT = MsgDef.ActRequest.ACT_CARD_SELECT;
 	protected final static int ACT_ACCOUNT_SELECT = MsgDef.ActRequest.ACT_ACCOUNT_SELECT;
 	
@@ -41,7 +39,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         setCategoryClickListener(R.id.BtnExpenseCategory);
         setPaymentToggleBtnClickListener();
         setTagButtonListener();
-        setRepeatBtnClickListener();
+        setRepeatBtnClickListener(R.id.BtnExpenseRepeat);
         setTitle(getResources().getString(R.string.input_expense_name));
     }
 
@@ -55,17 +53,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     protected void saveItem() {
     	if (mInputMode == InputMode.ADD_MODE) {
     		if (saveNewItem(ReportExpenseLayout.class) == true) {
-    			Repeat repeat = mExpensItem.getRepeat();
-    			if (repeat.getType() == Repeat.ONCE) return;
-    			
-    			repeat.setItemID(mExpensItem.getID());
-    			repeat.setItemType(mExpensItem.getType());
-    			
-    			if (DBMgr.addRepeat(repeat) == -1) {
-    				Log.e(LogTag.LAYOUT, ":: Fail to insert Repeat");
-    			}
-    			
-    			DBMgr.updateRepeat(mExpensItem.getType(), mExpensItem.getID(), repeat.getID());
+    			saveRepeat();
     		}
     	}
     	else if (mInputMode == InputMode.EDIT_MODE){
@@ -296,7 +284,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		updateEditMemoText(R.id.ETExpenseMemo);
 		updatePaymentMethod();
 		updateTagText();
-		updateRepeatText();
+		updateRepeatText(R.id.BtnExpenseRepeat);
 	}
 	
 	protected PaymentMethod createPaymentMethod(int paymentMethodSelected) {
@@ -348,8 +336,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		else {
 			
 		}
-		
-		updateRepeatText();
+		updateRepeatText(R.id.BtnExpenseRepeat);
 	}
 	
     /**
@@ -367,34 +354,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		});
     }
     
-    /**
-     * 반복버튼 클릭 시
-     */
-	protected void setRepeatBtnClickListener() {
-    	((Button)findViewById(R.id.BtnExpenseRepeat)).setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				Repeat repeat = mExpensItem.getRepeat();
-				int repeatType = repeat.getType();
-				Intent intent = new Intent(InputExpenseLayout.this, RepeatLayout.class);
-				
-				if (repeatType != Repeat.ONCE) {
-					intent.putExtra(MsgDef.ExtraNames.RPEAT_TYPE, repeatType);
-					
-					if (repeatType == Repeat.WEEKLY) {
-						intent.putExtra(MsgDef.ExtraNames.RPEAT_TYPE, repeatType);
-						intent.putExtra(MsgDef.ExtraNames.RPEAT_WEEKLY, repeat.getWeeklyRepeat());
-					}
-					else if (repeatType == Repeat.MONTHLY) {
-						intent.putExtra(MsgDef.ExtraNames.RPEAT_TYPE, repeatType);
-						intent.putExtra(MsgDef.ExtraNames.RPEAT_DAILY, repeat.getDayofMonth());
-					}
-				}
-				
-				startActivityForResult(intent, ACT_REPEAT);
-			}
-		});
-	}
+    
 
     /**
      * 
@@ -404,23 +364,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		tvPaymentMethod.setText(mExpensItem.getPaymentMethod().getText());
 	}
 	
-	protected void updateRepeatText() {
-		Repeat repeat = mExpensItem.getRepeat();
-		if (repeat == null) return;
-		
-		int type = repeat.getType();
-		Button btnRepeat = (Button)findViewById(R.id.BtnExpenseRepeat);
-		
-		if (type == Repeat.MONTHLY) {
-			btnRepeat.setText(repeat.getRepeatMessage());
-		}
-		else if (type == Repeat.WEEKLY) {
-			btnRepeat.setText(repeat.getRepeatMessage());
-		}
-		else {
-			btnRepeat.setText("반복을 설정합니다.");
-		}
-	}
+	
 
 	@Override
 	protected void updateItem() {
@@ -428,6 +372,5 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     	getItem().setMemo(memo);
 	}
 	
-
 	
 }
