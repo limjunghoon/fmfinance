@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 
 /**
@@ -22,6 +23,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         updateChildView();
         setDateBtnClickListener(R.id.BtnIncomeDate); 
         setAmountBtnClickListener(R.id.BtnIncomeAmount);
+        setRepeatBtnClickListener(R.id.BtnIncomeRepeat);
         setTitle(mIncomeItem.getCategory().getName());
     }
   
@@ -39,7 +41,9 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
     
     protected void saveItem() {
     	if (mInputMode == InputMode.ADD_MODE) {
-    		saveNewItem(null);
+    		if (saveNewItem(null) == true) {
+    			saveRepeat();
+    		}
     	}
     	else if (mInputMode == InputMode.EDIT_MODE){
     		saveUpdateItem();
@@ -82,12 +86,54 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 		updateDate();
 		updateBtnAmountText(R.id.BtnIncomeAmount);
 		updateEditMemoText(R.id.ETIncomeMemo);
+		updateRepeatText(R.id.BtnIncomeRepeat);
 	}
 
 	@Override
 	protected void updateItem() {
     	String memo = ((TextView)findViewById(R.id.ETIncomeMemo)).getText().toString();
     	getItem().setMemo(memo);
+	}
+	
+	protected void updateRepeat(int type, int value) {
+		
+		if (type == Repeat.MONTHLY) {
+			mIncomeItem.setRepeatMonthly(value);
+		}
+		else if (type == Repeat.WEEKLY) {
+			mIncomeItem.setRepeatWeekly(value);
+		}
+		else {
+			
+		}
+		updateRepeatText(R.id.BtnIncomeRepeat);
+	}
+	
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ACT_REPEAT) {
+			if (resultCode == RESULT_OK) {
+				int repeatType = data.getIntExtra(MsgDef.ExtraNames.RPEAT_TYPE, -1);
+				
+				if (repeatType == Repeat.MONTHLY) {
+					int daily = data.getIntExtra(MsgDef.ExtraNames.RPEAT_DAILY, -1);
+					if (daily == -1) return;
+					
+					updateRepeat(Repeat.MONTHLY, daily);
+				}
+				else if (repeatType == Repeat.WEEKLY) {
+					int weekly = data.getIntExtra(MsgDef.ExtraNames.RPEAT_WEEKLY, -1);
+					if (weekly == -1) return;
+					
+					updateRepeat(Repeat.WEEKLY, weekly);
+				}
+				else {
+					return;
+				}
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
     
 }

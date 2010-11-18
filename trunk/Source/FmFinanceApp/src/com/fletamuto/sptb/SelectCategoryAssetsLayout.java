@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.ItemDef;
 
 public class SelectCategoryAssetsLayout extends InputAfterSelectCategoryLayout {
 	public static final int ACT_ADD_ASSETS = MsgDef.ActRequest.ACT_ADD_ASSETS;

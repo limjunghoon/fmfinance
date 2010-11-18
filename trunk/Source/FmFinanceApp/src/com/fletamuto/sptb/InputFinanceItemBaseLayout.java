@@ -23,6 +23,8 @@ import com.fletamuto.sptb.db.DBMgr;
  */
 public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 	
+	protected final static int ACT_REPEAT = MsgDef.ActRequest.ACT_REPEAT;
+	
 	private FinanceItem mItem;
 	
 	protected abstract void updateDate();
@@ -218,4 +220,65 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     
     	mItem.setRepeat(DBMgr.getRepeat(mItem.getRepeat().getID()));
     }
+    
+    protected void updateRepeatText(int resource) {
+		Repeat repeat = mItem.getRepeat();
+		if (repeat == null) return;
+		
+		int type = repeat.getType();
+		Button btnRepeat = (Button)findViewById(resource);
+		
+		if (type == Repeat.MONTHLY) {
+			btnRepeat.setText(repeat.getRepeatMessage());
+		}
+		else if (type == Repeat.WEEKLY) {
+			btnRepeat.setText(repeat.getRepeatMessage());
+		}
+		else {
+			btnRepeat.setText("반복을 설정합니다.");
+		}
+	}
+    
+    protected void saveRepeat() {
+    	Repeat repeat = mItem.getRepeat();
+		if (repeat.getType() == Repeat.ONCE) return;
+		
+		repeat.setItemID(mItem.getID());
+		repeat.setItemType(mItem.getType());
+		
+		if (DBMgr.addRepeat(repeat) == -1) {
+			Log.e(LogTag.LAYOUT, ":: Fail to insert Repeat");
+		}
+		
+		DBMgr.updateRepeat(mItem.getType(), mItem.getID(), repeat.getID());
+    }
+    
+    /**
+     * 반복버튼 클릭 시
+     */
+	protected void setRepeatBtnClickListener(int resource) {
+    	((Button)findViewById(resource)).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				Repeat repeat = mItem.getRepeat();
+				int repeatType = repeat.getType();
+				Intent intent = new Intent(InputFinanceItemBaseLayout.this, RepeatLayout.class);
+				
+				if (repeatType != Repeat.ONCE) {
+					intent.putExtra(MsgDef.ExtraNames.RPEAT_TYPE, repeatType);
+					
+					if (repeatType == Repeat.WEEKLY) {
+						intent.putExtra(MsgDef.ExtraNames.RPEAT_TYPE, repeatType);
+						intent.putExtra(MsgDef.ExtraNames.RPEAT_WEEKLY, repeat.getWeeklyRepeat());
+					}
+					else if (repeatType == Repeat.MONTHLY) {
+						intent.putExtra(MsgDef.ExtraNames.RPEAT_TYPE, repeatType);
+						intent.putExtra(MsgDef.ExtraNames.RPEAT_DAILY, repeat.getDayofMonth());
+					}
+				}
+				
+				startActivityForResult(intent, ACT_REPEAT);
+			}
+		});
+	}
 }

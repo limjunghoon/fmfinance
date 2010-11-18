@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.ReportBaseCompare.CategoryAmount;
-import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -56,8 +54,6 @@ public class ReportCompareLiabilityLayout extends ReportBaseCompare {
 		
 		super.setTitleBtn();
 	}
-
-
 	
 	protected void onClickCategoryButton(CategoryAmount categoryAmount) {
 		Intent intent = new Intent(ReportCompareLiabilityLayout.this, ReportLiabilityLayout.class);
