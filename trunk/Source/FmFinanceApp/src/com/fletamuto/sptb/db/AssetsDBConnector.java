@@ -537,9 +537,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		if (ret != DBDef.ValidError.SUCCESS) {
 			return ret;
 		}
-		if (item.getSubCategory() == null || item.getSubCategory().getID() == -1) {
-			return DBDef.ValidError.SUB_CATEGORY_INVAlID;
-		}
+
 		return DBDef.ValidError.SUCCESS; 
 	}
 	

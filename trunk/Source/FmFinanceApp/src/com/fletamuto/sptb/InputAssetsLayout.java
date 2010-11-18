@@ -23,9 +23,16 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
         updateChildView();
         setDateBtnClickListener(R.id.BtnAssetsDate); 
         setAmountBtnClickListener(R.id.BtnAssetsAmount);
-        setSaveBtnClickListener(R.id.BtnAssetsSave);
-        setCategoryClickListener(R.id.BtnAssetsCategory);
-        setTitle(getResources().getString(R.string.input_assets_name));
+        setTitle(mAssetsItem.getCategory().getName());
+    }
+    
+    @Override
+    protected void initialize() {
+    	super.initialize();
+    	int categoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1) ;
+        String categoryName = getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME);
+        
+        updateCategory(categoryID, categoryName);
     }
     
     protected void updateDate() {
@@ -34,7 +41,7 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
     
     protected void saveItem() {
     	if (mInputMode == InputMode.ADD_MODE) {
-    		saveNewItem(ReportAssetsLayout.class);
+    		saveNewItem(null);
     	}
     	else if (mInputMode == InputMode.EDIT_MODE){
     		saveUpdateItem();
@@ -71,7 +78,6 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
 	@Override
 	protected void updateCategory(int id, String name) {
 		mAssetsItem.setCategory(id, name);
-		updateBtnCategoryText(R.id.BtnAssetsCategory);
 	}
 	
 	protected void updateBtnCategoryText(int btnID) {
@@ -95,7 +101,6 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
 	@Override
 	protected void updateChildView() {
 		updateDate();
-		updateBtnCategoryText(R.id.BtnAssetsCategory);
 		updateBtnAmountText(R.id.BtnAssetsAmount);
 		updateEditTitleText(R.id.ETAssetsTitle);
 	}
@@ -104,5 +109,8 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
 	protected void updateItem() {
 		String title = ((TextView)findViewById(R.id.ETAssetsTitle)).getText().toString();
     	getItem().setTitle(title);
+    	
+    	String memo = ((TextView)findViewById(R.id.ETAssetsMemo)).getText().toString();
+    	getItem().setMemo(memo);
 	}
 }

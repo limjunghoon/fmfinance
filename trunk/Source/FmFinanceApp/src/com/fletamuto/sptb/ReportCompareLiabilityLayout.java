@@ -3,6 +3,7 @@ package com.fletamuto.sptb;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.fletamuto.sptb.ReportBaseCompare.CategoryAmount;
 import com.fletamuto.sptb.data.AssetsItem;
@@ -10,7 +11,8 @@ import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportCompareLiabilityLayout extends ReportBaseCompare {
-
+	public static final int ACT_ADD_LIABLITY = MsgDef.ActRequest.ACT_ADD_LIABLITY;
+	
 	/** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -27,8 +29,8 @@ public class ReportCompareLiabilityLayout extends ReportBaseCompare {
 		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(ReportCompareLiabilityLayout.this, InputLiabilityLayout.class);
-				startActivity(intent);
+				Intent intent = new Intent(ReportCompareLiabilityLayout.this, SelectCategoryLiabilityLayout.class);
+				startActivityForResult(intent, ACT_ADD_LIABLITY);
 			}
 		});
 	}
@@ -67,12 +69,24 @@ public class ReportCompareLiabilityLayout extends ReportBaseCompare {
 	
 	}
 
-	private void updateChildView() {
+	protected void updateChildView() {
+		TextView tvTotalAmount = (TextView)findViewById(R.id.TVTotalAmount);
+		tvTotalAmount.setText(String.format("ฑÝพื : %,d", mTotalAmout));
+		
 		updateBarGraph();
 		addButtonInLayout();
 		
 	}
 	
-
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ACT_ADD_LIABLITY) {
+			if (resultCode == RESULT_OK) {
+				getData();
+		    	updateChildView();
+    		}
+    	}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 
 }
