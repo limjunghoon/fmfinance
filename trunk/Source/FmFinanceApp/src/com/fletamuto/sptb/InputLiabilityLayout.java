@@ -17,9 +17,16 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
         updateChildView();
         setDateBtnClickListener(R.id.BtnLiabilityDate); 
         setAmountBtnClickListener(R.id.BtnLiabilityAmount);
-        setSaveBtnClickListener(R.id.BtnLiabilitySave);
-        setCategoryClickListener(R.id.BtnLiabilityCategory);
-        setTitle(getResources().getString(R.string.input_liability_name));
+        setTitle(mLiabilityItem.getCategory().getName());
+    }
+    
+    @Override
+    protected void initialize() {
+    	super.initialize();
+    	int categoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1) ;
+        String categoryName = getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME);
+        
+        updateCategory(categoryID, categoryName);
     }
     
     protected void updateDate() {
@@ -28,7 +35,7 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
     
     protected void saveItem() {
     	if (mInputMode == InputMode.ADD_MODE) {
-    		saveNewItem(ReportLiabilityLayout.class);
+    		saveNewItem(null);
     	}
     	else if (mInputMode == InputMode.EDIT_MODE){
     		saveUpdateItem();
@@ -65,13 +72,11 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
 	protected void updateCategory(int id, String name) {
 		// TODO Auto-generated method stub
 		mLiabilityItem.setCategory(id, name);
-		updateBtnCategoryText(R.id.BtnLiabilityCategory);
 	}
 
 	@Override
 	protected void updateChildView() {
 		updateDate();
-		updateBtnCategoryText(R.id.BtnLiabilityCategory);
 		updateBtnAmountText(R.id.BtnLiabilityAmount);
 		updateEditTitleText(R.id.ETLiabilityTitle);
 	}

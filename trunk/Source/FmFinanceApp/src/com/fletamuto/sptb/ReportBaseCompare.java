@@ -25,6 +25,7 @@ public abstract class ReportBaseCompare extends FmBaseActivity {
 	
 	
 	protected abstract void onClickCategoryButton(CategoryAmount categoryAmount);
+	protected abstract void updateChildView();
 	
 	protected void setItemType(int itemType) {
 		mType = itemType;
@@ -140,5 +141,7 @@ public abstract class ReportBaseCompare extends FmBaseActivity {
 		if (item == null) return null;
 		return item.getCategory();
 	}
+	
+
 
 }

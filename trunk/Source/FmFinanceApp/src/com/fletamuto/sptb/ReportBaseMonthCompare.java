@@ -104,7 +104,7 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 		});
 	}
 
-	private void updateChildView() {
+	protected void updateChildView() {
 		LinearLayout monthLayout = (LinearLayout)findViewById(R.id.LLMonth);
 		LinearLayout dayOfMonthLayout = (LinearLayout)findViewById(R.id.LLDayofMonth);
 		ToggleButton tbMonth = (ToggleButton)findViewById(R.id.TBMonth);

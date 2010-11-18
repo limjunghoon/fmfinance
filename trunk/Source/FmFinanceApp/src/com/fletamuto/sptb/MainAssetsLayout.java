@@ -23,8 +23,7 @@ public class MainAssetsLayout extends FmBaseActivity {
     	
     	setContentView(R.layout.main_asserts, true);
     	
-    	getData();
-    	updateChildView();
+    	
     	setButtonClickListener();
     }
     
@@ -97,5 +96,12 @@ public class MainAssetsLayout extends FmBaseActivity {
 				return false;
 			}
 		});
+	}
+	
+	@Override
+	protected void onResume() {
+		getData();
+    	updateChildView();
+		super.onResume();
 	}
 }

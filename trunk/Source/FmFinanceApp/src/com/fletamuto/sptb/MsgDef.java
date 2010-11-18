@@ -27,6 +27,8 @@ public final class MsgDef {
 		public final static int ACT_TAKE_HOME_PAY_ETC_AMOUNT = 21;
 		public final static int ACT_TAKE_HOME_PAY_PENSION_AMOUNT = 22;
 		public final static int ACT_ADD_INCOME = 23;
+		public final static int ACT_ADD_ASSETS = 24;
+		public final static int ACT_ADD_LIABLITY = 24;
 	}
 	
 	public static final class ExtraNames {
