@@ -23,7 +23,7 @@ public class MainReportLayout extends ListActivity {
        
         setListAdapter(adapter);
     
-        mReportList.add(ReportExpenseLayout.class);
+        mReportList.add(ReportExpenseExpandLayout.class);
         mReportList.add(ReportIncomeLayout.class);
         mReportList.add(ReportAssetsLayout.class);
         mReportList.add(ReportLiabilityLayout.class);
