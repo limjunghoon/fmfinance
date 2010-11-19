@@ -2,34 +2,40 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.app.ExpandableListActivity;
+import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.ReportBaseLayout.ReportItemAdapter;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public abstract class ReportExpandBaseLayout extends ExpandableListActivity  {
-	protected static final int ACT_ITEM_EDIT = 0;
+public abstract class ReportExpandBaseLayout extends ListActivity  {
+protected static final int ACT_ITEM_EDIT = 0;
 	
 	protected ArrayList<FinanceItem> mItems = null;
-	protected ReportExpandItemAdapter mItemAdapter = null;
+	protected ReportItemAdapter mItemAdapter = null;
 	private int mLatestSelectPosition = -1;
 	protected int mMonth = -1;
 	protected int mYear = -1;
 	protected int mCategoryID = -1;
-	protected ExpandableListAdapter mAdapter;
 	
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
 	protected abstract void setDeleteBtnListener(View convertView, int itemId, int position);
@@ -84,81 +90,40 @@ public abstract class ReportExpandBaseLayout extends ExpandableListActivity  {
     }
 	
 	protected void setListAdapter(int id) {
-        mAdapter = new ReportExpandItemAdapter();
-        setListAdapter(mAdapter);
-        registerForContextMenu(getExpandableListView()); 
+		mItemAdapter = new ReportItemAdapter(this, id, mItems);
+		setListAdapter(mItemAdapter); 
 	}
-	 
-	public class ReportExpandItemAdapter extends BaseExpandableListAdapter {
-        private String[] groups = { "People Names", "Dog Names", "Cat Names", "Fish Names" };
-        private String[][] children = {
-                { "Arnold", "Barry", "Chuck", "David" },
-                { "Ace", "Bandit", "Cha-Cha", "Deuce" },
-                { "Fluffy", "Snuggles" },
-                { "Goldy", "Bubbles" }
-        };
+	
+	public class ReportItemAdapter extends ArrayAdapter<FinanceItem> {
+    	int resource;
 
-		public Object getChild(int groupPosition, int childPosition) {
-			return children[groupPosition][childPosition];
-		}
-
-		public long getChildId(int groupPosition, int childPosition) {
-			return childPosition;
-		}
-
-		public View getChildView(int groupPosition, int childPosition,
-				boolean isLastChild, View convertView, ViewGroup parent) {
-			TextView textView = getGenericView();
-			textView.setText(getChild(groupPosition, childPosition).toString());
-			return textView;
-		}
-
-		public int getChildrenCount(int groupPosition) {
-			return children[groupPosition].length;
-		}
-
-		public Object getGroup(int groupPosition) {
-			return groups[groupPosition];
-		}
-
-		public int getGroupCount() {
-			return groups.length;
-		}
-
-		public long getGroupId(int groupPosition) {
-			return groupPosition;
-		}
-
-		public View getGroupView(int groupPosition, boolean isExpanded,
-				View convertView, ViewGroup parent) {
-            TextView textView = getGenericView();
-            textView.setText(getGroup(groupPosition).toString());
-            return textView;
-		}
-
-		public boolean hasStableIds() {
-			return false;
-		}
-
-		public boolean isChildSelectable(int groupPosition, int childPosition) {
-//			return true;
-			return false;
+		public ReportItemAdapter(Context context, int resource,
+				 List<FinanceItem> objects) {
+			super(context, resource, objects);
+			this.resource = resource;
 		}
 		
-		 public TextView getGenericView() {
-	            // Layout parameters for the ExpandableListView
-	            AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-	                    ViewGroup.LayoutParams.FILL_PARENT, 64);
-
-	            TextView textView = new TextView(ReportExpandBaseLayout.this);
-	            textView.setLayoutParams(lp);
-	            // Center the text vertically
-	            textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-	            // Set the text starting position
-	            textView.setPadding(36, 0, 0, 0);
-	            return textView;
-	        }
-
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			LinearLayout reportListView;
+			FinanceItem item = (FinanceItem)getItem(position);
+			
+			if (convertView == null) {
+				reportListView = new LinearLayout(getContext());
+				String inflater = Context.LAYOUT_INFLATER_SERVICE;
+				LayoutInflater li;
+				li = (LayoutInflater)getContext().getSystemService(inflater);
+				li.inflate(resource, reportListView, true);
+			}
+			else {
+				reportListView = (LinearLayout)convertView;
+			}
+			
+			setListViewText(item, reportListView);
+			setDeleteBtnListener(reportListView, item.getID(), position);
+			
+			return reportListView;
+		}
     }
 	
 	Button.OnClickListener deleteBtnListener = new  Button.OnClickListener(){
@@ -171,7 +136,7 @@ public abstract class ReportExpandBaseLayout extends ExpandableListActivity  {
 			}
 			else {
 				mItems.remove(position.intValue());
-//				mItemAdapter.notifyDataSetChanged();
+				mItemAdapter.notifyDataSetChanged();
 			}
 		}
 	};
@@ -185,12 +150,11 @@ public abstract class ReportExpandBaseLayout extends ExpandableListActivity  {
     			
     			if (mLatestSelectPosition != -1 && item != null) {
     				mItems.set(mLatestSelectPosition, item);
- //   				mItemAdapter.notifyDataSetChanged();
+    				mItemAdapter.notifyDataSetChanged();
     			}
     		}
     	}
     	
     	super.onActivityResult(requestCode, resultCode, data);
     }
-	
 }
