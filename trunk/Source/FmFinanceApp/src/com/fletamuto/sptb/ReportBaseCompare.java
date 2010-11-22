@@ -47,8 +47,10 @@ public abstract class ReportBaseCompare extends FmBaseActivity {
 		
 		ArrayList<Long> pieGraphValues = new ArrayList<Long>();
 		
-		pieGraphValues.add((long)100);
-		pieGraphValues.add((long)100);
+		int itemSize  = mFinanceItems.size();
+		for (int index = 0; index < itemSize; index++) {
+			pieGraphValues.add(mFinanceItems.get(index).getAmount());
+		}
        
 		pieGraph = (PieGraph) findViewById (R.id.pgraph);
 		pieGraph.setItemValues(pieGraphValues);
