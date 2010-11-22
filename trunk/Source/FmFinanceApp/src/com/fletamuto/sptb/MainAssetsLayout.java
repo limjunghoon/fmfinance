@@ -1,5 +1,7 @@
 package com.fletamuto.sptb;
 
+import java.util.ArrayList;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -12,8 +14,6 @@ import com.fletamuto.common.control.fmgraph.PieGraph;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
-
-import java.util.ArrayList;
 
 public class MainAssetsLayout extends FmBaseActivity {
 	private long monthTotalAssets = 0L;

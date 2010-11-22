@@ -30,8 +30,8 @@
 			</LinearLayout>
 		</ScrollView>
 		<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/LLDayofMonth" android:orientation="vertical">
-			<ListView android:layout_height="wrap_content" android:id="@+id/LVIncomeDayOfMonth" android:layout_width="fill_parent">
-			</ListView>
-		</LinearLayout>
+			
+		<ExpandableListView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ELVReportDayOfMonth"></ExpandableListView></LinearLayout>
 	</FrameLayout>
+
 </LinearLayout>

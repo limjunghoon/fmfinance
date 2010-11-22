@@ -1,21 +1,28 @@
 package com.fletamuto.sptb;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.fletamuto.sptb.ReportExpandBaseLayout.ReportExpandableListAdapter;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -23,10 +30,13 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 	
 	protected int mMonth;
 	protected int mYear;
-	protected ItemAdapter mAdapterItem;
+	protected ReportExpandableListAdapter mAdapterItem;
+	protected ArrayList<ArrayList<FinanceItem>> mChildItems = new ArrayList<ArrayList<FinanceItem>>();
+	protected ArrayList<String> mParentItems = new ArrayList<String>();
 	
-	protected abstract void setAdapterList();
+//	protected abstract void setAdapterList();
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
+	protected abstract int getChildLayoutResourceID();
 	
 	
 	public int getMonth() {
@@ -54,6 +64,7 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 		mFinanceItems = DBMgr.getItems(mType, mYear, mMonth);
 		mTotalAmout = DBMgr.getTotalAmountMonth(mType, mYear, mMonth);
 		updateMapCategory();
+		updateReportItem();
 	}
     
     @Override
@@ -126,49 +137,165 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 		updateBarGraph();
 		addButtonInLayout();
 		
-		setAdapterList();
+		setExpandListAdapter();
 	}
 	
 	
-	
-	protected void setAdapterList(int resource) {
-    	if (mFinanceItems == null) return;
+	protected void setExpandListAdapter() {
+		if (mFinanceItems == null) return;
         
-    	final ListView listCard = (ListView)findViewById(R.id.LVIncomeDayOfMonth);
-    	mAdapterItem = new ItemAdapter(this, resource, mFinanceItems);
-    	listCard.setAdapter(mAdapterItem);
-    	
-    	listCard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-			}
-		});
-    }
+    	ExpandableListView elvDayofMonthItems = (ExpandableListView)findViewById(R.id.ELVReportDayOfMonth);
+    	mAdapterItem = new ReportExpandableListAdapter(ReportBaseMonthCompare.this);
+    	elvDayofMonthItems.setAdapter(mAdapterItem);
+        
+        int groupCount = mAdapterItem.getGroupCount();
+        for (int index = 0; index < groupCount; index++) {
+        	elvDayofMonthItems.expandGroup(index);
+        }
+	}
 	
-	public class ItemAdapter extends ArrayAdapter<FinanceItem> {
-    	private int mResource;
-    	private LayoutInflater mInflater;
+	public class ReportExpandableListAdapter extends BaseExpandableListAdapter {
+		private Context mContext;
+        
+        ReportExpandableListAdapter(Context context) {
+        	mContext = context;
+        }
+        
+        public Object getChild(int groupPosition, int childPosition) {
+            return mChildItems.get(groupPosition).get(childPosition);
+        }
 
-		public ItemAdapter(Context context, int resource,
-				 List<FinanceItem> objects) {
-			super(context, resource, objects);
-			this.mResource = resource;
-			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		}
-		
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			FinanceItem item = (FinanceItem)getItem(position);
+        public long getChildId(int groupPosition, int childPosition) {
+            return childPosition;
+        }
+
+        public int getChildrenCount(int groupPosition) {
+            return mChildItems.get(groupPosition).size();
+        }
+
+        public TextView getGenericView() {
+            // Layout parameters for the ExpandableListView
+            AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
+                    ViewGroup.LayoutParams.FILL_PARENT, 64);
+
+            TextView textView = new TextView(mContext);
+            textView.setLayoutParams(lp);
+            // Center the text vertically
+            textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+            // Set the text starting position
+            textView.setPadding(36, 0, 0, 0);
+            textView.setTextColor(Color.MAGENTA);
+            return textView;
+        }
+        
+        public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+                View convertView, ViewGroup parent) {
+        	
+        	LinearLayout reportListView;
+			FinanceItem item = mChildItems.get(groupPosition).get(childPosition);
 			
 			if (convertView == null) {
-				convertView = mInflater.inflate(mResource, parent, false);
-				
-				setListViewText(item, convertView);	
+				reportListView = new LinearLayout(mContext);
+				reportListView.setPadding(36, 0, 0, 0);
+				String inflater = Context.LAYOUT_INFLATER_SERVICE;
+				LayoutInflater li;
+				li = (LayoutInflater)mContext.getSystemService(inflater);
+				li.inflate(getChildLayoutResourceID(), reportListView, true);
 			}
-			return convertView;
-		}
+			else {
+				reportListView = (LinearLayout)convertView;
+			}
+			
+			setListViewText(item, reportListView);
+//			setDeleteBtnListener(reportListView, item.getID(), groupPosition, childPosition);
+			
+			return reportListView;
+        }
+
+        public Object getGroup(int groupPosition) {
+            return mParentItems.get(groupPosition);
+        }
+
+        public int getGroupCount() {
+            return mParentItems.size();
+        }
+
+        public long getGroupId(int groupPosition) {
+            return groupPosition;
+        }
+
+        public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
+                ViewGroup parent) {
+            TextView textView = getGenericView();
+            textView.setText(getGroup(groupPosition).toString());
+            return textView;
+        }
+
+        public boolean isChildSelectable(int groupPosition, int childPosition) {
+            return true;
+        }
+
+        public boolean hasStableIds() {
+            return true;
+        }
     }
+	
+	public void updateReportItem() {
+		mParentItems.clear();
+		mChildItems.clear();
+		
+		int itemSize = mFinanceItems.size();
+		for (int index = 0; index < itemSize; index++) {
+			FinanceItem item = mFinanceItems.get(index);
+			
+			String createDate = item.getCreateDateString();
+			int findIndex = findItemFromParentItem(createDate);
+			if (findIndex != -1) {
+				mChildItems.get(findIndex).add(item);
+			}
+			else {
+				mParentItems.add(createDate);
+				ArrayList<FinanceItem> childItems = new ArrayList<FinanceItem>();
+				childItems.add(item);
+				mChildItems.add(childItems);
+				
+			}
+		}
+	}
+	
+	public int findItemFromParentItem(String date) {
+		int size = mParentItems.size();
+		for (int index = 0; index < size; index++) {
+			if (mParentItems.get(index).compareTo(date) == 0) {
+				return index;
+			}
+		}
+		return -1;
+	}
+	
+//	public class ItemAdapter extends ArrayAdapter<FinanceItem> {
+//    	private int mResource;
+//    	private LayoutInflater mInflater;
+//
+//		public ItemAdapter(Context context, int resource,
+//				 List<FinanceItem> objects) {
+//			super(context, resource, objects);
+//			this.mResource = resource;
+//			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//		}
+//		
+//		@Override
+//		public View getView(int position, View convertView, ViewGroup parent) {
+//			FinanceItem item = (FinanceItem)getItem(position);
+//			
+//			if (convertView == null) {
+//				convertView = mInflater.inflate(mResource, parent, false);
+//				
+//				setListViewText(item, convertView);	
+//			}
+//			return convertView;
+//		}
+//    }
 	
 	public void moveNextMonth() {
 		if (12 == mMonth) {

@@ -51,10 +51,7 @@ public class ReportMonthCompareExpenseSubLayout extends ReportBaseMonthCompare {
 		super.setTitleBtn();
 	}
 
-	@Override
-	protected void setAdapterList() {
-		setAdapterList(R.layout.report_list_expense);
-	}
+
 
 	@Override
     protected void setListViewText(FinanceItem financeItem, View convertView) {
@@ -75,5 +72,10 @@ public class ReportMonthCompareExpenseSubLayout extends ReportBaseMonthCompare {
 		intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, getMonth());
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, categoryAmount.getCategoryID());
 		startActivity(intent);
+	}
+	
+	@Override
+	protected int getChildLayoutResourceID() {
+		return R.layout.report_list_expense_expand;
 	}
 }

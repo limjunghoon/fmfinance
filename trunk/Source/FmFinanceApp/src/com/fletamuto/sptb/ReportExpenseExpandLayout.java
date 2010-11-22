@@ -2,9 +2,9 @@ package com.fletamuto.sptb;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.ExpenseItem;
@@ -17,37 +17,32 @@ public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        if (getItemsFromDB(ExpenseItem.TYPE) == false) {
-        	return;
-        }
-        
-        setListAdapter(R.layout.report_list_expense);
-    }
-    
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-  //  	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
-  //  	startEditInputActivity(InputExpenseLayout.class, item.getID());
-    	super.onListItemClick(l, v, position, id);
+        updateExpandList();
     }
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	ExpenseItem item = (ExpenseItem)financeItem;
 		
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListDate)).setText("날짜 : " + item.getCreateDateString());			
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListMemo)).setText("메모 : " + item.getMemo());
 		String categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText("분류 : " + categoryText);
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListTag)).setText("태그 : " + item.getTag().getName());
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListPaymentMethod)).setText("결제 : " + item.getPaymentMethod().getText());
 	}
     
-    protected void setDeleteBtnListener(View convertView, int itemId, int position) {
+    protected void setDeleteBtnListener(final View convertView, final int id, final int groupPosition, final int childPosition) {
     	Button btnDelete = (Button)convertView.findViewById(R.id.BtnReportExpenseDelete);
-		btnDelete.setTag(R.id.delete_id, new Integer(itemId));
-		btnDelete.setTag(R.id.delete_position, new Integer(position));
-		btnDelete.setOnClickListener(deleteBtnListener);
-    }
+    	
+		btnDelete.setOnClickListener(new View.OnClickListener() {
+	
+			public void onClick(View v) {
+				if (DBMgr.deleteItem(ExpenseItem.TYPE, id) == 0 ) {
+					Log.e(LogTag.LAYOUT, "can't delete Item  ID : " + id);
+				}
+
+				updateExpandList();
+			}
+		});
+	}
     
     @Override
 	protected int deleteItemToDB(int id) {
@@ -58,19 +53,12 @@ public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
 	protected FinanceItem getItemInstance(int id) {
 		return DBMgr.getItem(ExpenseItem.TYPE, id);
 	}
+
+	@Override
+	protected int getChildLayoutResourceID() {
+		return R.layout.report_list_expense_expand;
+	}
 	
-	protected boolean getItemsFromDB(int itemType) {
-		if (mYear != -1 && mMonth != -1 && mCategoryID != -1) {
-			mItems = DBMgr.getItemsFromSubCategoryID(itemType, mCategoryID, mYear, mMonth);
-		}
-		else {
-			mItems = DBMgr.getAllItems(itemType);
-		}
-    	
-        if (mItems == null) {
-        	return false;
-        }
-        return true;
-    }
+
 
 }

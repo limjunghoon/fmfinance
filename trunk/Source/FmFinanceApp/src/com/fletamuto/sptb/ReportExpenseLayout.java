@@ -61,18 +61,4 @@ public class ReportExpenseLayout extends ReportBaseLayout {
 		return DBMgr.getItem(ExpenseItem.TYPE, id);
 	}
 	
-	protected boolean getItemsFromDB(int itemType) {
-		if (mYear != -1 && mMonth != -1 && mCategoryID != -1) {
-			mItems = DBMgr.getItemsFromSubCategoryID(itemType, mCategoryID, mYear, mMonth);
-		}
-		else {
-			mItems = DBMgr.getAllItems(itemType);
-		}
-    	
-        if (mItems == null) {
-        	return false;
-        }
-        return true;
-    }
-
 }
