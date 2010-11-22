@@ -44,9 +44,14 @@ public abstract class ReportBaseCompare extends FmBaseActivity {
 
 	protected void updateBarGraph() {
 		final PieGraph pieGraph;	
+		
+		ArrayList<Long> pieGraphValues = new ArrayList<Long>();
+		
+		pieGraphValues.add((long)100);
+		pieGraphValues.add((long)100);
        
 		pieGraph = (PieGraph) findViewById (R.id.pgraph);
-		pieGraph.setItemValues(new long[] {100, 100});
+		pieGraph.setItemValues(pieGraphValues);
 		pieGraph.setOnTouchListener(new View.OnTouchListener() {
 
 			public boolean onTouch(View arg0, MotionEvent event) {

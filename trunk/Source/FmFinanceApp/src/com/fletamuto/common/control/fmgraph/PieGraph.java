@@ -8,6 +8,8 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class PieGraph extends View {
 	
 	private int centerPointX = getMeasuredWidth()/2; //원점 X
@@ -72,15 +74,15 @@ public class PieGraph extends View {
 	}
 	
 	//아이템 값 설정
-	public void setItemValues (long[] item_Values) {
+	public void setItemValues (ArrayList<Long> item_Values) {
 
-		pieGraphItem = new PieGraphItem[item_Values.length];
+		pieGraphItem = new PieGraphItem[item_Values.size()];
 		
 		long sum = 0;
 		
-		for (int i=0; i<item_Values.length; i++) {
+		for (int i=0; i<item_Values.size(); i++) {
 			pieGraphItem[i] = new PieGraphItem();
-			pieGraphItem[i].itemValue = item_Values[i];
+			pieGraphItem[i].itemValue = item_Values.get(i);
 			sum += pieGraphItem[i].itemValue;	
 			
 			pieGraphItem[i].itemColor = defaultGraphColors[i%10];
@@ -92,17 +94,17 @@ public class PieGraph extends View {
 		}		
 	}
 	
-	public void setItemValuesAndColors (long[] item_Values, int[] item_Colors) {
-		pieGraphItem = new PieGraphItem[item_Values.length];
+	public void setItemValuesAndColors (ArrayList<Long> item_Values, ArrayList<Integer> item_Colors) {
+		pieGraphItem = new PieGraphItem[item_Values.size()];
 		
 		long sum = 0;
 		
-		for (int i=0; i<item_Values.length; i++) {
+		for (int i=0; i<item_Values.size(); i++) {
 			pieGraphItem[i] = new PieGraphItem();
-			pieGraphItem[i].itemValue = item_Values[i];
+			pieGraphItem[i].itemValue = item_Values.get(i);
 			sum += pieGraphItem[i].itemValue;	
 			
-			pieGraphItem[i].itemColor = item_Colors[i];
+			pieGraphItem[i].itemColor = item_Colors.get(i);
 			pieGraphItem[i].itemIDX = i;
 		}
 		
