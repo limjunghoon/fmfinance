@@ -1,5 +1,6 @@
 package com.fletamuto.sptb;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.content.Intent;
@@ -102,9 +103,14 @@ public class ReportMonthCompareExpenseToIncomeLayout extends FmBaseActivity {
 
 	private void updateBarGraph() {
 		final PieGraph pieGraph;	
+		
+		ArrayList<Long> pieGraphValues = new ArrayList<Long>();
+		
+		pieGraphValues.add(monthTotalIncome);
+		pieGraphValues.add(monthTotalExpense);
        
 		pieGraph = (PieGraph) findViewById (R.id.pgraph);
-		pieGraph.setItemValues(new long[] {monthTotalIncome, monthTotalExpense});
+		pieGraph.setItemValues(pieGraphValues);
 		pieGraph.setOnTouchListener(new View.OnTouchListener() {
 
 			public boolean onTouch(View arg0, MotionEvent event) {

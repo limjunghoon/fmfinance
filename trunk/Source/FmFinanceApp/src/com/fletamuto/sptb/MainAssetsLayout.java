@@ -13,6 +13,8 @@ import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 
+import java.util.ArrayList;
+
 public class MainAssetsLayout extends FmBaseActivity {
 	private long monthTotalAssets = 0L;
 	private long monthTotalLiability = 0L;
@@ -76,10 +78,14 @@ public class MainAssetsLayout extends FmBaseActivity {
 	}
 
 	private void updateBarGraph() {
-		final PieGraph pieGraph;	
+		final PieGraph pieGraph;
+		ArrayList<Long> pieGraphValues = new ArrayList<Long>();
+		
+		pieGraphValues.add(monthTotalAssets);
+		pieGraphValues.add(monthTotalLiability);
        
 		pieGraph = (PieGraph) findViewById (R.id.pgraph);
-		pieGraph.setItemValues(new long[] {monthTotalAssets, monthTotalLiability});
+		pieGraph.setItemValues(pieGraphValues);
 		pieGraph.setOnTouchListener(new View.OnTouchListener() {
 
 			public boolean onTouch(View arg0, MotionEvent event) {
