@@ -1,6 +1,7 @@
 package com.fletamuto.sptb;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,25 +30,67 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 	protected int mMonth = -1;
 	protected int mYear = -1;
 	protected int mCategoryID = -1;
+	protected int mSubCategoryID = -1;
+	protected String mCategoryName;
 	
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
 	protected abstract void setDeleteBtnListener(View convertView, int itemId, int groupPosition, int childPosition);
-	protected abstract int	deleteItemToDB(int id);
-	protected abstract FinanceItem getItemInstance(int id);
+//	protected abstract int	deleteItemToDB(int id);
+//	protected abstract FinanceItem getItemInstance(int id);
 	protected abstract int getChildLayoutResourceID();
+	protected abstract int getItemType();
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.report_expand_list, true);
+        setButtonClickListener();
         initialize();
     }
-	
+
 	public void initialize() {
 		mYear = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_YEAR, -1);
 		mMonth = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_MONTH, -1);
 		mCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1);
+		mSubCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_SUB_ID, -1);
+		mCategoryName = getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME);
+		
+		if (isDisplayMonthOfYear() == false) {
+			LinearLayout llMonveMonth = (LinearLayout) findViewById(R.id.LLMoveMonth);
+			llMonveMonth.setVisibility(View.GONE);
+		}
 	}
+	
+	@Override
+	protected void setTitleBtn() {
+		if (isDisplayMainCategory() || isDisplaySubCategory()) {
+			setTitle(mCategoryName);
+		}
+		else {
+			setTitle("목록");
+		}
+		super.setTitleBtn();
+	}
+	
+	private void setButtonClickListener() {
+		Button btnPreviousMonth = (Button)findViewById(R.id.BtnPreviusMonth);
+		Button btnNextMonth = (Button)findViewById(R.id.BtnNextMonth);
+		
+		btnPreviousMonth.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				movePreviousMonth();
+			}
+		});
+		
+		btnNextMonth.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				moveNextMonth();
+			}
+		});
+	}
+	
 	
 	public void setExpandListAdapter() {
 		ExpandableListView elvItems = (ExpandableListView)findViewById(R.id.ELVBase);
@@ -81,7 +125,7 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
         public TextView getGenericView() {
             // Layout parameters for the ExpandableListView
             AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-                    ViewGroup.LayoutParams.FILL_PARENT, 64);
+                    ViewGroup.LayoutParams.FILL_PARENT, 35);
 
             TextView textView = new TextView(mContext);
             textView.setLayoutParams(lp);
@@ -90,6 +134,7 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
             // Set the text starting position
             textView.setPadding(36, 0, 0, 0);
             textView.setTextColor(Color.MAGENTA);
+            textView.setTextSize(18);
             return textView;
         }
         
@@ -146,11 +191,14 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
     }
 	
 	protected boolean getItemsFromDB(int itemType) {
-		if (mYear != -1 && mMonth != -1 && mCategoryID != -1) {
+		if (isDisplayMonthOfYear() && isDisplayMainCategory()) {
 			mItems = DBMgr.getItemsFromCategoryID(itemType, mCategoryID, mYear, mMonth);
 		}
-		else if (mCategoryID != -1) {
+		else if (isDisplayMainCategory()) {
 			mItems = DBMgr.getItemsFromCategoryID(itemType, mCategoryID);
+		}
+		else if (isDisplayMonthOfYear() && isDisplaySubCategory()) {
+			mItems = DBMgr.getItemsFromSubCategoryID(itemType, mSubCategoryID, mYear, mMonth);
 		}
 		else {
 			mItems = DBMgr.getAllItems(itemType);
@@ -165,6 +213,18 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
         return true;
     }
 	
+	protected boolean isDisplayMonthOfYear() {
+		return (mYear != -1 && mMonth != -1);
+	}
+	
+	protected boolean isDisplayMainCategory() {
+		return (mCategoryID != -1);
+	}
+	
+	protected boolean isDisplaySubCategory() {
+		return (mSubCategoryID != -1);
+	}
+	
 	public void updateReportItem() {
 		mParentItems.clear();
 		mChildItems.clear();
@@ -173,18 +233,26 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 		for (int index = 0; index < itemSize; index++) {
 			FinanceItem item = mItems.get(index);
 			
-			String createDate = item.getCreateDateString();
-			int findIndex = findItemFromParentItem(createDate);
+			String comapre = getCompareText(item);
+			int findIndex = findItemFromParentItem(comapre);
 			if (findIndex != -1) {
 				mChildItems.get(findIndex).add(item);
 			}
 			else {
-				mParentItems.add(createDate);
+				mParentItems.add(comapre);
 				ArrayList<FinanceItem> childItems = new ArrayList<FinanceItem>();
 				childItems.add(item);
 				mChildItems.add(childItems);
-				
 			}
+		}
+	}
+	
+	protected String getCompareText(final FinanceItem item) {
+		if (mMonth == -1 || mYear == -1) {
+			return item.getCreateDateString();
+		}
+		else {
+			return String.format("%d일", item.getCreateDate().get(Calendar.DAY_OF_MONTH));
 		}
 	}
 	
@@ -199,10 +267,39 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 	}
 	
 	public void updateExpandList() {
-		if (getItemsFromDB(ExpenseItem.TYPE) == false) {
+		if (getItemsFromDB(getItemType()) == false) {
         	return;
         }
         
         setExpandListAdapter();
+	}
+	
+	public void moveNextMonth() {
+		if (12 == mMonth) {
+			mYear++;
+			mMonth = 1;
+		}
+		else {
+			mMonth++;
+		}
+		
+		updateChildView();
+	}
+	
+	public void movePreviousMonth() {
+		if (1 == mMonth) {
+			mYear--;
+			mMonth = 12;
+		}
+		else {
+			mMonth--;
+		}
+		updateChildView();
+	}
+	
+	public void updateChildView() {
+		TextView tvMonth = (TextView)findViewById(R.id.TVCurrentMonth);
+		tvMonth.setText(String.format("%d년 %d월", mYear, mMonth));
+		updateExpandList();
 	}
 }

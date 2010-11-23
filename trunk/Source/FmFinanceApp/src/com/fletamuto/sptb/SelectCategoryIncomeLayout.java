@@ -40,10 +40,9 @@ public class SelectCategoryIncomeLayout extends InputAfterSelectCategoryLayout {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_ADD_INCOME) {
 			if (resultCode == RESULT_OK) {
+				Intent intent = new Intent();
+				setResult(RESULT_OK, intent);
 				finish();
-				Intent intent = new Intent(SelectCategoryIncomeLayout.this, ReportIncomeLayout.class);
-				startActivity(intent);
-				
     		}
     	}
 		super.onActivityResult(requestCode, resultCode, data);
