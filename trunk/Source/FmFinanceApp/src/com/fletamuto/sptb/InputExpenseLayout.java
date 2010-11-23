@@ -52,7 +52,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     
     protected void saveItem() {
     	if (mInputMode == InputMode.ADD_MODE) {
-    		if (saveNewItem(ReportExpenseLayout.class) == true) {
+    		if (saveNewItem(null) == true) {
     			saveRepeat();
     		}
     	}
@@ -138,13 +138,11 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     			mExpensItem.setSubCategory(data.getIntExtra("SUB_CATEGORY_ID", -1), data.getStringExtra("SUB_CATEGORY_NAME"));
     		}
     	}
-		
 		else if (requestCode == ACT_TAG_SELECTED) {
 			if (resultCode == RESULT_OK) {
     			updateTag(data.getIntExtra(MsgDef.ExtraNames.TAG_ID, -1), data.getStringExtra(MsgDef.ExtraNames.TAG_NAME));
     		}
 		}
-		
 		else if (requestCode == ACT_CARD_SELECT) {
 			if (resultCode == RESULT_OK) {
     			int selectedID = data.getIntExtra(MsgDef.ExtraNames.CARD_ID, -1);
@@ -160,7 +158,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     	        	
     	        	paymentMethod.setInstallmentPlan(installmentPlan);
     			}
-    			
     			updateCard(selectedCard);
     		}
 			else {

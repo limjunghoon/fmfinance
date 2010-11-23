@@ -35,8 +35,8 @@ public class ReportMonthCompareExpenseSubLayout extends ReportBaseMonthCompare {
 		for (int index = 0; index < itemSize; index++) {
 			mTotalAmout += mFinanceItems.get(index).getAmount();
 		}
-//		mTotalAmout = DBMgr.getTotalAmountMonth(mType, mYear, mMonth);
 		updateMapCategory();
+		updateReportItem();
 	}
 	
 	public Category getCategory(FinanceItem item) {
@@ -57,20 +57,18 @@ public class ReportMonthCompareExpenseSubLayout extends ReportBaseMonthCompare {
     protected void setListViewText(FinanceItem financeItem, View convertView) {
 		ExpenseItem item = (ExpenseItem)financeItem;
 		
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListDate)).setText("날짜 : " + item.getCreateDateString());			
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListMemo)).setText("메모 : " + item.getMemo());
 		String categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText("분류 : " + categoryText);
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListTag)).setText("태그 : " + item.getTag().getName());
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListPaymentMethod)).setText("결제 : " + item.getPaymentMethod().getText());
 	}
 	
 	protected void onClickCategoryButton(CategoryAmount categoryAmount) {
-		Intent intent = new Intent(ReportMonthCompareExpenseSubLayout.this, ReportExpenseLayout.class);
+		Intent intent = new Intent(ReportMonthCompareExpenseSubLayout.this, ReportExpenseExpandLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, getYear());
 		intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, getMonth());
-		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, categoryAmount.getCategoryID());
+		intent.putExtra(MsgDef.ExtraNames.CATEGORY_SUB_ID, categoryAmount.getCategoryID());
+		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, categoryAmount.getName());
 		startActivity(intent);
 	}
 	

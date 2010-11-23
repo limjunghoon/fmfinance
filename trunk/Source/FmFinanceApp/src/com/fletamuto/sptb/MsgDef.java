@@ -33,6 +33,7 @@ public final class MsgDef {
 	
 	public static final class ExtraNames {
 		public static final String CATEGORY_ID = "CATEGORY_ID";
+		public static final String CATEGORY_SUB_ID = "CATEGORY_SUB_ID";
 		public static final String CATEGORY_NAME = "CATEGORY_NAME";
 		public static final String TAG_ID = "TAG_ID";
 		public static final String TAG_NAME = "TAG_NAME";

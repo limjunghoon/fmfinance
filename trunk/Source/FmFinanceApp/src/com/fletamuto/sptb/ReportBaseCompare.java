@@ -23,7 +23,6 @@ public abstract class ReportBaseCompare extends FmBaseActivity {
 	protected long mTotalAmout = 0L;
 	protected  Map<Integer, CategoryAmount> mCategoryAmount = new HashMap<Integer, CategoryAmount>();
 	
-	
 	protected abstract void onClickCategoryButton(CategoryAmount categoryAmount);
 	protected abstract void updateChildView();
 	

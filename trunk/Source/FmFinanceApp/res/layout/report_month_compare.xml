@@ -31,7 +31,8 @@
 		</ScrollView>
 		<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/LLDayofMonth" android:orientation="vertical">
 			
-		<ExpandableListView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ELVReportDayOfMonth"></ExpandableListView></LinearLayout>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVDayOfMonthTitle" android:gravity="center" android:textSize="20sp"></TextView><ExpandableListView android:layout_height="wrap_content" android:id="@+id/ELVReportDayOfMonth" android:layout_width="fill_parent"></ExpandableListView></LinearLayout>
 	</FrameLayout>
+
 
 </LinearLayout>

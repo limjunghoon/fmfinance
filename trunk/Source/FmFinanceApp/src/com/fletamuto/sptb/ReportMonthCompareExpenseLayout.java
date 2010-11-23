@@ -13,7 +13,6 @@ public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-    	
 
     }
     
@@ -26,11 +25,8 @@ public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
 	@Override
 	protected void setTitleBtn() {
     	setTitle("¿ù ÁöÃâ");
-
 		super.setTitleBtn();
 	}
-
-
 
 	@Override
     protected void setListViewText(FinanceItem financeItem, View convertView) {
@@ -55,5 +51,4 @@ public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
 	protected int getChildLayoutResourceID() {
 		return R.layout.report_list_expense_expand;
 	}
-
 }

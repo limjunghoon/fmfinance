@@ -2,7 +2,6 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,17 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.fletamuto.sptb.ReportExpandBaseLayout.ReportExpandableListAdapter;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -34,10 +29,8 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 	protected ArrayList<ArrayList<FinanceItem>> mChildItems = new ArrayList<ArrayList<FinanceItem>>();
 	protected ArrayList<String> mParentItems = new ArrayList<String>();
 	
-//	protected abstract void setAdapterList();
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
 	protected abstract int getChildLayoutResourceID();
-	
 	
 	public int getMonth() {
 		return mMonth;
@@ -59,7 +52,6 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
     	updateChildView();
     }
     
-    
     protected void getData() {
 		mFinanceItems = DBMgr.getItems(mType, mYear, mMonth);
 		mTotalAmout = DBMgr.getTotalAmountMonth(mType, mYear, mMonth);
@@ -72,7 +64,6 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
     	mMonth = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_MONTH, Calendar.getInstance().get(Calendar.MONTH)+1);
     	mYear = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_YEAR, Calendar.getInstance().get(Calendar.YEAR));
     }
-    
     
 	private void setButtonClickListener() {
 		final ToggleButton tbMonth = (ToggleButton)findViewById(R.id.TBMonth);
@@ -123,6 +114,8 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 		tvMonth.setText(String.format("%d년 %d월", mYear, mMonth));
 		TextView tvTotalAmount = (TextView)findViewById(R.id.TVTotalAmount);
 		tvTotalAmount.setText(String.format("금액 : %,d", mTotalAmout));
+		TextView tvDayOfMonthTitle = (TextView)findViewById(R.id.TVDayOfMonthTitle);
+		tvDayOfMonthTitle.setText(String.format("%d년 %d월", mYear, mMonth));
 		
 		monthLayout.setVisibility(View.INVISIBLE);
 		dayOfMonthLayout.setVisibility(View.INVISIBLE);
@@ -176,7 +169,7 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
         public TextView getGenericView() {
             // Layout parameters for the ExpandableListView
             AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-                    ViewGroup.LayoutParams.FILL_PARENT, 64);
+                    ViewGroup.LayoutParams.FILL_PARENT, 35);
 
             TextView textView = new TextView(mContext);
             textView.setLayoutParams(lp);
@@ -184,6 +177,7 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
             textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
             // Set the text starting position
             textView.setPadding(36, 0, 0, 0);
+            textView.setTextSize(18);
             textView.setTextColor(Color.MAGENTA);
             return textView;
         }
@@ -248,18 +242,26 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 		for (int index = 0; index < itemSize; index++) {
 			FinanceItem item = mFinanceItems.get(index);
 			
-			String createDate = item.getCreateDateString();
-			int findIndex = findItemFromParentItem(createDate);
+			String comapre = getCompareText(item);
+			int findIndex = findItemFromParentItem(comapre);
 			if (findIndex != -1) {
 				mChildItems.get(findIndex).add(item);
 			}
 			else {
-				mParentItems.add(createDate);
+				mParentItems.add(comapre);
 				ArrayList<FinanceItem> childItems = new ArrayList<FinanceItem>();
 				childItems.add(item);
 				mChildItems.add(childItems);
-				
 			}
+		}
+	}
+	
+	protected String getCompareText(final FinanceItem item) {
+		if (mMonth == -1 || mYear == -1) {
+			return item.getCreateDateString();
+		}
+		else {
+			return String.format("%d일", item.getCreateDate().get(Calendar.DAY_OF_MONTH));
 		}
 	}
 	
@@ -272,30 +274,6 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 		}
 		return -1;
 	}
-	
-//	public class ItemAdapter extends ArrayAdapter<FinanceItem> {
-//    	private int mResource;
-//    	private LayoutInflater mInflater;
-//
-//		public ItemAdapter(Context context, int resource,
-//				 List<FinanceItem> objects) {
-//			super(context, resource, objects);
-//			this.mResource = resource;
-//			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//		}
-//		
-//		@Override
-//		public View getView(int position, View convertView, ViewGroup parent) {
-//			FinanceItem item = (FinanceItem)getItem(position);
-//			
-//			if (convertView == null) {
-//				convertView = mInflater.inflate(mResource, parent, false);
-//				
-//				setListViewText(item, convertView);	
-//			}
-//			return convertView;
-//		}
-//    }
 	
 	public void moveNextMonth() {
 		if (12 == mMonth) {
