@@ -13,6 +13,7 @@ import android.util.Log;
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.AssetsSavingsItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
@@ -563,11 +564,29 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("expiry_date", mDeposit.getExpriyDateString());
 		rowItem.put("account", mDeposit.getAccount().getID());
 		long extend = db.insert("assets_deposit", null, rowItem);
+		db.close();
 		if (extend == -1){
 			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND DEPOSIT");
 			return -1;
 		}
 		mDeposit.setExtendID((int)extend);
 		return addItem(mDeposit);
+	}
+
+	public long addExtendSavings(AssetsSavingsItem mSavings) {
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("expiry_date", mSavings.getExpriyDateString());
+		rowItem.put("account", mSavings.getAccount().getID());
+		rowItem.put("payment", mSavings.getPayment());
+		long extend = db.insert("assets_savings", null, rowItem);
+		db.close();
+		if (extend == -1){
+			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND DEPOSIT");
+			return -1;
+		}
+		mSavings.setExtendID((int)extend);
+		return addItem(mSavings);
 	}
 }
