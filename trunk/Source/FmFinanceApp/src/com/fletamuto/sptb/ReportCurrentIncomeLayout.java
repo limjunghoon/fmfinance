@@ -1,16 +1,20 @@
 package com.fletamuto.sptb;
 
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
-import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
+import com.fletamuto.sptb.util.FinanceDataFormat;
 
 public class ReportCurrentIncomeLayout extends ReportBaseLayout {
 
@@ -19,22 +23,48 @@ public class ReportCurrentIncomeLayout extends ReportBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        if (getItemsFromDB(IncomeItem.TYPE, FinanceCurrentDate.getDate()) == false) {
-        	return;
-        }
-        
-        setListAdapter(R.layout.report_list_income);
     }
     
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    protected void setTitleBtn() {
+    	setTitle("수입");
+    	super.setTitleBtn();
+    }
+    
+    @Override
+    public void initialize() {
+    	TextView tvCurrentDay = (TextView)findViewById(R.id.TVCurrentDay);
+    	tvCurrentDay.setTextColor(Color.MAGENTA);
+    	
+    	super.initialize();
+    }
+    
+    protected void updateChildView() {
+    	LinearLayout llMoveDay = (LinearLayout) findViewById(R.id.LLMoveDay);
+		llMoveDay.setVisibility(View.VISIBLE);
+		
+    	TextView tvCurrentDay = (TextView)findViewById(R.id.TVCurrentDay);
+    	tvCurrentDay.setText(FinanceDataFormat.getDotDateFormat(FinanceCurrentDate.getTime()));
+    	tvCurrentDay.setTextColor(Color.MAGENTA);
+    	
+    }
+    
+    @Override
+	protected void onClickListItem(AdapterView<?> parent, View view,
+			int position, long id) {
     	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
     	startEditInputActivity(InputIncomeLayout.class, item.getID());
-    	super.onListItemClick(l, v, position, id);
-    }
+	}
+    
+//    
+//    protected void onListItemClick(ListView l, View v, int position, long id) {
+//    	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
+//    	startEditInputActivity(InputIncomeLayout.class, item.getID());
+//    	super.onListItemClick(l, v, position, id);
+//    }
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	IncomeItem item = (IncomeItem)financeItem;
-    	((TextView)convertView.findViewById(R.id.TVIncomeReportListDate)).setText("날짜 : " + item.getCreateDateString());			
+    	((TextView)convertView.findViewById(R.id.TVIncomeReportListDate)).setVisibility(View.GONE);
 		((TextView)convertView.findViewById(R.id.TVIncomeReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
 		((TextView)convertView.findViewById(R.id.TVIncomeReportListMemo)).setText("메모 : " + item.getMemo());
 		((TextView)convertView.findViewById(R.id.TVIncomeReportListCategory)).setText("분류 : " + item.getCategory().getName());
@@ -47,14 +77,28 @@ public class ReportCurrentIncomeLayout extends ReportBaseLayout {
 		btnDelete.setOnClickListener(deleteBtnListener);
     }
     
-    @Override
-	protected int deleteItemToDB(int id) {
-		return DBMgr.deleteItem(IncomeItem.TYPE, id);
+	@Override
+	protected int getItemType() {
+		// TODO Auto-generated method stub
+		return IncomeItem.TYPE;
+	}
+	
+	@Override
+	protected void getDate() {
+		if (getItemsFromDB(getItemType(), FinanceCurrentDate.getDate()) == false) {
+			Log.e(LogTag.LAYOUT, "::: Error GET DATE");
+        }
 	}
 
 	@Override
-	protected FinanceItem getItemInstance(int id) {
-		return DBMgr.getItem(IncomeItem.TYPE, id);
+	protected void onClickAddButton() {
+    	Intent intent = new Intent(ReportCurrentIncomeLayout.this, SelectCategoryIncomeLayout.class);
+		startActivity(intent);
+	}
+	
+	@Override
+	protected int getAdapterResource() {
+		return R.layout.report_list_income;
 	}
 
 }

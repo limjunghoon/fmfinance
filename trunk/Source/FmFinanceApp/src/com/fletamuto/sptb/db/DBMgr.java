@@ -104,7 +104,7 @@ public final class DBMgr {
 	
 	
 	private static boolean isAfterDay(Calendar today, Calendar lastApplyDate) {
-		return (Integer.parseInt(FinanceDataFormat.getNumverDateFormat(today.getTime())) > Integer.parseInt(FinanceDataFormat.getNumverDateFormat(lastApplyDate.getTime())));
+		return (Integer.parseInt(FinanceDataFormat.getNumberDateFormat(today.getTime())) > Integer.parseInt(FinanceDataFormat.getNumberDateFormat(lastApplyDate.getTime())));
 	}
 
 	/**

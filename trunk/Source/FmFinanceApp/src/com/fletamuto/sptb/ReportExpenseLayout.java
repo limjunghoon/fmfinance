@@ -3,34 +3,39 @@ package com.fletamuto.sptb;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportExpenseLayout extends ReportBaseLayout {
     
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        if (getItemsFromDB(ExpenseItem.TYPE) == false) {
-        	return;
-        }
-        
-        setListAdapter(R.layout.report_list_expense);
+//        
+//        if (getItemsFromDB(ExpenseItem.TYPE) == false) {
+//        	return;
+//        }
+//        
+//        setListAdapter(R.layout.report_list_expense);
     }
     
-    
-    
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    @Override
+	protected void onClickListItem(AdapterView<?> parent, View view,
+			int position, long id) {
     	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
     	startEditInputActivity(InputExpenseLayout.class, item.getID());
-    	super.onListItemClick(l, v, position, id);
-    }
+	}
+    
+//    
+//    protected void onListItemClick(ListView l, View v, int position, long id) {
+//    	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
+//    	startEditInputActivity(InputExpenseLayout.class, item.getID());
+//    	super.onListItemClick(l, v, position, id);
+//    }
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	ExpenseItem item = (ExpenseItem)financeItem;
@@ -51,14 +56,24 @@ public class ReportExpenseLayout extends ReportBaseLayout {
 		btnDelete.setOnClickListener(deleteBtnListener);
     }
     
-    @Override
-	protected int deleteItemToDB(int id) {
-		return DBMgr.deleteItem(ExpenseItem.TYPE, id);
-	}
+
+
 
 	@Override
-	protected FinanceItem getItemInstance(int id) {
-		return DBMgr.getItem(ExpenseItem.TYPE, id);
+	protected int getItemType() {
+		// TODO Auto-generated method stub
+		return ExpenseItem.TYPE;
+	}
+
+
+	@Override
+	protected void onClickAddButton() {
+		// TODO Auto-generated method stub
+		
 	}
 	
+	@Override
+	protected int getAdapterResource() {
+		return R.layout.report_list_expense;
+	}
 }

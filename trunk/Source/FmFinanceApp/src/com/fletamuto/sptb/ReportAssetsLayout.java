@@ -3,13 +3,12 @@ package com.fletamuto.sptb;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportAssetsLayout extends ReportBaseLayout {
 
@@ -22,14 +21,21 @@ public class ReportAssetsLayout extends ReportBaseLayout {
         	return;
         }
         
-        setListAdapter(R.layout.report_list_assets);
+ //       setListAdapter(R.layout.report_list_assets);
     }
     
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+	@Override
+	protected void onClickListItem(AdapterView<?> parent, View view,
+			int position, long id) {
     	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
     	startEditInputActivity(InputAssetsLayout.class, item.getID());
-    	super.onListItemClick(l, v, position, id);
-    }
+	}
+//    
+//    protected void onListItemClick(ListView l, View v, int position, long id) {
+//    	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
+//    	startEditInputActivity(InputAssetsLayout.class, item.getID());
+//    	super.onListItemClick(l, v, position, id);
+//    }
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	AssetsItem item = (AssetsItem)financeItem;
@@ -48,14 +54,23 @@ public class ReportAssetsLayout extends ReportBaseLayout {
 		btnDelete.setOnClickListener(deleteBtnListener);
     }
 
+	@Override
+	protected int getItemType() {
+		// TODO Auto-generated method stub
+		return AssetsItem.TYPE;
+	}
 
 	@Override
-	protected int deleteItemToDB(int id) {
-		return DBMgr.deleteItem(AssetsItem.TYPE, id);
+	protected void onClickAddButton() {
+		// TODO Auto-generated method stub
+		
 	}
-    
-	protected FinanceItem getItemInstance(int id) {
-		return DBMgr.getItem(AssetsItem.TYPE, id);
+
+	@Override
+	protected int getAdapterResource() {
+		return R.layout.report_list_assets;
 	}
+
+
 
 }

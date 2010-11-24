@@ -58,8 +58,9 @@ public class ReportCompareAssetsLayout extends ReportBaseCompare {
 
 	
 	protected void onClickCategoryButton(CategoryAmount categoryAmount) {
-		Intent intent = new Intent(ReportCompareAssetsLayout.this, ReportAssetsLayout.class);
+		Intent intent = new Intent(ReportCompareAssetsLayout.this, ReportAssetsExpandLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, categoryAmount.getCategoryID());
+		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, categoryAmount.getName());
 		startActivity(intent);
 	}
 	

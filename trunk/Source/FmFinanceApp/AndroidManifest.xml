@@ -70,6 +70,8 @@
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportCompareLiabilityLayout"></activity>
 <activity android:name=".ReportExpenseExpandLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".ReportIncomeExpandLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".ReportAssetsExpandLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".ReportLiabilityExpandLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 
