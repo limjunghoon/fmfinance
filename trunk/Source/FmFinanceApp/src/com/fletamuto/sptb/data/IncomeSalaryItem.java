@@ -1,7 +1,7 @@
 package com.fletamuto.sptb.data;
 
 public class IncomeSalaryItem extends IncomeItem {
-	public final static int EXEND_TYPE = ItemDef.ExtendIncome.SALARY;
+//	public final static int EXEND_TYPE = ItemDef.ExtendIncome.SALARY;
 	
 	private int mSalaryID = -1;
 	

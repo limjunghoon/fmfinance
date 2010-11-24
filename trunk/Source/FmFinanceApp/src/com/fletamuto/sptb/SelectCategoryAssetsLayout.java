@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.ItemDef;
 
 public class SelectCategoryAssetsLayout extends InputAfterSelectCategoryLayout {
 	public static final int ACT_ADD_ASSETS = MsgDef.ActRequest.ACT_ADD_ASSETS;
@@ -21,7 +22,14 @@ public class SelectCategoryAssetsLayout extends InputAfterSelectCategoryLayout {
     
 	@Override
 	protected void startInputActivity(Category category) {
-    	Intent intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsLayout.class);
+		Intent intent = null;
+		if (category.getExtndType() == ItemDef.ExtendAssets.DEPOSIT) {
+			intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsDepositLayout.class);
+		}
+		else {
+			intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsLayout.class);
+		}
+    	
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, category.getID());
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, category.getName());
 		startActivityForResult(intent, ACT_ADD_ASSETS);

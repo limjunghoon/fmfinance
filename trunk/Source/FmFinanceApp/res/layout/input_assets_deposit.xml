@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
+
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="30dp">
+		<TextView android:id="@+id/TVDepositTitle" android:text="@string/input_deposit_title_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
+		</TextView>
+		<EditText android:id="@+id/ETDepositTitle" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</EditText>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:id="@+id/TVDepositAmount" android:text="@string/input_deposit_amount_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
+		</TextView>
+		<Button android:id="@+id/BtnDepositAmount" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:id="@+id/TVDepositDate" android:text="@string/input_deposit_create_date_name" android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:layout_width="70dp">
+		</TextView>
+		<Button android:layout_height="wrap_content" android:id="@+id/BtnDepositCreateDate" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:id="@+id/TVDepositDate" android:text="@string/input_deposit_expiry_date_name" android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:layout_width="70dp">
+		</TextView>
+		<Button android:layout_height="wrap_content" android:id="@+id/BtnDepositExpiryDate" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:id="@+id/TVDepositDate" android:text="@string/input_deposit_account" android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:layout_width="70dp">
+		</TextView>
+		<Button android:layout_height="wrap_content" android:id="@+id/BtnDepositAccount" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:id="@+id/TVDepositMemo" android:text="@string/input_deposit_memo" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
+		</TextView>
+		<EditText android:id="@+id/ETDepositMemo" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</EditText>
+	</LinearLayout>
+</LinearLayout>

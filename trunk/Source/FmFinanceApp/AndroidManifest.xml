@@ -72,6 +72,7 @@
 <activity android:name=".ReportIncomeExpandLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".ReportAssetsExpandLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".ReportLiabilityExpandLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".InputAssetsDepositLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 

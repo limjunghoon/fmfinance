@@ -23,7 +23,7 @@ import com.fletamuto.sptb.db.DBMgr;
  * @author yongbban
  * @version 1.0.0.0
  */
-public class InputIncomeSelaryLayout extends InputIncomeExtendLayout {
+public class InputIncomeSelaryLayout extends InputExtendLayout {
 	public static final int ACT_TAKE_HOME_PAY = MsgDef.ActRequest.ACT_TAKE_HOME_PAY;
 	
 	private IncomeSalaryItem mSalary;

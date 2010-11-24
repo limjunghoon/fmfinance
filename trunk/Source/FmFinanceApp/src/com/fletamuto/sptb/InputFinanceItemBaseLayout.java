@@ -101,8 +101,7 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
      * @param btnID 날짜버튼 아이디
      */
     protected void setDateBtnClickListener(int btnID) {
-    	Button btnIncomeDate = (Button)findViewById(btnID);
-		 btnIncomeDate.setOnClickListener(new Button.OnClickListener() {
+    	((Button)findViewById(btnID)).setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
 				new DatePickerDialog(InputFinanceItemBaseLayout.this, dateDlg, 
