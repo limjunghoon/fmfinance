@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.fletamuto.sptb.data.Repeat;
 
-public abstract class InputIncomeExtendLayout extends InputFinanceItemBaseLayout {
+public abstract class InputExtendLayout extends InputFinanceItemBaseLayout {
 	
 	protected abstract void updateRepeat(int type, int value);
 	

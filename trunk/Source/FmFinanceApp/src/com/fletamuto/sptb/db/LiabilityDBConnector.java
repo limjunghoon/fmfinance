@@ -297,6 +297,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		if (c.moveToFirst() != false) {
 			do {
 				Category item = new Category(c.getInt(0), c.getString(1));
+				item.setExtndType(c.getInt(4));
 				category.add(item);
 			} while (c.moveToNext());
 		}

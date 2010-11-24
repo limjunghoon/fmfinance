@@ -482,4 +482,5 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		
 		return ret;
 	}
+
 }

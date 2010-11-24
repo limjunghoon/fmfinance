@@ -20,4 +20,14 @@ public final class ItemDef {
 		public static final int NONE = 0;
 		public static final int SALARY = 1;
 	}
+	
+	/**	 학장된 자산 리스트*/
+	public static final class ExtendAssets {
+		public static final int NONE = 0;
+		public static final int DEPOSIT = 1;
+		public static final int SAVINGS = 2;
+		public static final int STOCK = 3;
+		public static final int FUND = 4;
+		public static final int ENDOWMENT_MORTGAGE = 5;
+	}
 }

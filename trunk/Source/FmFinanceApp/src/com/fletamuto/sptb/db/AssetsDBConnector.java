@@ -8,7 +8,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.util.Log;
 
+import com.fletamuto.sptb.LogTag;
+import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
@@ -298,6 +301,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		if (c.moveToFirst() != false) {
 			do {
 				Category item = new Category(c.getInt(0), c.getString(1));
+				item.setExtndType(c.getInt(4));
 				category.add(item);
 			} while (c.moveToNext());
 		}
@@ -550,5 +554,20 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		long ret = db.update("assets", rowItem, "_id=?", new String[] {String.valueOf(expenseID)});
 		db.close();
 		return ret;
+	}
+
+	public long addExtendDeposit(AssetsDepositItem mDeposit) {
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("expiry_date", mDeposit.getExpriyDateString());
+		rowItem.put("account", mDeposit.getAccount().getID());
+		long extend = db.insert("assets_deposit", null, rowItem);
+		if (extend == -1){
+			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND DEPOSIT");
+			return -1;
+		}
+		mDeposit.setExtendID((int)extend);
+		return addItem(mDeposit);
 	}
 }
