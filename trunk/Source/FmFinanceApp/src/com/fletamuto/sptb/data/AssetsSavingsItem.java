@@ -3,27 +3,28 @@ package com.fletamuto.sptb.data;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.fletamuto.sptb.util.FinanceDataFormat;
+
 /**
  * 자산중 적금
  * @author yongbban
  *
  */
 public class AssetsSavingsItem extends AssetsExtendItem {
-	
 	/**
 	 * 적금 DB테이블 아이디
 	 */
 	private int mSavingsID = -1;
 	
 	/**
-	 * 예금 시작 날짜
+	 * 예금 만기 날짜
 	 */
-	private Calendar mStartDate = Calendar.getInstance();
+	private Calendar mExpiryDate = Calendar.getInstance();
 	
 	/**
-	 * 적금 만기 날짜
+	 * 계좌
 	 */
-	private Calendar mEndDate = Calendar.getInstance();
+	private AccountItem mAccount  = new AccountItem();
 	
 	/**
 	 * 납입금
@@ -45,54 +46,42 @@ public class AssetsSavingsItem extends AssetsExtendItem {
 	public int getSavingsID() {
 		return mSavingsID;
 	}
-	
 
+	
 	/**
-	 * 적금 시작날짜를 설정
-	 * @param createDate 적금 시작되는 날짜
+	 * 예금 만기날짜를 설정
+	 * @param createDate 예금 시작되는 날짜
 	 */
-	public void setStartDate(Calendar startDate) {
-		this.mStartDate = startDate;
+	public void setExpiryDate(Calendar endDate) {
+		this.mExpiryDate = endDate;
 	}
 	
 	/**
-	 * 적금 시작날짜를 설정
-	 * @param date 적금 시작되는 날짜
+	 * 예금 만기날짜를 설정
+	 * @param date 예금 시작되는 날짜
 	 */
-	public void setStartDate(Date date) {
-		this.mStartDate.setTime(date);
-	}
-
-	/**
-	 * 적금 시작날짜를 얻는다.
-	 * @return 적금 시작되는 날짜
-	 */
-	public Calendar getStartDate() {
-		return mStartDate;
-	}
-	
-	/**
-	 * 적금 만기날짜를 설정
-	 * @param createDate 적금 시작되는 날짜
-	 */
-	public void setEndDate(Calendar endDate) {
-		this.mEndDate = endDate;
-	}
-	
-	/**
-	 * 적금 만기날짜를 설정
-	 * @param date 적금 시작되는 날짜
-	 */
-	public void setEndDate(Date date) {
-		this.mEndDate.setTime(date);
+	public void setExpiryDate(Date date) {
+		this.mExpiryDate.setTime(date);
 	}
 
 	/**
-	 * 적금 만기날짜를 얻는다.
-	 * @return 적금 시작되는 날짜
+	 * 예금 만기날짜를 얻는다.
+	 * @return 예금 시작되는 날짜
 	 */
-	public Calendar getEndDate() {
-		return mEndDate;
+	public Calendar getExpiryDate() {
+		return mExpiryDate;
+	}
+	
+	public String getExpriyDateString() {
+		return FinanceDataFormat.getDateFormat(mExpiryDate.getTime());
+	}
+
+	public void setAccount(AccountItem account) {
+		this.mAccount = account;
+	}
+
+	public AccountItem getAccount() {
+		return mAccount;
 	}
 
 	/**

@@ -26,6 +26,9 @@ public class SelectCategoryAssetsLayout extends InputAfterSelectCategoryLayout {
 		if (category.getExtndType() == ItemDef.ExtendAssets.DEPOSIT) {
 			intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsDepositLayout.class);
 		}
+		else if (category.getExtndType() == ItemDef.ExtendAssets.SAVINGS) {
+			intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsSavingsLayout.class);
+		}
 		else {
 			intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsLayout.class);
 		}

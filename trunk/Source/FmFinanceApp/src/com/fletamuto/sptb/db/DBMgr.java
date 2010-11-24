@@ -10,6 +10,7 @@ import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.AssetsSavingsItem;
 import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
@@ -521,6 +522,10 @@ public final class DBMgr {
 
 	public static long addExtendAssetsDeposit(AssetsDepositItem mDeposit) {
 		return getAssetsDBConnecter().addExtendDeposit(mDeposit);
+	}
+
+	public static long addExtendAssetsSavings(AssetsSavingsItem mSavings) {
+		return getAssetsDBConnecter().addExtendSavings(mSavings);
 	}
 
 }

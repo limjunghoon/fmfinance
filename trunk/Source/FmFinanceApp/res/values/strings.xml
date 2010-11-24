@@ -25,6 +25,12 @@
     <string name="input_deposit_expiry_date_name">만기일</string>
     <string name="input_deposit_account">계좌</string>
     <string name="input_deposit_memo">메모</string>
+    <string name="input_savings_title_name">제목</string>
+    <string name="input_savings_amount_name">납입금액</string>
+    <string name="input_savings_create_date_name">예금일</string>
+    <string name="input_savings_expiry_date_name">만기일</string>
+    <string name="input_savings_account">계좌</string>
+    <string name="input_savings_memo">메모</string>
     <string name="input_liability_name">지출입력</string>
     <string name="input_liability_btn_name">부채</string>
     <string name="input_liability_tab_name">부채</string>
