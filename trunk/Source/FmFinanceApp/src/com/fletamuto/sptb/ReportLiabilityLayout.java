@@ -3,13 +3,12 @@ package com.fletamuto.sptb;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.LiabilityItem;
-import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportLiabilityLayout extends ReportBaseLayout {
 	
@@ -18,18 +17,26 @@ public class ReportLiabilityLayout extends ReportBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getItemsFromDB(LiabilityItem.TYPE) == false) {
-        	return;
-        }
-        
-        setListAdapter(R.layout.report_list_liability);
+//        if (getItemsFromDB(LiabilityItem.TYPE) == false) {
+//        	return;
+//        }
+//        
+//        setListAdapter(R.layout.report_list_liability);
     }
     
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    @Override
+	protected void onClickListItem(AdapterView<?> parent, View view,
+			int position, long id) {
     	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
     	startEditInputActivity(InputLiabilityLayout.class, item.getID());
-    	super.onListItemClick(l, v, position, id);
-    }
+	}
+    
+//    
+//    protected void onListItemClick(ListView l, View v, int position, long id) {
+//    	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
+//    	startEditInputActivity(InputLiabilityLayout.class, item.getID());
+//    	super.onListItemClick(l, v, position, id);
+//    }
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	LiabilityItem item = (LiabilityItem)financeItem;
@@ -45,15 +52,22 @@ public class ReportLiabilityLayout extends ReportBaseLayout {
 		btnDelete.setTag(R.id.delete_position, new Integer(position));
 		btnDelete.setOnClickListener(deleteBtnListener);
     }
-    
-    @Override
-	protected int deleteItemToDB(int id) {
-		return DBMgr.deleteItem(LiabilityItem.TYPE, id);
+
+	@Override
+	protected int getItemType() {
+		// TODO Auto-generated method stub
+		return LiabilityItem.TYPE;
 	}
 
 	@Override
-	protected FinanceItem getItemInstance(int id) {
-		return DBMgr.getItem(LiabilityItem.TYPE, id);
+	protected void onClickAddButton() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	protected int getAdapterResource() {
+		return R.layout.report_list_liability;
 	}
 
 }

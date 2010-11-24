@@ -3,8 +3,8 @@ package com.fletamuto.sptb;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.FinanceItem;
@@ -17,19 +17,26 @@ public class ReportIncomeLayout extends ReportBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        if (getItemsFromDB(IncomeItem.TYPE) == false) {
-        	return;
-        }
-        
-        setListAdapter(R.layout.report_list_income);
+//        if (getItemsFromDB(IncomeItem.TYPE) == false) {
+//        	return;
+//        }
+//        
+//        setListAdapter(R.layout.report_list_income);
     }
     
-    
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    @Override
+	protected void onClickListItem(AdapterView<?> parent, View view,
+			int position, long id) {
     	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
     	startEditInputActivity(InputIncomeLayout.class, item.getID());
-    	super.onListItemClick(l, v, position, id);
-    }
+	}
+    
+//    
+//    protected void onListItemClick(ListView l, View v, int position, long id) {
+//    	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
+//    	startEditInputActivity(InputIncomeLayout.class, item.getID());
+//    	super.onListItemClick(l, v, position, id);
+//    }
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	IncomeItem item = (IncomeItem)financeItem;
@@ -55,6 +62,24 @@ public class ReportIncomeLayout extends ReportBaseLayout {
 	@Override
 	protected FinanceItem getItemInstance(int id) {
 		return DBMgr.getItem(IncomeItem.TYPE, id);
+	}
+
+
+	@Override
+	protected int getItemType() {
+		// TODO Auto-generated method stub
+		return IncomeItem.TYPE;
+	}
+
+	@Override
+	protected void onClickAddButton() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	protected int getAdapterResource() {
+		return R.layout.report_list_income;
 	}
 
 }

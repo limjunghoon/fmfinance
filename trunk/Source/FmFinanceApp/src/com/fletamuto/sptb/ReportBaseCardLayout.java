@@ -35,13 +35,18 @@ public abstract class ReportBaseCardLayout extends FmBaseActivity {
         setType();
         setContentView(R.layout.empty_list, true);
         
-        setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "추가");
-        setAddButtonListener();
-        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
-        
         getCardItems();
         setAdapterList();
     }
+	
+	@Override
+	protected void setTitleBtn() {
+		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "추가");
+        setAddButtonListener();
+        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+        
+		super.setTitleBtn();
+	}
 	
 	protected void getCardItems() {
 		mArrCard = DBMgr.getCardItems(mType);
