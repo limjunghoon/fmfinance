@@ -9,8 +9,11 @@ import android.util.Log;
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsDepositItem;
+import com.fletamuto.sptb.data.AssetsFundItem;
+import com.fletamuto.sptb.data.AssetsInsuranceItem;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.AssetsSavingsItem;
+import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
@@ -520,12 +523,24 @@ public final class DBMgr {
 		return addFinanceItem(salary);
 	}
 
-	public static long addExtendAssetsDeposit(AssetsDepositItem mDeposit) {
-		return getAssetsDBConnecter().addExtendDeposit(mDeposit);
+	public static long addExtendAssetsDeposit(AssetsDepositItem deposit) {
+		return getAssetsDBConnecter().addExtendDeposit(deposit);
 	}
 
-	public static long addExtendAssetsSavings(AssetsSavingsItem mSavings) {
-		return getAssetsDBConnecter().addExtendSavings(mSavings);
+	public static long addExtendAssetsSavings(AssetsSavingsItem savings) {
+		return getAssetsDBConnecter().addExtendSavings(savings);
+	}
+
+	public static long addExtendAssetsStock(AssetsStockItem stock) {
+		return getAssetsDBConnecter().addExtendStock(stock);
+	}
+
+	public static long addExtendAssetsFund(AssetsFundItem fund) {
+		return getAssetsDBConnecter().addExtendFund(fund);
+	}
+
+	public static long addExtendAssetsInsurance(AssetsInsuranceItem insurance) {
+		return getAssetsDBConnecter().addExtendInsurance(insurance);
 	}
 
 }

@@ -12,7 +12,6 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsSavingsItem;
 import com.fletamuto.sptb.db.DBMgr;
 

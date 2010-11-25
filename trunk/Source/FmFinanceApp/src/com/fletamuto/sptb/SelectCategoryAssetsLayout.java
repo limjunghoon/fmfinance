@@ -29,6 +29,15 @@ public class SelectCategoryAssetsLayout extends InputAfterSelectCategoryLayout {
 		else if (category.getExtndType() == ItemDef.ExtendAssets.SAVINGS) {
 			intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsSavingsLayout.class);
 		}
+		else if (category.getExtndType() == ItemDef.ExtendAssets.STOCK) {
+			intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsStockLayout.class);
+		}
+		else if (category.getExtndType() == ItemDef.ExtendAssets.FUND) {
+			intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsFundLayout.class);
+		}
+		else if (category.getExtndType() == ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE) {
+			intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsInsuranceLayout.class);
+		}
 		else {
 			intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsLayout.class);
 		}
