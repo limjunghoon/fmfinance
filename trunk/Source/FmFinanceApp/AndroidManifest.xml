@@ -74,6 +74,9 @@
 <activity android:name=".ReportLiabilityExpandLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".InputAssetsDepositLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".InputAssetsSavingsLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".InputAssetsStockLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".InputAssetsFundLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".InputAssetsInsuranceLayout"></activity>
 </application>
 
 

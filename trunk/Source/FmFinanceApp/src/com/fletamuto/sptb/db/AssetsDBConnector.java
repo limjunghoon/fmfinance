@@ -12,8 +12,11 @@ import android.util.Log;
 
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AssetsDepositItem;
+import com.fletamuto.sptb.data.AssetsFundItem;
+import com.fletamuto.sptb.data.AssetsInsuranceItem;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.AssetsSavingsItem;
+import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
@@ -557,36 +560,112 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return ret;
 	}
 
-	public long addExtendDeposit(AssetsDepositItem mDeposit) {
+	public long addExtendDeposit(AssetsDepositItem deposit) {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
-		rowItem.put("expiry_date", mDeposit.getExpriyDateString());
-		rowItem.put("account", mDeposit.getAccount().getID());
+		rowItem.put("expiry_date", deposit.getExpriyDateString());
+		rowItem.put("account", deposit.getAccount().getID());
 		long extend = db.insert("assets_deposit", null, rowItem);
 		db.close();
 		if (extend == -1){
 			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND DEPOSIT");
 			return -1;
 		}
-		mDeposit.setExtendID((int)extend);
-		return addItem(mDeposit);
+		deposit.setExtendID((int)extend);
+		return addItem(deposit);
 	}
 
-	public long addExtendSavings(AssetsSavingsItem mSavings) {
+	public long addExtendSavings(AssetsSavingsItem savings) {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
-		rowItem.put("expiry_date", mSavings.getExpriyDateString());
-		rowItem.put("account", mSavings.getAccount().getID());
-		rowItem.put("payment", mSavings.getPayment());
+		rowItem.put("expiry_date", savings.getExpriyDateString());
+		rowItem.put("account", savings.getAccount().getID());
+		rowItem.put("payment", savings.getPayment());
 		long extend = db.insert("assets_savings", null, rowItem);
 		db.close();
 		if (extend == -1){
 			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND DEPOSIT");
 			return -1;
 		}
-		mSavings.setExtendID((int)extend);
-		return addItem(mSavings);
+		savings.setExtendID((int)extend);
+		return addItem(savings);
+	}
+
+	public long addExtendStock(AssetsStockItem stock) {
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("present_price", stock.getPrice());
+		long extend = db.insert("assets_stock", null, rowItem);
+		
+		if (extend == -1){
+			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND STOCK");
+			return -1;
+		}
+		
+		rowItem.clear();
+		rowItem.put("stock_id", extend);
+		rowItem.put("change_date", stock.getCreateDateString());
+		rowItem.put("count", stock.getCount());
+		rowItem.put("stock_price", stock.getPrice());
+		rowItem.put("price_type", AssetsStockItem.BUY);
+		rowItem.put("store", stock.getPrice());
+		if (db.insert("assets_chage_stock", null, rowItem) == -1) {
+			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND STOCK");
+			return -1;
+		}
+		db.close();
+		
+		stock.setExtendID((int)extend);
+		return addItem(stock);
+	}
+
+	public long addExtendFund(AssetsFundItem fund) {
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("mena_price", fund.getAmount());
+		rowItem.put("store", fund.getStore());
+		long extend = db.insert("assets_fund", null, rowItem);
+		
+		if (extend == -1){
+			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND STOCK");
+			return -1;
+		}
+		
+		rowItem.clear();
+		rowItem.put("fund_id", extend);
+		rowItem.put("change_date", fund.getCreateDateString());
+		rowItem.put("price", fund.getAmount());
+		rowItem.put("price_type", AssetsStockItem.BUY);
+		if (db.insert("assets_change_fund", null, rowItem) == -1) {
+			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND FUND");
+			return -1;
+		}
+		db.close();
+		
+		fund.setExtendID((int)extend);
+		return addItem(fund);
+	}
+
+	public long addExtendInsurance(AssetsInsuranceItem insurance) {
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("expiry_date", insurance.getExpriyDateString());
+		rowItem.put("payment", insurance.getPayment());
+		rowItem.put("company", insurance.getCompany());
+		long extend = db.insert("assets_endowment_mortgage", null, rowItem);
+		
+		if (extend == -1){
+			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND STOCK");
+			return -1;
+		}
+		db.close();
+		
+		insurance.setExtendID((int)extend);
+		return addItem(insurance);
 	}
 }

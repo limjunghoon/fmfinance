@@ -314,7 +314,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			db.execSQL("CREATE TABLE assets_fund ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"mena_price INTEGER," +
-					"store INTEGER);");
+					"store TEXT);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -345,10 +345,9 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		try {
 			db.execSQL("CREATE TABLE assets_endowment_mortgage ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-					"start_date DATE NOT NULL," +
-					"end_date DATE NOT NULL," +
+					"expiry_date DATE NOT NULL," +
 					"payment INTEGER NOT NULL," +
-					"company INTEGER);");
+					"company TEXT);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -378,9 +377,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		try {
 			db.execSQL("CREATE TABLE assets_stock ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-					"total_count INTEGER," +
-					"mean_price INTEGER," +
-					"store INTEGER);");
+					"present_price INTEGER);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -396,8 +393,10 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"stock_id INTEGER NOT NULL," +
 					"change_date DATE NOT NULL," +
+					"count INTEGER NOT NULL," +
 					"stock_price DATE NOT NULL," +
-					"price_type INTEGER NOT NULL);");
+					"price_type INTEGER NOT NULL," +
+					"store TEXT);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -450,7 +449,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 	}
 	
 	/**
-	 * 부채 테이블을 만든다.
+	 * 부채 확장 테이블을 만든다.
 	 * @param db Exposes methods to manage a SQLite database.
 	 */
 	private void createLiabilityExtendTable(SQLiteDatabase db) {

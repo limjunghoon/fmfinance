@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string-array name="report_list">
+	<!--
 		<item>지출내역 목록</item>
 		<item>수입내역 목록</item>
 		<item>자산내역 목록</item>
 		<item>부채내역 목록</item>
+	 -->
 		<item>1. 연간 월별 수입/지출 비교</item>
 		<item>2. 월 수입/지출 비교</item>
 	</string-array>

@@ -20,7 +20,7 @@ public class AssetsFundItem extends AssetsExtendItem {
 	/**
 	 * 판매처
 	 */
-	private int mStoreCompany = -1;
+	private String mStore;
 	
 	/**
 	 * 펀드 아이디 설정
@@ -58,16 +58,16 @@ public class AssetsFundItem extends AssetsExtendItem {
 	 * 판매처를 설정한다.
 	 * @param storeCompany
 	 */
-	public void setStoreCompany(int storeCompany) {
-		this.mStoreCompany = storeCompany;
+	public void setStore(String store) {
+		this.mStore = store;
 	}
 
 	/**
 	 * 판매처를 얻는다.
 	 * @return
 	 */
-	public int getStoreCompany() {
-		return mStoreCompany;
+	public String getStore() {
+		return mStore;
 	}
 
 

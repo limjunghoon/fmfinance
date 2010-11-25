@@ -7,6 +7,8 @@ package com.fletamuto.sptb.data;
  *
  */
 public class AssetsStockItem extends AssetsExtendItem {
+	public static final int BUY = 0;
+	public static final int SELL = 1;
 	
 	/**
 	 * 주식 DB테이블 아이디
@@ -16,7 +18,23 @@ public class AssetsStockItem extends AssetsExtendItem {
 	/**
 	 * 보유한 주식 수
 	 */
-	private int mTotalCount = 0;
+	private long mTotalCount = 0;
+	
+	/**
+	 * 신규로 구입한 주식 수
+	 */
+	private long mCount = 0;
+	
+	/**
+	 * 현재 가격
+	 */
+	private long mPeresentPrice = 0;
+	
+	/**
+	 * 주당 구입가격
+	 */
+	private long mPrice = 0;
+	
 	
 	/**
 	 * 평균 구입가격
@@ -26,7 +44,7 @@ public class AssetsStockItem extends AssetsExtendItem {
 	/**
 	 * 구입처
 	 */
-	private FinancialCompany mCompany;
+	private String mStore;
 	
 
 	/**
@@ -57,7 +75,7 @@ public class AssetsStockItem extends AssetsExtendItem {
 	 * 총 구입 수량을 얻는다.
 	 * @return
 	 */
-	public int getTotalCount() {
+	public long getTotalCount() {
 		return mTotalCount;
 	}
 
@@ -77,20 +95,37 @@ public class AssetsStockItem extends AssetsExtendItem {
 		return mMeanPrice;
 	}
 
-	/**
-	 * 구입처 설정
-	 * @param company
-	 */
-	public void setCompany(FinancialCompany company) {
-		this.mCompany = company;
+
+	public void setCount(long count) {
+		this.mCount = count;
 	}
 
-	/**
-	 * 구입처를 얻는다.
-	 * @return
-	 */
-	public FinancialCompany getCompany() {
-		return mCompany;
+	public long getCount() {
+		return mCount;
+	}
+
+	public void setPeresentPrice(long peresentPrice) {
+		this.mPeresentPrice = peresentPrice;
+	}
+
+	public long getPeresentPrice() {
+		return mPeresentPrice;
+	}
+
+	public void setPrice(long price) {
+		this.mPrice = price;
+	}
+
+	public long getPrice() {
+		return mPrice;
+	}
+
+	public void setStore(String store) {
+		this.mStore = store;
+	}
+
+	public String getStore() {
+		return mStore;
 	}
 
 
