@@ -17,7 +17,7 @@ public class Constants {
 	public final static int BAR_GRADATION_MODE_FULL = 2;
 	
 	//Default °ª
-	public final static int BAR_DEFAULT_PADDING = 20;
+	public final static int BAR_DEFAULT_MARGIN = 20;
 	public final static int BAR_DEFAULT_AXIS_THICKNESS = 2;
 	public final static int BAR_DEFAULT_GRADATION_THICKNESS = 1;
 	public final static int BAR_DEFAULT_GROUP_MEMBER_COUNT = 1;
@@ -28,5 +28,14 @@ public class Constants {
 	
 	public final static int PIE_DEFAULT_GRAPH_BOUNDARY_THICKNESS = 5;
 	public final static int PIE_DEFAULT_GRAPH_PADDING = 20;
+	
+	public final static int LINE_DEFAULT_MARGIN = 20;
+	public final static int LINE_DEFAULT_AXIS_THICKNESS = 2;
+	public final static int LINE_DEFAULT_GRADATION_THICKNESS = 1;
+	public final static int LINE_DEFAULT_GROUP_MEMBER_COUNT = 1;
+	public final static int LINE_DEFAULT_POINT_AND_POINT_GAP = 40;
+	public final static int LINE_DEFAULT_LINE_THICKNESS = 2;
+	public final static int LINE_DEFAULT_GRADATION_COUNT = 5;
+	public final static int LINE_DEFAULT_POINT_SIZE = 3;
 
 }
