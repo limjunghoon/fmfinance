@@ -513,7 +513,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		try {
 			db.execSQL("CREATE TABLE liability_cash_service ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-					"card_company INTEGER);");
+					"card INTEGER);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -946,11 +946,17 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		String [] baseMainCategory = context.getResources().getStringArray(R.array.liability_base_main_category);
 		int categoryLenth = baseMainCategory.length;
 		
-		
 		for (int index = 0; index < categoryLenth; index++) {
 			rowItem.put("name", baseMainCategory[index]);
 			rowItem.put("prioritize", index+1);
 			rowItem.put("image_index", index+1);
+			
+			// 임시 코드  //////////////////////////////////////////////////////
+			if (index == 0) rowItem.put("extend_type", ItemDef.ExtendLiablility.LOAN);
+			else if (index == 1) rowItem.put("extend_type", ItemDef.ExtendLiablility.CASH_SERVICE);
+			else if (index == 2) rowItem.put("extend_type", ItemDef.ExtendLiablility.PERSON_LOAN);
+			else rowItem.put("extend_type", ItemDef.ExtendAssets.NONE);
+			//////////////////////////////////////////////////////////////////
 			
 			if (db.insert("liability_main_category", null, rowItem) == -1) {
 				Log.e(LogTag.DB, "== DB Insert ERROR ==");

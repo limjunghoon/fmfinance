@@ -6,7 +6,7 @@ package com.fletamuto.sptb.data;
  * @author yongbban
  *
  */
-public class LiabilityCashServiceItem extends AssetsExtendItem {
+public class LiabilityCashServiceItem extends LiabilityExtendItem {
 	
 	/**
 	 * 현금 서비스 DB테이블 아이디
@@ -14,9 +14,9 @@ public class LiabilityCashServiceItem extends AssetsExtendItem {
 	private int mCashServiceID = -1;
 	
 	/**
-	 * 현금 서비스받은 기관
+	 * 현금 서비스받은 카드
 	 */
-	private FinancialCompany mCompany;
+	private CardItem mCard = new CardItem(CardItem.CREDIT_CARD);;
 
 	/**
 	 * 현금 서비스 아이디 설정
@@ -35,19 +35,19 @@ public class LiabilityCashServiceItem extends AssetsExtendItem {
 	}
 
 	/**
-	 * 현금 서비스 받은 기관 설정
+	 * 현금 서비스 받은 카드 설정
 	 * @param company
 	 */
-	public void setCompany(FinancialCompany company) {
-		this.mCompany = company;
+	public void setCard(CardItem card) {
+		this.mCard = card;
 	}
 
 	/**
-	 * 현금 서비스 바은 기관을 얻는다.
+	 * 현금 서비스 받은 카드를 얻는다.
 	 * @return
 	 */
-	public FinancialCompany getCompany() {
-		return mCompany;
+	public CardItem getCard() {
+		return mCard;
 	}
 	
 	

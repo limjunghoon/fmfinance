@@ -30,4 +30,12 @@ public final class ItemDef {
 		public static final int FUND = 4;
 		public static final int ENDOWMENT_MORTGAGE = 5;
 	}
+	
+	/**	 학장된 부채 리스트*/
+	public static final class ExtendLiablility {
+		public static final int NONE = 0;
+		public static final int LOAN = 1;
+		public static final int CASH_SERVICE = 2;
+		public static final int PERSON_LOAN = 3;
+	}
 }

@@ -8,10 +8,15 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.util.Log;
 
+import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.LiabilityCashServiceItem;
 import com.fletamuto.sptb.data.LiabilityItem;
+import com.fletamuto.sptb.data.LiabilityLoanItem;
+import com.fletamuto.sptb.data.LiabilityPersonLoanItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 
 /**
@@ -468,5 +473,50 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		long ret = db.update("liability", rowItem, "_id=?", new String[] {String.valueOf(expenseID)});
 		db.close();
 		return ret;
+	}
+
+	public long addExtendLoan(LiabilityLoanItem loan) {
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("finance_company", loan.getCompany().getID());
+		long extend = db.insert("liability_loan", null, rowItem);
+		db.close();
+		if (extend == -1){
+			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND DEPOSIT");
+			return -1;
+		}
+		loan.setExtendID((int)extend);
+		return addItem(loan);
+	}
+
+	public long addExtendCashService(LiabilityCashServiceItem cashService) {
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("card", cashService.getCard().getID());
+		long extend = db.insert("liability_cash_service", null, rowItem);
+		db.close();
+		if (extend == -1){
+			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND DEPOSIT");
+			return -1;
+		}
+		cashService.setExtendID((int)extend);
+		return addItem(cashService);
+	}
+
+	public long addExtendPersonLoan(LiabilityPersonLoanItem personLoan) {
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("name", personLoan.getLoanPeopleName());
+		long extend = db.insert("liability_person_loan", null, rowItem);
+		db.close();
+		if (extend == -1){
+			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND DEPOSIT");
+			return -1;
+		}
+		personLoan.setExtendID((int)extend);
+		return addItem(personLoan);
 	}
 }
