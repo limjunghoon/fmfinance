@@ -17,6 +17,7 @@ public class DBConnector {
 	private final AccountDBConnector mAccountDBConnector = new AccountDBConnector();
 	private final TagDBConnector mTagDBConnector = new TagDBConnector();
 	private final RepeatDBConnector mRepeatDBConnector = new RepeatDBConnector();
+	private final BudgetDBConnector mBudgetDBConnector = new BudgetDBConnector();
 	private final BaseFinanceDBConnector[] mDBConnector = {
 			new IncomeDBConnector(), 
 			new ExpenseDBConnector(), 
@@ -49,8 +50,13 @@ public class DBConnector {
 	public CardItemDBConnector getCardDBConnector() {
 		return mCardDBConnector;
 	}
+	
 	public RepeatDBConnector getRepeatDBConnector() {
 		return mRepeatDBConnector;
+	}
+	
+	public BudgetDBConnector getBudgetDBConnector() {
+		return mBudgetDBConnector;
 	}
 	
 	/*  
