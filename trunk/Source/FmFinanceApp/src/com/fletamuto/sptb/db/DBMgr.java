@@ -14,6 +14,7 @@ import com.fletamuto.sptb.data.AssetsInsuranceItem;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.AssetsSavingsItem;
 import com.fletamuto.sptb.data.AssetsStockItem;
+import com.fletamuto.sptb.data.BudgetItem;
 import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
@@ -295,6 +296,11 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountMonth(year, month);
 	}
 	
+	public static long getTotalAmountMonth(int itemType, int categorID, int year, int month) {
+		if (DBMgr.checkFinanceItemType(itemType) == false) return 0L;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountMonth(categorID, year, month);
+	}
+	
 	public static long getTotalAmountYear(int itemType, int year) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return 0L;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountYear(year);
@@ -561,6 +567,10 @@ public final class DBMgr {
 
 	public static long addExtendLiabilityPersonLoan(LiabilityPersonLoanItem personLoan) {
 		return getLiabilityDBConnecter().addExtendPersonLoan(personLoan);
+	}
+
+	public static ArrayList<BudgetItem> getBudget(int year, int month) {
+		return mInstance.mDBConnector.getBudgetDBConnector().getItem(year, month);
 	}
 
 }

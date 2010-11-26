@@ -368,9 +368,23 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	public long getTotalAmountMonth(int year, int month) {
 		long amount = 0L;
 		SQLiteDatabase db = getReadableDatabase();
-//		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
-		String[] params = {String.format("%d-%d", year, month)};
+		String[] params = {String.format("%d-%02d", year, month)};
 		String query = "SELECT SUM(amount) FROM liability WHERE strftime('%Y-%m', create_date)=?";
+		Cursor c = db.rawQuery(query, params);
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		db.close();
+		return amount;
+	}
+	
+	public long getTotalAmountMonth(int categoryID, int year, int month) {
+		long amount = 0L;
+		SQLiteDatabase db = getReadableDatabase();
+		String[] params = {String.valueOf(categoryID), String.format("%d-%02d", year, month)};
+		String query = "SELECT SUM(amount) FROM liability WHERE main_category=? AND strftime('%Y-%m', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
 		
 		if (c.moveToFirst() != false) {
