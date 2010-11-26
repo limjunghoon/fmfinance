@@ -6,7 +6,7 @@ package com.fletamuto.sptb.data;
  * @author yongbban
  *
  */
-public class LiabilityLoanItem extends AssetsExtendItem {
+public class LiabilityLoanItem extends LiabilityExtendItem {
 	
 	/**
 	 * 대출 DB테이블 아이디
@@ -16,7 +16,7 @@ public class LiabilityLoanItem extends AssetsExtendItem {
 	/**
 	 * 대출받은 기관
 	 */
-	private FinancialCompany mCompany;
+	private FinancialCompany mCompany = new FinancialCompany();
 
 	/**
 	 * 대출 아이디 설정

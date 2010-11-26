@@ -24,6 +24,10 @@ import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.IncomeSalaryItem;
 import com.fletamuto.sptb.data.ItemDef;
+import com.fletamuto.sptb.data.LiabilityCashServiceItem;
+import com.fletamuto.sptb.data.LiabilityItem;
+import com.fletamuto.sptb.data.LiabilityLoanItem;
+import com.fletamuto.sptb.data.LiabilityPersonLoanItem;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 
@@ -71,6 +75,10 @@ public final class DBMgr {
 	
 	public static AssetsDBConnector getAssetsDBConnecter() {
 		return (AssetsDBConnector)mInstance.mDBConnector.getBaseFinanceDBInstance(AssetsItem.TYPE);
+	}
+	
+	public static LiabilityDBConnector getLiabilityDBConnecter() {
+		return (LiabilityDBConnector)mInstance.mDBConnector.getBaseFinanceDBInstance(LiabilityItem.TYPE);
 	}
 	
 	/**
@@ -541,6 +549,18 @@ public final class DBMgr {
 
 	public static long addExtendAssetsInsurance(AssetsInsuranceItem insurance) {
 		return getAssetsDBConnecter().addExtendInsurance(insurance);
+	}
+
+	public static long addExtendLiabilityLoan(LiabilityLoanItem loan) {
+		return getLiabilityDBConnecter().addExtendLoan(loan);
+	}
+
+	public static long addExtendLiabilityCashService(LiabilityCashServiceItem cashService) {
+		return getLiabilityDBConnecter().addExtendCashService(cashService);
+	}
+
+	public static long addExtendLiabilityPersonLoan(LiabilityPersonLoanItem personLoan) {
+		return getLiabilityDBConnecter().addExtendPersonLoan(personLoan);
 	}
 
 }

@@ -668,4 +668,6 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		insurance.setExtendID((int)extend);
 		return addItem(insurance);
 	}
+
+	
 }

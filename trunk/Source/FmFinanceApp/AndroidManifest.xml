@@ -77,6 +77,9 @@
 <activity android:name=".InputAssetsStockLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".InputAssetsFundLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".InputAssetsInsuranceLayout"></activity>
+<activity android:name=".InputLiabilityLoanLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name="InputLiabilityCashServiceLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name="InputLiabilityPersonLoanLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 

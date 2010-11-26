@@ -6,7 +6,7 @@ package com.fletamuto.sptb.data;
  * @author yongbban
  *
  */
-public class LiabilityPersonLoanItem extends AssetsExtendItem {
+public class LiabilityPersonLoanItem extends LiabilityExtendItem {
 	
 	/**
 	 * ºô¸°µ· DBÅ×ÀÌºí ¾ÆÀÌµð
