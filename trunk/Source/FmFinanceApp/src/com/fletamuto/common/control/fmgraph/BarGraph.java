@@ -223,6 +223,10 @@ public class BarGraph extends View {
 		} else {
 			mexGraphItemValue = (temp > (negativeTemp * (-1))) ? temp : negativeTemp * (-1);
 		}
+		
+		if (mexGraphItemValue == 0) {
+			mexGraphItemValue = 1;
+		}
 	}
 	public void setBarTitles  (ArrayList<String> bar_Titles ) {
 		if (barTitles.isEmpty() == false) {
@@ -351,7 +355,7 @@ public class BarGraph extends View {
 			return;
 		}
 		canvas.drawColor(backgroundColor);
-		
+
 		//그래프 축 그리기
 		Paint[] axisPaint = new Paint[axisPositions.size()];
 		RectF[] axisLine = new RectF[axisPositions.size()]; 
@@ -478,7 +482,7 @@ public class BarGraph extends View {
 		
 		int tempX = bargroupAndBargroupGap + barGraphMargin;
 		int tempY = bargroupAndBargroupGap;
-
+		
 		for (int i=0; i<graphItemValues.size(); i++) {
 			
 			if (standardAxis == Constants.BAR_AXIS_X_BOTTOM) {
@@ -496,7 +500,7 @@ public class BarGraph extends View {
 				tempX = tempX + barWidth + bargroupAndBargroupGap;
 			} else if (standardAxis == Constants.BAR_AXIS_X_CENTER) {
 				if (graphItemValues.get(i) >= 0) {
-					bar[i] = new RectF( axisThickness + tempX, (axisYLength/2 + barGraphMargin) - (((axisYLength/2) * graphItemValues.get(i)) / mexGraphItemValue), 
+					bar[i] = new RectF( axisThickness + tempX, (axisYLength/2 + barGraphMargin) - (((axisYLength/2) * graphItemValues.get(i)) / mexGraphItemValue - axisThickness), 
 							(axisThickness + tempX) + barWidth, (getMeasuredHeight()/2));
 				} else {
 					bar[i] = new RectF( axisThickness + tempX, (axisYLength/2 + barGraphMargin) + axisThickness, (axisThickness + tempX) + barWidth, 
