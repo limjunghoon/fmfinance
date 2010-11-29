@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
+
 public class PieGraph extends View {
 	
 	private int centerPointX = getMeasuredWidth()/2; //¿øÁ¡ X
@@ -90,7 +91,11 @@ public class PieGraph extends View {
 		}
 		
 		for (int i=0; i<pieGraphItem.length; i++) {
-			pieGraphItem[i].itemAngle = (float)(pieGraphItem[i].itemValue * 360) / sum;
+			if (pieGraphItem[i].itemValue == 0) {
+				pieGraphItem[i].itemAngle = 0;
+			} else {
+				pieGraphItem[i].itemAngle = (float)(pieGraphItem[i].itemValue * 360) / sum;
+			}
 		}		
 	}
 	
@@ -271,12 +276,19 @@ public class PieGraph extends View {
 			piePaint[i].setStrokeWidth(boundaryLine);
 			piePaint[i].setColor(Color.WHITE);		
 			piePaint[i].setStyle(Paint.Style.STROKE);
-			canvas.drawArc(r, startDegree -90, pieGraphItem[i].itemAngle, true, piePaint[i]);
-			piePaint[i].setColor(pieGraphItem[i].itemColor);
-			piePaint[i].setStyle(Paint.Style.FILL);
-			canvas.drawArc(r, startDegree -90, pieGraphItem[i].itemAngle, true, piePaint[i]);
-			startDegree += pieGraphItem[i].itemAngle;
-		}			
+			
+			if (pieGraphItem[i].itemAngle != 0) {
+				
+				canvas.drawArc(r, startDegree -90, pieGraphItem[i].itemAngle, true, piePaint[i]);
+				piePaint[i].setColor(pieGraphItem[i].itemColor);
+				piePaint[i].setStyle(Paint.Style.FILL);
+				canvas.drawArc(r, startDegree -90, pieGraphItem[i].itemAngle, true, piePaint[i]);
+				startDegree += pieGraphItem[i].itemAngle;
+			}
+		}
+		if (startDegree == 0) {
+			canvas.drawArc(r, startDegree -90, 360, true, piePaint[0]);
+		}
 	}
 	
 	public int FindTouchItemID (int touchX, int touchY) {
