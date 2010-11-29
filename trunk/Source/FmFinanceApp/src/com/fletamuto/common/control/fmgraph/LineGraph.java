@@ -16,7 +16,6 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.PathShape;
 import android.util.AttributeSet;
 import android.view.View;
-import android.util.Log;
 
 
 public class LineGraph extends View {
@@ -307,6 +306,9 @@ public class LineGraph extends View {
 			}
 			mexGraphItemValue = (mexGraphItemValue > maxGraphItemValueTemp) ? mexGraphItemValue : maxGraphItemValueTemp;
 		}		
+		if (mexGraphItemValue == 0) {
+			mexGraphItemValue = 10;
+		}
 	}
 	public void setPointTitles  (ArrayList<String> point_Titles ) {
 		if (pointTitles.isEmpty() == false) {
