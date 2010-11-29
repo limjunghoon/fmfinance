@@ -43,7 +43,7 @@ package com.android.testfmgraph;
 // 
 //        bg.makeUserTypeGraph(ap, Constants.BAR_AXIS_X_BOTTOM, iv, 1, at);
 //
-//        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bg.getLayoutParams();
+//        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bg.getLayoutParams();4321`11
 //
 //        params.width = (320 > bg.getBarGraphWidth()) ? 320 : bg.getBarGraphWidth();
 //        params.height = (350 > bg.getBarGraphHeight()) ? 320 : bg.getBarGraphHeight();
