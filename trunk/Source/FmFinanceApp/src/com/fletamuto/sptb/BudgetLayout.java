@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,26 @@ public class BudgetLayout extends FmBaseActivity {
         getItemsFromDB();
         setAdapterList();
     }
+    
+	@Override
+	protected void setTitleBtn() {
+        setEditButtonListener();
+        setTitle(getResources().getString(R.string.btn_category_select));
+        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+        
+		super.setTitleBtn();
+	}
+	
+	public void setEditButtonListener() {
+		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent intent = new Intent(BudgetLayout.this, EditBudgetLayout.class);
+				intent.putExtra(MsgDef.ExtraNames.BUDGET_ITEM_LIST, mBudgetItems);
+				startActivity(intent);
+			}
+		});
+	}
     
     protected boolean getItemsFromDB() {
     	mBudgetItems = DBMgr.getBudget(mYear, mMonth);
@@ -155,8 +176,10 @@ public class BudgetLayout extends FmBaseActivity {
 			tvTitle.setText(item.getExpenseCategory().getName());
 		}
 		else {
-			tvTitle.setText("메인");
+			tvTitle.setText("총 예산");
 		}
 		
+		TextView tvBudgetAmount = (TextView)convertView.findViewById(R.id.TVBudgetAmount);
+		tvBudgetAmount.setText(String.format("%,d원", item.getAmount()));
 	}
 }

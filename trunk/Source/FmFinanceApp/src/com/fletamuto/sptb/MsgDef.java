@@ -52,5 +52,6 @@ public final class MsgDef {
 		public static final String CALENDAR_YEAR = "CALENDAR_YEAR";
 		public static final String CALENDAR_MONTH = "CANLENDER_MONTH";
 		public static final String CALENDAR_DAY = "CANLENDER_DAY";
+		public static final String BUDGET_ITEM_LIST = "BUDGET_ITEM_LIST";
 	}
 }
