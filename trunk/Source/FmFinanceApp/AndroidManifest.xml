@@ -80,6 +80,7 @@
 <activity android:name=".InputLiabilityLoanLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name="InputLiabilityCashServiceLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name="InputLiabilityPersonLoanLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".EditBudgetLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 

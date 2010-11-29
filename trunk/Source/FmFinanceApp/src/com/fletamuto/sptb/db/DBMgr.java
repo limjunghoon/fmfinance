@@ -573,4 +573,8 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getBudgetDBConnector().getItem(year, month);
 	}
 
+	public static long addBudget(BudgetItem item) {
+		return mInstance.mDBConnector.getBudgetDBConnector().addItem(item);
+	}
+
 }

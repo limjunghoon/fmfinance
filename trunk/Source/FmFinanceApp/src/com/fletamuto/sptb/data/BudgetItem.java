@@ -1,6 +1,10 @@
 package com.fletamuto.sptb.data;
 
 public class BudgetItem extends BaseItem{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static final int MAIN_CATEGORY_TITLE = 0;
 	static final int MAIN_CATEGORY_ITEM = 1;
 	static final int SUB_CATEGORY_TITLE = 2;
@@ -19,7 +23,7 @@ public class BudgetItem extends BaseItem{
 		mMonth = month;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(long amount) {
 		this.mAmount = amount;
 	}
 

@@ -1,6 +1,12 @@
 package com.fletamuto.sptb.data;
 
-public class BaseItem {
+import java.io.Serializable;
+
+public class BaseItem implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 100L;
 	private int mID = -1;
 
 	/**
