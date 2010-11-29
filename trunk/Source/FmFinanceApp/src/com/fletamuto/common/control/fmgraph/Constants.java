@@ -26,7 +26,7 @@ public class Constants {
 	public final static int BAR_DEFAULT_BAR_WIDTH = 10;
 	public final static int BAR_DEFAULT_GRADATION_COUNT = 5;
 	
-	public final static int PIE_DEFAULT_GRAPH_BOUNDARY_THICKNESS = 5;
+	public final static int PIE_DEFAULT_GRAPH_BOUNDARY_THICKNESS = 2;
 	public final static int PIE_DEFAULT_GRAPH_PADDING = 20;
 	
 	public final static int LINE_DEFAULT_MARGIN = 20;
