@@ -6,6 +6,11 @@ package com.fletamuto.sptb.data;
  *
  */
 public class Category extends UISelectItem {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6389580366968403491L;
+
 	public static final int EXTEND_NONE = 0;
 	
 	private String mName;

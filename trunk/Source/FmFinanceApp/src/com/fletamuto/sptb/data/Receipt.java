@@ -9,6 +9,10 @@ import java.util.Calendar;
  */
 public class Receipt extends BaseItem {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -791669760670443285L;
+	/**
 	 * 생성날짜
 	 */
 	private Calendar mCreateDate = Calendar.getInstance();

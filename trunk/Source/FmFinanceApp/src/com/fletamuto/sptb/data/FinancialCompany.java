@@ -1,6 +1,10 @@
 package com.fletamuto.sptb.data;
 
 public class FinancialCompany extends BaseItem {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1454745898095007207L;
 	public static final int GROUP_NONE = 0;
 	public static final int BANKING = 1;
 	public static final int SECURITIES_COMPANY = 2;

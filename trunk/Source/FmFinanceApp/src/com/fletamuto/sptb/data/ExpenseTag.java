@@ -1,6 +1,10 @@
 package com.fletamuto.sptb.data;
 
 public class ExpenseTag extends BaseItem{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5029746248314356162L;
 	public static final int NONE_ID = 1; 
 	private String mName;
 	private int mPrioritize = -1;

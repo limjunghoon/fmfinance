@@ -11,6 +11,11 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
  * @version 1.0.0.1
  */
 public abstract class FinanceItem extends BaseItem {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -829539455398652012L;
+
 	/** Á¦¸ñ */
 	private String mTitle;
 	

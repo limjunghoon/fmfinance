@@ -3,6 +3,11 @@ package com.fletamuto.sptb.data;
 public class IncomeSalaryItem extends IncomeItem {
 //	public final static int EXEND_TYPE = ItemDef.ExtendIncome.SALARY;
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3207895498624452158L;
+
 	private int mSalaryID = -1;
 	
 	/** ¿¬±Ý */

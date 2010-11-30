@@ -11,6 +11,10 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
 public class Repeat extends BaseItem {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2053858177051707684L;
 	public static final int ONCE = 0;
 	/** 주간 반복 */
 	public static final int WEEKLY = 1;

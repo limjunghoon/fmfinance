@@ -7,6 +7,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,8 @@ public class EditBudgetLayout  extends FmBaseActivity {
         
         setContentView(R.layout.edit_budget, true);
         mBudgetItems = (ArrayList<BudgetItem>) getIntent().getSerializableExtra(MsgDef.ExtraNames.BUDGET_ITEM_LIST);
+        mYear = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_YEAR, Calendar.getInstance().get(Calendar.YEAR));
+        mMonth = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_MONTH, Calendar.getInstance().get(Calendar.MONTH));
         setAdapterList();
     }
     
@@ -124,10 +127,12 @@ public class EditBudgetLayout  extends FmBaseActivity {
 		item.setAmount(amount);
 		
 		if (item.getID() == -1) {
-			DBMgr.addBudget(item);
+			if (DBMgr.addBudget(item) == -1) {
+				Log.e(LogTag.LAYOUT, ":: FAIL TO ADD BUDGET");
+			}
 		}
 		else {
-			
+			DBMgr.updateBudget(item);
 		}
 		mBudgetItems.set(mSelectedPosition, item);
 		mBudgetAdapter.notifyDataSetChanged();

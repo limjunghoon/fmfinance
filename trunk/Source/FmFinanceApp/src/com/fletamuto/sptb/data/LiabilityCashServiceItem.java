@@ -9,6 +9,11 @@ package com.fletamuto.sptb.data;
 public class LiabilityCashServiceItem extends LiabilityExtendItem {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7908878232505354682L;
+
+	/**
 	 * 현금 서비스 DB테이블 아이디
 	 */
 	private int mCashServiceID = -1;

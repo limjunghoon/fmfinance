@@ -12,6 +12,11 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
  */
 public class AssetsSavingsItem extends AssetsExtendItem {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -411684904811090956L;
+
+	/**
 	 * 적금 DB테이블 아이디
 	 */
 	private int mSavingsID = -1;

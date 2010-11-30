@@ -6,6 +6,11 @@ import com.fletamuto.sptb.LogTag;
 
 
 public class ExpenseItem extends FinanceItem {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4904314900215308453L;
+
 	public final static int TYPE = ItemDef.FinanceDef.EXPENSE;
 	
 	private boolean mWaste = false;

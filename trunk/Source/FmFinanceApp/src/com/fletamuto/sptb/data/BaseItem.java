@@ -3,10 +3,11 @@ package com.fletamuto.sptb.data;
 import java.io.Serializable;
 
 public class BaseItem implements Serializable {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 100L;
+	private static final long serialVersionUID = 5745513561951474600L;
 	private int mID = -1;
 
 	/**

@@ -7,6 +7,10 @@ package com.fletamuto.sptb.data;
  *
  */
 public class AssetsStockItem extends AssetsExtendItem {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6135037386964932339L;
 	public static final int BUY = 0;
 	public static final int SELL = 1;
 	

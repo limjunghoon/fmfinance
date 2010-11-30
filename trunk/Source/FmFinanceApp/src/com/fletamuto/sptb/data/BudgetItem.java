@@ -1,10 +1,11 @@
 package com.fletamuto.sptb.data;
 
 public class BudgetItem extends BaseItem{
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6998418680471054316L;
 	static final int MAIN_CATEGORY_TITLE = 0;
 	static final int MAIN_CATEGORY_ITEM = 1;
 	static final int SUB_CATEGORY_TITLE = 2;

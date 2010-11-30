@@ -569,12 +569,21 @@ public final class DBMgr {
 		return getLiabilityDBConnecter().addExtendPersonLoan(personLoan);
 	}
 
-	public static ArrayList<BudgetItem> getBudget(int year, int month) {
-		return mInstance.mDBConnector.getBudgetDBConnector().getItem(year, month);
+	public static ArrayList<BudgetItem> getBudgetItems(int year, int month) {
+		return mInstance.mDBConnector.getBudgetDBConnector().getItems(year, month);
+	}
+	
+	public static BudgetItem getBudgetItem(int year, int month) {
+		return mInstance.mDBConnector.getBudgetDBConnector().getMainBudget(year, month);
 	}
 
 	public static long addBudget(BudgetItem item) {
 		return mInstance.mDBConnector.getBudgetDBConnector().addItem(item);
+	}
+
+	public static long updateBudget(BudgetItem item) {
+		return mInstance.mDBConnector.getBudgetDBConnector().updateItem(item);
+		
 	}
 
 }

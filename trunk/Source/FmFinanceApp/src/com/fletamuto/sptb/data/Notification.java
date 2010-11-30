@@ -1,6 +1,10 @@
 package com.fletamuto.sptb.data;
 
 public class Notification extends BaseItem{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4874648314774155498L;
 	private int mType = -1;
 	private int mItemID = -1;
 	private int mMessageInfo = -1;

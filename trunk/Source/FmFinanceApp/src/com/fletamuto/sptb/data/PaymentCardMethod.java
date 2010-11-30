@@ -1,6 +1,10 @@
 package com.fletamuto.sptb.data;
 
 public class PaymentCardMethod extends PaymentMethod {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 743513086501392523L;
 	private CardItem mCard;
 	private int mInstallmentPlan = 0;
 	
