@@ -3,6 +3,10 @@ package com.fletamuto.sptb.data;
 import java.util.Calendar;
 
 public class ExpenseSMS extends BaseItem{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -431858797456300474L;
 	private Calendar mCreateDate = Calendar.getInstance();
 	private CardItem mCard;
 	private String mMessage;

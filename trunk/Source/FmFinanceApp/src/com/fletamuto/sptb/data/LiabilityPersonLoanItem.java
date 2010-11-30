@@ -9,6 +9,11 @@ package com.fletamuto.sptb.data;
 public class LiabilityPersonLoanItem extends LiabilityExtendItem {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5728659742098001092L;
+
+	/**
 	 * ºô¸°µ· DBÅ×ÀÌºí ¾ÆÀÌµð
 	 */
 	private int mPersonLoanID = -1;

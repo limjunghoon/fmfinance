@@ -1,6 +1,10 @@
 package com.fletamuto.sptb.data;
 
 public abstract class PaymentMethod extends BaseItem {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -726005593593505670L;
 	public final static int CASH = 0;
 	public final static int CARD = 1;
 	public final static int ACCOUNT = 2;

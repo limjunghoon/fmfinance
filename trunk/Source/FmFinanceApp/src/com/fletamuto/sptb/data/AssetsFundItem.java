@@ -8,6 +8,11 @@ package com.fletamuto.sptb.data;
  */
 public class AssetsFundItem extends AssetsExtendItem {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9044769708788641644L;
+
+	/**
 	 * 펀드 DB테이블 아이디
 	 */
 	private int mFundID = -1;

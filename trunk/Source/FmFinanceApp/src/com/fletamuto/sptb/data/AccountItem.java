@@ -6,6 +6,11 @@ import java.util.Date;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 
 public class AccountItem extends BaseItem {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5366848481035789230L;
+
 	public final static int ORDINARY_DEPOSIT = 0;
 	
 	private String mNumber;

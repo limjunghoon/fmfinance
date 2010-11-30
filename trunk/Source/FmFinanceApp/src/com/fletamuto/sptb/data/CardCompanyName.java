@@ -1,6 +1,10 @@
 package com.fletamuto.sptb.data;
 
 public class CardCompanyName extends UISelectItem{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6961199997270233118L;
 	private String mName;
 	private int mCompanyID = -1;
 	

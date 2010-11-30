@@ -1,6 +1,10 @@
 package com.fletamuto.sptb.data;
 
 public class CardItem extends BaseItem{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1671898251206337042L;
 	public final static int CREDIT_CARD = 1;
 	public final static int CHECK_CARD = 2;
 	public final static int PREPAID_CARD = 3;

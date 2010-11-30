@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +16,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.BudgetItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.FinanceCurrentDate;
 
 /**
  * 카드 레이아웃 클레스
@@ -36,16 +39,23 @@ public class BudgetLayout extends FmBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_budget, true);
         
-        setTitle("예산");
         setButtonClickListener();
-        updateChildView();
-        
         getItemsFromDB();
         setAdapterList();
+        updateChildView();
+    }
+    
+    @Override
+    protected void onResume() {
+    	updateChildView();
+        getItemsFromDB();
+        setAdapterList();
+    	super.onResume();
     }
     
 	@Override
 	protected void setTitleBtn() {
+		setTitle("예산");
         setEditButtonListener();
         setTitle(getResources().getString(R.string.btn_category_select));
         setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
@@ -59,13 +69,18 @@ public class BudgetLayout extends FmBaseActivity {
 			public void onClick(View v) {
 				Intent intent = new Intent(BudgetLayout.this, EditBudgetLayout.class);
 				intent.putExtra(MsgDef.ExtraNames.BUDGET_ITEM_LIST, mBudgetItems);
-				startActivity(intent);
+				intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, mYear);
+				intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, mMonth);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_EDIT_BUDGET);
 			}
 		});
 	}
     
     protected boolean getItemsFromDB() {
-    	mBudgetItems = DBMgr.getBudget(mYear, mMonth);
+    	if (mBudgetItems != null) {
+    		mBudgetItems.clear();
+    	}
+    	mBudgetItems = DBMgr.getBudgetItems(mYear, mMonth);
 		
         if (mBudgetItems == null) {
         	return false;
@@ -105,6 +120,8 @@ public class BudgetLayout extends FmBaseActivity {
 		else {
 			mMonth++;
 		}
+		getItemsFromDB();
+        setAdapterList();
 		updateChildView();
 	}
 	
@@ -116,6 +133,8 @@ public class BudgetLayout extends FmBaseActivity {
 		else {
 			mMonth--;
 		}
+		getItemsFromDB();
+        setAdapterList();
 		updateChildView();
 	}
 	
@@ -160,13 +179,13 @@ public class BudgetLayout extends FmBaseActivity {
 				reportListView = (LinearLayout)convertView;
 			}
 			
-			setListViewText(item, reportListView);
+			setListChildViewText(item, reportListView);
 			
 			return reportListView;
 		}
     }
 	
-	void setListViewText(BudgetItem item, View convertView) {
+	void setListChildViewText(BudgetItem item, View convertView) {
 		if (item == null || convertView == null) {
 			return;
 		}
@@ -179,7 +198,48 @@ public class BudgetLayout extends FmBaseActivity {
 			tvTitle.setText("총 예산");
 		}
 		
+		ProgressBar progress = (ProgressBar)convertView.findViewById(R.id.PBBudget);
+		long budgetAmount = item.getAmount();
+		long expenseAmount = item.getExpenseAmountMonth();
+		long sumAmount = budgetAmount - expenseAmount;
+		 
 		TextView tvBudgetAmount = (TextView)convertView.findViewById(R.id.TVBudgetAmount);
-		tvBudgetAmount.setText(String.format("%,d원", item.getAmount()));
+		tvBudgetAmount.setText(String.format("%,d원", budgetAmount));
+		
+		TextView tvExpenseAmount = (TextView)convertView.findViewById(R.id.TVExpenseCategoryAmount);
+		tvExpenseAmount.setTextColor(Color.RED);
+		if (expenseAmount == 0) {
+			tvExpenseAmount.setText(String.format("%,d원", expenseAmount));
+		} 
+		else {
+			tvExpenseAmount.setText(String.format("-%,d원", expenseAmount));
+		}
+		
+		if (sumAmount < 0) {
+			progress.setMax(100);
+			progress.setProgress(5);
+		}
+		else {
+			// 테스트 코드
+			int max = (int)(budgetAmount/100);
+			int pos = max - (int)(expenseAmount/100);
+			
+			progress.setMax(max);
+			progress.setProgress(pos);
+		}
+
 	}
+	
+	 @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == MsgDef.ActRequest.ACT_EDIT_BUDGET) {
+    		if (resultCode == RESULT_OK) {
+    			updateChildView();
+    	        getItemsFromDB();
+    	        setAdapterList();
+    		}
+    	}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
 }

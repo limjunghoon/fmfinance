@@ -1,6 +1,10 @@
 package com.fletamuto.sptb.data;
 
 public class PaymentAccountMethod extends PaymentMethod {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6893851018348918474L;
 	private AccountItem mAccount;
 	
 	PaymentAccountMethod() {

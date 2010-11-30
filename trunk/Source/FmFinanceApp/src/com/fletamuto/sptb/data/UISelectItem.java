@@ -6,6 +6,10 @@ package com.fletamuto.sptb.data;
  *
  */
 public abstract class UISelectItem extends BaseItem {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4825272309760290307L;
 	static public final int NORMAL = 0;
 	static public final int HIDE = 1;
 	static public final int NOT_DELETE = 2;

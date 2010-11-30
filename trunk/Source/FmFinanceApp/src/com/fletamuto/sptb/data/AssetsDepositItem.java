@@ -11,6 +11,11 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
  *
  */
 public class AssetsDepositItem extends AssetsExtendItem {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5991940214076046151L;
+
 	public final static int EXEND_TYPE = ItemDef.ExtendAssets.DEPOSIT;
 	
 	/**

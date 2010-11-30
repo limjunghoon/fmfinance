@@ -13,6 +13,11 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
 public class AssetsInsuranceItem extends AssetsExtendItem {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2224085382368286553L;
+
+	/**
 	 * 보장성 보험 DB테이블 아이디
 	 */
 	private int mInsuranceID = -1;

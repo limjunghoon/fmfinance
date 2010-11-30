@@ -1,6 +1,7 @@
 package com.fletamuto.sptb;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.BudgetItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
@@ -38,8 +40,11 @@ public class FmFinanceLayout extends FmBaseActivity {
         
         setTitle(getResources().getString(R.string.app_name));
         setIncomeExpenseProgress();
+        setBudgetPorgress();
     }
     
+
+
 
 	/**
      * activity가 다시 시작할 때
@@ -47,6 +52,7 @@ public class FmFinanceLayout extends FmBaseActivity {
     protected void onResume() {
     	updateViewText();
     	setIncomeExpenseProgress();
+    	setBudgetPorgress();
     	super.onResume();
     }
 
@@ -64,6 +70,11 @@ public class FmFinanceLayout extends FmBaseActivity {
     	setChangeActivityBtnClickListener(R.id.BtnBudget);
     	setChangeActivityBtnClickListener(R.id.BtnPurpose);
     	setChangeActivityBtnClickListener(R.id.BtnSearch);
+    	
+    	/// 임시 코드 //////////////////////////////////////////
+    	findViewById(R.id.BtnPurpose).setVisibility(View.GONE);
+    	findViewById(R.id.BtnSearch).setVisibility(View.GONE);
+    	//////////////////////////////////////////////////////
     	
     	setCurrentButtonListener();
     	
@@ -114,7 +125,11 @@ public class FmFinanceLayout extends FmBaseActivity {
     	updateCurrentExpenseText();
     }
     
-    /** 총 수입 액수 갱신 */
+
+
+
+
+	/** 총 수입 액수 갱신 */
     protected void updateTotalIncomeText() {
     	long amount = DBMgr.getTotalAmount(IncomeItem.TYPE);
     	TextView totalIncome = (TextView)findViewById(R.id.TVTotalIncome);
@@ -222,7 +237,35 @@ public class FmFinanceLayout extends FmBaseActivity {
 			tvIncomeExpense.setTextColor(Color.BLUE);
 			
 		}
+	}
+    
+
+	private void setBudgetPorgress() {
+		ProgressBar progress = (ProgressBar)findViewById(R.id.PBBudget);
+		BudgetItem budget = DBMgr.getBudgetItem(FinanceCurrentDate.getDate().get(Calendar.YEAR), FinanceCurrentDate.getDate().get(Calendar.MONTH)+1);
+		long budgetAmount = budget.getAmount();
+		long expenseAmount = budget.getExpenseAmountMonth();
+		long sumAmount = budgetAmount - expenseAmount;
+		 
+		TextView budgetRemain = (TextView)findViewById(R.id.TVBudgetRemain);
+		budgetRemain.setText(String.format("%,d원", sumAmount));
+		
+		
+		if (sumAmount < 0) {
+			progress.setMax(100);
+			progress.setProgress(5);
+			budgetRemain.setTextColor(Color.RED);
+		}
+		else {
+			// 테스트 코드
+			int max = (int)(budgetAmount/100);
+			int pos = max - (int)(expenseAmount/100);
 			
+			progress.setMax(max);
+			progress.setProgress(pos);
+			budgetRemain.setTextColor(Color.BLUE);
+			
+		}
 		
 	}
 }
