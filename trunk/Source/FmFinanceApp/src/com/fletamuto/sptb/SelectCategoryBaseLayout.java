@@ -1,5 +1,6 @@
 package com.fletamuto.sptb;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
+	private static boolean mSelectSubCategory = true;
 	protected ArrayList<Category> mArrCategory = null;
 	CategoryButtonAdpter mAdapterCategory;
 	private int mType = -1;
@@ -31,7 +33,7 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       
-        
+        mSelectSubCategory = getIntent().getBooleanExtra(MsgDef.ExtraNames.SELECT_SUB_CATEGORY_IN_MAIN_CATEGORY, true);
     }
 	
 	protected void onEditButtonClick() {
@@ -151,5 +153,9 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 		if (mAdapterCategory != null) {
 			mAdapterCategory.clear();
 		}
+	}
+
+	public static boolean isSelectSubCategory() {
+		return mSelectSubCategory;
 	}
 }

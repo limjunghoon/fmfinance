@@ -14,12 +14,23 @@ public abstract class InputAfterSelectCategoryLayout extends SelectCategoryBaseL
     }
 	
 	protected void onClickCategoryButton(Category category) {
-		selectedCategory(category);
+		if (isInputmode()) {
+			selectedCategory(category);
+		}
+		else {
+			super.onClickCategoryButton(category);
+		}
+		
 	}
 
 	private void selectedCategory(Category category) {
 		startInputActivity(category);
     }
+	
+	// 수정필요
+	private boolean isInputmode() {
+		return isSelectSubCategory();
+	}
 	
 	
 }

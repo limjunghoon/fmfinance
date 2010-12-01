@@ -301,6 +301,11 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountMonth(categorID, year, month);
 	}
 	
+	public static ArrayList<Long> getTotalAmountMonthInYear(int itemType, int categorID, int year) {
+		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountMonthInYear(categorID, year);
+	}
+	
 	public static long getTotalAmountYear(int itemType, int year) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return 0L;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountYear(year);
