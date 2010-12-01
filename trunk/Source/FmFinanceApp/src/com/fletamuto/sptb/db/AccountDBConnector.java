@@ -36,7 +36,6 @@ public class AccountDBConnector extends BaseDBConnector {
 		db.close();
 		return insertID;
 	}
-	
 
 	public boolean updateItem(AccountItem account) {
 		if (checkAccountVaildItem(account) != DBDef.ValidError.SUCCESS) return false;

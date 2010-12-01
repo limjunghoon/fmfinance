@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.BudgetItem;
 import com.fletamuto.sptb.db.DBMgr;
-import com.fletamuto.sptb.util.FinanceCurrentDate;
 
 /**
  * 카드 레이아웃 클레스

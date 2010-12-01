@@ -9,7 +9,6 @@ import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 
 public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
-	private static boolean mSelectSubCategory = true;
 	
 	private Category mMainCategory;
 	
@@ -21,13 +20,12 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
         super.onCreate(savedInstanceState);
         
         
-        mSelectSubCategory = getIntent().getBooleanExtra(MsgDef.ExtraNames.SELECT_SUB_CATEGORY_IN_MAIN_CATEGORY, true);
     }
     
     
     protected void onClickCategoryButton(Category category) {
     	mMainCategory = category;
-    	if (mSelectSubCategory) {
+    	if (isSelectSubCategory()) {
     		Intent intent = new Intent(SelectCategoryExpenseLayout.this, SelectSubCategoryLayout.class);
         	intent.putExtra("MAIN_CATEGORY_ID", category.getID());
         	intent.putExtra("MAIN_CATEGORY_NAME", category.getName());
@@ -35,11 +33,7 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
         	startActivityForResult(intent, ACT_SUB_CATEGORY);
     	}
     	else {
-    		Intent intent = new Intent();
-			intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, mMainCategory.getID());
-			intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, mMainCategory.getName());
-			setResult(RESULT_OK, intent);
-			finish();
+    		super.onClickCategoryButton(category);
     	}
 	}
     
