@@ -4,7 +4,9 @@
   android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="fill_parent">
 
 		<HorizontalScrollView android:id="@+id/HorizontalScrollView01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<LinearLayout android:id="@+id/hsv" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
 		<com.fletamuto.common.control.fmgraph.LineGraph android:id="@+id/lgraph" android:layout_width="210dp" android:layout_height="210dp" />
+		</LinearLayout>
 		</HorizontalScrollView>
 
 
