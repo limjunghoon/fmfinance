@@ -494,7 +494,7 @@ public class LineGraph extends View {
 			if (haveNegativeInGraphItemValue == true) {				
 				gradationMin = gradationMax *(-1);
 			} 
-		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) >= 1 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) <= 2) {
+		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) > 1 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) <= 2) {
 			gradationCount = 8;
 			gradationMax = 2 * (long)Math.pow(10,zeroCount);
 			if (haveNegativeInGraphItemValue == true) {				
