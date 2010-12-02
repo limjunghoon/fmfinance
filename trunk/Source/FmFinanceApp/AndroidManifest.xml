@@ -82,7 +82,8 @@
 <activity android:name="InputLiabilityPersonLoanLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".EditBudgetLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".ReportCategoryCompareLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
-<activity android:name="ReportCategoryCompareBaseLayout"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportCategoryCompareBaseLayout"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportTagExpenseLayout"></activity>
 </application>
 
 

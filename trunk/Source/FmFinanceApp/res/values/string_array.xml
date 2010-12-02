@@ -10,6 +10,7 @@
 		<item>1. 연간 월별 수입/지출 비교</item>
 		<item>2. 월 수입/지출 비교</item>
 		<item>3. 항목별 변동 내역</item>
+		<item>4. 태그별 지출내역 보기</item>
 	</string-array>
 	<string-array name="income_base_main_category">
 		<item>급여</item>

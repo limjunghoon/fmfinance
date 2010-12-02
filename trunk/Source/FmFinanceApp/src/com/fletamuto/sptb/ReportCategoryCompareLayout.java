@@ -19,7 +19,7 @@ public class ReportCategoryCompareLayout extends FmBaseActivity {
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.report_categoyr_compare, true);
+        setContentView(R.layout.report_category_compare, true);
        
         setBtnClickListener();
     }

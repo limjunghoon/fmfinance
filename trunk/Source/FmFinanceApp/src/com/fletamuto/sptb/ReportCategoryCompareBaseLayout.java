@@ -33,7 +33,7 @@ public class ReportCategoryCompareBaseLayout extends FmBaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.report_categoyr_compare_base, true);
+        setContentView(R.layout.report_category_compare_base, true);
         
         setBtnClickListener();
         getData();
