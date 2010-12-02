@@ -474,6 +474,24 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		return amountMonthInYear;
 	}
 	
+	public ArrayList<Long> getTotalTagAmountMonthInYear(int tagID, int year) {
+		ArrayList<Long> amountMonthInYear = new ArrayList<Long>();
+		SQLiteDatabase db = getReadableDatabase();
+		for (int month = 1; month <= 12; month++) {
+			String[] params = {String.valueOf(tagID), String.format("%d-%02d", year, month)};
+			String query = "SELECT SUM(amount) FROM expense WHERE tag=? AND strftime('%Y-%m', create_date)=?";
+			Cursor c = db.rawQuery(query, params);
+			
+			if (c.moveToFirst() != false) {
+				amountMonthInYear.add(c.getLong(0));
+			}
+			c.close();
+		}
+		db.close();
+		return amountMonthInYear;
+	}
+
+	
 	public long getTotalAmountYear(int year) {
 		long amount = 0L;
 		SQLiteDatabase db = getReadableDatabase();

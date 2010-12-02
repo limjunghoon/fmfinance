@@ -79,6 +79,11 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 		return 0;
 	}
 
+	public ArrayList<Long> getTotalTagAmountMonthInYear(int tagID, int year) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 
