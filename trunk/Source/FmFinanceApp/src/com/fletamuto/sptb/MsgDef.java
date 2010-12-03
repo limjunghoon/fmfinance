@@ -56,5 +56,6 @@ public final class MsgDef {
 		public static final String CALENDAR_DAY = "CANLENDER_DAY";
 		public static final String BUDGET_ITEM_LIST = "BUDGET_ITEM_LIST";
 		public static final String SELECT_SUB_CATEGORY_IN_MAIN_CATEGORY = "SELECT_SUB_CATEGORY_IN_MAIN_CATEGORY";
+		public static final String GET_EXPENSE_ITEMS = "GET_EXPENSE_ITEMS";
 	}
 }

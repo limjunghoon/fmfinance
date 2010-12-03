@@ -189,7 +189,7 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
         }
     }
 	
-	protected boolean getItemsFromDB(int itemType) {
+	protected boolean getItems(int itemType) {
 		if (isDisplayMonthOfYear() && isDisplayMainCategory()) {
 			mItems = DBMgr.getItemsFromCategoryID(itemType, mCategoryID, mYear, mMonth);
 		}
@@ -266,7 +266,7 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 	}
 	
 	public void updateExpandList() {
-		if (getItemsFromDB(getItemType()) == false) {
+		if (getItems(getItemType()) == false) {
         	return;
         }
         

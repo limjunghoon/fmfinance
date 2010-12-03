@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -134,9 +135,11 @@ public class ReportExpenseRateLayout extends FmBaseActivity {
 			if (rateAmount == null) {
 				rateAmount = new ExpenseRateAmount();
 				rateAmount.set(expenseRateID, paymentMethod.getType(), paymentMethod.getMethodItemID(), paymentMethod.getName(), item.getAmount());
+				rateAmount.addItem(item);
 				mRateAmount.put(expenseRateID, rateAmount);
 			}
 			else {
+				rateAmount.addItem(item);
 				rateAmount.addAmount(item.getAmount());
 			}
 		}
@@ -165,6 +168,15 @@ public class ReportExpenseRateLayout extends FmBaseActivity {
 		private int mMethodID;
 		private long mTotalAmount = 0L;
 		private String mName;
+		private ArrayList<FinanceItem> mItems = new ArrayList<FinanceItem>();
+		
+		public void addItem(FinanceItem item) {
+			mItems.add(item);
+		}
+		
+		public ArrayList<FinanceItem> getItems() {
+			return mItems;
+		}
 		
 		public String getID(){
 			return mID;
@@ -239,7 +251,13 @@ public class ReportExpenseRateLayout extends FmBaseActivity {
 	
 	 protected View.OnClickListener categoryListener = new View.OnClickListener() {
 			public void onClick(View v) {
-//				ExpenseRateAmount rateAmount = (ExpenseRateAmount)v.getTag();
+				ExpenseRateAmount rateAmount = (ExpenseRateAmount)v.getTag();
+				
+				Intent intent = new Intent(ReportExpenseRateLayout.this, ReportExpenseRateExpandLayout.class);
+				intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, currentCalendar.get(Calendar.YEAR));
+				intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, currentCalendar.get(Calendar.MONTH));
+				intent.putExtra(MsgDef.ExtraNames.GET_EXPENSE_ITEMS, rateAmount.getItems());
+				startActivity(intent);
 			}
 		};
 }

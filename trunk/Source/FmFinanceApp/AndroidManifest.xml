@@ -84,6 +84,8 @@
 <activity android:name=".ReportCategoryCompareLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportCategoryCompareBaseLayout"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportTagExpenseLayout"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportExpenseRateLayout"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name="ReportExpenseRateExpandLayout"></activity>
 </application>
 
 
