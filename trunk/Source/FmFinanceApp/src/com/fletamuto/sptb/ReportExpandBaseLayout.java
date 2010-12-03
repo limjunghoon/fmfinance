@@ -2,10 +2,12 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.LogRecord;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +36,6 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 	
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
 	protected abstract void setDeleteBtnListener(View convertView, int itemId, int groupPosition, int childPosition);
-//	protected abstract int	deleteItemToDB(int id);
-//	protected abstract FinanceItem getItemInstance(int id);
 	protected abstract int getChildLayoutResourceID();
 	protected abstract int getItemType();
 	
@@ -228,6 +228,10 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 		mParentItems.clear();
 		mChildItems.clear();
 		
+		if (mItems == null) {
+			Log.e(LogTag.LAYOUT, ":: EMPTY ITEM");
+			return;
+		}
 		int itemSize = mItems.size();
 		for (int index = 0; index < itemSize; index++) {
 			FinanceItem item = mItems.get(index);

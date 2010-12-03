@@ -86,6 +86,7 @@
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportTagExpenseLayout"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportExpenseRateLayout"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name="ReportExpenseRateExpandLayout"></activity>
+<activity android:name="ReportMonthLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 

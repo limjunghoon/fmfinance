@@ -7,11 +7,12 @@
 		<item>자산내역 목록</item>
 		<item>부채내역 목록</item>
 	 -->
-		<item>1. 연간 월별 수입/지출 비교</item>
-		<item>2. 월 수입/지출 비교</item>
-		<item>3. 항목별 변동 내역</item>
-		<item>4. 태그별 지출내역 보기</item>
-		<item>5. 지출 비율</item>
+	 	<item>1. 월간 입력사항 보기</item>
+		<item>2. 연간 월별 수입/지출 비교</item>
+		<item>3. 월 수입/지출 비교</item>
+		<item>4. 항목별 변동 내역</item>
+		<item>5. 태그별 지출내역 보기</item>
+		<item>6. 지출 비율</item>
 	</string-array>
 	<string-array name="income_base_main_category">
 		<item>급여</item>

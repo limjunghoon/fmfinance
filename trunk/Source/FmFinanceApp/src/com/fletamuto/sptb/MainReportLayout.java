@@ -32,6 +32,7 @@ public class MainReportLayout extends FmBaseActivity {
 ////        mReportList.add(ReportIncomeLayout.class);
 ////        mReportList.add(ReportAssetsLayout.class);
 ////        mReportList.add(ReportLiabilityLayout.class);
+        mReportActivityList.add(new ReportActivity(ReportMonthLayout.class));
         mReportActivityList.add(new ReportActivity(ReportMonthOfYearLayout.class));
         mReportActivityList.add(new ReportActivity(ReportMonthCompareExpenseToIncomeLayout.class));
         mReportActivityList.add(new ReportActivity(ReportCategoryCompareLayout.class));
