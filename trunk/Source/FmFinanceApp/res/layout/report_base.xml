@@ -2,8 +2,15 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical">
-  
+  <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center" android:orientation="horizontal" android:id="@+id/LLMoveDay">
+   		<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/BtnPreviusDay" android:text="이전날">
+   		</Button>
+   		<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="년도" android:textSize="20sp" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:id="@+id/TVCurrentDay">
+   		</TextView>
+   		<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/BtnNextDay" android:text="다음날">
+   		</Button>
+	</LinearLayout>
 	
-	<ListView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LVReportList"></ListView>
+	<ListView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LVCurrentList"></ListView>
 	
 </LinearLayout>
