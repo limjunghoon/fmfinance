@@ -15,6 +15,7 @@ public abstract class PaymentMethod extends BaseItem {
 	private int mMethodItemID = -1;
 	
 	public abstract String getText();
+	public abstract String getName();
 	
 	public void setType(int type) {
 		this.mType = type;
@@ -39,5 +40,7 @@ public abstract class PaymentMethod extends BaseItem {
 	public int getMethodItemID() {
 		return mMethodItemID;
 	}
+	
+	 
 
 }

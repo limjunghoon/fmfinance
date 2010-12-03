@@ -16,4 +16,9 @@ public class PaymentCashMethod extends PaymentMethod {
 		// TODO Auto-generated method stub
 		return "현금";
 	}
+	
+	@Override
+	public String getName() {
+		return "현금";
+	}
 }
