@@ -22,7 +22,6 @@ public class ReportLiabilityExpandLayout extends ReportExpandBaseLayout {
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	LiabilityItem item = (LiabilityItem)financeItem;
-		
 		((TextView)convertView.findViewById(R.id.TVLiabilityReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
 		((TextView)convertView.findViewById(R.id.TVLiabilityReportListTitle)).setText(String.format("제목 : %s", item.getTitle()));
 		((TextView)convertView.findViewById(R.id.TVLiabilityReportListCategory)).setText(String.format("분류 : %s", item.getCategory().getName()));
