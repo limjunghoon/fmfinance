@@ -1,22 +1,12 @@
 package com.fletamuto.sptb;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import com.fletamuto.sptb.ReportAccountLayout.AccountItemAdapter;
-import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.db.DBMgr;
-
-import android.app.ListActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 public class MainReportLayout extends FmBaseActivity {
@@ -29,7 +19,7 @@ public class MainReportLayout extends FmBaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.report_base, true);
+        setContentView(R.layout.report_main, true);
         
         setAdapterList();
       
@@ -46,6 +36,7 @@ public class MainReportLayout extends FmBaseActivity {
         mReportActivityList.add(new ReportActivity(ReportMonthCompareExpenseToIncomeLayout.class));
         mReportActivityList.add(new ReportActivity(ReportCategoryCompareLayout.class));
         mReportActivityList.add(new ReportActivity(SelectTagLayout.class, MsgDef.ActRequest.ACT_TAG_SELECTED));
+        mReportActivityList.add(new ReportActivity(ReportExpenseRateLayout.class));
         
     }
     

@@ -17,7 +17,6 @@ public class ReportCompareAssetsLayout extends ReportBaseCompare {
     	
     	setContentView(R.layout.report_compare, true);
     	
-    	
     	setButtonClickListener();
     	getData();
     	updateChildView();
@@ -54,8 +53,6 @@ public class ReportCompareAssetsLayout extends ReportBaseCompare {
 		
 		super.setTitleBtn();
 	}
-
-
 	
 	protected void onClickCategoryButton(CategoryAmount categoryAmount) {
 		Intent intent = new Intent(ReportCompareAssetsLayout.this, ReportAssetsExpandLayout.class);
@@ -74,7 +71,6 @@ public class ReportCompareAssetsLayout extends ReportBaseCompare {
 		
 		updateBarGraph();
 		addButtonInLayout();
-		
 	}
 	
 	@Override
@@ -87,6 +83,4 @@ public class ReportCompareAssetsLayout extends ReportBaseCompare {
     	}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
-
 }

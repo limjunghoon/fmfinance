@@ -22,7 +22,12 @@ public class PaymentAccountMethod extends PaymentMethod {
 	@Override
 	public String getText() {
 		if (mAccount == null) return "°èÁÂ";
-		
 		return mAccount.getCompany().getName() +  " : " + mAccount.getNumber();
+	}
+
+	@Override
+	public String getName() {
+		if (mAccount == null) return "°èÁÂ";
+		return "°èÁÂ :" + mAccount.getCompany().getName() +  "(" + mAccount.getNumber() + ")";
 	}
 }

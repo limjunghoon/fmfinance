@@ -3,9 +3,6 @@ package com.fletamuto.sptb;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import com.fletamuto.common.control.fmgraph.LineGraph;
-import com.fletamuto.sptb.db.DBMgr;
-
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +10,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.fletamuto.common.control.fmgraph.LineGraph;
+import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportTagExpenseLayout extends FmBaseActivity {
 	

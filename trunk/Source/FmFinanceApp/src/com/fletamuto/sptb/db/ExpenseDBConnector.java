@@ -274,10 +274,10 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		
 		paymentMethod.setID(c.getInt(28));
 		if (type == PaymentMethod.CARD) {
-			paymentMethod.setMethodItemID(c.getInt(31));
+			paymentMethod.setMethodItemID(c.getInt(32));
 		}
 		else if (type == PaymentMethod.ACCOUNT) {
-			paymentMethod.setMethodItemID(c.getInt(30));
+			paymentMethod.setMethodItemID(c.getInt(31));
 		}
 		return paymentMethod;
 	}

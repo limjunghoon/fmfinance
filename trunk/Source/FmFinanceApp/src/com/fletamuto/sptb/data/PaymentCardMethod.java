@@ -42,4 +42,10 @@ public class PaymentCardMethod extends PaymentMethod {
 	public int getInstallmentPlan() {
 		return mInstallmentPlan;
 	}
+	
+	@Override
+	public String getName() {
+		if (mCard == null) return "카드";
+		else return "카드 :" + mCard.getCompenyName().getName() +  "(" + mCard.getNumber() + ")";
+	}
 }
