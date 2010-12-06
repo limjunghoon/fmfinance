@@ -435,6 +435,10 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getAccountDBConnector().getItem(id);
 	}
 	
+	public static AccountItem getAccountMyPoctet() {
+		return mInstance.mDBConnector.getAccountDBConnector().getMyPocket();
+	}
+	
 	public static ArrayList<AccountItem> getAccountAllItems() {
 	//	return mInstance.mDBConnector.getAccountAllItems();
 		return mInstance.mDBConnector.getAccountDBConnector().getAllItems();

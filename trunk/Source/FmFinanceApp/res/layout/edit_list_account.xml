@@ -6,10 +6,10 @@
 		<TextView android:layout_width="fill_parent" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:textSize="15dp" android:text="번호" android:id="@+id/TVAccountReportListNumer"/>
 		<TextView android:layout_width="fill_parent" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:textSize="15dp" android:text="잔액" android:id="@+id/TVAccountReportListBalance"/>
 		<TextView android:layout_width="fill_parent" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:textSize="15dp" android:text="종류" android:id="@+id/TVAccountReportListType"/>
-		<TextView android:layout_width="fill_parent" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:textSize="15dp" android:text="기관" android:id="@+id/TVAccountReportListInstitution"/>
+		
 		</LinearLayout>	        
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:orientation="vertical" android:layout_weight="5" android:layout_height="wrap_content" android:layout_gravity="center_vertical">
-		<Button android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:focusable="false" android:id="@+id/BtnReportAccountTransfer" android:text="이체"></Button>
+		<Button android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:focusable="false" android:text="삭제" android:id="@+id/BtnReportAccountDelete"></Button>
 	</LinearLayout>
 
 </LinearLayout>

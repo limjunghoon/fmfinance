@@ -56,6 +56,19 @@ public class AccountDBConnector extends BaseDBConnector {
 		return true;
 	}
 	
+	public AccountItem getMyPocket() {
+		AccountItem account = null;
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor c = db.query(TABLE_NAME, null, "type=?", new String[]{String.valueOf(AccountItem.MY_POCKET)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			account = createAccountItem(c);
+		}
+		c.close();
+		db.close();
+		return account;
+	}
+	
 	public  ArrayList<AccountItem> getAllItems() {
 		ArrayList<AccountItem> incomeItems = new ArrayList<AccountItem>();
 		SQLiteDatabase db = getReadableDatabase();
@@ -63,7 +76,7 @@ public class AccountDBConnector extends BaseDBConnector {
 		
 		queryBilder.setTables("account, finance_company");
 		queryBilder.appendWhere("account.company=finance_company._id");
-		Cursor c = queryBilder.query(db, null, null, null, null, null, null);
+		Cursor c = queryBilder.query(db, null, null, null, null, null, "company DESC");
 		
 		if (c.moveToFirst() != false) {
 			do {
@@ -117,12 +130,13 @@ public class AccountDBConnector extends BaseDBConnector {
 		account.setMemo(c.getString(7));
 		account.setName(c.getString(8));
 		
-		FinancialCompany Company = new FinancialCompany();
-		Company.setID(c.getInt(9));
-		Company.setName(c.getString(10));
-		Company.setGroup(c.getInt(11));
-		account.setCompany(Company);
-
+		if (account.getType() != AccountItem.MY_POCKET) {
+			FinancialCompany Company = new FinancialCompany();
+			Company.setID(c.getInt(9));
+			Company.setName(c.getString(10));
+			Company.setGroup(c.getInt(11));
+			account.setCompany(Company);
+		}
 		return account;
 	}
 	

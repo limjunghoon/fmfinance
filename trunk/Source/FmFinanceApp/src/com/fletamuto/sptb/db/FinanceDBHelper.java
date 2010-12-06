@@ -2,6 +2,7 @@ package com.fletamuto.sptb.db;
 
 import java.util.ArrayList;
 
+import android.accounts.Account;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
@@ -11,6 +12,7 @@ import android.util.Log;
 
 import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.R;
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.UISelectItem;
@@ -113,6 +115,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"amount INTEGER NOT NULL," +
 					"title TEXT," +
 					"memo TEXT," +
+					"account INTEGER," +
 					"main_category INTEGER NOT NULL," +
 					"sub_category INTEGER," +
 					"repeat INTEGER," +
@@ -614,7 +617,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 				"create_date DATE," +
 				"number TEXT," +
 				"balance INTEGER," +
-				"company INTEGER NOT NULL," +
+				"company INTEGER," +
 				"type INTEGER NOT NULL," +
 				"expiry_date DATE," +
 				"memo TEXT," +
@@ -839,12 +842,10 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		insertCategoryTables(db);
 		insertCompanyTable(db);
 		insertExpenseTagTable(db);
+		insertAccountTables(db);
 	//	insertPaymentMethodTable(db);
 	}
 	
-
-	
-
 	/**
 	 * 기본적인 분류 항목을 추가한다.
 	 * @param db Exposes methods to manage a SQLite database.
@@ -1008,6 +1009,23 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 				}
 			}
 		}
+	}
+	
+
+	private void insertAccountTables(SQLiteDatabase db) {
+		AccountItem account = new AccountItem();
+		account.setType(AccountItem.MY_POCKET);
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("create_date", account.getCreateDateString());
+		rowItem.put("number", account.getNumber());
+		rowItem.put("balance", account.getBalance());
+		rowItem.put("company", account.getCompany().getID());
+		rowItem.put("type", account.getType());
+		rowItem.put("expiry_date", account.getExpiryDateString());
+		rowItem.put("memo", account.getMemo());
+		rowItem.put("name", account.getName());
+		db.insert("account", null, rowItem);
+				
 	}
 	/*
 	private void insertAssetsSubCategoryTable(SQLiteDatabase db) {
