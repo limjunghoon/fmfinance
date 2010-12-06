@@ -26,7 +26,8 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 * @param item 수입 아이템
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
-	public long addItem(FinanceItem item) {
+	public long addItem(FinanceItem financeItem) {
+		IncomeItem item = (IncomeItem)financeItem;
 		if (checkVaildItem(item) != DBDef.ValidError.SUCCESS) return -1; 
 		SQLiteDatabase db = getWritableDatabase();
 		
@@ -35,6 +36,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
+		rowItem.put("account", item.getAccount().getID());
 		rowItem.put("main_category", item.getCategory().getID());
 		rowItem.put("extend", item.getExtendID());
 		
@@ -60,6 +62,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("create_date", item.getCreateDateString());
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("memo", item.getMemo());
+		rowItem.put("account", item.getAccount().getID());
 		rowItem.put("main_category", item.getCategory().getID());
 		rowItem.put("extend", item.getExtendID());
 		
@@ -233,8 +236,9 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			e.printStackTrace();
 		}
 		item.setAmount(c.getLong(2));
-		item.setMemo(c.getString(3)); 
-		item.setCategory(c.getInt(5), c.getString(10));
+		item.setMemo(c.getString(4)); 
+		item.getAccount().setID(c.getInt(5));
+		item.setCategory(c.getInt(6), c.getString(11));
 		return item;
 	}
 	

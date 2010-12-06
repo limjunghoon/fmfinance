@@ -9,7 +9,8 @@ public class BaseItem implements Serializable {
 	 */
 	private static final long serialVersionUID = 5745513561951474600L;
 	private int mID = -1;
-
+	private String mSeparatorTitle;
+	
 	/**
 	 * 아이디를 설정
 	 * @param id 아이디
@@ -24,6 +25,22 @@ public class BaseItem implements Serializable {
 	 */
 	public int getID() {
 		return mID;
+	}
+//
+//	public void setSeparator(boolean mSeparator) {
+//		this.mSeparator = mSeparator;
+//	}
+
+	public boolean isSeparator() {
+		return (mID == -1);
+	}
+
+	public void setSeparatorTitle(String separatorTitle) {
+		this.mSeparatorTitle = separatorTitle;
+	}
+
+	public String getSeparatorTitle() {
+		return mSeparatorTitle;
 	}
 	
 	

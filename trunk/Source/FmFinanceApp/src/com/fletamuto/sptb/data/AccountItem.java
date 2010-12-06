@@ -11,7 +11,8 @@ public class AccountItem extends BaseItem {
 	 */
 	private static final long serialVersionUID = 5366848481035789230L;
 
-	public final static int ORDINARY_DEPOSIT = 0;
+	public final static int MY_POCKET = 0;
+	public final static int ORDINARY_DEPOSIT = 1;
 	
 	private String mNumber;
 	private long mBalance = 0L;

@@ -30,6 +30,7 @@ public final class MsgDef {
 		public final static int ACT_ADD_ASSETS = 24;
 		public final static int ACT_ADD_LIABLITY = 25;
 		public final static int ACT_EDIT_BUDGET = 26;
+		public final static int ACT_EDIT_ACCOUNT = 27;
 	}
 	
 	public static final class ExtraNames {
@@ -57,5 +58,6 @@ public final class MsgDef {
 		public static final String BUDGET_ITEM_LIST = "BUDGET_ITEM_LIST";
 		public static final String SELECT_SUB_CATEGORY_IN_MAIN_CATEGORY = "SELECT_SUB_CATEGORY_IN_MAIN_CATEGORY";
 		public static final String GET_EXPENSE_ITEMS = "GET_EXPENSE_ITEMS";
+		public static final String GET_ACCOUNT_ITEMS = "GET_ACCOUNT_ITEMS";
 	}
 }
