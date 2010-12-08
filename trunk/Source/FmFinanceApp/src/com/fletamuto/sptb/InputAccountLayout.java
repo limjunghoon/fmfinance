@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fletamuto.common.control.InputAmountDialog;
@@ -122,14 +124,25 @@ public class InputAccountLayout extends InputBaseLayout {
 	@Override
 	protected void updateChildView() {
 		updateCompanyNameText();
-		
+		updateBalanceText();
+		updateNumberText();
+		updateTypeSpinner();
+	}
+
+	protected void updateTypeSpinner() {
+//		Spinner typeSpinner = (Spinner) findViewById(R.id.SpAccountType);
+//		typeSpinner.setSelection(1);
+	}
+
+	protected void updateNumberText() {
+		EditText tvNumber = (EditText) findViewById(R.id.ETAccountNumber);
+		tvNumber.setText(mAccount.getNumber());
 	}
 
 	@Override
 	protected void updateItem() {
 		String number = ((TextView)findViewById(R.id.ETAccountNumber)).getText().toString();
 		mAccount.setNumber(number);
-		
 	}
 	
 	private FinancialCompany getInstitution(int id) {
@@ -158,8 +171,11 @@ public class InputAccountLayout extends InputBaseLayout {
 
 	private void updateBalance(long balance) {
 		mAccount.setBalance(balance);
+		updateBalanceText();
+	}
+
+	private void updateBalanceText() {
 		((Button)findViewById(R.id.BtnAccountAmount)).setText(String.format("%,d¿ø", mAccount.getBalance()));
-		
 	}
 
 	private void updateCompany(FinancialCompany company) {

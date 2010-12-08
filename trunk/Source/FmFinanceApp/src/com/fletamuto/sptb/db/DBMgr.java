@@ -444,6 +444,10 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getAccountDBConnector().getAllItems();
 	}
 	
+	public static boolean updateAccount(AccountItem account) {
+		return mInstance.mDBConnector.getAccountDBConnector().updateItem(account);
+	}
+	
 	public static int deleteAccount(int id) {
 	//	return mInstance.mDBConnector.deleteAccount(id);
 		return mInstance.mDBConnector.getAccountDBConnector().deleteAccountItem(id);

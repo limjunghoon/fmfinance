@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 /**
@@ -26,8 +27,8 @@ import com.fletamuto.sptb.db.DBMgr;
  * @version  1.0.0.1
  */
 public class EditAccountLayout extends FmBaseActivity {  	
-	
-public static final int ACT_ADD_ACCOUNT = 0;
+	protected static final int ACT_EDIT_ITEM = MsgDef.ActRequest.ACT_EDIT_ITEM;
+	public static final int ACT_ADD_ACCOUNT = 0;
 	private ArrayList<AccountItem> mAccountListItems = new ArrayList<AccountItem>();
 	protected AccountItemAdapter mAdapterAccount;
 	private String [] mAccountTypes;
@@ -69,12 +70,19 @@ public static final int ACT_ADD_ACCOUNT = 0;
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-	//			setVisibleDeleteButton((Button)view.findViewById(R.id.BtnCategoryDelete));
-				
+			
+				AccountItem item = (AccountItem)mAccountListItems.get(position);
+		    	startEditInputActivity(InputAccountLayout.class, item.getID());
 			}
 		});
     }
 	
+	protected void startEditInputActivity(Class<?> cls, int itemId) {
+		Intent intent = new Intent(this, cls);
+    	intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, itemId);
+    	startActivityForResult(intent, ACT_EDIT_ITEM);
+	}
+
 	public void setAddButtonListener() {
 		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
@@ -103,7 +111,11 @@ public static final int ACT_ADD_ACCOUNT = 0;
 	protected String getAccoutTypeName(int index) {
 		if (mAccountTypes == null) return null;
 		if (index >= mAccountTypes.length) return null;
-		return mAccountTypes[index];
+		
+		if (index == AccountItem.MY_POCKET) {
+			return "내 주머니";
+		}
+		return mAccountTypes[0];
 	}
 	
 	public class AccountItemAdapter extends ArrayAdapter<AccountItem> {

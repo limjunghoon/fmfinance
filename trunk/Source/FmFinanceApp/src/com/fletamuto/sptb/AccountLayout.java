@@ -29,7 +29,6 @@ public class AccountLayout extends FmBaseActivity {
 	
 	public static final int ACT_EDIT_ACCOUNT = MsgDef.ActRequest.ACT_EDIT_ACCOUNT;
 	private long mTatalBalance = 0L;
-//	private ArrayList<AccountItem> mArrAccount;
 	private ArrayList<AccountItem> mAccountListItems = new ArrayList<AccountItem>();
 	protected AccountItemAdapter mAdapterAccount;
 	private String [] mAccountTypes;
@@ -43,6 +42,13 @@ public class AccountLayout extends FmBaseActivity {
         updateChildView();
         setAdapterList();
     }
+	@Override
+	protected void onResume() {
+		getAccountItems();
+        updateChildView();
+        setAdapterList();
+		super.onResume();
+	}
 	
 	private void updateChildView() {
 		TextView tvBalance = (TextView)findViewById(R.id.TVAccountTatalBalance);
@@ -140,7 +146,11 @@ public class AccountLayout extends FmBaseActivity {
 	protected String getAccoutTypeName(int index) {
 		if (mAccountTypes == null) return null;
 		if (index >= mAccountTypes.length) return null;
-		return mAccountTypes[index];
+		
+		if (index == AccountItem.MY_POCKET) {
+			return "내 주머니";
+		}
+		return mAccountTypes[0];
 	}
 	
 	public class AccountItemAdapter extends ArrayAdapter<AccountItem> {
@@ -168,7 +178,7 @@ public class AccountLayout extends FmBaseActivity {
 			}
 			
 			setListViewText(item, convertView);			
-			setDeleteBtnListener(convertView, item.getID(), position);
+			setTransferBtnListener(convertView, item, position);
 			
 			return convertView;
 		}
@@ -190,19 +200,16 @@ public class AccountLayout extends FmBaseActivity {
 		
     }
 	
-	private void setDeleteBtnListener(View convertView, int id, int position) {
+	private void setTransferBtnListener(View convertView, AccountItem item, final int position) {
     	Button btnTransfer = (Button)convertView.findViewById(R.id.BtnReportAccountTransfer);
-    	final int ItemID = id;
-    	final int Itempsition = position;
-    	
+    	btnTransfer.setEnabled(item.getBalance() != 0L);
 		btnTransfer.setOnClickListener(new View.OnClickListener() {
 	
 			public void onClick(View v) {
-//				if (DBMgr.deleteAccount(ItemID) == 0 ) {
-//					Log.e(LogTag.LAYOUT, "can't delete accoutn Item  ID : " + ItemID);
-//				}
-//				mAccountListItems.remove(Itempsition);
-//				mAdapterAccount.notifyDataSetChanged();
+				Intent intent = new Intent(AccountLayout.this, TransferAccountLayout.class);
+				AccountItem item = mAccountListItems.get(position);
+				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, item);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_TRANFER_ACCOUNT);
 			}
 		});
 	}

@@ -88,6 +88,7 @@
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name="ReportExpenseRateExpandLayout"></activity>
 <activity android:name="ReportMonthLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name="EditAccountLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name="TransferAccountLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 

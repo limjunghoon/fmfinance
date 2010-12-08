@@ -114,9 +114,7 @@ public class EditBudgetLayout  extends FmBaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == MsgDef.ActRequest.ACT_AMOUNT) {
     		if (resultCode == RESULT_OK) {
-    			long amount = data.getLongExtra("AMOUNT", 0L);
-    			updateBudgetAmount(amount);
-//    			private int mSelectedBudgetID = -1;
+    			updateBudgetAmount(data.getLongExtra("AMOUNT", 0L));
     		}
     	}
 		super.onActivityResult(requestCode, resultCode, data);
