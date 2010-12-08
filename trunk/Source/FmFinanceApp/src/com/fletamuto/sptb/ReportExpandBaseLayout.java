@@ -2,7 +2,6 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.logging.LogRecord;
 
 import android.content.Context;
 import android.graphics.Color;

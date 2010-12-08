@@ -600,9 +600,16 @@ public final class DBMgr {
 
 	public static long updateBudget(BudgetItem item) {
 		return mInstance.mDBConnector.getBudgetDBConnector().updateItem(item);
-		
 	}
-
-
+	
+	public static long getCardTotalExpense(int year, int month, int cardID) {
+		ExpenseDBConnector expenseDB = (ExpenseDBConnector) mInstance.mDBConnector.getBaseFinanceDBInstance(ExpenseItem.TYPE);
+		return expenseDB.getCardTotalExpense(year, month, cardID);
+	}
+	
+	public static ArrayList<FinanceItem> getCardExpenseItems(int year, int month, int cardID) {
+		ExpenseDBConnector expenseDB = (ExpenseDBConnector) mInstance.mDBConnector.getBaseFinanceDBInstance(ExpenseItem.TYPE);
+		return expenseDB.getCardExpenseItems(year, month, cardID);
+	}
 
 }
