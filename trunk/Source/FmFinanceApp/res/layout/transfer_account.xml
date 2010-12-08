@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="fill_parent" android:gravity="center_vertical">
+  
+  <LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:id="@+id/TVAccountName" android:text="계좌선택" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
+		</TextView>
+		<Button android:id="@+id/BtnAccountSelect" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="70dp">
+		<TextView android:id="@+id/TVAccountAmount" android:text="금액" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
+		</TextView>
+		<Button android:id="@+id/BtnAccountAmount" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	
+</LinearLayout>

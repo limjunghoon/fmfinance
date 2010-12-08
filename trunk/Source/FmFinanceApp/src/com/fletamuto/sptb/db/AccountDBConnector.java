@@ -149,10 +149,13 @@ public class AccountDBConnector extends BaseDBConnector {
 	}
 	
 	private int checkAccountVaildItem(AccountItem account) {
-		if (account.getCompany() == null || account.getCompany().getID() == -1) {
-			Log.e(LogTag.DB, ":: CARD ITEM INVAILD");
-			return DBDef.ValidError.ACCOUNT_ITEM_INVAlID;
+		if (account.getType() != AccountItem.MY_POCKET) {
+			if (account.getCompany() == null || account.getCompany().getID() == -1) {
+				Log.e(LogTag.DB, ":: CARD ITEM INVAILD");
+				return DBDef.ValidError.ACCOUNT_ITEM_INVAlID;
+			}
 		}
+		
 		return DBDef.ValidError.SUCCESS; 
 	}
 

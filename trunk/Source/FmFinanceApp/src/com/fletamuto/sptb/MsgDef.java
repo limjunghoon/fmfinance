@@ -31,9 +31,12 @@ public final class MsgDef {
 		public final static int ACT_ADD_LIABLITY = 25;
 		public final static int ACT_EDIT_BUDGET = 26;
 		public final static int ACT_EDIT_ACCOUNT = 27;
+		public final static int ACT_TRANFER_ACCOUNT = 28;
+		public final static int ACT_EDIT_ITEM = 29;
 	}
 	
 	public static final class ExtraNames {
+		public static final String EDIT_ITEM_ID = "EDIT_ITEM_ID";
 		public static final String ITEM_TYPE = "ITEM_TYPE";
 		public static final String CATEGORY_ID = "CATEGORY_ID";
 		public static final String CATEGORY_SUB_ID = "CATEGORY_SUB_ID";
@@ -42,6 +45,7 @@ public final class MsgDef {
 		public static final String TAG_NAME = "TAG_NAME";
 		public static final String CARD_ID = "CARD_ID";
 		public static final String ACCOUNT_ID = "ACCOUNT_ID";
+		public static final String ACCOUNT_ITEM = "ACCOUNT_ITEM";
 		public static final String INSTALLMENT_PLAN = "INSTALLMENT_PLAN";
 		public static final String COMPANY_ID = "COMPANY_ID";
 		public static final String RPEAT_TYPE = "RPEAT_TYPE";
@@ -59,5 +63,7 @@ public final class MsgDef {
 		public static final String SELECT_SUB_CATEGORY_IN_MAIN_CATEGORY = "SELECT_SUB_CATEGORY_IN_MAIN_CATEGORY";
 		public static final String GET_EXPENSE_ITEMS = "GET_EXPENSE_ITEMS";
 		public static final String GET_ACCOUNT_ITEMS = "GET_ACCOUNT_ITEMS";
+		public static final String SELECT_ACCOUNT_MODE = "SELECT_ACCOUNT_MODE";
+		public static final String SELECT_ACCOUNT_EXCEPTION = "SELECT_ACCOUNT_EXCEPTION";
 	}
 }

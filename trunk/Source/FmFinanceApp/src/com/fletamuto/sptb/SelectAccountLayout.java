@@ -21,9 +21,13 @@ import com.fletamuto.sptb.db.DBMgr;
 
 public class SelectAccountLayout extends Activity {
 	public static final int ACT_ADD_ACCOUNT = 0;
+	public static final int MODE_NORMAL = 0;
+	public static final int MODE_TRASFER = 1;
 	
 	private ArrayList<AccountItem> mArrAccount;
 	protected CategoryItemAdapter mAdapterAccount;
+	private int mExceptionID = -1;
+	private int mMode = MODE_NORMAL;
 
     /** Called when the activity is first created. */
     @Override
@@ -32,13 +36,38 @@ public class SelectAccountLayout extends Activity {
         
   //      requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.select_account);
+        
+        initalize();
         setAddButtonListener();
         getAccountItems();
         setAdapterList();
     }
+    
+
 	
+	private void initalize() {
+		mExceptionID = getIntent().getIntExtra(MsgDef.ExtraNames.SELECT_ACCOUNT_EXCEPTION, -1);
+		mMode = getIntent().getIntExtra(MsgDef.ExtraNames.SELECT_ACCOUNT_MODE, MODE_NORMAL);
+	}
+
 	protected void getAccountItems() {
-		mArrAccount = DBMgr.getAccountAllItems();
+		if (mMode == MODE_TRASFER) {
+			mArrAccount = new ArrayList<AccountItem>();
+			mArrAccount.add(DBMgr.getAccountMyPoctet());
+			mArrAccount.addAll(DBMgr.getAccountAllItems());
+			
+			int size = mArrAccount.size();
+			for (int index = 0; index < size; index++) {
+				if (mArrAccount.get(index).getID() == mExceptionID) {
+					mArrAccount.remove(index);
+					break;
+				}
+			}
+		}
+		else {
+			mArrAccount = DBMgr.getAccountAllItems();
+		}
+		
     }
 	
 	protected void setAdapterList() {
@@ -57,6 +86,7 @@ public class SelectAccountLayout extends Activity {
 				
 				Intent intent = new Intent();
 				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ID, account.getID());
+				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, account);
 				setResult(RESULT_OK, intent);
 				finish();
 			}
@@ -110,7 +140,13 @@ public class SelectAccountLayout extends Activity {
 			}
 			
 			TextView tvAccount = (TextView)convertView.findViewById(R.id.TVListItem);
-			tvAccount.setText(String.format("%s : %s", item.getCompany().getName(), item.getNumber()));
+			if (item.getType() == AccountItem.MY_POCKET) {
+				tvAccount.setText("내 주머니");
+			}
+			else {
+				tvAccount.setText(String.format("%s : %s", item.getCompany().getName(), item.getNumber()));
+			}
+			
 			
 			convertView.setTag(item);
 			
