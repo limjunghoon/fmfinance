@@ -506,6 +506,8 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		db.close();
 		return amount;
 	}
+	
+	
 
 	/**
 	 * 지정된 날짜의 추가된 지출 아이템 갯수를 얻는다.
@@ -728,6 +730,41 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		return ret;
 	}
 
+
+	public ArrayList<FinanceItem> getCardExpenseItems(int year, int month, int cardID) {
+		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.format("%d-%02d", year, month), String.valueOf(cardID)};
+		
+		queryBilder.setTables("expense, expense_main_category, expense_sub_category, expense_tag, payment_method");
+		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id AND expense.tag=expense_tag._id AND expense.payment_method=payment_method._id");
+		Cursor c = queryBilder.query(db, null, "strftime('%Y-%m', create_date)=? AND payment_method.card=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				expenseItems.add(createExpenseItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return expenseItems;
+	}
+
+	public long getCardTotalExpense(int year, int month, int cardID) {
+		long amount = 0L;
+		SQLiteDatabase db = getReadableDatabase();
+		String[] params = {String.format("%d-%02d", year, month), String.valueOf(cardID)};
+		String query = "SELECT SUM(expense.amount) FROM expense, payment_method WHERE expense.payment_method=payment_method._id AND strftime('%Y-%m', expense.create_date)=? AND payment_method.card=?";
+		Cursor c = db.rawQuery(query, params);
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		db.close();
+		return amount;
+	}
 
 
 }

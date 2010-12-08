@@ -18,7 +18,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 /**
@@ -72,7 +71,9 @@ public class EditAccountLayout extends FmBaseActivity {
 					int position, long id) {
 			
 				AccountItem item = (AccountItem)mAccountListItems.get(position);
-		    	startEditInputActivity(InputAccountLayout.class, item.getID());
+				if (item.getType() != AccountItem.MY_POCKET) {
+					startEditInputActivity(InputAccountLayout.class, item.getID());
+				}
 			}
 		});
     }
@@ -105,17 +106,18 @@ public class EditAccountLayout extends FmBaseActivity {
 			((TextView)convertView.findViewById(R.id.TVAccountReportListBalance)).setText(String.format("잔액 : %,d원", account.getBalance()));
 			((TextView)convertView.findViewById(R.id.TVAccountReportListType)).setText("종류 : " + getAccoutTypeName(account.getType()));
 		}
-		
 	}
 	
 	protected String getAccoutTypeName(int index) {
 		if (mAccountTypes == null) return null;
-		if (index >= mAccountTypes.length) return null;
+		//if (index >= mAccountTypes.length) return null;
 		
 		if (index == AccountItem.MY_POCKET) {
 			return "내 주머니";
 		}
-		return mAccountTypes[0];
+		else {
+			return "예금";
+		}
 	}
 	
 	public class AccountItemAdapter extends ArrayAdapter<AccountItem> {
@@ -141,7 +143,7 @@ public class EditAccountLayout extends FmBaseActivity {
 			}
 			
 			setListViewText(item, convertView);			
-			setDeleteBtnListener(convertView, item.getID(), position);
+			setDeleteBtnListener(convertView, item, position);
 			
 			return convertView;
 		}
@@ -150,22 +152,20 @@ public class EditAccountLayout extends FmBaseActivity {
 		public boolean isEnabled(int position) {
 			return !mAccountListItems.get(position).isSeparator();
 		}
-
-		
     }
 	
-	private void setDeleteBtnListener(View convertView, int id, int position) {
+	private void setDeleteBtnListener(View convertView, final AccountItem item, final int position) {
     	Button btnDelete = (Button)convertView.findViewById(R.id.BtnReportAccountDelete);
-    	final int ItemID = id;
-    	final int Itempsition = position;
-    	
+    	if (item.getType() == AccountItem.MY_POCKET) {
+    		btnDelete.setVisibility(View.INVISIBLE);
+    	}
     	btnDelete.setOnClickListener(new View.OnClickListener() {
 	
 			public void onClick(View v) {
-				if (DBMgr.deleteAccount(ItemID) == 0 ) {
-					Log.e(LogTag.LAYOUT, "can't delete accoutn Item  ID : " + ItemID);
+				if (DBMgr.deleteAccount(item.getID()) == 0 ) {
+					Log.e(LogTag.LAYOUT, "can't delete accoutn Item  ID : " + item.getID());
 				}
-				mAccountListItems.remove(Itempsition);
+				mAccountListItems.remove(position);
 				mAdapterAccount.notifyDataSetChanged();
 			}
 		});

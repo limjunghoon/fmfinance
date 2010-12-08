@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,12 +144,14 @@ public class AccountLayout extends FmBaseActivity {
 	
 	protected String getAccoutTypeName(int index) {
 		if (mAccountTypes == null) return null;
-		if (index >= mAccountTypes.length) return null;
+		//if (index >= mAccountTypes.length) return null;
 		
 		if (index == AccountItem.MY_POCKET) {
 			return "내 주머니";
 		}
-		return mAccountTypes[0];
+		else {
+			return "예금";
+		}
 	}
 	
 	public class AccountItemAdapter extends ArrayAdapter<AccountItem> {

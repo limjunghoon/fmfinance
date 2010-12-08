@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_margin="5dp">
+
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:layout_width="fill_parent" android:ellipsize="marquee" android:layout_height="wrap_content" android:textSize="15dp" android:text="카드사" android:id="@+id/TVPrepaidCardName" android:layout_weight="1"/>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/TVPrepaidCardType" android:gravity="right" android:paddingRight="10dp"></TextView>
+	</LinearLayout>
+	<TextView android:layout_width="fill_parent" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:textSize="15dp" android:id="@+id/TVPrepaidCardTotalExpeanseAmount" />
+	<TextView android:layout_width="fill_parent" android:singleLine="true" android:layout_height="wrap_content" android:textSize="15dp" android:id="@+id/TVPrepaidRemainAmount" />	        
+	<ProgressBar style="?android:attr/progressBarStyleHorizontal" android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/PBPrepaidCardExpense" android:paddingLeft="10dp" android:paddingRight="10dp"></ProgressBar>
+
+</LinearLayout>

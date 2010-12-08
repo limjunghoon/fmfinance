@@ -3,10 +3,8 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.TreeMap;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +23,6 @@ import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
-import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 

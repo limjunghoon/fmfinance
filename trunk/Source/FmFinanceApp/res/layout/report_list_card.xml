@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="wrap_content">
+    android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical">
 
-		<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="vertical">
-		<TextView android:layout_width="fill_parent" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:textSize="15dp" android:id="@+id/TVCardCompany" android:text="카드사"/>
-		<TextView android:layout_width="fill_parent" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:textSize="15dp" android:id="@+id/TVCardName" android:text="이름"/>
-		<TextView android:layout_width="fill_parent" android:singleLine="true" android:layout_height="wrap_content" android:textSize="15dp" android:id="@+id/TVCardNumber" android:text="번호"/>
-		
-		</LinearLayout>	        
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:orientation="vertical" android:layout_weight="5" android:layout_height="wrap_content" android:layout_gravity="center_vertical">
-		<Button android:layout_height="wrap_content" android:text="삭제" android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:focusable="false" android:id="@+id/BtnReportAccountDelete"></Button>
-	</LinearLayout>
+		<TextView android:layout_width="fill_parent" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:textSize="15dp" android:text="카드사" android:id="@+id/TVCheckCardName" /><TextView android:layout_width="fill_parent" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:textSize="15dp" android:id="@+id/TVCheckCardTotalExpeanseAmount" /><TextView android:layout_width="fill_parent" android:singleLine="true" android:layout_height="wrap_content" android:textSize="15dp" android:id="@+id/TVExpectAmount" />	        
+	
 
 </LinearLayout>
