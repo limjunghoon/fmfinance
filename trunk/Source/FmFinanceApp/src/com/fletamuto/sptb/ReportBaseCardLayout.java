@@ -56,7 +56,7 @@ public abstract class ReportBaseCardLayout extends FmBaseActivity {
     	if (mArrCard == null) return;
         
     	final ListView listCard = (ListView)findViewById(R.id.LVBase);
-    	mAdapterCard = new CardItemAdapter(this, R.layout.report_list_card, mArrCard);
+    	mAdapterCard = new CardItemAdapter(this, R.layout.edit_card, mArrCard);
     	listCard.setAdapter(mAdapterCard);
     	
     	listCard.setOnItemClickListener(new AdapterView.OnItemClickListener() {

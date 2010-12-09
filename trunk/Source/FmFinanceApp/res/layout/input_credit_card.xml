@@ -31,7 +31,7 @@
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:text="@string/input_credit_card_settlement_day" android:layout_width="80dp" android:id="@+id/TVCreditCardSettlementDay">
 		</TextView>
-		<Spinner android:id="@+id/SpnCreditCardBillPeriodMonth" android:layout_height="wrap_content" android:entries="@array/select_day_list" android:layout_width="fill_parent">
+		<Spinner android:id="@+id/SpnCreditCardSettlementDay" android:layout_height="wrap_content" android:entries="@array/select_day_list" android:layout_width="fill_parent">
 		</Spinner>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">

@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardCompanyName;
@@ -28,11 +32,62 @@ public class InputCreditCardLayout extends InputBaseLayout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_credit_card, true);
         
-        updateChildView();
+        
         setSelectCardCompenyNameBtnClickListener();
         setAccountBtnClickListener(R.id.BtnCreditCardAccount);
+        setSettlemntDaySelectedListioner();
+        setBillPeriodSelectedListioner();
+        
+        updateChildView();
     }
     
+	private void setBillPeriodSelectedListioner() {
+		Spinner spBillPeriodMonth = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodMonth);
+		spBillPeriodMonth.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int positon, long id) {
+				mCreditCard.setBillingPeriodMonth(positon);
+			}
+
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		Spinner spBillPeriodDay = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodDay);
+		spBillPeriodDay.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int positon, long id) {
+				mCreditCard.setBillingPeriodDay(positon+1);
+			}
+
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+
+	private void setSettlemntDaySelectedListioner() {
+		Spinner spSettlement = (Spinner)findViewById(R.id.SpnCreditCardSettlementDay);
+		spSettlement.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int positon, long id) {
+				mCreditCard.setSettlementDay(positon+1);
+				
+			}
+
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+
 	@Override
 	protected void setTitleBtn() {
 		setTitle(getResources().getString(R.string.input_credit_card_title));
@@ -72,8 +127,14 @@ public class InputCreditCardLayout extends InputBaseLayout {
 
 	@Override
 	protected boolean getItemInstance(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		mCreditCard = DBMgr.getCardItem(id);
+		if (mCreditCard == null) return false;
+		
+		int accountID = mCreditCard.getAccount().getID(); 
+		if (accountID != -1) {
+			mCreditCard.setAccount(DBMgr.getAccountItem(accountID));
+		}
+		return true;
 	}
 
 	@Override
@@ -87,8 +148,15 @@ public class InputCreditCardLayout extends InputBaseLayout {
 	}
 
 	private void saveUpdateItem() {
-		// TODO Auto-generated method stub
+		if (DBMgr.updateCardItem(mCreditCard) == false) {
+			Log.e(LogTag.LAYOUT, "== NEW fail to the update item : " + mCreditCard.getID());
+    		return;
+		}
 		
+		Intent intent = new Intent();
+		intent.putExtra(MsgDef.ExtraNames.CARD_ID, mCreditCard.getID());
+		setResult(RESULT_OK, intent);
+		finish();
 	}
 
 	private void saveNewItem() {
@@ -107,7 +175,36 @@ public class InputCreditCardLayout extends InputBaseLayout {
 	protected void updateChildView() {
 		updateCompenyNameText();
 		updateAccountText();
+		updateCardNameText();
+		updateCardNumberText();
+		updateSettlemntDay();
+		updateBillingPeriodDay();
+		updateMemo();
+	}
+
+	private void updateMemo() {
+		((TextView)findViewById(R.id.ETCreditCardMemo)).setText(mCreditCard.getMemo());
+	}
+
+	private void updateBillingPeriodDay() {
+		Spinner spBillPeriodMonth = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodMonth);
+		spBillPeriodMonth.setSelection(mCreditCard.getBillingPeriodMonth());
 		
+		Spinner spBillPeriodDay = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodDay);
+		spBillPeriodDay.setSelection(mCreditCard.getBillingPeriodDay()-1);
+	}
+
+	private void updateSettlemntDay() {
+		Spinner spSettlement = (Spinner)findViewById(R.id.SpnCreditCardSettlementDay);
+		spSettlement.setSelection(mCreditCard.getSettlementDay()-1);
+	}
+
+	private void updateCardNumberText() {
+		((TextView)findViewById(R.id.ETCrediCardNumber)).setText(mCreditCard.getNumber());
+	}
+
+	private void updateCardNameText() {
+		((TextView)findViewById(R.id.ETCrediCardName)).setText(mCreditCard.getName());
 	}
 
 	@Override
