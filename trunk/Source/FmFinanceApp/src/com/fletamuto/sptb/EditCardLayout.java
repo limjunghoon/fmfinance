@@ -1,7 +1,6 @@
 package com.fletamuto.sptb;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import android.content.Context;
@@ -17,8 +16,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.CardExpenseInfo;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
 

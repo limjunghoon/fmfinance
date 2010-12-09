@@ -44,7 +44,7 @@ public class ReportMonthLayout extends FmBaseActivity {
     }
     
     private void setButtonListener() {
-    	final ExpandableListView elvItems = (ExpandableListView)findViewById(R.id.ELVBase);
+  //  	final ExpandableListView elvItems = (ExpandableListView)findViewById(R.id.ELVBase);
 		final ToggleButton tbIncome = (ToggleButton)findViewById(R.id.TBReportIncome);
 		tbIncome.setOnClickListener(new View.OnClickListener() {
 			
