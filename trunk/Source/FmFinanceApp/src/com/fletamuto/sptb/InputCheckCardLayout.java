@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
@@ -72,8 +73,14 @@ public class InputCheckCardLayout extends InputBaseLayout {
 
 	@Override
 	protected boolean getItemInstance(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		mCheckCard = DBMgr.getCardItem(id);
+		if (mCheckCard == null) return false;
+		
+		int accountID = mCheckCard.getAccount().getID(); 
+		if (accountID != -1) {
+			mCheckCard.setAccount(DBMgr.getAccountItem(accountID));
+		}
+		return true;
 	}
 
 	@Override
@@ -87,8 +94,15 @@ public class InputCheckCardLayout extends InputBaseLayout {
 	}
 
 	private void saveUpdateItem() {
-		// TODO Auto-generated method stub
+		if (DBMgr.updateCardItem(mCheckCard) == false) {
+			Log.e(LogTag.LAYOUT, "== NEW fail to the update item : " + mCheckCard.getID());
+    		return;
+		}
 		
+		Intent intent = new Intent();
+		intent.putExtra(MsgDef.ExtraNames.CARD_ID, mCheckCard.getID());
+		setResult(RESULT_OK, intent);
+		finish();
 	}
 
 	private void saveNewItem() {
@@ -107,7 +121,21 @@ public class InputCheckCardLayout extends InputBaseLayout {
 	protected void updateChildView() {
 		updateCompenyNameText();
 		updateAccountText();
+		updateCardNameText();
+		updateCardNumberText();
+		updateMemo();
+	}
 	
+	private void updateMemo() {
+		((TextView)findViewById(R.id.ETCheckCardMemo)).setText(mCheckCard.getMemo());
+	}
+
+	private void updateCardNumberText() {
+		((TextView)findViewById(R.id.ETCheckCardNumber)).setText(mCheckCard.getNumber());
+	}
+
+	private void updateCardNameText() {
+		((TextView)findViewById(R.id.ETCheckCardName)).setText(mCheckCard.getName());
 	}
 
 	@Override

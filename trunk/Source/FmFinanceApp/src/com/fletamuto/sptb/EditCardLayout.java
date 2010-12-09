@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardExpenseInfo;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
@@ -27,83 +28,110 @@ import com.fletamuto.sptb.db.DBMgr;
  * @version  1.0.0.1
  */
 public class EditCardLayout extends FmBaseActivity {  	
-	
+	protected static final int ACT_EDIT_ITEM = MsgDef.ActRequest.ACT_EDIT_ITEM;
 	public static final int ACT_ADD_CARD = 0;
 	
-//	private ArrayList<CardItem> mArrCard;
-	private ArrayList<CardExpenseInfo> mArrCardExpenseInfo = new ArrayList<CardExpenseInfo>();
+	private ArrayList<CardItem> mArrCardItems = new ArrayList<CardItem>();
 	protected CardItemAdapter mAdapterCard;
-	private Calendar mCurrentCalendar = Calendar.getInstance();
+	private int mEditPositieon = -1;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_card, true);
+        setContentView(R.layout.edit_card, true);
         
         getCardItems();
         setAdapterList();
     }
 	
+	protected void getCardItems() {
+		mArrCardItems = DBMgr.getCardItems();
+    }
+	
 	@Override
 	protected void setTitleBtn() {
-		setTitle("카드");
-		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "편집");
+		setTitle("카드 편집");
+		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "추가");
 		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
-		setEditButtonListener();
+		setAddButtonListener();
 		
 		super.setTitleBtn();
 	}
 	
-	protected void getCardItems() {
-		ArrayList<CardItem> arrCard = DBMgr.getCardItems();
-		int size = arrCard.size();
-		for (int index = 0; index < size; index++) {
-			CardExpenseInfo cardInfo = new CardExpenseInfo(arrCard.get(index));
-			cardInfo.setTotalExpenseAmount(DBMgr.getCardTotalExpense(mCurrentCalendar.get(Calendar.YEAR), mCurrentCalendar.get(Calendar.MONTH)+1, cardInfo.getCard().getID()));
-			mArrCardExpenseInfo.add(cardInfo);
-		}
-    }
-	
 	protected void setAdapterList() {
-    	if (mArrCardExpenseInfo == null) return;
+    	if (mArrCardItems == null) return;
         
     	final ListView listCard = (ListView)findViewById(R.id.LVCard);
-    	mAdapterCard = new CardItemAdapter(this, R.layout.report_list_card, mArrCardExpenseInfo);
+    	mAdapterCard = new CardItemAdapter(this, R.layout.edit_list_card, mArrCardItems);
     	listCard.setAdapter(mAdapterCard);
     	
     	listCard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-	//			setVisibleDeleteButton((Button)view.findViewById(R.id.BtnCategoryDelete));
-				
+				CardItem item = (CardItem)mArrCardItems.get(position);
+				mEditPositieon = position;
+				startEditInputActivity(item.getID(), getEditCardClass(item.getType()));
 			}
 		});
     }
 	
-	public void setEditButtonListener() {
+	protected Class<?> getEditCardClass(int type) {
+		if (type == CardItem.CREDIT_CARD) {
+			return InputCreditCardLayout.class;
+		}
+		else if (type == CardItem.CHECK_CARD) {
+			return InputCheckCardLayout.class;
+		}
+		else if (type == CardItem.PREPAID_CARD) {
+			return InputPrepaidCardLayout.class;
+		}
+		return null;
+	}
+
+	protected void startEditInputActivity(int itemId, Class<?> cls) {
+		Intent intent = new Intent(this, cls);
+    	intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, itemId);
+    	startActivityForResult(intent, ACT_EDIT_ITEM);
+	}
+	
+	public void setAddButtonListener() {
 		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
-//				Intent intent = new Intent(CardLayout.this, SelectInputCardLayout.class);		
-//				startActivityForResult(intent, ACT_ADD_CARD);
+				Intent intent = new Intent(EditCardLayout.this, SelectInputCardLayout.class);		
+				startActivityForResult(intent, ACT_ADD_CARD);
 			}
 		});
 	}
 	
 	protected void setListViewText(CardItem card, View convertView) {
-			((TextView)convertView.findViewById(R.id.TVCardCompany)).setText("카드사 : " + card.getCompenyName().getName());			
-			((TextView)convertView.findViewById(R.id.TVCardName)).setText("카드명 : " + card.getName());
-			((TextView)convertView.findViewById(R.id.TVCardNumber)).setText("카드번호 : " + card.getNumber());
+		((TextView)convertView.findViewById(R.id.TVCardCompany)).setText("카드사 : " + card.getCompenyName().getName());			
+		((TextView)convertView.findViewById(R.id.TVCardType)).setText("카드종류 : " + getCardTypeName(card.getType()));
+		((TextView)convertView.findViewById(R.id.TVCardName)).setText("카드명 : " + card.getName());
+		((TextView)convertView.findViewById(R.id.TVCardNumber)).setText("카드번호 : " + card.getNumber());
 	}
 	
+	private CharSequence getCardTypeName(int type) {
+		if (type == CardItem.CREDIT_CARD) {
+			return  "신용카드";
+		}
+		else if (type == CardItem.CHECK_CARD) {
+			return  "체크카드";
+		}
+		else if (type == CardItem.PREPAID_CARD) {
+			return "선불카드";
+		}
+		
+		return "";
+	}
 
 	
-	public class CardItemAdapter extends ArrayAdapter<CardExpenseInfo> {
+	public class CardItemAdapter extends ArrayAdapter<CardItem> {
     	int mResource;
     	LayoutInflater mInflater;
 
 		public CardItemAdapter(Context context, int resource,
-				 List<CardExpenseInfo> objects) {
+				 List<CardItem> objects) {
 			super(context, resource, objects);
 			this.mResource = resource;
 			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -111,14 +139,14 @@ public class EditCardLayout extends FmBaseActivity {
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			CardExpenseInfo item = (CardExpenseInfo)getItem(position);
+			CardItem card = (CardItem)getItem(position);
 			
 			if (convertView == null) {
 				convertView = mInflater.inflate(mResource, parent, false);
 			}
 			
-//			setListViewText(item, convertView);			
-//			setDeleteBtnListener(convertView, item.getID(), position);
+			setListViewText(card, convertView);			
+			setDeleteBtnListener(convertView, card.getID(), position);
 			
 			return convertView;
 		}
@@ -137,36 +165,43 @@ public class EditCardLayout extends FmBaseActivity {
 				if (DBMgr.deleteCardItem(ItemID) == 0 ) {
 					Log.e(LogTag.LAYOUT, "can't delete accoutn Item  ID : " + ItemID);
 				}
-				mArrCardExpenseInfo.remove(Itempsition);
+				mArrCardItems.remove(Itempsition);
 				mAdapterCard.notifyDataSetChanged();
 			}
 		});
 	}
 	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ACT_ADD_CARD) {
+			if (resultCode == RESULT_OK) {
+				int cardID = data.getIntExtra(MsgDef.ExtraNames.CARD_ID, -1);
+				if (cardID == -1) return;
+				
+				CardItem card = DBMgr.getCardItem(cardID);
+				if (card == null) return;
+				if (mAdapterCard == null) {
+					getCardItems();
+			        setAdapterList();
+				}
+				else {
+					mAdapterCard.add(card);
+					mAdapterCard.notifyDataSetChanged();
+				}
+			}
+		}
+		else if (requestCode == ACT_EDIT_ITEM) {
+			if (resultCode == RESULT_OK) {
+				int cardID = data.getIntExtra(MsgDef.ExtraNames.CARD_ID, -1);
+				if (cardID == -1 || mEditPositieon == -1) return;
+				
+				CardItem card = DBMgr.getCardItem(cardID);
+				if (card == null) return;
+				mArrCardItems.set(mEditPositieon, card);
+				mAdapterCard.notifyDataSetChanged();
+			}
+		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-//	@Override
-//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		if (requestCode == ACT_ADD_CARD) {
-//			if (resultCode == RESULT_OK) {
-//				int cardID = data.getIntExtra(MsgDef.ExtraNames.CARD_ID, -1);
-//				if (cardID == -1) return;
-//				
-//				CardItem card = DBMgr.getCardItem(cardID);
-//				if (card == null) return;
-//				if (mAdapterCard == null) {
-//					getCardItems();
-//			        setAdapterList();
-//				}
-//				else {
-//					mAdapterCard.add(card);
-//					mAdapterCard.notifyDataSetChanged();
-//				}
-//				
-//			}
-//		}
-//		super.onActivityResult(requestCode, resultCode, data);
-//	}
 }

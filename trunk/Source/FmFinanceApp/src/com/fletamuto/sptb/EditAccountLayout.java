@@ -31,6 +31,7 @@ public class EditAccountLayout extends FmBaseActivity {
 	private ArrayList<AccountItem> mAccountListItems = new ArrayList<AccountItem>();
 	protected AccountItemAdapter mAdapterAccount;
 	private String [] mAccountTypes;
+	private int mEditPositieon = -1;
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,15 +71,16 @@ public class EditAccountLayout extends FmBaseActivity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 			
+				mEditPositieon = position;
 				AccountItem item = (AccountItem)mAccountListItems.get(position);
 				if (item.getType() != AccountItem.MY_POCKET) {
-					startEditInputActivity(InputAccountLayout.class, item.getID());
+					startEditInputActivity(item.getID(), InputAccountLayout.class);
 				}
 			}
 		});
     }
 	
-	protected void startEditInputActivity(Class<?> cls, int itemId) {
+	protected void startEditInputActivity(int itemId, Class<?> cls) {
 		Intent intent = new Intent(this, cls);
     	intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, itemId);
     	startActivityForResult(intent, ACT_EDIT_ITEM);
@@ -185,12 +187,23 @@ public class EditAccountLayout extends FmBaseActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_ADD_ACCOUNT) {
 			if (resultCode == RESULT_OK) {
-				int accountID = data.getIntExtra("ACCOUNT_ID", -1);
+				int accountID = data.getIntExtra(MsgDef.ExtraNames.ACCOUNT_ID, -1);
 				if (accountID == -1) return;
 				
 				AccountItem account = DBMgr.getAccountItem(accountID);
 				if (account == null) return;
 				mAdapterAccount.add(account);
+				mAdapterAccount.notifyDataSetChanged();
+			}
+		}
+		else if (requestCode == ACT_EDIT_ITEM) {
+			if (resultCode == RESULT_OK) {
+				int accountID = data.getIntExtra(MsgDef.ExtraNames.ACCOUNT_ID, -1);
+				if (accountID == -1 || mEditPositieon == -1) return;
+				
+				AccountItem account = DBMgr.getAccountItem(accountID);
+				if (account == null) return;
+				mAccountListItems.set(mEditPositieon, account);
 				mAdapterAccount.notifyDataSetChanged();
 			}
 		}

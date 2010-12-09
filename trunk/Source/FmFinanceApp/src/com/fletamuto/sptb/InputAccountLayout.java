@@ -104,8 +104,15 @@ public class InputAccountLayout extends InputBaseLayout {
 	}
 
 	private void saveUpdateItem() {
-		// TODO Auto-generated method stub
+		if (DBMgr.updateAccount(mAccount) == false) {
+			Log.e(LogTag.LAYOUT, "== NEW fail to the update item : " + mAccount.getID());
+    		return;
+		}
 		
+		Intent intent = new Intent();
+		intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ID, mAccount.getID());
+		setResult(RESULT_OK, intent);
+		finish();
 	}
 
 	private void saveNewItem() {

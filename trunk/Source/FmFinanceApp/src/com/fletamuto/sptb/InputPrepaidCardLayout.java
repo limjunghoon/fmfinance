@@ -54,7 +54,6 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 		    	startActivityForResult(intent, ACT_SELECT_COMPANY_NAME);
 			}
 		});
-		
 	}
 	
 	 protected void setBalanceBtnClickListener(int btnID) {
@@ -74,6 +73,10 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 			displayAlertMessage("카드사가 선택되지 않았습니다.");
 			return false;
 		}
+		if (mPrepaidCard.getBalance() == 0L) {
+			displayAlertMessage("잔액이 입력되지  않았습니다.");
+			return false;
+		}
 		return true;
 	}
 
@@ -84,8 +87,9 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 
 	@Override
 	protected boolean getItemInstance(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		mPrepaidCard = DBMgr.getCardItem(id);
+		if (mPrepaidCard == null) return false;
+		return true;
 	}
 
 	@Override
@@ -99,8 +103,15 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 	}
 
 	private void saveUpdateItem() {
-		// TODO Auto-generated method stub
+		if (DBMgr.updateCardItem(mPrepaidCard) == false) {
+			Log.e(LogTag.LAYOUT, "== NEW fail to the update item : " + mPrepaidCard.getID());
+    		return;
+		}
 		
+		Intent intent = new Intent();
+		intent.putExtra(MsgDef.ExtraNames.CARD_ID, mPrepaidCard.getID());
+		setResult(RESULT_OK, intent);
+		finish();
 	}
 
 	private void saveNewItem() {
@@ -118,8 +129,25 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 	@Override
 	protected void updateChildView() {
 		updateCompenyNameText();
+		updateCardNameText();
+		updateCardNumberText();
+		updateBalanceText();
+		updateMemo();
 		
 	}
+	
+	private void updateMemo() {
+		((TextView)findViewById(R.id.ETPrepaidCardMemo)).setText(mPrepaidCard.getMemo());
+	}
+
+	private void updateCardNumberText() {
+		((TextView)findViewById(R.id.ETPrepaidCardNumber)).setText(mPrepaidCard.getNumber());
+	}
+
+	private void updateCardNameText() {
+		((TextView)findViewById(R.id.ETPrepaidCardName)).setText(mPrepaidCard.getName());
+	}
+
 
 	@Override
 	protected void updateItem() {
@@ -145,7 +173,6 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
     			updateBalance(data.getLongExtra("AMOUNT", 0L));
     		}
     	}
-
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
@@ -153,8 +180,11 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 
 	private void updateBalance(long balance) {
 		mPrepaidCard.setBalance(balance);
+		updateBalanceText();
+	}
+
+	private void updateBalanceText() {
 		((Button)findViewById(R.id.BtnPrepaidCardBalance)).setText(String.format("%,d원", mPrepaidCard.getBalance()));
-		
 	}
 
 	private CardCompanyName getCompenyName(int id) {
@@ -185,7 +215,6 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 		else {
 			((Button)findViewById(R.id.BtnPrepaidCardCompany)).setText(mPrepaidCard.getCompenyName().getName());
 		}
-		
 	}
 	
 	protected void setAccountBtnClickListener(int btnID) {
@@ -198,7 +227,4 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 			}
 		 });
     }
-	
-	
-	
 }

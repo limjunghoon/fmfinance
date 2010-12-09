@@ -28,6 +28,8 @@ public class CardItemDBConnector extends BaseDBConnector {
 		rowItem.put("account_id", card.getAccount().getID());
 		rowItem.put("company_name_id", card.getCompenyName().getID());
 		rowItem.put("settlement_day", card.getSettlementDay());
+		rowItem.put("biling_period_day", card.getBillingPeriodDay());
+		rowItem.put("biling_period_month", card.getBillingPeriodMonth());
 		rowItem.put("memo", card.getMemo());
 		rowItem.put("maxiup_balance", card.getBalance());
 		
@@ -44,14 +46,16 @@ public class CardItemDBConnector extends BaseDBConnector {
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
-		rowItem.put("type", card.getType());
-		rowItem.put("number", card.getNumber());
-		rowItem.put("company_name_id", card.getCompenyName().getID());
-		rowItem.put("company_name_id", card.getCompenyName().getID());
 		rowItem.put("name", card.getName());
+		rowItem.put("number", card.getNumber());
+		rowItem.put("type", card.getType());
+		rowItem.put("account_id", card.getAccount().getID());
+		rowItem.put("company_name_id", card.getCompenyName().getID());
 		rowItem.put("settlement_day", card.getSettlementDay());
+		rowItem.put("biling_period_day", card.getBillingPeriodDay());
+		rowItem.put("biling_period_month", card.getBillingPeriodMonth());
 		rowItem.put("memo", card.getMemo());
-		rowItem.put("balance", card.getBalance());
+		rowItem.put("maxiup_balance", card.getBalance());
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(card.getID())});
 		db.close();
@@ -132,10 +136,8 @@ public class CardItemDBConnector extends BaseDBConnector {
 		card.setNumber(c.getString(2));
 		card.getAccount().setID(c.getInt(4));
 		card.setSettlementDay(c.getInt(6));
-//		card.setStartSettlementDay(c.getInt(7));
-//		card.setStartSettlementMonth(c.getInt(8));
-//		card.setEndSettlementDay(c.getInt(9));
-//		card.setEndSettlementMonth(c.getInt(10));
+		card.setBillingPeriodDay(c.getInt(7));
+		card.setBillingPeriodMonth(c.getInt(8));
 		card.setMemo(c.getString(9));
 		card.setBalance(c.getInt(10));
 		

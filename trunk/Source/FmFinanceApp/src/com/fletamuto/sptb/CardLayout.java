@@ -27,9 +27,6 @@ import com.fletamuto.sptb.db.DBMgr;
  */
 public class CardLayout extends FmBaseActivity {  	
 	
-	public static final int ACT_ADD_CARD = 0;
-	
-//	private ArrayList<CardItem> mArrCard;
 	private long mTatalExpenseAmount = 0L;
 	private ArrayList<CardExpenseInfo> mArrCardExpenseInfo = new ArrayList<CardExpenseInfo>();
 	protected CardItemAdapter mAdapterCard;
@@ -43,6 +40,14 @@ public class CardLayout extends FmBaseActivity {
         setAdapterList();
         updateChildView();
     }
+	
+	@Override
+	protected void onResume() {
+		getCardItems();
+        updateChildView();
+        setAdapterList();
+		super.onResume();
+	}
 	
 	@Override
 	protected void setTitleBtn() {
@@ -93,8 +98,8 @@ public class CardLayout extends FmBaseActivity {
 		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
-//				Intent intent = new Intent(CardLayout.this, SelectInputCardLayout.class);		
-//				startActivityForResult(intent, ACT_ADD_CARD);
+				Intent intent = new Intent(CardLayout.this, EditCardLayout.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_EDIT_CARD);
 			}
 		});
 	}
@@ -106,7 +111,7 @@ public class CardLayout extends FmBaseActivity {
 			((TextView)convertView.findViewById(R.id.TVCreditCardName)).setText(card.getCompenyName().getName());
 			((TextView)convertView.findViewById(R.id.TVCreditCardType)).setText(getCardTypeName(card.getType()));
 			((TextView)convertView.findViewById(R.id.TVCreditCardTotalExpeanseAmount)).setText(String.format("총 지출 금액  : %,d 원", cardInfo.getTotalExpenseAmount()));
-			((TextView)convertView.findViewById(R.id.TVCreditCardExpectAmount)).setText(String.format("결제 예정금액 : %,d 원", cardInfo.getExpectedExpenseAmount()));
+			((TextView)convertView.findViewById(R.id.TVCreditCardExpectAmount)).setText(String.format("%d일 결제 예정금액 : %,d 원",card.getSettlementDay(), cardInfo.getExpectedExpenseAmount()));
 		}
 		else if (card.getType() == CardItem.CHECK_CARD) {
 			((TextView)convertView.findViewById(R.id.TVCheckCardName)).setText(card.getCompenyName().getName());

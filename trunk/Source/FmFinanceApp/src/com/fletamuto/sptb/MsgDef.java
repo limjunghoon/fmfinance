@@ -33,6 +33,8 @@ public final class MsgDef {
 		public final static int ACT_EDIT_ACCOUNT = 27;
 		public final static int ACT_TRANFER_ACCOUNT = 28;
 		public final static int ACT_EDIT_ITEM = 29;
+		public final static int ACT_EDIT_CARD = 30;
+		
 	}
 	
 	public static final class ExtraNames {
@@ -65,5 +67,6 @@ public final class MsgDef {
 		public static final String GET_ACCOUNT_ITEMS = "GET_ACCOUNT_ITEMS";
 		public static final String SELECT_ACCOUNT_MODE = "SELECT_ACCOUNT_MODE";
 		public static final String SELECT_ACCOUNT_EXCEPTION = "SELECT_ACCOUNT_EXCEPTION";
+		public static final String GET_CARD_INFO_ITEMS = "GET_CARD_INFO_ITEMS";
 	}
 }

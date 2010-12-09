@@ -1,7 +1,11 @@
 package com.fletamuto.sptb.data;
 
+import java.io.Serializable;
 
-public class CardExpenseInfo{
+
+
+public class CardExpenseInfo implements Serializable{
+	private static final long serialVersionUID = -161154125226855497L;
 	CardItem mCard;
 	private long mTotalExpenseAmount = 0L;
 	private long mExpectedExpenseAmount = 0L;

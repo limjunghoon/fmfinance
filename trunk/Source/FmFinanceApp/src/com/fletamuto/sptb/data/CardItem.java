@@ -102,7 +102,7 @@ public class CardItem extends BaseItem{
 		this.mBillingPeriodMonth = billingPeriodMonth;
 	}
 
-	public int getmillingPeriodMonth() {
+	public int getBillingPeriodMonth() {
 		return mBillingPeriodMonth;
 	}
 }
