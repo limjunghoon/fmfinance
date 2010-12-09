@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.BudgetItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 
 public class EditBudgetLayout  extends FmBaseActivity {  	

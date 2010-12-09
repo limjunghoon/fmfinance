@@ -17,6 +17,7 @@ import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
+import com.fletamuto.sptb.util.LogTag;
 
 /**
  * 메인 레이아웃 클레스

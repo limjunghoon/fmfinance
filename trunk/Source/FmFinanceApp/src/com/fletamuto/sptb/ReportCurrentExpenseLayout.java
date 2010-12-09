@@ -15,6 +15,7 @@ import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
 import com.fletamuto.sptb.util.FinanceDataFormat;
+import com.fletamuto.sptb.util.LogTag;
 
 public class ReportCurrentExpenseLayout extends ReportBaseLayout {
 	

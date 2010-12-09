@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 	protected static final int ACT_ITEM_EDIT = 0;
@@ -32,6 +33,7 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 	protected int mCategoryID = -1;
 	protected int mSubCategoryID = -1;
 	protected String mCategoryName;
+	
 	
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
 	protected abstract void setDeleteBtnListener(View convertView, int itemId, int groupPosition, int childPosition);
@@ -52,6 +54,7 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 		mCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1);
 		mSubCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_SUB_ID, -1);
 		mCategoryName = getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME);
+		
 		
 		if (isDisplayMonthOfYear() == false) {
 			LinearLayout llMonveMonth = (LinearLayout) findViewById(R.id.LLMoveMonth);

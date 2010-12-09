@@ -5,8 +5,8 @@ import java.util.Date;
 
 import android.util.Log;
 
-import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.util.FinanceDataFormat;
+import com.fletamuto.sptb.util.LogTag;
 
 public class Repeat extends BaseItem {
 

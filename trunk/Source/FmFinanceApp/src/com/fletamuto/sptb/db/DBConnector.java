@@ -3,7 +3,7 @@ package com.fletamuto.sptb.db;
 
 import android.util.Log;
 
-import com.fletamuto.sptb.LogTag;
+import com.fletamuto.sptb.util.LogTag;
 
 /**
  * DB와 연동하여 데이타를 관리한다.

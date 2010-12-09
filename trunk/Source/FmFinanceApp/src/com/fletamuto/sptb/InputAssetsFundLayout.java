@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsFundItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 /**
  * 자산입력

@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
-import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
@@ -19,6 +18,7 @@ import com.fletamuto.sptb.data.PaymentCardMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.data.UISelectItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
+import com.fletamuto.sptb.util.LogTag;
 
 /**
  * 지출관련 DB를 관리

@@ -8,9 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
-import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
+import com.fletamuto.sptb.util.LogTag;
 
 public class CardItemDBConnector extends BaseDBConnector {
 	private static final String TABLE_NAME = "card";

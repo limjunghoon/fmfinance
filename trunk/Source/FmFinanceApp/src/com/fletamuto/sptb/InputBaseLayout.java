@@ -1,5 +1,7 @@
 package com.fletamuto.sptb;
 
+import com.fletamuto.sptb.util.LogTag;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;

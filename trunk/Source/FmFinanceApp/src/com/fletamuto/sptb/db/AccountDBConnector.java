@@ -9,10 +9,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
-import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.util.FinanceDataFormat;
+import com.fletamuto.sptb.util.LogTag;
 
 public class AccountDBConnector extends BaseDBConnector {
 	private static final String TABLE_NAME = "account";

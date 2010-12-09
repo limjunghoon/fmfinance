@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
-import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.LiabilityCashServiceItem;
@@ -18,6 +17,7 @@ import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.data.LiabilityLoanItem;
 import com.fletamuto.sptb.data.LiabilityPersonLoanItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
+import com.fletamuto.sptb.util.LogTag;
 
 /**
  * 何盲包访 DB甫 包府

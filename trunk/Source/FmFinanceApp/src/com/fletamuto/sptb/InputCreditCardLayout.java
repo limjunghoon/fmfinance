@@ -15,6 +15,7 @@ import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 /**
  * 신용카드 등록

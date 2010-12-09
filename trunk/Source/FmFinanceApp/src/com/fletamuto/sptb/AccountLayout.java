@@ -37,16 +37,13 @@ public class AccountLayout extends FmBaseActivity {
         
         setContentView(R.layout.main_account, true);
         
-        getAccountItems();
-        updateChildView();
-        setAdapterList();
+        updateData();
     }
-	@Override
-	protected void onResume() {
+	
+	protected void updateData() {
 		getAccountItems();
-        updateChildView();
         setAdapterList();
-		super.onResume();
+        updateChildView();
 	}
 	
 	private void updateChildView() {
@@ -195,8 +192,6 @@ public class AccountLayout extends FmBaseActivity {
 			convertView.setBackgroundColor(Color.WHITE);
 			return convertView;
 		}
-
-		
     }
 	
 	private void setTransferBtnListener(View convertView, AccountItem item, final int position) {
@@ -213,21 +208,13 @@ public class AccountLayout extends FmBaseActivity {
 		});
 	}
 	
-	
-
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_EDIT_ACCOUNT) {
-//			if (resultCode == RESULT_OK) {
-//				int accountID = data.getIntExtra("ACCOUNT_ID", -1);
-//				if (accountID == -1) return;
-//				
-//				AccountItem account = DBMgr.getAccountItem(accountID);
-//				if (account == null) return;
-//				mAdapterAccount.add(account);
-//				mAdapterAccount.notifyDataSetChanged();
-//			}
+			if (resultCode == RESULT_OK) {
+				updateData();
+			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 public class ReportAccountLayout extends FmBaseActivity {
 	public static final int ACT_ADD_ACCOUNT = 0;

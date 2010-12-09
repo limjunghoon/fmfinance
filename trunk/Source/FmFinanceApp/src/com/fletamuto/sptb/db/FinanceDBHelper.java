@@ -9,12 +9,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.R;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.UISelectItem;
+import com.fletamuto.sptb.util.LogTag;
 
 /**
  * DB 생성되거나 버전이 업데이트 될 경우 

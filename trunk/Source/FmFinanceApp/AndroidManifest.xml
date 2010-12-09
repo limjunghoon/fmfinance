@@ -90,6 +90,7 @@
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".EditAccountLayout"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".TransferAccountLayout"></activity>
 <activity android:name=".EditCardLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".CardDetailCreditLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 

@@ -25,6 +25,7 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 public class ReportMonthLayout extends FmBaseActivity {
 	private Calendar mCalendar = Calendar.getInstance();

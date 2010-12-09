@@ -31,22 +31,19 @@ public class CardLayout extends FmBaseActivity {
 	private ArrayList<CardExpenseInfo> mArrCardExpenseInfo = new ArrayList<CardExpenseInfo>();
 	protected CardItemAdapter mAdapterCard;
 	private Calendar mCurrentCalendar = Calendar.getInstance();
+//	private int mEditPositieon = -1;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_card, true);
         
-        getCardItems();
-        setAdapterList();
-        updateChildView();
+        updateData();
     }
 	
-	@Override
-	protected void onResume() {
+	protected void updateData() {
 		getCardItems();
-        updateChildView();
         setAdapterList();
-		super.onResume();
+        updateChildView();
 	}
 	
 	@Override
@@ -65,6 +62,7 @@ public class CardLayout extends FmBaseActivity {
 	}
 	
 	protected void getCardItems() {
+		mArrCardExpenseInfo.clear();
 		ArrayList<CardItem> arrCard = DBMgr.getCardItems();
 		mTatalExpenseAmount = 0L;
 		int size = arrCard.size();
@@ -88,11 +86,38 @@ public class CardLayout extends FmBaseActivity {
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-	//			setVisibleDeleteButton((Button)view.findViewById(R.id.BtnCategoryDelete));
-				
+				CardExpenseInfo item = (CardExpenseInfo)mArrCardExpenseInfo.get(position);
+				CardItem card = item.getCard();
+//				mEditPositieon = position;
+				startDetailInputActivity(card, getDetailCardClass(card.getType()));
 			}
 		});
     }
+	
+	protected void startDetailInputActivity(CardItem card,
+			Class<?> cls) {
+		if (cls == null) return;
+		
+		Intent intent = new Intent(this, cls);
+    	intent.putExtra(MsgDef.ExtraNames.CARD_ITEM, card);
+    	intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, mCurrentCalendar.get(Calendar.MONTH) + 1);
+    	intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, mCurrentCalendar.get(Calendar.YEAR));
+    	startActivity(intent);
+	}
+
+
+	protected Class<?> getDetailCardClass(int type) {
+		if (type == CardItem.CREDIT_CARD) {
+			return CardDetailCreditLayout.class;
+		}
+		else if (type == CardItem.CHECK_CARD) {
+			return null;
+		}
+		else if (type == CardItem.PREPAID_CARD) {
+			return null;
+		}
+		return null;
+	}
 	
 	public void setEditButtonListener() {
 		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
@@ -203,13 +228,16 @@ public class CardLayout extends FmBaseActivity {
 			}
 			
 		}
-
-		
     }
 	
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == MsgDef.ActRequest.ACT_EDIT_CARD) {
+			if (resultCode == RESULT_OK) {
+				updateData();
+			}
+		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 

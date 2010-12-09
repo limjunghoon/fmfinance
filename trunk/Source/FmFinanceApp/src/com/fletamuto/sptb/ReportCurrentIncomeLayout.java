@@ -15,6 +15,7 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
 import com.fletamuto.sptb.util.FinanceDataFormat;
+import com.fletamuto.sptb.util.LogTag;
 
 public class ReportCurrentIncomeLayout extends ReportBaseLayout {
 

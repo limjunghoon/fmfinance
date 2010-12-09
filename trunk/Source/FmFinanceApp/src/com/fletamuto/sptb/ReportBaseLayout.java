@@ -20,6 +20,7 @@ import android.widget.ListView;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
+import com.fletamuto.sptb.util.LogTag;
 
 public abstract class ReportBaseLayout extends FmBaseActivity {
 	protected static final int ACT_ITEM_EDIT = 0;

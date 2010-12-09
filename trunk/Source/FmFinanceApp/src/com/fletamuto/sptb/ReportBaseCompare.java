@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import com.fletamuto.common.control.fmgraph.PieGraph;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.util.LogTag;
 
 public abstract class ReportBaseCompare extends FmBaseActivity {
 	
