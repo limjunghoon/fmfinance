@@ -1,5 +1,7 @@
 package com.fletamuto.sptb;
 
+import com.fletamuto.sptb.util.LogTag;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

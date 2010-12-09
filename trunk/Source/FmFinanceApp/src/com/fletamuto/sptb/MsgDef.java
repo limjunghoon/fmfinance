@@ -46,6 +46,7 @@ public final class MsgDef {
 		public static final String TAG_ID = "TAG_ID";
 		public static final String TAG_NAME = "TAG_NAME";
 		public static final String CARD_ID = "CARD_ID";
+		public static final String CARD_ITEM = "CARD_ITEM";
 		public static final String ACCOUNT_ID = "ACCOUNT_ID";
 		public static final String ACCOUNT_ITEM = "ACCOUNT_ITEM";
 		public static final String INSTALLMENT_PLAN = "INSTALLMENT_PLAN";

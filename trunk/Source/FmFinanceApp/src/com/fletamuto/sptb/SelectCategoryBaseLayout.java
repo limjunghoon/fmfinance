@@ -19,6 +19,7 @@ import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 	private static boolean mSelectSubCategory = true;

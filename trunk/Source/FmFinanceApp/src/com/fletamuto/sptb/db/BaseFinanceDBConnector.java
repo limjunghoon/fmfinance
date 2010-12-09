@@ -6,9 +6,9 @@ import java.util.Calendar;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.util.LogTag;
 
 public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	FinanceDBHelper getDBHelper() {

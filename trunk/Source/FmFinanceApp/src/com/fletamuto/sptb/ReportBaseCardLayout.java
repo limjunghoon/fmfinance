@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 public abstract class ReportBaseCardLayout extends FmBaseActivity {
 	public static final int ACT_ADD_CARD = MsgDef.ActRequest.ACT_ADD_CARD;

@@ -17,6 +17,7 @@ import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 /**
  * 수입을 입력 또는 수정하는 화면을 제공한다.

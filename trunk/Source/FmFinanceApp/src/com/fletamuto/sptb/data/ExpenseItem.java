@@ -2,7 +2,7 @@ package com.fletamuto.sptb.data;
 
 import android.util.Log;
 
-import com.fletamuto.sptb.LogTag;
+import com.fletamuto.sptb.util.LogTag;
 
 
 public class ExpenseItem extends FinanceItem {

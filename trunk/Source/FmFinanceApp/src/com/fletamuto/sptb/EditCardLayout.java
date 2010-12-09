@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 /**
  * 카드 레이아웃 클레스

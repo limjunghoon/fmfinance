@@ -7,11 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
+	protected CardItem mCard = null;
     
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -20,12 +23,48 @@ public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
         updateChildView();
     }
     
+    @Override
+    protected void setTitleBtn() {
+    	super.setTitleBtn();
+    }
+    
+    @Override
+    public void setTitle(CharSequence title) {
+    	if (mCard != null) {
+    		title = String.format("%s 지출내역", mCard.getCompenyName().getName());
+    	}
+    	super.setTitle(title);
+    }
+    
+    @Override
+    public void initialize() {
+    	mCard = (CardItem) getIntent().getSerializableExtra(MsgDef.ExtraNames.CARD_ITEM);
+    	super.initialize();
+    }
+    
+    @Override
+    protected boolean getItems(int itemType) {
+    	if (isDisplayMonthOfYear() && mCard != null) {
+			mItems = DBMgr.getCardExpenseItems(mYear, mMonth, mCard.getID());
+			updateReportItem();
+			return true;
+		}
+    	
+    	return super.getItems(itemType);
+    }    
+    
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	ExpenseItem item = (ExpenseItem)financeItem;
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
 		String categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText("분류 : " + categoryText);
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListPaymentMethod)).setText("결제 : " + item.getPaymentMethod().getText());
+		if (mCard == null) {
+			((TextView)convertView.findViewById(R.id.TVExpenseReportListPaymentMethod)).setText("결제 : " + item.getPaymentMethod().getText());
+		}
+		else {
+			convertView.findViewById(R.id.TVExpenseReportListPaymentMethod).setVisibility(View.GONE);
+		}
+		
 	}
     
     protected void setDeleteBtnListener(final View convertView, final int id, final int groupPosition, final int childPosition) {

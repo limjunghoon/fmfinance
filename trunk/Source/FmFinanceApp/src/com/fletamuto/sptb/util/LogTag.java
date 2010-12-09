@@ -1,4 +1,4 @@
-package com.fletamuto.sptb;
+package com.fletamuto.sptb.util;
 
 
 /**

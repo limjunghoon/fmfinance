@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 public class SelectSubCategoryLayout extends SelectCategoryBaseLayout {
 	private int mMainCagegoryID = -1;

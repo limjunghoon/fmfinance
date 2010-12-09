@@ -6,7 +6,6 @@ import java.util.Calendar;
 import android.content.Context;
 import android.util.Log;
 
-import com.fletamuto.sptb.LogTag;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
@@ -31,6 +30,7 @@ import com.fletamuto.sptb.data.LiabilityLoanItem;
 import com.fletamuto.sptb.data.LiabilityPersonLoanItem;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.util.FinanceDataFormat;
+import com.fletamuto.sptb.util.LogTag;
 
 /**
  * 레이아웃과  DB를 연동하는 클래스

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.LiabilityCashServiceItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 /**
  * 수입을 입력 또는 수정하는 화면을 제공한다.
