@@ -2,7 +2,6 @@ package com.fletamuto.sptb.db;
 
 import java.util.ArrayList;
 
-import android.accounts.Account;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
