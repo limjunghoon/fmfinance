@@ -125,6 +125,25 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return assetsItems;
 	}
 	
+	public ArrayList<FinanceItem> getItems(Calendar startCalendar, Calendar endCalendar) {
+		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String where = "assets.main_category=assets_main_category._id AND strftime('%Y-%m-%d', assets.create_date) BETWEEN '" + FinanceDataFormat.getDateFormat(startCalendar.getTime()) +"' AND '" + FinanceDataFormat.getDateFormat(endCalendar.getTime()) + "'";
+		queryBilder.setTables("assets, assets_main_category");
+		queryBilder.appendWhere(where);
+		Cursor c = queryBilder.query(db, null, null, null, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				assetsItems.add(CreateAssetsItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return assetsItems;
+	}
+	
 
 	public ArrayList<FinanceItem> getItems(int year, int month) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();

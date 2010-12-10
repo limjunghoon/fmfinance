@@ -47,6 +47,7 @@ public final class MsgDef {
 		public static final String TAG_NAME = "TAG_NAME";
 		public static final String CARD_ID = "CARD_ID";
 		public static final String CARD_ITEM = "CARD_ITEM";
+		public static final String CARD_EXPENSE_INFO_ITEM = "CARD_EXPENSE_INFO_ITEM";
 		public static final String ACCOUNT_ID = "ACCOUNT_ID";
 		public static final String ACCOUNT_ITEM = "ACCOUNT_ITEM";
 		public static final String INSTALLMENT_PLAN = "INSTALLMENT_PLAN";
@@ -69,5 +70,6 @@ public final class MsgDef {
 		public static final String SELECT_ACCOUNT_MODE = "SELECT_ACCOUNT_MODE";
 		public static final String SELECT_ACCOUNT_EXCEPTION = "SELECT_ACCOUNT_EXCEPTION";
 		public static final String GET_CARD_INFO_ITEMS = "GET_CARD_INFO_ITEMS";
+		public static final String CARD_BILLING = "CARD_BILLING";
 	}
 }
