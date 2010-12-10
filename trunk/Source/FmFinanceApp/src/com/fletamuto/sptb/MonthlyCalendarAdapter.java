@@ -12,10 +12,12 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
+
 public class MonthlyCalendarAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private Calendar mBaseDate;
+	private Calendar todayDate;
 	private int mStartPos;
 	private int mEndPos;
 	private int mDaysInMonth;
@@ -51,6 +53,7 @@ public class MonthlyCalendarAdapter extends BaseAdapter {
 	public MonthlyCalendarAdapter(Context c, Calendar cal, MonthlyCalendar mc) {
         mContext = c;
         mCalendar = mc;
+        todayDate = Calendar.getInstance();
         setBaseDate(cal);
     }
 
@@ -113,8 +116,12 @@ public class MonthlyCalendarAdapter extends BaseAdapter {
 			selectDate.setTag(c);
 			((TextView)selectDate).setText(Integer.toString(nDay));
 			((TextView)selectDate).setTextColor(mWeekColorIds[c.get(Calendar.DAY_OF_WEEK) - Calendar.SUNDAY]);
-			//날짜가 선택 되었을 때
 
+			if (c.get(Calendar.DAY_OF_MONTH) == todayDate.get(Calendar.DAY_OF_MONTH) && c.get(Calendar.MONTH) == todayDate.get(Calendar.MONTH)
+					&& c.get(Calendar.YEAR) == todayDate.get(Calendar.YEAR)) {
+				((TextView)selectDate).setBackgroundColor(Color.GRAY);
+			}
+			//날짜가 선택 되었을 때
 			selectDate.setOnClickListener(new View.OnClickListener() {
 	            public void onClick(View v) {
 	            	Calendar c = (Calendar)v.getTag();
