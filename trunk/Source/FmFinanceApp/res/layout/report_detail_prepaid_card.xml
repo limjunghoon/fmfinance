@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_margin="5dp">
+    	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<ImageView android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="3" android:id="@+id/IVDetailPrepaidCardLogo"></ImageView>
+		
+	<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_weight="1">
+		<TextView android:id="@+id/TVDetailPrepaidCardName" android:text="카드이름" android:layout_height="wrap_content" android:layout_width="fill_parent" android:textSize="18sp"></TextView>
+		<TextView android:id="@+id/TVDetailPrepaidCardSettlementDay" android:text="결제일" android:layout_height="wrap_content" android:layout_width="fill_parent" android:textSize="18sp"></TextView>
+		</LinearLayout></LinearLayout>
+	<TextView android:text="카드번호" android:id="@+id/TVDetailPrepaidCardNumber" android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center" android:textSize="18sp"></TextView>
+	<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:layout_marginTop="10dp"><TextView android:text="이번달 사용 금액" android:id="@+id/TVDetailPrepaidCardExpenseAmount" android:layout_height="wrap_content" android:layout_width="fill_parent" android:textSize="18sp"></TextView><Button android:id="@+id/BtnDetailPrepaidCardExepnseAmount" android:layout_height="wrap_content" android:layout_width="fill_parent"></Button>
+</LinearLayout><LinearLayout android:id="@+id/LinearLayout04" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:layout_marginTop="10dp"><TextView android:id="@+id/TVDetailPrepaidCardBalance" android:layout_height="wrap_content" android:layout_width="fill_parent" android:textSize="18sp"></TextView><TextView android:id="@+id/TVDetailPrepaidCardRemainAmount" android:layout_height="wrap_content" android:layout_width="fill_parent" android:textSize="18sp"></TextView><Button android:id="@+id/BtnDetailPrepaidCardCharge" android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="충전"></Button></LinearLayout>
+	
+		        
+	
+	
+
+</LinearLayout>
