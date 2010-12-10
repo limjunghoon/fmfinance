@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsInsuranceItem;
@@ -29,6 +30,13 @@ public class InputAssetsInsuranceLayout extends InputExtendLayout {
     	setContentView(R.layout.input_assets_insurance, true);
     	
     	updateChildView();
+    	
+    	//달력을 이용한 날짜 입력을 위해
+        LinearLayout linear = (LinearLayout) findViewById(R.id.inputAssetsInsurance);
+        View popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
+        final Intent intent = getIntent();        
+        monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
+        
         setCreateDateBtnClickListener(R.id.BtnInsuranceCreateDate); 
         setAmountBtnClickListener(R.id.BtnInsuranceAmount);
         setExpiryBtnClickListener(R.id.BtnInsuranceExpiryDate);

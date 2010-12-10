@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.Category;
@@ -39,7 +40,14 @@ public class InputIncomeSelaryLayout extends InputExtendLayout {
         setContentView(R.layout.input_income_salary, true);
         
         updateChildView();
-        setDateBtnClickListener(R.id.BtnSalaryDate); 
+        
+        //달력을 이용한 날짜 입력을 위해
+        LinearLayout linear = (LinearLayout) findViewById(R.id.inputIncomeSalary);
+        View popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
+        final Intent intent = getIntent();        
+        monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
+        
+        setDateBtnClickListener(R.id.BtnSalaryDate);         
         setAmountBtnClickListener(R.id.BtnSalaryAmount);
         setRepeatBtnClickListener(R.id.BtnSalaryRepeat);
         takeHomePayBtnClickListener();

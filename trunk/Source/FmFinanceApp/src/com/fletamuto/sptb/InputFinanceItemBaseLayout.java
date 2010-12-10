@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 
 import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.FinanceItem;
@@ -101,17 +102,33 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
      * 날짜 버튼 클릭시 리슨너 설정
      * @param btnID 날짜버튼 아이디
      */
+
     protected void setDateBtnClickListener(int btnID) {
     	((Button)findViewById(btnID)).setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
+				/*
 				new DatePickerDialog(InputFinanceItemBaseLayout.this, dateDlg, 
 						mItem.getCreateDate().get(Calendar.YEAR),
 						mItem.getCreateDate().get(Calendar.MONTH), 
-						mItem.getCreateDate().get(Calendar.DAY_OF_MONTH)).show(); 				
+						mItem.getCreateDate().get(Calendar.DAY_OF_MONTH)).show(); 		
+				*/
+				monthlyCalendar.showMonthlyCalendarPopup();
+				monthlyCalendar.getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
+					
+					public void onDismiss() {
+						if (monthlyCalendar.getSelectCalendar() == null) return;
+						mItem.getCreateDate().set(Calendar.YEAR, monthlyCalendar.getSelectCalendar().get(Calendar.YEAR));
+						mItem.getCreateDate().set(Calendar.MONTH, monthlyCalendar.getSelectCalendar().get(Calendar.MONTH));
+						mItem.getCreateDate().set(Calendar.DAY_OF_MONTH, monthlyCalendar.getSelectCalendar().get(Calendar.DAY_OF_MONTH));
+						updateDate();
+						
+					}
+				});
 			}
 		 });
     }
+
     
     /**
      * 금액버튼 클릭시 리슨너 설정

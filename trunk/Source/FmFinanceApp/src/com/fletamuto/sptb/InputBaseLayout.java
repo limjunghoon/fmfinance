@@ -19,6 +19,11 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 	protected enum InputMode{ADD_MODE, EDIT_MODE};
 	
 	/**
+	 * 달력으로 날짜 입력을 위해
+	 */
+	protected MonthlyCalendar monthlyCalendar;
+	
+	/**
 	 * 입력한 아이템을 저장한다.
 	 */
 	protected abstract void saveItem();
