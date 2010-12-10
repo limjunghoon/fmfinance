@@ -8,7 +8,8 @@ public class CardExpenseInfo implements Serializable{
 	private static final long serialVersionUID = -161154125226855497L;
 	CardItem mCard;
 	private long mTotalExpenseAmount = 0L;
-	private long mExpectedExpenseAmount = 0L;
+	private long mBillingExpenseAmount = 0L;
+	private long mNextBillingExpenseAmount = 0L;
 	
 	public CardExpenseInfo(CardItem card) {
 		mCard = card;
@@ -30,12 +31,20 @@ public class CardExpenseInfo implements Serializable{
 		return mTotalExpenseAmount;
 	}
 
-	public void setExpectedExpenseAmount(long expectedExpenseAmount) {
-		this.mExpectedExpenseAmount = expectedExpenseAmount;
+	public void setBillingExpenseAmount(long billingExpenseAmount) {
+		this.mBillingExpenseAmount = billingExpenseAmount;
 	}
 
-	public long getExpectedExpenseAmount() {
-		return mExpectedExpenseAmount;
+	public long getBillingExpenseAmount() {
+		return mBillingExpenseAmount;
+	}
+
+	public void setNextBillingExpenseAmount(long nextBillingExpenseAmount) {
+		this.mNextBillingExpenseAmount = nextBillingExpenseAmount;
+	}
+
+	public long getNextBillingExpenseAmount() {
+		return mNextBillingExpenseAmount;
 	}
 
 }

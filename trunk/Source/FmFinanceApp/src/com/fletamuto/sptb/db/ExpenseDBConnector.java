@@ -136,6 +136,25 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		return expenseItems;
 	}
 	
+	public ArrayList<FinanceItem> getItems(Calendar startCalendar, Calendar endCalendar) {
+		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String where = "expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id AND expense.tag=expense_tag._id AND expense.payment_method=payment_method._id AND strftime('%Y-%m-%d', expense.create_date) BETWEEN '" + FinanceDataFormat.getDateFormat(startCalendar.getTime()) +"' AND '" + FinanceDataFormat.getDateFormat(endCalendar.getTime()) + "'";
+		queryBilder.setTables("expense, expense_main_category, expense_sub_category, expense_tag, payment_method");
+		queryBilder.appendWhere(where);
+		Cursor c = queryBilder.query(db, null, null, null, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				expenseItems.add(createExpenseItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return expenseItems;
+	}
+	
 	public ArrayList<FinanceItem> getItems(int year, int month) {
 		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();
@@ -247,6 +266,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		
 		ExpenseItem item = new ExpenseItem();
 		item.setID(c.getInt(0));
+		
 		try {
 			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
 		} catch (ParseException e) {
@@ -750,12 +770,47 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		db.close();
 		return expenseItems;
 	}
+	
+	public ArrayList<FinanceItem> getCardExpenseItems(int cardID, Calendar start, Calendar end) {
+		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String where = "expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id AND expense.tag=expense_tag._id AND expense.payment_method=payment_method._id AND strftime('%Y-%m-%d', expense.create_date) BETWEEN '" + FinanceDataFormat.getDateFormat(start.getTime()) +"' AND '" + FinanceDataFormat.getDateFormat(end.getTime()) + "'";
+		queryBilder.setTables("expense, expense_main_category, expense_sub_category, expense_tag, payment_method");
+		queryBilder.appendWhere(where);
+		Cursor c = queryBilder.query(db, null, "payment_method.card=?", new String [] {String.valueOf(cardID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				expenseItems.add(createExpenseItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return expenseItems;
+	}
 
 	public long getCardTotalExpense(int year, int month, int cardID) {
 		long amount = 0L;
 		SQLiteDatabase db = getReadableDatabase();
 		String[] params = {String.format("%d-%02d", year, month), String.valueOf(cardID)};
 		String query = "SELECT SUM(expense.amount) FROM expense, payment_method WHERE expense.payment_method=payment_method._id AND strftime('%Y-%m', expense.create_date)=? AND payment_method.card=?";
+		Cursor c = db.rawQuery(query, params);
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		db.close();
+		return amount;
+	}
+
+
+	public long getCardTotalExpense(int cardID, Calendar start, Calendar end) {
+		long amount = 0L;
+		SQLiteDatabase db = getReadableDatabase();
+		String[] params = {String.valueOf(cardID), FinanceDataFormat.getDateFormat(start.getTime()), FinanceDataFormat.getDateFormat(end.getTime())};
+		String query = "SELECT SUM(expense.amount) FROM expense, payment_method WHERE expense.payment_method=payment_method._id AND payment_method.card=? AND strftime('%Y-%m-%d', expense.create_date) BETWEEN ? AND ?";
 		Cursor c = db.rawQuery(query, params);
 		
 		if (c.moveToFirst() != false) {

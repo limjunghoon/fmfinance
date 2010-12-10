@@ -1,6 +1,8 @@
 package com.fletamuto.sptb;
 
 
+import java.util.Calendar;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +16,10 @@ import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 
 public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
+	
+	
 	protected CardItem mCard = null;
+	private int mCardDisplayMode = -1;
     
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -39,13 +44,26 @@ public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
     @Override
     public void initialize() {
     	mCard = (CardItem) getIntent().getSerializableExtra(MsgDef.ExtraNames.CARD_ITEM);
+    	mCardDisplayMode = getIntent().getIntExtra(MsgDef.ExtraNames.CARD_BILLING, -1);
     	super.initialize();
     }
     
     @Override
     protected boolean getItems(int itemType) {
     	if (isDisplayMonthOfYear() && mCard != null) {
-			mItems = DBMgr.getCardExpenseItems(mYear, mMonth, mCard.getID());
+    		if (mCardDisplayMode == CardItem.BILLING) {
+    			Calendar currentDate = Calendar.getInstance();
+    			currentDate.set(mYear, mMonth-1, currentDate.get(Calendar.DAY_OF_MONTH));
+    			mItems = DBMgr.getCardExpenseItems(mCard.getID(), mCard.getStartBillingPeriod(currentDate), mCard.getEndBillingPeriod(currentDate));
+    		}
+    		else if (mCardDisplayMode == CardItem.NEXT_BILLING) {
+    			Calendar currentDate = Calendar.getInstance();
+    			currentDate.set(mYear, mMonth-1, currentDate.get(Calendar.DAY_OF_MONTH));
+    			mItems = DBMgr.getCardExpenseItems(mCard.getID(), mCard.getNextStartBillingPeriod(currentDate), mCard.getNextEndBillingPeriod(currentDate));
+    		}
+    		else {
+    			mItems = DBMgr.getCardExpenseItems(mYear, mMonth, mCard.getID());
+    		}
 			updateReportItem();
 			return true;
 		}

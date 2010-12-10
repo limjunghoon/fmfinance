@@ -212,6 +212,11 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItems(calendar);
 	}
 	
+	public static ArrayList<FinanceItem> getItems(int itemType, Calendar start, Calendar end) {
+		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItems(start, end);
+	}
+	
 	public static ArrayList<FinanceItem> getItems(int itemType, int year, int month) {
 		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItems(year, month);
@@ -587,9 +592,18 @@ public final class DBMgr {
 		return expenseDB.getCardTotalExpense(year, month, cardID);
 	}
 	
+	public static long getCardTotalExpense(int cardID, Calendar start, Calendar end) {
+		ExpenseDBConnector expenseDB = (ExpenseDBConnector) mInstance.mDBConnector.getBaseFinanceDBInstance(ExpenseItem.TYPE);
+		return expenseDB.getCardTotalExpense(cardID, start, end);
+	}
+	
 	public static ArrayList<FinanceItem> getCardExpenseItems(int year, int month, int cardID) {
 		ExpenseDBConnector expenseDB = (ExpenseDBConnector) mInstance.mDBConnector.getBaseFinanceDBInstance(ExpenseItem.TYPE);
 		return expenseDB.getCardExpenseItems(year, month, cardID);
 	}
 
+	public static ArrayList<FinanceItem> getCardExpenseItems(int cardID, Calendar start, Calendar end) {
+		ExpenseDBConnector expenseDB = (ExpenseDBConnector) mInstance.mDBConnector.getBaseFinanceDBInstance(ExpenseItem.TYPE);
+		return expenseDB.getCardExpenseItems(cardID, start, end);
+	}
 }

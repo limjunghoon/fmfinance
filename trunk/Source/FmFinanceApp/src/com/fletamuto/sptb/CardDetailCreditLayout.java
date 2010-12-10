@@ -1,14 +1,18 @@
 package com.fletamuto.sptb;
 
+import java.util.Calendar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.CardItem;
+import com.fletamuto.sptb.util.FinanceDataFormat;
+
 
 public class CardDetailCreditLayout extends CardDetailBaseLayout {  	
-	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
@@ -18,16 +22,42 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
         setBtnClickListener();
     }
 	
+	@Override
+	protected void initialize() {
+		super.initialize();
+		
+		if (mCard == null) {
+		}
+	}
+	
 	public void updateChild() {
 		updateCardNameText();
 		updateCardSettlementDayText();
 		updateCardNumberText();
 		updateCardBalanceText();
 		updateCardExpenseAmountBtnText();
+		updateCardBillingAmountBtnText();
+		updateCardNextBillingAmountBtnText();
+	}
+	
+	private void updateCardNextBillingAmountBtnText() {
+		String startDate = FinanceDataFormat.getDateFormat(mCard.getNextStartBillingPeriod(Calendar.getInstance()).getTime());
+		String endDate = FinanceDataFormat.getDateFormat(mCard.getNextEndBillingPeriod(Calendar.getInstance()).getTime());
+		
+		((TextView) findViewById(R.id.TVDetailCreditCardNextBilingDate)).setText(startDate + " ~ " + endDate);
+		((Button) findViewById(R.id.BtnDetailCreditCardNextBilingAmount)).setText(String.format("%,d원", mCardInfo.getNextBillingExpenseAmount()));
+	}
+
+	private void updateCardBillingAmountBtnText() {
+		String startDate = FinanceDataFormat.getDateFormat(mCard.getStartBillingPeriod(Calendar.getInstance()).getTime());
+		String endDate = FinanceDataFormat.getDateFormat(mCard.getEndBillingPeriod(Calendar.getInstance()).getTime());
+		
+		((TextView) findViewById(R.id.TVDetailCreditCardBilingDate)).setText(startDate + " ~ " + endDate);
+		((Button) findViewById(R.id.BtnDetailCreditCardBilingAmount)).setText(String.format("%,d원", mCardInfo.getBillingExpenseAmount()));
 	}
 
 	private void updateCardExpenseAmountBtnText() {
-		((Button) findViewById(R.id.BtnDetailCreditCardExepnseAmount)).setText(String.format("%,d원", mTotalExpenseAmount));
+		((Button) findViewById(R.id.BtnDetailCreditCardExepnseAmount)).setText(String.format("%,d원", mCardInfo.getTotalExpenseAmount()));
 	}
 
 	private void updateCardBalanceText() {
@@ -60,6 +90,30 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 				intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, mMonth);
 				intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, mYear);
 				intent.putExtra(MsgDef.ExtraNames.CARD_ITEM, mCard);
+				startActivity(intent);
+			}
+		});
+		
+		findViewById(R.id.BtnDetailCreditCardBilingAmount).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent intent = new Intent(CardDetailCreditLayout.this, ReportExpenseExpandLayout.class);
+				intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, mMonth);
+				intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, mYear);
+				intent.putExtra(MsgDef.ExtraNames.CARD_ITEM, mCard);
+				intent.putExtra(MsgDef.ExtraNames.CARD_BILLING, CardItem.BILLING);
+				startActivity(intent);
+			}
+		});
+
+	findViewById(R.id.BtnDetailCreditCardNextBilingAmount).setOnClickListener(new View.OnClickListener() {
+	
+			public void onClick(View v) {
+				Intent intent = new Intent(CardDetailCreditLayout.this, ReportExpenseExpandLayout.class);
+				intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, mMonth);
+				intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, mYear);
+				intent.putExtra(MsgDef.ExtraNames.CARD_ITEM, mCard);
+				intent.putExtra(MsgDef.ExtraNames.CARD_BILLING, CardItem.NEXT_BILLING);
 				startActivity(intent);
 			}
 		});

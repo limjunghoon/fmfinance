@@ -67,9 +67,17 @@ public class CardLayout extends FmBaseActivity {
 		mTatalExpenseAmount = 0L;
 		int size = arrCard.size();
 		for (int index = 0; index < size; index++) {
-			CardExpenseInfo cardInfo = new CardExpenseInfo(arrCard.get(index));
+			CardItem card = arrCard.get(index);
+			if (card.getAccount().getID() != -1) {
+				card.setAccount(DBMgr.getAccountItem(card.getAccount().getID()));
+			}
+			CardExpenseInfo cardInfo = new CardExpenseInfo(card);
 			long totalExpenseAmount = DBMgr.getCardTotalExpense(mCurrentCalendar.get(Calendar.YEAR), mCurrentCalendar.get(Calendar.MONTH)+1, cardInfo.getCard().getID());
+			long billingExpenseAmout = DBMgr.getCardTotalExpense(card.getID(), card.getStartBillingPeriod(Calendar.getInstance()), card.getEndBillingPeriod(Calendar.getInstance()));
+			long billingNextExpenseAmout = DBMgr.getCardTotalExpense(card.getID(), card.getNextStartBillingPeriod(Calendar.getInstance()), card.getNextEndBillingPeriod(Calendar.getInstance()));
 			cardInfo.setTotalExpenseAmount(totalExpenseAmount);
+			cardInfo.setBillingExpenseAmount(billingExpenseAmout);
+			cardInfo.setNextBillingExpenseAmount(billingNextExpenseAmout);
 			mTatalExpenseAmount += totalExpenseAmount;
 			mArrCardExpenseInfo.add(cardInfo);
 		}
@@ -87,19 +95,17 @@ public class CardLayout extends FmBaseActivity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				CardExpenseInfo item = (CardExpenseInfo)mArrCardExpenseInfo.get(position);
-				CardItem card = item.getCard();
-//				mEditPositieon = position;
-				startDetailInputActivity(card, getDetailCardClass(card.getType()));
+				startDetailInputActivity(item, getDetailCardClass(item.getCard().getType()));
 			}
 		});
     }
 	
-	protected void startDetailInputActivity(CardItem card,
+	protected void startDetailInputActivity(CardExpenseInfo item,
 			Class<?> cls) {
 		if (cls == null) return;
 		
 		Intent intent = new Intent(this, cls);
-    	intent.putExtra(MsgDef.ExtraNames.CARD_ITEM, card);
+    	intent.putExtra(MsgDef.ExtraNames.CARD_EXPENSE_INFO_ITEM, item);
     	intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, mCurrentCalendar.get(Calendar.MONTH) + 1);
     	intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, mCurrentCalendar.get(Calendar.YEAR));
     	startActivity(intent);
@@ -111,10 +117,10 @@ public class CardLayout extends FmBaseActivity {
 			return CardDetailCreditLayout.class;
 		}
 		else if (type == CardItem.CHECK_CARD) {
-			return null;
+			return CardDetailCheckLayout.class;
 		}
 		else if (type == CardItem.PREPAID_CARD) {
-			return null;
+			return CardDetailPrepaidLayout.class;
 		}
 		return null;
 	}
@@ -136,7 +142,7 @@ public class CardLayout extends FmBaseActivity {
 			((TextView)convertView.findViewById(R.id.TVCreditCardName)).setText(card.getCompenyName().getName());
 			((TextView)convertView.findViewById(R.id.TVCreditCardType)).setText(getCardTypeName(card.getType()));
 			((TextView)convertView.findViewById(R.id.TVCreditCardTotalExpeanseAmount)).setText(String.format("총 지출 금액  : %,d 원", cardInfo.getTotalExpenseAmount()));
-			((TextView)convertView.findViewById(R.id.TVCreditCardExpectAmount)).setText(String.format("%d일 결제 예정금액 : %,d 원",card.getSettlementDay(), cardInfo.getExpectedExpenseAmount()));
+			((TextView)convertView.findViewById(R.id.TVCreditCardExpectAmount)).setText(String.format("%d일 결제 예정금액 : %,d 원",card.getSettlementDay(), cardInfo.getBillingExpenseAmount()));
 		}
 		else if (card.getType() == CardItem.CHECK_CARD) {
 			((TextView)convertView.findViewById(R.id.TVCheckCardName)).setText(card.getCompenyName().getName());

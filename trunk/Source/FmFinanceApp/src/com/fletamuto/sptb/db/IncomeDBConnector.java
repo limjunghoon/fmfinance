@@ -119,6 +119,25 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		return incomeItems;
 	}
 	
+	public ArrayList<FinanceItem> getItems(Calendar startCalendar, Calendar endCalendar) {
+		ArrayList<FinanceItem> incomeItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String where = "income.main_category=income_main_category._id AND strftime('%Y-%m-%d', income.create_date) BETWEEN '" + FinanceDataFormat.getDateFormat(startCalendar.getTime()) +"' AND '" + FinanceDataFormat.getDateFormat(endCalendar.getTime()) + "'";
+		queryBilder.setTables("income, income_main_category");
+		queryBilder.appendWhere(where);
+		Cursor c = queryBilder.query(db, null, null, null, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				incomeItems.add(CreateIncomeItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return incomeItems;
+	}
+	
 	public ArrayList<FinanceItem> getItems(int year, int month) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();
@@ -518,5 +537,6 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		
 		return ret;
 	}
+
 
 }

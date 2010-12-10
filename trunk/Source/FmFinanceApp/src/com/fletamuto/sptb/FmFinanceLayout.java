@@ -43,9 +43,6 @@ public class FmFinanceLayout extends FmBaseActivity {
         setIncomeExpenseProgress();
         setBudgetPorgress();
     }
-    
-
-
 
 	/**
      * activity가 다시 시작할 때

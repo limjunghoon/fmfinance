@@ -1,10 +1,13 @@
 package com.fletamuto.sptb.data;
 
+import java.util.Calendar;
+
 public class CardItem extends BaseItem{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -1671898251206337042L;
+	public static final int BILLING = 0;
+	public static final int NEXT_BILLING = 1;
+	
 	public final static int CREDIT_CARD = 1;
 	public final static int CHECK_CARD = 2;
 	public final static int PREPAID_CARD = 3;
@@ -24,7 +27,6 @@ public class CardItem extends BaseItem{
 	public CardItem(int type) {
 		mType = type;
 	}
-
 
 	public void setCompenyName(CardCompanyName compenyName) {
 		this.mCompenyName = compenyName;
@@ -104,5 +106,31 @@ public class CardItem extends BaseItem{
 
 	public int getBillingPeriodMonth() {
 		return mBillingPeriodMonth;
+	}
+	
+	public Calendar getStartBillingPeriod(Calendar currentDate) {
+		Calendar startBillingPeriod = Calendar.getInstance();
+		startBillingPeriod.set(currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), mBillingPeriodDay);
+		startBillingPeriod.add(Calendar.MONTH, -1);
+		return startBillingPeriod;
+	}
+	
+	public Calendar getEndBillingPeriod(Calendar currentDate) {
+		Calendar endBillingPeriod = Calendar.getInstance();
+		endBillingPeriod.set(currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), mBillingPeriodDay);
+		endBillingPeriod.add(Calendar.DAY_OF_MONTH, -1);
+		return endBillingPeriod;
+	}
+	
+	public Calendar getNextStartBillingPeriod(Calendar currentDate) {
+		Calendar startBillingPeriod = getStartBillingPeriod(currentDate);
+		startBillingPeriod.add(Calendar.MONTH, 1);
+		return startBillingPeriod;
+	}
+	
+	public Calendar getNextEndBillingPeriod(Calendar currentDate) {
+		Calendar endBillingPeriod = getEndBillingPeriod(currentDate);
+		endBillingPeriod.add(Calendar.MONTH, 1);
+		return endBillingPeriod;
 	}
 }

@@ -121,6 +121,25 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return LiabilityItems;
 	}
 	
+	public ArrayList<FinanceItem> getItems(Calendar startCalendar, Calendar endCalendar) {
+		ArrayList<FinanceItem> LiabilityItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String where = "liability.main_category=liability_main_category._id AND strftime('%Y-%m-%d', liability.create_date) BETWEEN '" + FinanceDataFormat.getDateFormat(startCalendar.getTime()) +"' AND '" + FinanceDataFormat.getDateFormat(endCalendar.getTime()) + "'";
+		queryBilder.setTables("liability, liability_main_category");
+		queryBilder.appendWhere(where);
+		Cursor c = queryBilder.query(db, null, null, null, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				LiabilityItems.add(CreateLiabilityItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return LiabilityItems;
+	}
+	
 	public ArrayList<FinanceItem> getItems(int year, int month) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = getReadableDatabase();
