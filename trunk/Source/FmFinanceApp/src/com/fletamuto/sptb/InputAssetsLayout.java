@@ -2,7 +2,9 @@ package com.fletamuto.sptb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsItem;
@@ -21,6 +23,13 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
         setContentView(R.layout.input_assets, true);
         
         updateChildView();
+        
+      //달력을 이용한 날짜 입력을 위해
+        LinearLayout linear = (LinearLayout) findViewById(R.id.inputAssets);
+        View popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
+        final Intent intent = getIntent();        
+        monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
+        
         setDateBtnClickListener(R.id.BtnAssetsDate); 
         setAmountBtnClickListener(R.id.BtnAssetsAmount);
         setTitle(mAssetsItem.getCategory().getName());

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
@@ -31,7 +32,8 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
     	setContentView(R.layout.input_assets_deposit, true);
     	
     	updateChildView();
-        setCreateDateBtnClickListener(R.id.BtnDepositCreateDate); 
+    	
+    	setCreateDateBtnClickListener(R.id.BtnDepositCreateDate); 
         setAmountBtnClickListener(R.id.BtnDepositAmount);
         setExpiryBtnClickListener(R.id.BtnDepositExpiryDate);
         setAccountBtnClickListener();
@@ -64,6 +66,12 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
 	}
 
 	private void setCreateDateBtnClickListener(int resource) {
+		//달력을 이용한 날짜 입력을 위해
+        LinearLayout linear = (LinearLayout) findViewById(R.id.inputAssetsDeposit);
+        View popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
+        final Intent intent = getIntent();        
+        monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
+        
 		setDateBtnClickListener(resource);
 	}
 
