@@ -93,6 +93,7 @@
 <activity android:name=".CardDetailCreditLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".CardDetailCheckLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".CardDetailPrepaidLayout"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".StateDefaultLayout"></activity>
 </application>
 
 

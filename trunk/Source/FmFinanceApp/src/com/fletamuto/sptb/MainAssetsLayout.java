@@ -24,12 +24,8 @@ public class MainAssetsLayout extends FmBaseActivity {
     	super.onCreate(savedInstanceState);
     	
     	setContentView(R.layout.main_asserts, true);
-    	
-    	
     	setButtonClickListener();
     }
-    
-    
     
 	private void setButtonClickListener() {
 		
@@ -37,7 +33,9 @@ public class MainAssetsLayout extends FmBaseActivity {
 		btnExpense.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(MainAssetsLayout.this, ReportCompareAssetsLayout.class);
+			//	Intent intent = new Intent(MainAssetsLayout.this, ReportCompareAssetsLayout.class);
+			//	Intent intent = new Intent(MainAssetsLayout.this, SelectCategoryAssetsLayout.class);
+				Intent intent = new Intent(MainAssetsLayout.this, ReportAssetsLayout.class);
 				startActivity(intent);
 			}
 		});

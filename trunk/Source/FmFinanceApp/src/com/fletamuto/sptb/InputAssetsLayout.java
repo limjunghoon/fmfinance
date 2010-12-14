@@ -38,10 +38,12 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
     @Override
     protected void initialize() {
     	super.initialize();
-    	int categoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1) ;
-        String categoryName = getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME);
-        
-        updateCategory(categoryID, categoryName);
+    	
+    	if (mInputMode == InputMode.ADD_MODE) {
+    		int categoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1) ;
+            String categoryName = getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME);
+            updateCategory(categoryID, categoryName);
+    	}
     }
     
     protected void updateDate() {

@@ -92,6 +92,9 @@ public class ReportCurrentExpenseLayout extends ReportBaseLayout {
 		if (getItemsFromDB(getItemType(), FinanceCurrentDate.getDate()) == false) {
 			Log.e(LogTag.LAYOUT, "::: Error GET DATE");
         }
+		
+		mListItems.clear();
+		updateListItem();
 	}
 
 	@Override
@@ -103,6 +106,10 @@ public class ReportCurrentExpenseLayout extends ReportBaseLayout {
 	@Override
 	protected int getAdapterResource() {
 		return R.layout.report_list_expense;
+	}
+	
+	protected void updateListItem() {
+		mListItems = mItems;
 	}
 
 }

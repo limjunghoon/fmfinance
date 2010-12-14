@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.CardItem;
@@ -16,7 +17,6 @@ import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 
 public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
-	
 	
 	protected CardItem mCard = null;
 	private int mCardDisplayMode = -1;
@@ -118,5 +118,12 @@ public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
 	@Override
 	protected int getItemType() {
 		return ExpenseItem.TYPE;
+	}
+
+	@Override
+	protected void onClickChildView(ExpandableListView parent, View v,
+			int groupPosition, int childPosition, long id) {
+		// TODO Auto-generated method stub
+		
 	}
 }

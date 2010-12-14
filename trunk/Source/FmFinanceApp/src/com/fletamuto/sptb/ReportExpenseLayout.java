@@ -76,4 +76,8 @@ public class ReportExpenseLayout extends ReportBaseLayout {
 	protected int getAdapterResource() {
 		return R.layout.report_list_expense;
 	}
+	
+	protected void updateListItem() {
+		mListItems = mItems;
+	}
 }

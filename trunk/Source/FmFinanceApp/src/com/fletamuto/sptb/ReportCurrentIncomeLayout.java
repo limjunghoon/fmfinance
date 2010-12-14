@@ -89,6 +89,9 @@ public class ReportCurrentIncomeLayout extends ReportBaseLayout {
 		if (getItemsFromDB(getItemType(), FinanceCurrentDate.getDate()) == false) {
 			Log.e(LogTag.LAYOUT, "::: Error GET DATE");
         }
+		
+		mListItems.clear();
+		updateListItem();
 	}
 
 	@Override
@@ -102,4 +105,7 @@ public class ReportCurrentIncomeLayout extends ReportBaseLayout {
 		return R.layout.report_list_income;
 	}
 
+	protected void updateListItem() {
+		mListItems = mItems;
+	}
 }
