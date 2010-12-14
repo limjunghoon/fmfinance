@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +17,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
@@ -26,6 +29,7 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	protected static final int ACT_ITEM_EDIT = 0;
 	
 	protected ArrayList<FinanceItem> mItems = null;
+	protected ArrayList<FinanceItem> mListItems = new ArrayList<FinanceItem>();
 	protected ReportItemAdapter mItemAdapter = null;
 //	private int mLatestSelectPosition = -1;
 	protected int mCategoryID = -1;
@@ -37,13 +41,13 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	protected abstract int getAdapterResource();
 	protected abstract void onClickAddButton();
 	protected abstract void onClickListItem(AdapterView<?> parent, View view, int position, long id);
+	protected abstract void updateListItem();
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.report_base, true);
         
-        initialize();
         getDate();
         setAdapterList();
         updateChildView();
@@ -91,16 +95,20 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	}
 	
 	protected void getDate() {
-		 if (getItemsFromDB(getItemType()) == false) {
-			 Log.e(LogTag.LAYOUT, ":: Error GET DATE");
-	     }
+		
+		if (getItemsFromDB(getItemType()) == false) {
+			Log.e(LogTag.LAYOUT, ":: ERROR GET DATE");
+		}
+		
+		mListItems.clear();
+		updateListItem();
 	}
 	
 	protected void setAdapterList() {
     	if (mItems == null) return;
         
     	final ListView listItem = (ListView)findViewById(R.id.LVCurrentList);
-    	mItemAdapter = new ReportItemAdapter(this, getAdapterResource(), mItems);
+    	mItemAdapter = new ReportItemAdapter(this, getAdapterResource(), mListItems);
     	listItem.setAdapter(mItemAdapter);
     	
     	listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -146,45 +154,51 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
         }
         return true;
     }
-//	
-//	protected void setListAdapter(int id) {
-//		mItemAdapter = new ReportItemAdapter(this, id, mItems);
-//		setListAdapter(mItemAdapter); 
-//	}
 	
 	private boolean isDisplayCategory() {
 		return (mCategoryID != -1);
 	}
 
 	public class ReportItemAdapter extends ArrayAdapter<FinanceItem> {
-    	int resource;
+		private int mResource;
+    	private LayoutInflater mInflater;
 
 		public ReportItemAdapter(Context context, int resource,
 				 List<FinanceItem> objects) {
 			super(context, resource, objects);
-			this.resource = resource;
+			this.mResource = resource;
+			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			LinearLayout reportListView;
 			FinanceItem item = (FinanceItem)getItem(position);
 			
-			if (convertView == null) {
-				reportListView = new LinearLayout(getContext());
-				String inflater = Context.LAYOUT_INFLATER_SERVICE;
-				LayoutInflater li;
-				li = (LayoutInflater)getContext().getSystemService(inflater);
-				li.inflate(resource, reportListView, true);
+			if (item.isSeparator()) {
+				return createSeparator(mInflater, parent, item);
 			}
 			else {
-				reportListView = (LinearLayout)convertView;
+				convertView = mInflater.inflate(mResource, parent, false);
 			}
 			
-			setListViewText(item, reportListView);
-			setDeleteBtnListener(reportListView, item.getID(), position);
+			setListViewText(item, convertView);
+			setDeleteBtnListener(convertView, item.getID(), position);
 			
-			return reportListView;
+			return convertView;
+		}
+		
+		public View createSeparator(LayoutInflater inflater, ViewGroup parent, FinanceItem item) {
+			View convertView = inflater.inflate(R.layout.list_separators, parent, false);
+			TextView tvTitle = (TextView)convertView.findViewById(R.id.TVSeparator);
+			tvTitle.setText(item.getSeparatorTitle());
+			tvTitle.setTextColor(Color.BLACK);
+			convertView.setBackgroundColor(Color.WHITE);
+			return convertView;
+		}
+		
+		@Override
+		public boolean isEnabled(int position) {
+			return !mListItems.get(position).isSeparator();
 		}
     }
 	
@@ -229,7 +243,6 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	}
 	
 	protected void updateChildView() {
-		
 	}
 	
 	private void setButtonClickListener() {
@@ -267,7 +280,4 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
         setAdapterList();
         updateChildView();
 	}
-	
-	
-	
 }

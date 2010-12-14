@@ -1,10 +1,12 @@
 package com.fletamuto.sptb;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsItem;
@@ -53,5 +55,18 @@ public class ReportAssetsExpandLayout extends ReportExpandBaseLayout {
 	@Override
 	protected int getItemType() {
 		return AssetsItem.TYPE;
+	}
+
+	@Override
+	protected void onClickChildView(ExpandableListView parent, View v,
+			int groupPosition, int childPosition, long id) {
+		AssetsItem assets = (AssetsItem) getListChildItem(groupPosition, childPosition);
+		startEditInputActivity(InputAssetsLayout.class, assets.getID());
+	}
+
+	private void startEditInputActivity(Class<InputAssetsLayout> cls, int id) {
+		Intent intent = new Intent(ReportAssetsExpandLayout.this, cls);
+    	intent.putExtra("EDIT_ITEM_ID", id);
+    	startActivityForResult(intent, ACT_ITEM_EDIT);
 	}
 }

@@ -50,6 +50,11 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		long ret = db.insert("assets", null, rowItem);
 		item.setID((int)ret);
 		db.close();
+		
+		if (ret != -1) {
+			return addDefaultChangeItem(item);
+		}
+			
 		return ret;
 	}
 	
@@ -60,7 +65,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	 */
 	public long updateItem(FinanceItem financeItem) {
 		AssetsItem item = (AssetsItem)financeItem;
-		if (checkAssetsVaildItem(item) != DBDef.ValidError.SUCCESS) return -1;
+		if (checkAssetsVaildItem(item) != DBDef.ValidError.SUCCESS) return 0;
 		SQLiteDatabase db = getWritableDatabase();
 		
 		ContentValues rowItem = new ContentValues();
@@ -720,7 +725,48 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return addItem(insurance);
 	}
 
-	
+	public long addChangeItem(AssetsItem item) {
+		if (item.getID() == -1) {
+			Log.e(LogTag.DB, ":: INVAILD ASSETS ITEM ID");
+			return -1;
+		}
+		
+		int extendID = item.getExtendID();
+		
+		if (extendID != -1) {
+			return addDefaultChangeItem(item);
+		}
+		
+//		if (checkAssetsVaildItem(item) != DBDef.ValidError.SUCCESS) return -1;
+//		SQLiteDatabase db = getWritableDatabase();
+//		
+//		ContentValues rowItem = new ContentValues();
+//		rowItem.put("assets_id", item.getCreateDateString());
+//		rowItem.put("change_date", item.getAmount());
+//		rowItem.put("amount", item.getTitle());
+//		rowItem.put("count", item.getMemo());
+//		rowItem.put("main_category", item.getCategory().getID());
+//		rowItem.put("sub_category", item.getSubCategory().getID());
+//		rowItem.put("extend", item.getExtendID());
+//		
+//		long ret = db.insert("assets_change_amount", null, rowItem);
+//		item.setID((int)ret);
+//		db.close();
+		return -1;
+	}
 
+	private long addDefaultChangeItem(AssetsItem item) {
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("assets_id", item.getID());
+		rowItem.put("change_date", item.getCreateDateString());
+		rowItem.put("amount", item.getAmount());
+		
+		long ret = db.insert("assets_change_amount", null, rowItem);
+		item.setID((int)ret);
+		db.close();
+		return 0;
+	}
 	
 }

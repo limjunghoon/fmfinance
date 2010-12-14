@@ -69,5 +69,9 @@ public class ReportLiabilityLayout extends ReportBaseLayout {
 	protected int getAdapterResource() {
 		return R.layout.report_list_liability;
 	}
+	
+	protected void updateListItem() {
+		mListItems = mItems;
+	}
 
 }

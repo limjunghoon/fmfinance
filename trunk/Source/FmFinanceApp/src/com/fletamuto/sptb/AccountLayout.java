@@ -153,8 +153,6 @@ public class AccountLayout extends FmBaseActivity {
     	private int mResource;
     	private LayoutInflater mInflater;
     	
-    	TextView tvSeparetorTitle;
-  
 		public AccountItemAdapter(Context context, int resource,
 				 List<AccountItem> objects) {
 			super(context, resource, objects);

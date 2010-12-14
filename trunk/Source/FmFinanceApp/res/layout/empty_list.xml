@@ -2,5 +2,6 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
-<ListView android:layout_height="wrap_content" android:id="@+id/LVBase" android:layout_width="fill_parent"></ListView>
+	<ListView android:layout_height="wrap_content" android:id="@+id/LVBase" android:layout_width="fill_parent"></ListView>
+
 </LinearLayout>

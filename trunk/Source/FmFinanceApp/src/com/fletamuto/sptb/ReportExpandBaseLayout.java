@@ -34,11 +34,11 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 	protected int mSubCategoryID = -1;
 	protected String mCategoryName;
 	
-	
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
 	protected abstract void setDeleteBtnListener(View convertView, int itemId, int groupPosition, int childPosition);
 	protected abstract int getChildLayoutResourceID();
 	protected abstract int getItemType();
+	protected abstract void onClickChildView(ExpandableListView parent, View v, int groupPosition, int childPosition, long id);
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +54,6 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 		mCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1);
 		mSubCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_SUB_ID, -1);
 		mCategoryName = getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME);
-		
 		
 		if (isDisplayMonthOfYear() == false) {
 			LinearLayout llMonveMonth = (LinearLayout) findViewById(R.id.LLMoveMonth);
@@ -102,6 +101,15 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
         for (int index = 0; index < groupCount; index++) {
         	elvItems.expandGroup(index);
         }
+        
+        elvItems.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+			
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
+				onClickChildView(parent, v, groupPosition, childPosition, id);
+				return false;
+			}
+		});
 	}
 	
 	public class ReportExpandableListAdapter extends BaseExpandableListAdapter {
@@ -306,5 +314,9 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 		TextView tvMonth = (TextView)findViewById(R.id.TVCurrentMonth);
 		tvMonth.setText(String.format("%d³â %d¿ù", mYear, mMonth));
 		updateExpandList();
+	}
+	
+	public FinanceItem getListChildItem(int groupPosition, int childPosition) {
+		return mChildItems.get(groupPosition).get(childPosition);
 	}
 }

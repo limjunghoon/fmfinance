@@ -59,8 +59,6 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        
-        initialize();
     }
 	
 	/**

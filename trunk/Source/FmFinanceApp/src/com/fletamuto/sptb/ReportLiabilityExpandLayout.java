@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.FinanceItem;
@@ -52,5 +53,12 @@ public class ReportLiabilityExpandLayout extends ReportExpandBaseLayout {
 	@Override
 	protected int getItemType() {
 		return LiabilityItem.TYPE;
+	}
+
+	@Override
+	protected void onClickChildView(ExpandableListView parent, View v,
+			int groupPosition, int childPosition, long id) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -43,8 +43,6 @@ public class SelectAccountLayout extends Activity {
         setAdapterList();
     }
     
-
-	
 	private void initalize() {
 		mExceptionID = getIntent().getIntExtra(MsgDef.ExtraNames.SELECT_ACCOUNT_EXCEPTION, -1);
 		mMode = getIntent().getIntExtra(MsgDef.ExtraNames.SELECT_ACCOUNT_MODE, MODE_NORMAL);
@@ -147,9 +145,7 @@ public class SelectAccountLayout extends Activity {
 				tvAccount.setText(String.format("%s : %s", item.getCompany().getName(), item.getNumber()));
 			}
 			
-			
 			convertView.setTag(item);
-			
 			return convertView;
 		}
     }

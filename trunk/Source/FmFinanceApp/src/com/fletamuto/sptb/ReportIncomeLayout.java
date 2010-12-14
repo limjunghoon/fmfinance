@@ -82,4 +82,7 @@ public class ReportIncomeLayout extends ReportBaseLayout {
 		return R.layout.report_list_income;
 	}
 
+	protected void updateListItem() {
+		mListItems = mItems;
+	}
 }
