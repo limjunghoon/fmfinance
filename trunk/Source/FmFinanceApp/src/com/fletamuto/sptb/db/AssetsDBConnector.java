@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
 import com.fletamuto.sptb.data.AssetsInsuranceItem;
@@ -52,7 +53,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		db.close();
 		
 		if (ret != -1) {
-			return addDefaultChangeItem(item);
+			return addStateChangeItem(item);
 		}
 			
 		return ret;
@@ -78,6 +79,17 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("extend", item.getExtendID());
 		
 		long ret = db.update("assets", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getID())});
+		db.close();
+		return ret;
+	}
+	
+	@Override
+	public long updateAmountFinanceItem(int id, long amount) {
+		if (amount == 0) return 0;
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("amount", amount);
+		long ret = db.update("assets", rowItem, "_id=?", new String[] {String.valueOf(id)});
 		db.close();
 		return ret;
 	}
@@ -725,7 +737,30 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return addItem(insurance);
 	}
 
-	public long addChangeItem(AssetsItem item) {
+	private long addDefaultStateChangeItem(AssetsItem item) {
+		long ret = -1;
+		AssetsItem todayItem = (AssetsItem) getStateChangeItem(item.getCreateDate());
+
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("assets_id", item.getID());
+		rowItem.put("change_date", item.getCreateDateString());
+		rowItem.put("amount", item.getAmount());
+		rowItem.put("memo", item.getMemo());
+		
+		if (todayItem == null) {
+			ret = db.insert("assets_change_amount", null, rowItem);
+		}
+		else {
+			ret = db.update("assets_change_amount", rowItem, "_id=?", new String[] {String.valueOf(item.getID())});
+		}
+		
+		db.close();
+		return ret;
+	}
+	
+	public long addStateChangeItem(FinanceItem fItem) {
+		AssetsItem item = (AssetsItem) fItem;
 		if (item.getID() == -1) {
 			Log.e(LogTag.DB, ":: INVAILD ASSETS ITEM ID");
 			return -1;
@@ -733,40 +768,87 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		
 		int extendID = item.getExtendID();
 		
-		if (extendID != -1) {
-			return addDefaultChangeItem(item);
+		if (extendID == -1) {
+			return addDefaultStateChangeItem(item);
 		}
-		
-//		if (checkAssetsVaildItem(item) != DBDef.ValidError.SUCCESS) return -1;
-//		SQLiteDatabase db = getWritableDatabase();
-//		
-//		ContentValues rowItem = new ContentValues();
-//		rowItem.put("assets_id", item.getCreateDateString());
-//		rowItem.put("change_date", item.getAmount());
-//		rowItem.put("amount", item.getTitle());
-//		rowItem.put("count", item.getMemo());
-//		rowItem.put("main_category", item.getCategory().getID());
-//		rowItem.put("sub_category", item.getSubCategory().getID());
-//		rowItem.put("extend", item.getExtendID());
-//		
-//		long ret = db.insert("assets_change_amount", null, rowItem);
-//		item.setID((int)ret);
-//		db.close();
+	
 		return -1;
 	}
-
-	private long addDefaultChangeItem(AssetsItem item) {
-		SQLiteDatabase db = getWritableDatabase();
+	
+	public FinanceItem getStateChangeItem(Calendar calendar) {
+		AssetsItem assets = null;
+		SQLiteDatabase db = getReadableDatabase();
 		
-		ContentValues rowItem = new ContentValues();
-		rowItem.put("assets_id", item.getID());
-		rowItem.put("change_date", item.getCreateDateString());
-		rowItem.put("amount", item.getAmount());
+		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())}; 
 		
-		long ret = db.insert("assets_change_amount", null, rowItem);
-		item.setID((int)ret);
+		Cursor c = db.query("assets_change_amount", null, "strftime('%Y-%m-%d', change_date)=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			assets = new AssetsItem();
+			assets.setID(c.getInt(0));
+			try {
+				assets.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			assets.setAmount(c.getLong(3));
+			assets.setMemo(c.getString(5));
+		}
+		c.close();
 		db.close();
-		return 0;
+		return assets;
+		
 	}
+
+	public ArrayList<Long> getTotalAssetAmountMonthInYear(int assetsID, int year) {
+		ArrayList<Long> amountArr = new ArrayList<Long>();
+		
+		SQLiteDatabase db = getReadableDatabase();
+		for (int month = 1; month <= 12; month++) {
+			String[] params = {String.valueOf(assetsID),  String.format("%d-%02d", year, month)};
+			String query = "SELECT amount FROM assets_change_amount WHERE assets_id=? AND strftime('%Y-%m', change_date)=? ORDER BY change_date DESC";
+			Cursor c = db.rawQuery(query, params);
+			
+			if (c.moveToFirst() != false) {
+				amountArr.add(c.getLong(0));
+			}
+			else {
+				amountArr.add(0L);
+			}
+			c.close();
+		}
+		
+		db.close();
+		return amountArr;
+	}
+
+	public long getPurchasePrice() {
+		long amount = 0L;
+		SQLiteDatabase db = getReadableDatabase(); 
+		
+		Cursor c = db.query("assets_change_amount", new String[] {"amount"}, null, null, null, null, "change_date");
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		db.close();
+		return amount;
+	}
+
+	public long getLatestPrice() {
+		long amount = 0L;
+		SQLiteDatabase db = getReadableDatabase(); 
+		
+		Cursor c = db.query("assets_change_amount", new String[] {"amount"}, null, null, null, null, "change_date DESC");
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		db.close();
+		return amount;
+	}
+	
 	
 }

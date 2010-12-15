@@ -270,6 +270,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"assets_id INTEGER NOT NULL," +
 					"change_date DATE NOT NULL," +
 					"amount INTEGER NOT NULL," +
+					"memo TEXT," +
 					"count INTEGER);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());

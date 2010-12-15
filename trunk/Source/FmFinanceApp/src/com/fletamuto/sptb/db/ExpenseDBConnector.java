@@ -88,6 +88,18 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		return ret;
 	}
 	
+	@Override
+	public long updateAmountFinanceItem(int id, long amount) {
+		if (amount == 0) return 0;
+		SQLiteDatabase db = getWritableDatabase();
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("amount", amount);
+		long ret = db.update("expense", rowItem, "_id=?", new String[] {String.valueOf(id)});
+		db.close();
+		return ret;
+	}
+	
 	/**
 	 * 모든 지출 아이템을 DB에서 가져온다.
 	 * @return ArrayList<FinanceItem> 지출아이템 목록

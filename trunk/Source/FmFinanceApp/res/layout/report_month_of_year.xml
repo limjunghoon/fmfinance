@@ -9,7 +9,8 @@
    		
 	</LinearLayout>
 	<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:layout_marginLeft="40dp">
-	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TVTotalExpense"></TextView><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TVTotalIncome">
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TVTotalExpense"></TextView>
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TVTotalIncome">
 	</TextView>
 	</LinearLayout>
 	<HorizontalScrollView
@@ -26,12 +27,6 @@
    				android:id="@+id/bgraph"
    				android:layout_width="320dip"
    				android:layout_height="330dip"/>
-   		
-
-
-</LinearLayout>
+		</LinearLayout>
    	</HorizontalScrollView>    
-
-
-
 </LinearLayout>
