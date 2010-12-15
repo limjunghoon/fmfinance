@@ -16,7 +16,7 @@ import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportTagExpenseLayout extends FmBaseActivity {
 	
-	private LineGraph lg;
+	private LineGraph mLineGraph;
 	private int mTagID = -1;
 	private String mTagName;
 	private int mYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -102,26 +102,26 @@ public class ReportTagExpenseLayout extends FmBaseActivity {
 	private void updateLineView() {
 		if (mMonthTagAmount == null) return;
 		
-		lg = (LineGraph) findViewById (R.id.lgraph);
-		lg.makeUserTypeGraph(mMonthTagAmount, null, null, mMonthArr);
+		mLineGraph = (LineGraph) findViewById (R.id.lgraph);
+		mLineGraph.makeUserTypeGraph(mMonthTagAmount, null, null, mMonthArr);
 		
-		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) lg.getLayoutParams();
+		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLineGraph.getLayoutParams();
 		
-		params.width = (320 > lg.getLineGraphWidth()) ? 320 : lg.getLineGraphWidth();
-		params.height = (350 > lg.getLineGraphHeight()) ? 320 : lg.getLineGraphHeight();
+		params.width = (320 > mLineGraph.getLineGraphWidth()) ? 320 : mLineGraph.getLineGraphWidth();
+		params.height = (350 > mLineGraph.getLineGraphHeight()) ? 320 : mLineGraph.getLineGraphHeight();
 		
-		lg.setLayoutParams(params);
-		lg.setOnTouchListener(new View.OnTouchListener() {
+		mLineGraph.setLayoutParams(params);
+		mLineGraph.setOnTouchListener(new View.OnTouchListener() {
 			
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 		    		int sel;
-		    		sel = lg.FindTouchItemID((int)event.getX(), (int)event.getY());
+		    		sel = mLineGraph.FindTouchItemID((int)event.getX(), (int)event.getY());
 		
 		    		if (sel == -1) {
 		    			return true;
 		    		} else {
-		    			Toast.makeText(lg.getContext(), "ID = " + sel + " 그래프 터치됨", Toast.LENGTH_SHORT).show();
+		    			Toast.makeText(mLineGraph.getContext(), "ID = " + sel + " 그래프 터치됨", Toast.LENGTH_SHORT).show();
 		    			return true;
 		    		}
 		    	}

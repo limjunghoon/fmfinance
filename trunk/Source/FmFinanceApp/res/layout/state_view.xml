@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_height="fill_parent" android:layout_width="fill_parent">
+  android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical">
+  
+  <TextView android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:layout_width="fill_parent" android:id="@+id/TVStateTitle"></TextView>
+  <HorizontalScrollView android:id="@+id/HorizontalScrollView01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<LinearLayout android:id="@+id/hsv" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+		<com.fletamuto.common.control.fmgraph.LineGraph android:id="@+id/lgraph" android:layout_width="210dp" android:layout_height="210dp" />
+		</LinearLayout>
+	</HorizontalScrollView>    
+   	
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent"><Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="변경" android:id="@+id/BtnStateAdd"></Button></LinearLayout>
+
 </LinearLayout>

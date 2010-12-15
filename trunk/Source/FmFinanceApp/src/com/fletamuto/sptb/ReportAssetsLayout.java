@@ -40,7 +40,7 @@ public class ReportAssetsLayout extends ReportBaseLayout {
 			int position, long id) {
     	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
     	
-    	Intent intent = new Intent(this, StateDefaultLayout.class);
+    	Intent intent = new Intent(this, StateAssetsDefaultLayout.class);
     	intent.putExtra(MsgDef.ExtraNames.ITEM, item);
     	startActivityForResult(intent, MsgDef.ActRequest.ACT_STATE_VIEW);
     	//startEditInputActivity(InputAssetsLayout.class, item.getID());

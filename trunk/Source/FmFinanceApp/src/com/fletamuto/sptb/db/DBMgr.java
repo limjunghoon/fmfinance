@@ -1,5 +1,6 @@
 package com.fletamuto.sptb.db;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -165,6 +166,11 @@ public final class DBMgr {
 	public static long updateFinanceItem(FinanceItem item) {
 		if (DBMgr.checkFinanceItemType(item.getType()) == false) return -1;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).updateItem(item);
+	}
+	
+	public static long updateAmountFinanceItem(FinanceItem item) {
+		if (DBMgr.checkFinanceItemType(item.getType()) == false) return -1;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).updateAmountFinanceItem(item.getID(), item.getAmount());
 	}
 	
 	/**
@@ -605,5 +611,23 @@ public final class DBMgr {
 	public static ArrayList<FinanceItem> getCardExpenseItems(int cardID, Calendar start, Calendar end) {
 		ExpenseDBConnector expenseDB = (ExpenseDBConnector) mInstance.mDBConnector.getBaseFinanceDBInstance(ExpenseItem.TYPE);
 		return expenseDB.getCardExpenseItems(cardID, start, end);
+	}
+	
+	public static long addStateChangeItem(FinanceItem item) {
+		if (DBMgr.checkFinanceItemType(item.getType()) == false) return 0;
+		long ret = mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).addStateChangeItem(item);
+		if (ret != -1) {
+			item.setAmount(getAssetsDBConnecter().getLatestPrice());
+			updateAmountFinanceItem(item);
+		}
+		return ret;
+	}
+	
+	public static ArrayList<Long> getTotalAssetAmountMonthInYear(int assetsID, int year) {
+		return getAssetsDBConnecter().getTotalAssetAmountMonthInYear(assetsID, year);
+	}
+
+	public static long getAssetsPurchasePrice() {
+		return getAssetsDBConnecter().getPurchasePrice();
 	}
 }

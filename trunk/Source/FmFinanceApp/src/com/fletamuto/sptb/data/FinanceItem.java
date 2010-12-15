@@ -172,6 +172,10 @@ public abstract class FinanceItem extends BaseItem {
 	public String getCreateDateString() {
 		return FinanceDataFormat.getDateFormat(mCreateDate.getTime());
 	}
+	
+	public String getCreateDateTimeString() {
+		return FinanceDataFormat.getDateTimeFormat(mCreateDate.getTime());
+	}
 
 	public Repeat getRepeat() {
 		return mRepeat;

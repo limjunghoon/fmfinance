@@ -26,6 +26,7 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	
 	public abstract long addItem(FinanceItem item);
 	public abstract long updateItem(FinanceItem item);
+	public abstract long updateAmountFinanceItem(int id, long amount);
 	public abstract ArrayList<FinanceItem> getAllItems();
 	public abstract FinanceItem getItem(int id);
 	public abstract long addSubCategory(long mainCategoryID, String name);
@@ -84,6 +85,13 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public long addStateChangeItem(FinanceItem item) {
+		// TODO Auto-generated method stub
+		return -1;
+	}
+
+	
 
 	
 

@@ -16,7 +16,7 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 	protected final static int ACT_AMOUNT = MsgDef.ActRequest.ACT_AMOUNT;
 	protected final static int ACT_CATEGORY = MsgDef.ActRequest.ACT_CATEGORY;
 	
-	protected enum InputMode{ADD_MODE, EDIT_MODE};
+	protected enum InputMode{ADD_MODE, EDIT_MODE, STATE_CHANGE_MODE};
 	
 	/**
 	 * 달력으로 날짜 입력을 위해
@@ -67,7 +67,13 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 	protected void initialize() {
 		int id  = getIntent().getIntExtra("EDIT_ITEM_ID", -1);
         if (id != -1) {
-        	mInputMode = InputMode.EDIT_MODE;
+        	if (getIntent().getBooleanExtra(MsgDef.ExtraNames.INPUT_CHANGE_MODE, false)) {
+        		mInputMode = InputMode.STATE_CHANGE_MODE;
+        	}
+        	else {
+        		mInputMode = InputMode.EDIT_MODE;
+        	}
+        	
         	if (getItemInstance(id) == false) {
         		Log.e(LogTag.LAYOUT, "== not found item");
         		createItemInstance();
