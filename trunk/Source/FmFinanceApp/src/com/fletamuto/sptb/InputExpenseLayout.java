@@ -3,11 +3,14 @@ package com.fletamuto.sptb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import android.widget.PopupWindow;
 
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardItem;
@@ -30,16 +33,23 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	protected final static int ACT_CARD_SELECT = MsgDef.ActRequest.ACT_CARD_SELECT;
 	protected final static int ACT_ACCOUNT_SELECT = MsgDef.ActRequest.ACT_ACCOUNT_SELECT;
 	
+	//달력 입력과 자주 사용 되는 지출을 위해 start
+	LinearLayout linear;
+	View popupview, popupviewBookmark;
+	PopupWindow popupBookmark, popupBookmarkEdit;
+	TextView tv;
+	//달력 입력과 자주 사용 되는 지출을 위해 end
+	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_expense, true);
         
         updateChildView();
         
-      //달력을 이용한 날짜 입력을 위해
-        LinearLayout linear = (LinearLayout) findViewById(R.id.inputAssetsExpense);
-        View popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
-        final Intent intent = getIntent();        
+        //달력을 이용한 날짜 입력을 위해
+        final Intent intent = getIntent();
+        linear = (LinearLayout) findViewById(R.id.inputAssetsExpense);
+        popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
         
         setDateBtnClickListener(R.id.BtnExpenseDate);
@@ -48,7 +58,11 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         setPaymentToggleBtnClickListener();
         setTagButtonListener();
         setRepeatBtnClickListener(R.id.BtnExpenseRepeat);
+        //자주 사용 되는 지출 구현
+        setBookmarkTvClickListener(R.id.TVExpenseBookmark);
         setTitle(getResources().getString(R.string.input_expense_name));
+        
+        
     }
 
 	/**
@@ -376,6 +390,70 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		String memo = ((TextView)findViewById(R.id.ETExpenseMemo)).getText().toString();
     	getItem().setMemo(memo);
 	}
+	
+	
+	//자주 사용 되는 지출 구현 start
+	protected void setBookmarkTvClickListener(int tvID) {
+		tv = (TextView) findViewById (tvID);
+        tv.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				setBookmark ();
+			}
+		});
+	}
+	
+	protected void setBookmark () {
+		
+		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_popup, null);
+		popupBookmark = new PopupWindow(popupviewBookmark, 320, 300, true);
+		popupBookmark.showAtLocation(linear, Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 0);
+		
+		Button btnBack = (Button) popupviewBookmark.findViewById (R.id.bookmarkBack);
+		btnBack.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				popupBookmark.dismiss();
+			}
+		});
+		
+		Button btnEdit = (Button) popupviewBookmark.findViewById (R.id.bookmarkEdit);
+		btnEdit.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				setBookmarkEdit();
+				
+				
+			}
+		});
+	}
+	
+	protected void setBookmarkEdit() {
+		
+		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_edit_popup, null);
+		popupBookmarkEdit = new PopupWindow(popupviewBookmark, 320, 300, true);
+		popupBookmarkEdit.showAtLocation(linear, Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 0);
+		
+		Button btnBack = (Button) popupviewBookmark.findViewById (R.id.editBookmarkBack);
+		btnBack.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				popupBookmarkEdit.dismiss();
+			}
+		});
+		
+		Button btnAdd = (Button) popupviewBookmark.findViewById (R.id.editBookmarkAdd);
+		btnAdd.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				//추가 버튼 클릭 시
+			}
+		});
+	}
+	//자주 사용 되는 지출 구현 end
+
+	
+	
 	
 	
 }
