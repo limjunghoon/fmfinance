@@ -2,6 +2,7 @@ package com.fletamuto.sptb;
 
 import java.util.Calendar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -10,7 +11,6 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.content.Context;
 
 public class MonthlyCalendar {
 	

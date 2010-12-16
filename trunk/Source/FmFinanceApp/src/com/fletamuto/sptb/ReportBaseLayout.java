@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
@@ -48,9 +47,9 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
         
         setContentView(R.layout.report_base, true);
         
-        getDate();
-        setAdapterList();
-        updateChildView();
+//        getDate();
+//        setAdapterList();
+//        updateChildView();
     }
 	
 	@Override

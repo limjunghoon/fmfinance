@@ -2,43 +2,45 @@ package com.fletamuto.sptb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.Revenue;
 
-public class StateAssetsDefaultLayout extends StateDefaultLayout {  	
+public class StateLiabilityDefaultLayout extends StateDefaultLayout {  	
 	long mPurchasePrice = 0L;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        ((Button)findViewById(R.id.BtnStateDelete)).setText("상환");
     }
 	
 	@Override
 	protected void initialize() {
 		super.initialize();
 		
-		mAmountMonthInYear = DBMgr.getTotalAssetAmountMonthInYear(mItem.getID(), mYear);
-		mPurchasePrice = DBMgr.getAssetsPurchasePrice(mItem.getID());
+		mAmountMonthInYear = DBMgr.getTotalLiabilityAmountMonthInYear(mItem.getID(), mYear);
+		mPurchasePrice = DBMgr.getLiabilityPurchasePrice(mItem.getID());
 	}
 	
 	@Override
 	protected void updateChildView() {
 		TextView tvAmount = (TextView)findViewById(R.id.TVStateTitle);
-		tvAmount.setText(String.format("현재가 : %,d원   손익율 : %s", mItem.getAmount(), Revenue.getString(mPurchasePrice, mItem.getAmount())));
+		tvAmount.setText(String.format("금액 : %,d원", mItem.getAmount()));
 	}
 
 	@Override
 	protected void onClickHistoryBtn() {
-		Intent intent = new Intent(StateAssetsDefaultLayout.this, ReportAssetsHistoryLayout.class);
+		Intent intent = new Intent(StateLiabilityDefaultLayout.this, ReportLiabilityHistoryLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.ITEM, mItem);
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_STATE_HISTORY);
 	}
 
 	@Override
 	protected void startChangeStateActivtiy() {
-		Intent intent = new Intent(this, InputAssetsLayout.class);
+		Intent intent = new Intent(this, InputLiabilityLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.INPUT_CHANGE_MODE, true);
 		intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, mItem.getID());
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_CHANGE_STATE);
