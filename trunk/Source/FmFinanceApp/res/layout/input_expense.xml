@@ -49,5 +49,11 @@
 		</Button>
 	</LinearLayout>
 	
+	<!-- 자주 사용 되는 지출 구현-->
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:id="@+id/TVExpenseBookmark" android:text="자주 사용 되는 지출" android:layout_height="wrap_content" android:gravity="center" android:textSize="15sp" android:layout_width="fill_parent">
+		</TextView>
+	</LinearLayout>
+	
 	
 </LinearLayout>

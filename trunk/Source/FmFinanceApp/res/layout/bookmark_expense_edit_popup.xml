@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 자주 사용 되는 지출 구현-->
+<LinearLayout
+  	xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:id="@+id/bookmarkexpenseeditpopup"
+  	android:layout_width="fill_parent"
+	android:layout_height="300dp"
+  	android:orientation="vertical"
+  	android:background="#ffffff">
+  	<LinearLayout
+  		android:id="@+id/bookmarkexpenseeditpopupsub1"
+  		android:layout_width="fill_parent"
+  		android:layout_height="50dp"
+  		android:orientation="horizontal">  	
+  		<Button
+  			android:id="@+id/editBookmarkBack"
+  			android:layout_width="50dp"
+  			android:layout_height="wrap_content"
+  			android:text="뒤로"/>	  	
+  		<TextView
+  			android:layout_width="220dp"
+  			android:layout_height="wrap_content"
+  			android:gravity="center"
+  			android:textSize="18sp"
+  			android:textColor="#000000"
+  			android:text="자주 사용 되는 지출 편집"/>
+  		<Button
+  			android:id="@+id/editBookmarkAdd"
+  			android:layout_width="50dp"
+  			android:layout_height="wrap_content"
+  			android:text="추가"/>	
+  	</LinearLayout>
+  	<LinearLayout
+  		android:id="@+id/bookmarkexpenseeditpopupsub2"
+  		android:layout_width="fill_parent"
+  		android:layout_height="200dp"
+  		android:orientation="vertical">    			
+  	</LinearLayout>
+</LinearLayout>
