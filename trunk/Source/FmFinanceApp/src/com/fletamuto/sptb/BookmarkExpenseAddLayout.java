@@ -1,6 +1,5 @@
 package com.fletamuto.sptb;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -23,45 +22,27 @@ import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 
 /**
- * 새로운 지출을 입력하거나 기존의 지출정보를 수정할때 보여주는 레이아웃 창
- * @author yongbban
+ * 자주 사용 되는 지출 ADD 창
  * @version 1.0.0.0
  */
-public class InputExpenseLayout extends InputFinanceItemBaseLayout {
+public class BookmarkExpenseAddLayout extends InputFinanceItemBaseLayout {
 	private ExpenseItem mExpensItem;
 	protected final static int ACT_TAG_SELECTED = MsgDef.ActRequest.ACT_TAG_SELECTED;
 	protected final static int ACT_CARD_SELECT = MsgDef.ActRequest.ACT_CARD_SELECT;
 	protected final static int ACT_ACCOUNT_SELECT = MsgDef.ActRequest.ACT_ACCOUNT_SELECT;
-	protected final static int ACT_BOOKMARK_SELECT = MsgDef.ActRequest.ACT_BOOKMARK_SELECT;
 	
-	//달력 입력과 자주 사용 되는 지출을 위해 start
-	LinearLayout linear;
-	View popupview, popupviewBookmark;
-	PopupWindow popupBookmark, popupBookmarkEdit;
-	TextView tv;
-	//달력 입력과 자주 사용 되는 지출을 위해 end
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.input_expense, true);
+        setContentView(R.layout.bookmark_expense_add, true);
         
         updateChildView();
         
-        //달력을 이용한 날짜 입력을 위해
-        final Intent intent = getIntent();
-        linear = (LinearLayout) findViewById(R.id.inputAssetsExpense);
-        popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
-        monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
-        
-        setDateBtnClickListener(R.id.BtnExpenseDate);
         setAmountBtnClickListener(R.id.BtnExpenseAmount);
         setCategoryClickListener(R.id.BtnExpenseCategory);
         setPaymentToggleBtnClickListener();
         setTagButtonListener();
-        setRepeatBtnClickListener(R.id.BtnExpenseRepeat);
-        //자주 사용 되는 지출 구현
-        setBookmarkTvClickListener(R.id.TVExpenseBookmark);
-        setTitle(getResources().getString(R.string.input_expense_name));
+        setTitle("자주 사용 되는 지출");
         
         
     }
@@ -136,7 +117,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 
 	@Override
 	protected void onCategoryClick() {
-		Intent intent = new Intent(InputExpenseLayout.this, SelectCategoryExpenseLayout.class);
+		Intent intent = new Intent(BookmarkExpenseAddLayout.this, SelectCategoryExpenseLayout.class);
 		startActivityForResult(intent, ACT_CATEGORY);
 	}
 	
@@ -280,7 +261,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			public void onClick(View v) {
 				createPaymentMethod(PaymentMethod.CARD);
 				
-				Intent intent = new Intent(InputExpenseLayout.this, SelectCardLayout.class);
+				Intent intent = new Intent(BookmarkExpenseAddLayout.this, SelectCardLayout.class);
 				startActivityForResult(intent, ACT_CARD_SELECT);
 			}
 		});
@@ -290,7 +271,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			public void onClick(View v) {
 				createPaymentMethod(PaymentMethod.ACCOUNT);
 				
-				Intent intent = new Intent(InputExpenseLayout.this, SelectAccountLayout.class);
+				Intent intent = new Intent(BookmarkExpenseAddLayout.this, SelectAccountLayout.class);
 				startActivityForResult(intent, ACT_ACCOUNT_SELECT);
 			}
 		});
@@ -298,13 +279,11 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 
 	@Override
 	protected void updateChildView() {
-		updateDate();
 		updateBtnCategoryText(R.id.BtnExpenseCategory);
 		updateBtnAmountText(R.id.BtnExpenseAmount);
 		updateEditMemoText(R.id.ETExpenseMemo);
 		updatePaymentMethod();
 		updateTagText();
-		updateRepeatText(R.id.BtnExpenseRepeat);
 	}
 	
 	protected PaymentMethod createPaymentMethod(int paymentMethodSelected) {
@@ -367,7 +346,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     	((Button)findViewById(R.id.BtnExpenseTag)).setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(InputExpenseLayout.this, SelectTagLayout.class);
+				Intent intent = new Intent(BookmarkExpenseAddLayout.this, SelectTagLayout.class);
 				
 				startActivityForResult(intent, ACT_TAG_SELECTED);
 			}
@@ -391,71 +370,4 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		String memo = ((TextView)findViewById(R.id.ETExpenseMemo)).getText().toString();
     	getItem().setMemo(memo);
 	}
-	
-	
-	//자주 사용 되는 지출 구현 start
-	protected void setBookmarkTvClickListener(int tvID) {
-		tv = (TextView) findViewById (tvID);
-        tv.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				setBookmark ();
-			}
-		});
-	}
-	
-	protected void setBookmark () {
-		
-		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_popup, null);
-		popupBookmark = new PopupWindow(popupviewBookmark, 320, 300, true);
-		popupBookmark.showAtLocation(linear, Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 0);
-		
-		Button btnBack = (Button) popupviewBookmark.findViewById (R.id.bookmarkBack);
-		btnBack.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				popupBookmark.dismiss();
-			}
-		});
-		
-		Button btnEdit = (Button) popupviewBookmark.findViewById (R.id.bookmarkEdit);
-		btnEdit.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				setBookmarkEdit();
-				
-				
-			}
-		});
-	}
-	
-	protected void setBookmarkEdit() {
-		
-		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_edit_popup, null);
-		popupBookmarkEdit = new PopupWindow(popupviewBookmark, 320, 300, true);
-		popupBookmarkEdit.showAtLocation(linear, Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 0);
-		
-		Button btnBack = (Button) popupviewBookmark.findViewById (R.id.editBookmarkBack);
-		btnBack.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				popupBookmarkEdit.dismiss();
-			}
-		});
-		
-		Button btnAdd = (Button) popupviewBookmark.findViewById (R.id.editBookmarkAdd);
-		btnAdd.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				Intent intent = new Intent(InputExpenseLayout.this, BookmarkExpenseAddLayout.class);
-				startActivityForResult(intent, ACT_BOOKMARK_SELECT);
-			}
-		});
-	}
-	//자주 사용 되는 지출 구현 end
-
-	
-	
-	
-	
 }
