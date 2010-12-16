@@ -13,6 +13,7 @@
         </activity>
         
 		<activity android:name=".InputExpenseLayout" android:label="지출입력" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name=".BookmarkExpenseAddLayout" android:label="자주 사용 되는 지출" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".InputIncomeLayout" android:label="수입입력" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".InputAssetsLayout" android:label="자산입력" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".InputLiabilityLayout" android:label="부채입력" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>

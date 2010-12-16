@@ -36,6 +36,7 @@ public final class MsgDef {
 		public final static int ACT_EDIT_CARD = 30;
 		public final static int ACT_STATE_VIEW = 31;
 		public final static int ACT_CHANGE_STATE = 32;
+		public final static int ACT_BOOKMARK_SELECT = 33;
 	}
 	
 	public static final class ExtraNames {
