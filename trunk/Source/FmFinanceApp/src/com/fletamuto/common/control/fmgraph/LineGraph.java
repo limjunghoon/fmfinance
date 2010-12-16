@@ -1,7 +1,6 @@
 package com.fletamuto.common.control.fmgraph;
 
 import java.util.ArrayList;
-import java.math.*;
 
 import com.fletamuto.common.control.fmgraph.Constants;
 
@@ -11,11 +10,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.Path;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.PathShape;
 import android.util.AttributeSet;
 import android.view.View;
+
+import android.util.Log;
 
 
 public class LineGraph extends View {
@@ -457,57 +455,85 @@ public class LineGraph extends View {
 			zeroCount++;			
 		}
 		zeroCount = zeroCount - 1;
-
-		if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) > 8 ) {
+		
+		if (mexGraphItemValue%(long)Math.pow(10,zeroCount) == 0) {
+			if (mexGraphItemValue/(long)Math.pow(10,zeroCount) == 8) {
+				gradationCount = 8;
+				gradationMax = 8 * (long)Math.pow(10,zeroCount);
+			} 
+			else if (mexGraphItemValue/(long)Math.pow(10,zeroCount) == 6) {
+				gradationCount = 12;
+				gradationMax = 6 * (long)Math.pow(10,zeroCount);
+			}
+			else if (mexGraphItemValue/(long)Math.pow(10,zeroCount) == 5) {
+				gradationCount = 10;
+				gradationMax = 5 * (long)Math.pow(10,zeroCount);
+			}
+			else if (mexGraphItemValue/(long)Math.pow(10,zeroCount) == 4) {
+				gradationCount = 8;
+				gradationMax = 4 * (long)Math.pow(10,zeroCount);
+			}
+			else if (mexGraphItemValue/(long)Math.pow(10,zeroCount) == 3) {
+				gradationCount = 12;
+				gradationMax = 3 * (long)Math.pow(10,zeroCount);
+			}
+			else if (mexGraphItemValue/(long)Math.pow(10,zeroCount) == 2) {
+				gradationCount = 8;
+				gradationMax = 2 * (long)Math.pow(10,zeroCount);
+			}
+			else if (mexGraphItemValue/(long)Math.pow(10,zeroCount) == 1) {
+				gradationCount = 10;
+				gradationMax = 1 * (long)Math.pow(10,zeroCount);
+			}
+			
+			if (haveNegativeInGraphItemValue == true) {				
+				gradationMin = gradationMax *(-1);
+			} 
+		}
+		else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) >= 8 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) < 10) {
 			gradationCount = 10;	
 			gradationMax = 10 * (long)Math.pow(10,zeroCount);
 			if (haveNegativeInGraphItemValue == true) {				
 				gradationMin = gradationMax *(-1);
 			} 
-		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) > 6 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) <= 8) {
+		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) >= 6 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) < 8) {
 			gradationCount = 8;
 			gradationMax = 8 * (long)Math.pow(10,zeroCount);
 			if (haveNegativeInGraphItemValue == true) {				
 				gradationMin = gradationMax *(-1);
 			} 
-		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) > 5 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) <= 6) {
+		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) >= 5 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) < 6) {
 			gradationCount = 12;
 			gradationMax = 6 * (long)Math.pow(10,zeroCount);
 			if (haveNegativeInGraphItemValue == true) {				
 				gradationMin = gradationMax *(-1);
 			} 
-		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) > 4 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) <= 5) {
+		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) >= 4 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) < 5) {
 			gradationCount = 10;
 			gradationMax = 5 * (long)Math.pow(10,zeroCount);
 			if (haveNegativeInGraphItemValue == true) {				
 				gradationMin = gradationMax *(-1);
 			} 
-		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) > 3 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) <= 4) {
+		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) >= 3 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) < 4) {
 			gradationCount = 8;
 			gradationMax = 4 * (long)Math.pow(10,zeroCount);
 			if (haveNegativeInGraphItemValue == true) {				
 				gradationMin = gradationMax *(-1);
 			} 
-		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) > 2 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) <= 3) {
+		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) >= 2 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) < 3) {
 			gradationCount = 12;
 			gradationMax = 3 * (long)Math.pow(10,zeroCount);
 			if (haveNegativeInGraphItemValue == true) {				
 				gradationMin = gradationMax *(-1);
 			} 
-		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) > 1 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) <= 2) {
+		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) >= 1 && mexGraphItemValue/((int)Math.pow(10,zeroCount)) < 2) {
 			gradationCount = 8;
 			gradationMax = 2 * (long)Math.pow(10,zeroCount);
 			if (haveNegativeInGraphItemValue == true) {				
 				gradationMin = gradationMax *(-1);
 			} 
-		} else if (mexGraphItemValue/((long)Math.pow(10,zeroCount)) == 1 && mexGraphItemValue%((long)Math.pow(10,zeroCount)) == 0) {
-			gradationCount = 10;
-			gradationMax = 1 * (long)Math.pow(10,zeroCount);
-			if (haveNegativeInGraphItemValue == true) {				
-				gradationMin = gradationMax *(-1);
-			} 
-		}
-
+		} 
+		
 		int gradationXLength = axisXLength;
 		int gradationYLength = axisYLength;
 			
