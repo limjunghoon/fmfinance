@@ -44,7 +44,9 @@ public class MainAssetsLayout extends FmBaseActivity {
 		btnIncome.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(MainAssetsLayout.this, ReportCompareLiabilityLayout.class);
+				//Intent intent = new Intent(MainAssetsLayout.this, ReportCompareLiabilityLayout.class);
+				//Intent intent = new Intent(MainAssetsLayout.this, SelectCategoryLiabilityLayout.class);
+				Intent intent = new Intent(MainAssetsLayout.this, ReportLiabilityLayout.class);
 				startActivity(intent);
 			}
 		});

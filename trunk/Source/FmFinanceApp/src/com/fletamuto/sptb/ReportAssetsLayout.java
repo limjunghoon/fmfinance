@@ -8,9 +8,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.Revenue;
 
 public class ReportAssetsLayout extends ReportBaseLayout {
 	private long mTotalAmount = 0L;
@@ -35,6 +36,7 @@ public class ReportAssetsLayout extends ReportBaseLayout {
     	
     	super.setTitleBtn();
     }
+    
 	@Override
 	protected void onClickListItem(AdapterView<?> parent, View view,
 			int position, long id) {
@@ -56,6 +58,12 @@ public class ReportAssetsLayout extends ReportBaseLayout {
 		//String categoryText = String.format(item.getCategory().getName());
 		//((TextView)convertView.findViewById(R.id.TVAssetsReportListCategory)).setText(categoryText);
 		((TextView)convertView.findViewById(R.id.TVAssetsReportListCategory)).setVisibility(View.GONE);
+		((TextView)convertView.findViewById(R.id.TVAssetsReportListMemo)).setText(String.format("메모 : %s", item.getMemo()));
+		
+		// 속도 개선 필요
+		long purchasePrice = DBMgr.getAssetsPurchasePrice(item.getID());
+		((TextView)convertView.findViewById(R.id.TVAssetsReportListRevenue)).setText(String.format("수익율 : %s", Revenue.getString(purchasePrice, item.getAmount())));
+		
 	}
     
     protected void setDeleteBtnListener(View convertView, int itemId, int position) {

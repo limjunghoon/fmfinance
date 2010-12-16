@@ -617,7 +617,13 @@ public final class DBMgr {
 		if (DBMgr.checkFinanceItemType(item.getType()) == false) return 0;
 		long ret = mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).addStateChangeItem(item);
 		if (ret != -1) {
-			item.setAmount(getAssetsDBConnecter().getLatestPrice());
+			if (item.getType() == AssetsItem.TYPE) {
+				item.setAmount(getAssetsDBConnecter().getLatestPrice(item.getID()));
+			}
+			else if (item.getType() == LiabilityItem.TYPE) {
+				item.setAmount(getLiabilityDBConnecter().getLatestPrice(item.getID()));
+			}
+			
 			updateAmountFinanceItem(item);
 		}
 		return ret;
@@ -627,7 +633,23 @@ public final class DBMgr {
 		return getAssetsDBConnecter().getTotalAssetAmountMonthInYear(assetsID, year);
 	}
 
-	public static long getAssetsPurchasePrice() {
-		return getAssetsDBConnecter().getPurchasePrice();
+	public static long getAssetsPurchasePrice(int id) {
+		return getAssetsDBConnecter().getPurchasePrice(id);
+	}
+	
+	public static ArrayList<FinanceItem> getAssetsStateItems(int id) {
+		return getAssetsDBConnecter().getStateItems(id);
+	}
+	
+	public static ArrayList<Long> getTotalLiabilityAmountMonthInYear(int assetsID, int year) {
+		return getLiabilityDBConnecter().getTotalLiabilityAmountMonthInYear(assetsID, year);
+	}
+
+	public static long getLiabilityPurchasePrice(int id) {
+		return getLiabilityDBConnecter().getPurchasePrice(id);
+	}
+	
+	public static ArrayList<FinanceItem> getLiabilityStateItems(int id) {
+		return getLiabilityDBConnecter().getStateItems(id);
 	}
 }

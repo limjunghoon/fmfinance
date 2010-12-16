@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
+import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.LiabilityCashServiceItem;
@@ -47,6 +48,10 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		long ret = db.insert("liability", null, rowItem);
 		item.setID((int)ret);
 		db.close();
+		
+		if (ret != -1) {
+			return addStateChangeItem(item);
+		}
 		return ret;
 	}
 	
@@ -582,4 +587,140 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		personLoan.setExtendID((int)extend);
 		return addItem(personLoan);
 	}
+	
+	private long addDefaultStateChangeItem(LiabilityItem item) {
+		long ret = -1;
+		LiabilityItem todayItem = (LiabilityItem) getStateChangeItem(item.getCreateDate());
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("liability_id", item.getID());
+		rowItem.put("change_date", item.getCreateDateString());
+		rowItem.put("amount", item.getAmount());
+		rowItem.put("memo", item.getMemo());
+		
+		if (todayItem == null) {
+			ret = db.insert("liability_change_amount", null, rowItem);
+		}
+		else {
+			ret = db.update("liability_change_amount", rowItem, "_id=?", new String[] {String.valueOf(item.getID())});
+		}
+		
+		db.close();
+		return ret;
+	}
+	
+	public long addStateChangeItem(FinanceItem fItem) {
+		LiabilityItem item = (LiabilityItem) fItem;
+		if (item.getID() == -1) {
+			Log.e(LogTag.DB, ":: INVAILD liability ITEM ID");
+			return -1;
+		}
+		
+//		int extendID = item.getExtendID();
+//		
+//		if (extendID == -1) {
+			return addDefaultStateChangeItem(item);
+//		}
+//	
+//		return -1;
+	}
+	
+	public ArrayList<FinanceItem> getStateItems(int id) {
+		ArrayList<FinanceItem> LiabilityItems = new ArrayList<FinanceItem>(); 
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor c = db.query("liability_change_amount", null, "liability_id=?", new String[] {String.valueOf(id)}, null, null, "change_date DESC");
+		
+		if (c.moveToFirst() != false) {
+			do {
+				LiabilityItem liability = new LiabilityItem();
+				liability.setID(c.getInt(0));
+				try {
+					liability.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				liability.setAmount(c.getLong(3));
+				liability.setMemo(c.getString(5));
+				LiabilityItems.add(liability);
+			} while (c.moveToNext());
+		}
+		c.close();
+		db.close();
+		return LiabilityItems;
+	}
+	
+	public FinanceItem getStateChangeItem(Calendar calendar) {
+		LiabilityItem liability = null;
+		SQLiteDatabase db = getReadableDatabase();
+		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())}; 
+		Cursor c = db.query("liability_change_amount", null, "strftime('%Y-%m-%d', change_date)=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			liability = new LiabilityItem();
+			liability.setID(c.getInt(0));
+			try {
+				liability.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			liability.setAmount(c.getLong(3));
+			liability.setMemo(c.getString(5));
+		}
+		c.close();
+		db.close();
+		return liability;
+		
+	}
+
+	public ArrayList<Long> getTotalLiabilityAmountMonthInYear(int liabilityID, int year) {
+		ArrayList<Long> amountArr = new ArrayList<Long>();
+		SQLiteDatabase db = getReadableDatabase();
+		long lastAmount = 0L;
+		
+		for (int month = 1; month <= 12; month++) {
+			String[] params = {String.valueOf(liabilityID), String.format("%d-%02d", year, month)};
+			String query = "SELECT amount FROM liability_change_amount WHERE liability_id=? AND strftime('%Y-%m', change_date)=? ORDER BY change_date DESC";
+			Cursor c = db.rawQuery(query, params);
+			
+			if (c.moveToFirst() != false) {
+				lastAmount = c.getLong(0);
+				amountArr.add(lastAmount);
+			}
+			else {
+				amountArr.add(lastAmount);
+			}
+			c.close();
+		}
+		
+		db.close();
+		return amountArr;
+	}
+
+	public long getPurchasePrice(int id) {
+		long amount = 0L;
+		SQLiteDatabase db = getReadableDatabase(); 
+		Cursor c = db.query("liability_change_amount", new String[] {"amount"}, "liability_id=?", new String[] {String.valueOf(id)}, null, null, "change_date");
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		db.close();
+		return amount;
+	}
+
+	public long getLatestPrice(int id) {
+		long amount = 0L;
+		SQLiteDatabase db = getReadableDatabase(); 
+		Cursor c = db.query("liability_change_amount", new String[] {"amount"}, "liability_id=?", new String[] {String.valueOf(id)}, null, null, "change_date DESC");
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		db.close();
+		return amount;
+	}
+	
 }

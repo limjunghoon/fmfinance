@@ -2,12 +2,15 @@ package com.fletamuto.sptb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.InputBaseLayout.InputMode;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
 	private LiabilityItem mLiabilityItem;
@@ -49,7 +52,22 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
     	else if (mInputMode == InputMode.EDIT_MODE){
     		saveUpdateItem();
     	}
+    	else if (mInputMode == InputMode.STATE_CHANGE_MODE){
+  //  		mAssetsItem.setCreateDate(Calendar.getInstance());
+    		saveUpdateStateItem();
+    	}
     }
+
+    protected void saveUpdateStateItem() {
+    	if (DBMgr.addStateChangeItem(mLiabilityItem) == 0) {
+    		Log.e(LogTag.LAYOUT, "== UpdateState fail to the save item : " + mLiabilityItem.getID());
+    		return;
+    	}
+		
+		Intent intent = new Intent();
+		setResult(RESULT_OK, intent);
+		finish();
+	}
 
     @Override
 	protected void updateAmount(Long amount) {

@@ -1,13 +1,13 @@
 package com.fletamuto.sptb;
 
-import com.fletamuto.sptb.util.LogTag;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.fletamuto.sptb.util.LogTag;
 
 public abstract class InputBaseLayout extends FmBaseActivity {
 	
