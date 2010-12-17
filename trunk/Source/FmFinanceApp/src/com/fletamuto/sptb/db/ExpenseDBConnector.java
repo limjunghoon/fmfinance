@@ -834,4 +834,11 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	}
 
 
+	@Override
+	public int addOpneUsedItem(int id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
 }

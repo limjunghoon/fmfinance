@@ -550,5 +550,11 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		return ret;
 	}
 
+	@Override
+	public int addOpneUsedItem(int id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }
