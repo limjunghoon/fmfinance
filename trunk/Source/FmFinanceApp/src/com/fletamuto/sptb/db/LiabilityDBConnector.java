@@ -722,5 +722,11 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		db.close();
 		return amount;
 	}
+
+	@Override
+	public int addOpneUsedItem(int id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

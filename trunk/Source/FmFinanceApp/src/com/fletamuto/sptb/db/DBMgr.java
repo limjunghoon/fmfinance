@@ -652,4 +652,8 @@ public final class DBMgr {
 	public static ArrayList<FinanceItem> getLiabilityStateItems(int id) {
 		return getLiabilityDBConnecter().getStateItems(id);
 	}
+	
+	public static int addOpneUsedItem(int type, int id) {
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(type).addOpneUsedItem(id);
+	}
 }
