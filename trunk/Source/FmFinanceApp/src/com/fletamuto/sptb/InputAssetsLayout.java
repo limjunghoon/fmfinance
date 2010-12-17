@@ -1,5 +1,7 @@
 package com.fletamuto.sptb;
 
+import java.util.Calendar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,7 +62,6 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
     		saveUpdateItem();
     	}
     	else if (mInputMode == InputMode.STATE_CHANGE_MODE){
-  //  		mAssetsItem.setCreateDate(Calendar.getInstance());
     		saveUpdateStateItem();
     	}
     }
@@ -91,6 +92,9 @@ public class InputAssetsLayout extends InputFinanceItemBaseLayout {
 	@Override
 	protected boolean getItemInstance(int id) {
 		mAssetsItem = (AssetsItem) DBMgr.getItem(AssetsItem.TYPE, id);
+		if (InputMode.STATE_CHANGE_MODE == mInputMode) {
+			mAssetsItem.setCreateDate(Calendar.getInstance());
+		}
 		if (mAssetsItem == null) return false;
 		setItem(mAssetsItem);
 		

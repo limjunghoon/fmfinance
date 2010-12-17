@@ -12,15 +12,25 @@ import android.widget.Toast;
 
 import com.fletamuto.common.control.fmgraph.BarGraph;
 import com.fletamuto.common.control.fmgraph.Constants;
+import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class ReportMonthOfYearLayout extends FmBaseActivity {
-	private int mYear = Calendar.getInstance().get(Calendar.YEAR);
+public class ReportCompareAssetsAndLiability extends FmBaseActivity {
 	
+	private int mYear = Calendar.getInstance().get(Calendar.YEAR);
 	private BarGraph bg;
 	private boolean barGraphDifferenceMode = false;
+	private ArrayList<Long> mMonthTotalAssetsTotalAmount = new ArrayList<Long>();
+//	private ArrayList<Long> mMonthLiabilityTotalAmount = new ArrayList<Long>();
+	private long mMonthAssetsAmount[] = new long[12];
+	private long mMonthLiabilityAmount[] = new long[12];
+	private long mTotalAssetsAmount = 0L;
+	private long mTotalLiabilityAmount = 0L;
+	ArrayList<String> mMonthArr = new ArrayList<String>();
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -28,13 +38,64 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
     	
     	setContentView(R.layout.report_month_of_year, true);
     	
+    	getData();
     	updateChildView();
 //    	setBunClickListener();
     }
     
+    @Override
+    protected void initialize() {
+    	String []monthInYear = getResources().getStringArray(R.array.year_in_month_name);
+		for (int monthIndex = 0; monthIndex < monthInYear.length; monthIndex++) {
+			mMonthArr.add(monthInYear[monthIndex]);
+		}
+    	super.initialize();
+    }
+    
+    protected void clearMonthAmount() {
+    	mTotalAssetsAmount = 0L;
+    	mTotalLiabilityAmount = 0L;
+    	mMonthTotalAssetsTotalAmount.clear();
+    	for (int month = 0; month < 12; month++){
+    		mMonthAssetsAmount[month] = 0L;
+    		mMonthLiabilityAmount[month] = 0L;
+		}
+    }
+    
+	private void getData() {
+		clearMonthAmount();
+    	ArrayList<Category> assetsCategory = DBMgr.getCategory(AssetsItem.TYPE);
+    	int size = assetsCategory.size();
+    	
+    	// 속도 개선 필요 //////////
+    	for (int index = 0; index < size; index++) {
+    		ArrayList<Long> categoryAmount = DBMgr.getTotalAssetAmountMonthInYear(assetsCategory.get(index).getID(), mYear);
+    		for (int month = 0; month < 12; month++){
+    			mMonthAssetsAmount[month] += categoryAmount.get(month);
+    		}
+    	}
+    	
+    	ArrayList<Category> liabilityCategory = DBMgr.getCategory(LiabilityItem.TYPE);
+    	size = liabilityCategory.size();
+    	for (int index = 0; index < size; index++) {
+    		ArrayList<Long> categoryAmount = DBMgr.getTotalLiabilityAmountMonthInYear(liabilityCategory.get(index).getID(), mYear);
+    		for (int month = 0; month < 12; month++){
+    			mMonthLiabilityAmount[month] += categoryAmount.get(month);
+    		}
+    	}
+    	
+    	for (int month = 0; month < 12; month++){
+    		mMonthTotalAssetsTotalAmount.add(mMonthAssetsAmount[month]);
+    		mMonthTotalAssetsTotalAmount.add(mMonthLiabilityAmount[month]);
+		}
+    	
+    	mTotalAssetsAmount = DBMgr.getTotalAmount(AssetsItem.TYPE);
+    	mTotalLiabilityAmount = DBMgr.getTotalAmount(LiabilityItem.TYPE);
+	}
+
 	@Override
 	protected void setTitleBtn() {
-    	setTitle("연간 월별 수입/지출 비교");
+    	setTitle("년간 월별 자산/부채 비교");
     	setChangeButtonListener();
         setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "변경");
         setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
@@ -82,34 +143,23 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 		TextView tvCurrent = (TextView)findViewById(R.id.TVCurrentYear);
 		tvCurrent.setText(String.format("%d 년", mYear));
 		
-		long expenseYear = DBMgr.getTotalAmountYear(ExpenseItem.TYPE, mYear);
-		long incomeYear = DBMgr.getTotalAmountYear(IncomeItem.TYPE, mYear);
-		
-		TextView tvIncomeYear = (TextView)findViewById(R.id.TVTotalIncome);
-		tvIncomeYear.setText(String.format("총 수입 : %,d원", incomeYear));
 		TextView tvExpenseYear = (TextView)findViewById(R.id.TVTotalExpense);
-		tvExpenseYear.setText(String.format("총 지출 : %,d원", expenseYear));
+		tvExpenseYear.setText(String.format("총  자산 : %,d원", mTotalLiabilityAmount));
+		TextView tvIncomeYear = (TextView)findViewById(R.id.TVTotalIncome);
+		tvIncomeYear.setText(String.format("총 부채: %,d원", mTotalAssetsAmount));
+		
 	}
 
 	private void updateBarGraph() {
 		barGraphDifferenceMode = false;
-	
-		ArrayList<Long> iv = new ArrayList<Long>();
 		ArrayList<Integer> ap = new ArrayList<Integer>();
-		ArrayList<String> at = new ArrayList<String>();
-		
-		for (int i=0; i<12; i++) {
-			iv.add(DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, i+1));
-			iv.add(DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, i+1));
-			at.add(String.valueOf(i+1));
-		}
 		
 		ap.add(Constants.BAR_AXIS_X_BOTTOM);
 		ap.add(Constants.BAR_AXIS_Y_LEFT);
     
         bg = (BarGraph) findViewById (R.id.bgraph);
  
-        bg.makeUserTypeGraph(ap, Constants.BAR_AXIS_X_BOTTOM, iv, 2, at);
+        bg.makeUserTypeGraph(ap, Constants.BAR_AXIS_X_BOTTOM, mMonthTotalAssetsTotalAmount, 2, mMonthArr);
 
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bg.getLayoutParams();
 
@@ -144,13 +194,13 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 		ArrayList<Integer> ap = new ArrayList<Integer>();
 		ArrayList<String> at = new ArrayList<String>();
 		
-			for (int i=0; i<12; i++) {
-				iv.add(DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, i+1) - DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, i+1));
-				at.add(String.valueOf(i+1));
-			}
-			
-			ap.add(Constants.BAR_AXIS_X_CENTER);
-			ap.add(Constants.BAR_AXIS_Y_LEFT);
+		for (int i=0; i<12; i++) {
+			iv.add(DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, i+1) - DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, i+1));
+			at.add(String.valueOf(i+1));
+		}
+		
+		ap.add(Constants.BAR_AXIS_X_CENTER);
+		ap.add(Constants.BAR_AXIS_Y_LEFT);
 
 			//        setContentView(R.layout.report_month_of_year, true);
         

@@ -6,7 +6,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.db.DBMgr;
-import com.fletamuto.sptb.util.Revenue;
 
 public class StateLiabilityDefaultLayout extends StateDefaultLayout {  	
 	long mPurchasePrice = 0L;

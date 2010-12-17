@@ -3,7 +3,6 @@ package com.fletamuto.sptb;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import com.fletamuto.common.control.fmgraph.LineGraph;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.db.DBMgr;
 
 /**
  * 카드 레이아웃 클레스
