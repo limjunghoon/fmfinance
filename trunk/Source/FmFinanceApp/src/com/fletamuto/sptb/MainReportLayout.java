@@ -23,29 +23,21 @@ public class MainReportLayout extends FmBaseActivity {
         
         setAdapterList();
       
-//        ArrayAdapter<CharSequence> adapter;
-//        adapter = ArrayAdapter.createFromResource(this, R.array.report_list, android.R.layout.simple_list_item_1);
-//       
-//        setListAdapter(adapter);
-//    
-////        mReportList.add(ReportExpenseLayout.class);
-////        mReportList.add(ReportIncomeLayout.class);
-////        mReportList.add(ReportAssetsLayout.class);
-////        mReportList.add(ReportLiabilityLayout.class);
         mReportActivityList.add(new ReportActivity(ReportMonthLayout.class));
         mReportActivityList.add(new ReportActivity(ReportMonthOfYearLayout.class));
         mReportActivityList.add(new ReportActivity(ReportMonthCompareExpenseToIncomeLayout.class));
+        mReportActivityList.add(new ReportActivity(ReportChangeAssets.class));
+        mReportActivityList.add(new ReportActivity(ReportCompareAssetsAndLiability.class));
         mReportActivityList.add(new ReportActivity(ReportCategoryCompareLayout.class));
         mReportActivityList.add(new ReportActivity(SelectTagLayout.class, MsgDef.ActRequest.ACT_TAG_SELECTED));
         mReportActivityList.add(new ReportActivity(ReportExpenseRateLayout.class));
-        
     }
     
     @Override
-    	protected void setTitleBtn() {
-    		setTitle("목록");
-    		super.setTitleBtn();
-    	}
+	protected void setTitleBtn() {
+		setTitle("목록");
+		super.setTitleBtn();
+	}
     
     protected void setAdapterList() {
 
@@ -71,7 +63,6 @@ public class MainReportLayout extends FmBaseActivity {
 		    	else {
 		    		startActivity(intent);
 		    	}
-				
 			}
 		});
     }
@@ -110,15 +101,5 @@ public class MainReportLayout extends FmBaseActivity {
     	int getRequestCode() {
     		return mRequestCode;
     	}
-    	
     }
-    
-//    
-//    protected void onListItemClick(ListView l, View v, int position, long id) {
-//    	
-//    	if (mReportList.size() <= position) return;
-//    	Intent intent = new Intent(this, mReportList.get(position));
-//		startActivity(intent);
-//    }
-
 }
