@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" android:layout_height="wrap_content">
 
-		<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="vertical">
+	<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="vertical">
 		<TextView android:layout_width="fill_parent" android:id="@+id/TVAssetsReportListTitle" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:text="제목" android:textSize="15sp"/>
 		<TextView android:layout_width="fill_parent" android:id="@+id/TVAssetsReportListDate" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:text="날짜" android:textSize="15sp"/>
 		<TextView android:layout_width="fill_parent" android:id="@+id/TVAssetsReportListCategory" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:text="분류" android:textSize="15sp"/>
 		<TextView android:layout_width="fill_parent" android:id="@+id/TVAssetsReportListAmount" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:text="금액" android:textSize="15sp"/>
-		</LinearLayout>	        
+		<TextView android:layout_width="fill_parent" android:id="@+id/TVAssetsReportListMemo" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:text="메모" android:textSize="15sp"/>
+		<TextView android:layout_width="fill_parent" android:id="@+id/TVAssetsReportListRevenue" android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:text="수익율" android:textSize="15sp"/>
+	</LinearLayout>	        
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:orientation="vertical" android:layout_weight="5" android:layout_height="wrap_content" android:layout_gravity="center_vertical">
 		<Button android:layout_height="wrap_content" android:text="삭제" android:id="@+id/BtnReportAssetsDelete" android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:focusable="false"></Button>
 	</LinearLayout>
