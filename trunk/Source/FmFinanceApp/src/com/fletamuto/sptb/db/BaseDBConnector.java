@@ -3,16 +3,20 @@ package com.fletamuto.sptb.db;
 import android.database.sqlite.SQLiteDatabase;
 
 public abstract class BaseDBConnector {
-	FinanceDBHelper getDBHelper() {
-		return DBMgr.getDBHelper();
+	public static final int READ_MODE = 0;
+	public static final int WRITE_MODE = 1;
+
+	SQLiteDatabase openDatabase(int mode) {
+		if (WRITE_MODE == mode) {
+			return DBMgr.getWritableDatabase();
+		}
+		else {
+			return DBMgr.getReadableDatabase();
+		}
 	}
 	
-	SQLiteDatabase getWritableDatabase() {
-		return getDBHelper().getWritableDatabase();
-	}
-	
-	SQLiteDatabase getReadableDatabase() {
-		return getDBHelper().getReadableDatabase();
+	void closeDatabase() {
+		DBMgr.closeDatabase();
 	}
 	
 }

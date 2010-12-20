@@ -30,7 +30,7 @@ public class BudgetDBConnector extends BaseDBConnector {
 	}
 
 	private long addMainBudget(BudgetItem item) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("total_amount", item.getAmount());
@@ -39,7 +39,7 @@ public class BudgetDBConnector extends BaseDBConnector {
 		
 		int insertID = (int)db.insert(MAIN_TABLE_NAME, null, rowItem);
 		item.setID(insertID);
-		db.close();
+		closeDatabase();
 		return insertID;
 	}
 	
@@ -48,7 +48,7 @@ public class BudgetDBConnector extends BaseDBConnector {
 			return -1;
 		}
 		
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("amount", item.getAmount());
@@ -58,7 +58,7 @@ public class BudgetDBConnector extends BaseDBConnector {
 		
 		int insertID = (int)db.insert(CATEGORY_TABLE_NAME, null, rowItem);
 		item.setID(insertID);
-		db.close();
+		closeDatabase();
 		return insertID;
 	}
 	
@@ -83,7 +83,7 @@ public class BudgetDBConnector extends BaseDBConnector {
 	
 	BudgetItem getMainBudget(final int year, final int month) {
 		BudgetItem budget = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query(MAIN_TABLE_NAME, null, "month=? AND year=?", new String[]{String.valueOf(month), String.valueOf(year)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
@@ -93,7 +93,7 @@ public class BudgetDBConnector extends BaseDBConnector {
 			budget = new BudgetItem(year, month);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		
 		budget.setExpenseAmountMonth(DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, year, month));
 		return budget;
@@ -101,7 +101,7 @@ public class BudgetDBConnector extends BaseDBConnector {
 	
 	BudgetItem getCategoryBudget(final int year, final int month, final int categoryID) {
 		BudgetItem budget = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query(CATEGORY_TABLE_NAME, null, "month=? AND year=? AND main_category=?", new String[]{String.valueOf(month), String.valueOf(year), String.valueOf(categoryID)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
@@ -111,7 +111,7 @@ public class BudgetDBConnector extends BaseDBConnector {
 			budget = new BudgetItem(year, month);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		
 //		budget.setExpenseAmountMonth(DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, year, month));
 		return budget;
@@ -142,7 +142,7 @@ public class BudgetDBConnector extends BaseDBConnector {
 	}
 
 	private long updateMainBudget(BudgetItem item) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("total_amount", item.getAmount());
@@ -150,12 +150,12 @@ public class BudgetDBConnector extends BaseDBConnector {
 		rowItem.put("month", item.getMonth());
 		
 		long ret = db.update(MAIN_TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(item.getID())});
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 	
 	private long updateCategoryBudget(BudgetItem item) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("amount", item.getAmount());
@@ -164,7 +164,7 @@ public class BudgetDBConnector extends BaseDBConnector {
 		rowItem.put("main_category", item.getExpenseCategory().getID());
 		
 		long ret = db.update(CATEGORY_TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(item.getID())});
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 	

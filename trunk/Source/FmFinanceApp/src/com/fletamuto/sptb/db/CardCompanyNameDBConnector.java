@@ -12,7 +12,7 @@ public class CardCompanyNameDBConnector extends BaseDBConnector {
 	private static final String TABLE_NAME = "card_company";
 	
 	public int addItem(CardCompanyName cardCompanyName) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("card_name", cardCompanyName.getName());
@@ -21,12 +21,12 @@ public class CardCompanyNameDBConnector extends BaseDBConnector {
 		rowItem.put("image_index", 1);
 		
 		int ret = (int)db.insert(TABLE_NAME, null, rowItem);
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 	
 	public boolean updateItem(CardCompanyName cardCompanyName) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("card_name", cardCompanyName.getName());
@@ -35,13 +35,13 @@ public class CardCompanyNameDBConnector extends BaseDBConnector {
 		rowItem.put("image_index", 1);
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(cardCompanyName.getID())});
-		db.close();
+		closeDatabase();
 		return true;
 	}
 	
 	public  ArrayList<CardCompanyName> getAllItems() {
 		ArrayList<CardCompanyName> cardCompanyNames = new ArrayList<CardCompanyName>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		
 		Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
 		
@@ -51,20 +51,20 @@ public class CardCompanyNameDBConnector extends BaseDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return cardCompanyNames;
 	}
 	
 	public CardCompanyName getItem(int id) {
 		CardCompanyName cardCompanyName = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query(TABLE_NAME, null, "_id=?", new String[]{String.valueOf(id)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			cardCompanyName = CreateCompanyNameItem(c);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return cardCompanyName;
 	}
 	
@@ -79,9 +79,9 @@ public class CardCompanyNameDBConnector extends BaseDBConnector {
 	
 	public int deleteItem(int id) {
 		int result = 0;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		result = db.delete(TABLE_NAME, "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		return result;
 	}
 }

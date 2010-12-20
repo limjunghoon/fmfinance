@@ -29,7 +29,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	public long addItem(FinanceItem financeItem) {
 		IncomeItem item = (IncomeItem)financeItem;
 		if (checkVaildItem(item) != DBDef.ValidError.SUCCESS) return -1; 
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("create_date", item.getCreateDateString());
@@ -43,7 +43,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	
 		long ret = db.insert("income", null, rowItem);
 		item.setID((int)ret);
-		db.close();
+		closeDatabase();
 		
 		return ret;
 	}
@@ -56,7 +56,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	public long updateItem(FinanceItem financeItem) {
 		IncomeItem item = (IncomeItem)financeItem;
 		if (checkVaildItem(item) != DBDef.ValidError.SUCCESS) return -1;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("create_date", item.getCreateDateString());
@@ -67,19 +67,19 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("extend", item.getExtendID());
 		
 		long ret = db.update("income", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getID())});
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 	
 	@Override
 	public long updateAmountFinanceItem(int id, long amount) {
 		if (amount == 0) return 0;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("amount", amount);
 		long ret = db.update("income", rowItem, "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 	
@@ -89,7 +89,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 */
 	public ArrayList<FinanceItem> getAllItems() {
 		ArrayList<FinanceItem> incomeItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		
 		queryBilder.setTables("income, income_main_category");
@@ -102,7 +102,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return incomeItems;
 	}
 	
@@ -113,7 +113,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 */
 	public ArrayList<FinanceItem> getItems(Calendar calendar) {
 		ArrayList<FinanceItem> incomeItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		
@@ -127,13 +127,13 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return incomeItems;
 	}
 	
 	public ArrayList<FinanceItem> getItems(Calendar startCalendar, Calendar endCalendar) {
 		ArrayList<FinanceItem> incomeItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String where = "income.main_category=income_main_category._id AND strftime('%Y-%m-%d', income.create_date) BETWEEN '" + FinanceDataFormat.getDateFormat(startCalendar.getTime()) +"' AND '" + FinanceDataFormat.getDateFormat(endCalendar.getTime()) + "'";
 		queryBilder.setTables("income, income_main_category");
@@ -146,13 +146,13 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return incomeItems;
 	}
 	
 	public ArrayList<FinanceItem> getItems(int year, int month) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {String.format("%d-%02d", year, month)};
 		
@@ -166,13 +166,13 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return assetsItems;
 	}
 	
 	public ArrayList<FinanceItem> getItemsFromCategoryID(int mainCategoryID, int year, int month) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {String.format("%d-%02d", year, month), String.valueOf(mainCategoryID)};
 		
@@ -186,13 +186,13 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return assetsItems;
 	}
 	
 	public ArrayList<FinanceItem> getItemsFromCategoryID(int mainCategoryID) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {String.valueOf(mainCategoryID)};
 		
@@ -206,13 +206,13 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return assetsItems;
 	}
 	
 	public ArrayList<FinanceItem> getItemsFromSubCategoryID(int subCategoryID, int year, int month) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {String.format("%d-%02d", year, month), String.valueOf(subCategoryID)};
 		
@@ -226,7 +226,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return assetsItems;
 	}
 	
@@ -236,7 +236,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 */
 	public FinanceItem getItem(int id) {
 		FinanceItem item = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {String.valueOf(id)};
 		
@@ -248,7 +248,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			item = CreateIncomeItem(c);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return item;
 	}
 	
@@ -280,7 +280,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 */
 	public long addCategory(Category category) {
 		long ret = -1;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", category.getName());
@@ -291,7 +291,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("type", category.getUIType());
 		
 		ret = db.insert("income_main_category", null, rowItem);
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 	
@@ -303,7 +303,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 */
 	public long addSubCategory(long mainCategoryID, String name) {
 		long ret = -1;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
@@ -315,7 +315,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("type", 0);
 		
 		ret = db.insert("income_sub_category", null, rowItem);
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 
@@ -326,7 +326,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 */
 	public ArrayList<Category> getCategory() {
 		ArrayList<Category> category = new ArrayList<Category>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query("income_main_category", null, null, null, null, null, null);
 		
 		if (c.moveToFirst() != false) {
@@ -337,7 +337,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		
 		return category;
 	}
@@ -345,7 +345,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	@Override
 	public Category getCategory(int extendItem) {
 		Category item = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		
 		Cursor c = db.query("income_main_category", null, "extend_type=?", new String[]{String.valueOf(extendItem)}, null, null, null);
 		
@@ -353,7 +353,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			item = new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return item;
 	}
 
@@ -362,7 +362,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 * @return long 총 금액
 	 */
 	public long getTotalAmount() {
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		String query = "SELECT SUM(amount) FROM income";
 		Cursor c = db.rawQuery(query, null);
 		long amount = 0L;
@@ -371,7 +371,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			amount = c.getLong(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return amount;
 	}
 	
@@ -381,7 +381,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 */
 	public long getTotalAmountDay(Calendar calendar) {
 		long amount = 0L;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		String query = "SELECT SUM(amount) FROM income WHERE strftime('%Y-%m-%d', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
@@ -390,13 +390,13 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			amount = c.getLong(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return amount;
 	}
 	
 	public long getTotalAmountMonth(int year, int month) {
 		long amount = 0L;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {String.format("%d-%02d", year, month)};
 		String query = "SELECT SUM(amount) FROM income WHERE strftime('%Y-%m', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
@@ -405,13 +405,13 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			amount = c.getLong(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return amount;
 	}
 	
 	public long getTotalAmountMonth(int categoryID, int year, int month) {
 		long amount = 0L;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {String.valueOf(categoryID), String.format("%d-%02d", year, month)};
 		String query = "SELECT SUM(amount) FROM income WHERE main_category=? AND strftime('%Y-%m', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
@@ -420,14 +420,14 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			amount = c.getLong(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return amount;
 	}
 	
 	@Override
 	public ArrayList<Long> getTotalAmountMonthInYear(int categoryID, int year) {
 		ArrayList<Long> amountMonthInYear = new ArrayList<Long>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		for (int month = 1; month <= 12; month++) {
 			String[] params = {String.valueOf(categoryID), String.format("%d-%02d", year, month)};
 			String query = "SELECT SUM(amount) FROM income WHERE main_category=? AND strftime('%Y-%m', create_date)=?";
@@ -438,13 +438,13 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			}
 			c.close();
 		}
-		db.close();
+		closeDatabase();
 		return amountMonthInYear;
 	}
 	
 	public long getTotalAmountYear(int year) {
 		long amount = 0L;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {String.format("%d", year)};
 		String query = "SELECT SUM(amount) FROM income WHERE strftime('%Y', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
@@ -453,7 +453,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			amount = c.getLong(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return amount;
 	}
 
@@ -463,7 +463,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 */
 	public int getItemCount(Calendar calendar) {
 		int count = 0;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		String query = "SELECT COUNT(*) FROM income WHERE strftime('%Y-%m-%d', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
@@ -472,7 +472,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 			count = c.getInt(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return count;
 	}
 
@@ -482,9 +482,9 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 * @return int the number of rows affected if a whereClause is passed in, 0 otherwise. To remove all rows and get a count pass "1" as the whereClause. 
 	 */
 	public int deleteItem(int id) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		int result = db.delete("income", "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		return result;
 	}
 
@@ -494,9 +494,9 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 * @return int the number of rows affected if a whereClause is passed in, 0 otherwise. To remove all rows and get a count pass "1" as the whereClause. 
 	 */
 	public int deleteCategory(int id) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		int result = db.delete("income_main_category", "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		return result;
 	}
 	
@@ -507,7 +507,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 * @return int the number of rows affected 
 	 */
 	public int updateCategory(int id, String name) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
@@ -516,18 +516,18 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("image_index", 0);
 		
 		int result = db.update("income_main_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		return result;
 	}
 	
 	public long updateRepeat(int expenseID, int repeatID) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 
 		rowItem.put("repeat", repeatID); // 임시값
 		
 		long ret = db.update("income", rowItem, "_id=?", new String[] {String.valueOf(expenseID)});
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 	
@@ -537,7 +537,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
 	public long addExendSalary(int expenseInsuranceID, int expenseTaxID, int expensePensionID, int expenseEtcID) { 
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("pension", expensePensionID);
@@ -545,7 +545,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("assurance", expenseInsuranceID);
 		rowItem.put("etc", expenseEtcID);
 		long ret = db.insert("income_salary", null, rowItem);
-		db.close();
+		closeDatabase();
 		
 		return ret;
 	}

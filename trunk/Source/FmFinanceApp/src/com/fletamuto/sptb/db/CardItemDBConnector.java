@@ -19,7 +19,7 @@ public class CardItemDBConnector extends BaseDBConnector {
 		if (checkCardVaildItem(card) != DBDef.ValidError.SUCCESS) return -1;
 		
 		int newID = -1;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", card.getName());
@@ -35,7 +35,7 @@ public class CardItemDBConnector extends BaseDBConnector {
 		
 		newID = (int)db.insert(TABLE_NAME, null, rowItem);
 		card.setID(newID);
-		db.close();
+		closeDatabase();
 		return newID;
 	}
 	
@@ -43,7 +43,7 @@ public class CardItemDBConnector extends BaseDBConnector {
 
 	public boolean updateItem(CardItem card) {
 		if (checkCardVaildItem(card) != DBDef.ValidError.SUCCESS) return false;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", card.getName());
@@ -58,13 +58,13 @@ public class CardItemDBConnector extends BaseDBConnector {
 		rowItem.put("maxiup_balance", card.getBalance());
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(card.getID())});
-		db.close();
+		closeDatabase();
 		return true;
 	}
 	
 	public ArrayList<CardItem> getAllItems() {
 		ArrayList<CardItem> card = new ArrayList<CardItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		
 		queryBilder.setTables("card, card_company");
@@ -77,14 +77,14 @@ public class CardItemDBConnector extends BaseDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return card;
 	}
 	
 	
 	public  ArrayList<CardItem> getAllItems(int type) {
 		ArrayList<CardItem> card = new ArrayList<CardItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		
 		queryBilder.setTables("card, card_company");
@@ -97,13 +97,13 @@ public class CardItemDBConnector extends BaseDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return card;
 	}
 	
 	public CardItem getItem(int id) {
 		CardItem card = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		
 		queryBilder.setTables("card, card_company");
@@ -114,15 +114,15 @@ public class CardItemDBConnector extends BaseDBConnector {
 			card = CreateCardItem(c);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return card;
 	}
 	
 	public int deleteItem(int id) {
 		int result = 0;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		result = db.delete(TABLE_NAME, "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		return result;
 	}
 	

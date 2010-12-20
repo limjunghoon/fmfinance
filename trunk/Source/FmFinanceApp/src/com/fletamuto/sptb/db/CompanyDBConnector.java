@@ -12,7 +12,7 @@ public class CompanyDBConnector extends BaseDBConnector {
 	private static final String TABLE_NAME = "finance_company";
 	
 	public int addItem(FinancialCompany company) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", company.getName());
@@ -21,12 +21,12 @@ public class CompanyDBConnector extends BaseDBConnector {
 		rowItem.put("image_index", 1);
 		
 		int ret = (int)db.insert(TABLE_NAME, null, rowItem);
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 	
 	public boolean updateItem(FinancialCompany company) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", company.getName());
@@ -35,13 +35,13 @@ public class CompanyDBConnector extends BaseDBConnector {
 		rowItem.put("image_index", 1);
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(company.getID())});
-		db.close();
+		closeDatabase();
 		return true;
 	}
 	
 	public  ArrayList<FinancialCompany> getAllItems() {
 		ArrayList<FinancialCompany> institutions = new ArrayList<FinancialCompany>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		
 		Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
 		
@@ -51,20 +51,20 @@ public class CompanyDBConnector extends BaseDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return institutions;
 	}
 	
 	public FinancialCompany getItem(int id) {
 		FinancialCompany institution = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query(TABLE_NAME, null, "_id=?", new String[]{String.valueOf(id)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			institution = CreateInstitutionItem(c);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return institution;
 	}
 	
@@ -79,9 +79,9 @@ public class CompanyDBConnector extends BaseDBConnector {
 	
 	public int deleteItem(int id) {
 		int result = 0;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		result = db.delete(TABLE_NAME, "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		return result;
 	}
 }

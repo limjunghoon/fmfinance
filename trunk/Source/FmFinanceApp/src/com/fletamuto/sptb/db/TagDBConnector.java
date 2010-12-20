@@ -14,7 +14,7 @@ public class TagDBConnector extends BaseDBConnector {
 	
 	public int addItem(ExpenseTag tag) {
 		int insertID = -1;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", tag.getName());
@@ -23,12 +23,12 @@ public class TagDBConnector extends BaseDBConnector {
 		
 		insertID = (int)db.insert(TABLE_NAME, null, rowItem);
 		tag.setID(insertID);
-		db.close();
+		closeDatabase();
 		return insertID;
 	}
 	
 	public boolean updateItem(ExpenseTag tag) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", tag.getName());
@@ -36,13 +36,13 @@ public class TagDBConnector extends BaseDBConnector {
 		rowItem.put("image_index", 1);
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(tag.getID())});
-		db.close();
+		closeDatabase();
 		return true;
 	}
 	
 	public  ArrayList<ExpenseTag> getAllItems() {
 		ArrayList<ExpenseTag> tag = new ArrayList<ExpenseTag>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
 		
 		if (c.moveToFirst() != false) {
@@ -54,7 +54,7 @@ public class TagDBConnector extends BaseDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		
 		return tag;
 	}
@@ -63,14 +63,14 @@ public class TagDBConnector extends BaseDBConnector {
 		if (id == ExpenseTag.NONE_ID) return null;
 		
 		ExpenseTag tag = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query(TABLE_NAME, null, "_id=?", new String[]{String.valueOf(id)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			tag = createExpenseTag(c);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return tag;
 	}
 	
@@ -87,9 +87,9 @@ public class TagDBConnector extends BaseDBConnector {
 	
 	public int deleteItem(int id) {
 		int result = 0;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		result = db.delete(TABLE_NAME, "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		return result;
 	}
 }

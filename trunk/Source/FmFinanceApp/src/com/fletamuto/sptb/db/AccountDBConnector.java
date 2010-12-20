@@ -19,7 +19,7 @@ public class AccountDBConnector extends BaseDBConnector {
 	
 	public int addItem(AccountItem account) {
 		if (checkAccountVaildItem(account) != DBDef.ValidError.SUCCESS) return -1;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("create_date", account.getCreateDateString());
@@ -33,13 +33,13 @@ public class AccountDBConnector extends BaseDBConnector {
 		
 		int insertID = (int)db.insert(TABLE_NAME, null, rowItem);
 		account.setID(insertID);
-		db.close();
+		closeDatabase();
 		return insertID;
 	}
 
 	public boolean updateItem(AccountItem account) {
 		if (checkAccountVaildItem(account) != DBDef.ValidError.SUCCESS) return false;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("create_date", account.getCreateDateString());
@@ -52,26 +52,26 @@ public class AccountDBConnector extends BaseDBConnector {
 		rowItem.put("name", account.getName());
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(account.getID())});
-		db.close();
+		closeDatabase();
 		return true;
 	}
 	
 	public AccountItem getMyPocket() {
 		AccountItem account = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query(TABLE_NAME, null, "type=?", new String[]{String.valueOf(AccountItem.MY_POCKET)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			account = createAccountItem(c);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return account;
 	}
 	
 	public  ArrayList<AccountItem> getAllItems() {
 		ArrayList<AccountItem> incomeItems = new ArrayList<AccountItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		
 		queryBilder.setTables("account, finance_company");
@@ -84,13 +84,13 @@ public class AccountDBConnector extends BaseDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return incomeItems;
 	}
 	
 	public AccountItem getItem(int id) {
 		AccountItem account = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		
 		queryBilder.setTables("account, finance_company");
@@ -101,7 +101,7 @@ public class AccountDBConnector extends BaseDBConnector {
 			account = createAccountItem(c);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return account;
 	}
 	
@@ -142,9 +142,9 @@ public class AccountDBConnector extends BaseDBConnector {
 	
 	public int deleteAccountItem(int id) {
 		int result = 0;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		result = db.delete(TABLE_NAME, "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		return result;
 	}
 	

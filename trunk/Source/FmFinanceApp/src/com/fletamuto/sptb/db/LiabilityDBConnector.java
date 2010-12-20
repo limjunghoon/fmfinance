@@ -35,7 +35,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	public long addItem(FinanceItem financeItem) {
 		LiabilityItem item = (LiabilityItem)financeItem;
 		if (checkVaildItem(item) != DBDef.ValidError.SUCCESS) return -1; 
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("create_date", item.getCreateDateString());
@@ -47,7 +47,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		long ret = db.insert("liability", null, rowItem);
 		item.setID((int)ret);
-		db.close();
+		closeDatabase();
 		
 		if (ret != -1) {
 			return addStateChangeItem(item);
@@ -63,7 +63,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	public long updateItem(FinanceItem financeItem) {
 		LiabilityItem item = (LiabilityItem)financeItem;
 		if (checkVaildItem(item) != DBDef.ValidError.SUCCESS) return -1; 
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("create_date", item.getCreateDateString());
@@ -74,19 +74,19 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("extend", item.getExtendID());
 		
 		long ret = db.update("liability", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getID())});
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 	
 	@Override
 	public long updateAmountFinanceItem(int id, long amount) {
 		if (amount == 0) return 0;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("amount", amount);
 		long ret = db.update("liability", rowItem, "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 	
@@ -96,7 +96,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 */
 	public  ArrayList<FinanceItem> getAllItems() {
 		ArrayList<FinanceItem> LiabilityItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		
 		queryBilder.setTables("liability, liability_main_category");
@@ -109,7 +109,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return LiabilityItems;
 	}
 	
@@ -120,7 +120,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 */
 	public ArrayList<FinanceItem> getItems(Calendar calendar) {
 		ArrayList<FinanceItem> LiabilityItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())};
 		
@@ -134,13 +134,13 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return LiabilityItems;
 	}
 	
 	public ArrayList<FinanceItem> getItems(Calendar startCalendar, Calendar endCalendar) {
 		ArrayList<FinanceItem> LiabilityItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String where = "liability.main_category=liability_main_category._id AND strftime('%Y-%m-%d', liability.create_date) BETWEEN '" + FinanceDataFormat.getDateFormat(startCalendar.getTime()) +"' AND '" + FinanceDataFormat.getDateFormat(endCalendar.getTime()) + "'";
 		queryBilder.setTables("liability, liability_main_category");
@@ -153,13 +153,13 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return LiabilityItems;
 	}
 	
 	public ArrayList<FinanceItem> getItems(int year, int month) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {String.format("%d-%02d", year, month)};
 		
@@ -173,14 +173,14 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return assetsItems;
 	}
 	
 	
 	public ArrayList<FinanceItem> getItemsFromCategoryID(int mainCategoryID, int year, int month) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {String.format("%d-%02d", year, month), String.valueOf(mainCategoryID)};
 		
@@ -194,13 +194,13 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return assetsItems;
 	}
 	
 	public ArrayList<FinanceItem> getItemsFromCategoryID(int mainCategoryID) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {String.valueOf(mainCategoryID)};
 		
@@ -214,13 +214,13 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return assetsItems;
 	}
 	
 	public ArrayList<FinanceItem> getItemsFromSubCategoryID(int subCategoryID, int year, int month) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {String.format("%d-%02d", year, month), String.valueOf(subCategoryID)};
 		
@@ -234,7 +234,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return assetsItems;
 	}
 	
@@ -244,7 +244,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 */
 	public FinanceItem getItem(int id) {
 		FinanceItem item = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		String[] params = {String.valueOf(id)};
 		
@@ -256,7 +256,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 				item = CreateLiabilityItem(c);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return item;
 	}
 	
@@ -288,7 +288,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 */
 	public long addCategory(Category category) {
 		long ret = -1;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", category.getName());
@@ -299,7 +299,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("type", category.getUIType());
 		
 		ret = db.insert("liability_main_category", null, rowItem);
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 	
@@ -311,7 +311,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 */
 	public long addSubCategory(long mainCategoryID, String name) {
 		long ret = -1;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
@@ -321,7 +321,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("image_index", 0);
 		
 		ret = db.insert("liability_sub_category", null, rowItem);
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 	
@@ -332,7 +332,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 */
 	public ArrayList<Category> getCategory() {
 		ArrayList<Category> category = new ArrayList<Category>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query("liability_main_category", null, null, null, null, null, null);
 		
 		if (c.moveToFirst() != false) {
@@ -343,7 +343,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		
 		return category;
 	}
@@ -351,7 +351,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	@Override
 	public Category getCategory(int extendItem) {
 		Category item = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		
 		Cursor c = db.query("liability_main_category", null, "extend_type=?", new String[]{String.valueOf(extendItem)}, null, null, null);
 		
@@ -359,7 +359,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			item = new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return item;
 	}
 	
@@ -369,7 +369,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 */
 	public long getTotalAmount() {
 		long amount = 0L;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		String query = "SELECT SUM(amount) FROM liability";
 		Cursor c = db.rawQuery(query, null);
 		
@@ -377,7 +377,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			amount = c.getLong(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return amount;
 	}
 	
@@ -387,7 +387,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 */
 	public long getTotalAmountDay(Calendar calendar) {
 		long amount = 0L;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)), 
 				String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
 		String query = "SELECT SUM(amount) FROM liability WHERE strftime('%Y-%m-%d', create_date)=?";
@@ -397,13 +397,13 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			amount = c.getLong(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return amount;
 	}
 	
 	public long getTotalAmountMonth(int year, int month) {
 		long amount = 0L;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {String.format("%d-%02d", year, month)};
 		String query = "SELECT SUM(amount) FROM liability WHERE strftime('%Y-%m', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
@@ -412,13 +412,13 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			amount = c.getLong(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return amount;
 	}
 	
 	public long getTotalAmountMonth(int categoryID, int year, int month) {
 		long amount = 0L;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {String.valueOf(categoryID), String.format("%d-%02d", year, month)};
 		String query = "SELECT SUM(amount) FROM liability WHERE main_category=? AND strftime('%Y-%m', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
@@ -427,14 +427,14 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			amount = c.getLong(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return amount;
 	}
 	
 	@Override
 	public ArrayList<Long> getTotalAmountMonthInYear(int categoryID, int year) {
 		ArrayList<Long> amountMonthInYear = new ArrayList<Long>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		for (int month = 1; month <= 12; month++) {
 			String[] params = {String.valueOf(categoryID), String.format("%d-%02d", year, month)};
 			String query = "SELECT SUM(amount) FROM liability WHERE main_category=? AND strftime('%Y-%m', create_date)=?";
@@ -445,13 +445,13 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			}
 			c.close();
 		}
-		db.close();
+		closeDatabase();
 		return amountMonthInYear;
 	}
 	
 	public long getTotalAmountYear(int year) {
 		long amount = 0L;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {String.format("%d", year)};
 		String query = "SELECT SUM(amount) FROM liability WHERE strftime('%Y', create_date)=?";
 		Cursor c = db.rawQuery(query, params);
@@ -460,7 +460,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			amount = c.getLong(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return amount;
 	}
 
@@ -470,7 +470,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 */
 	public int getItemCount(Calendar calendar) {
 		int count = 0;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {String.valueOf(calendar.get(Calendar.YEAR)), 
 				String.valueOf(calendar.get(Calendar.MONTH)), String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))};
 		String query = "SELECT COUNT(*) FROM liability WHERE strftime('%Y-%m-%d', create_date)=?";
@@ -480,7 +480,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			count = c.getInt(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return count;
 	}
 
@@ -492,9 +492,9 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 */
 	public int deleteItem(int id) {
 		int result = 0;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		result = db.delete("liability", "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		return result;
 	}
 
@@ -505,9 +505,9 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 */
 	public int deleteCategory(int id) {
 		int result = 0;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		result = db.delete("liability_main_category", "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		
 		return result;
 	}
@@ -519,7 +519,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 * @return int the number of rows affected 
 	 */
 	public int updateCategory(int id, String name) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
@@ -528,28 +528,28 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("image_index", 0);
 		
 		int result = db.update("liability_main_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		return result;
 	}
 	
 	public long updateRepeat(int expenseID, int repeatID) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 
 		rowItem.put("repeat", repeatID); // ÀÓ½Ã°ª
 		
 		long ret = db.update("liability", rowItem, "_id=?", new String[] {String.valueOf(expenseID)});
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 
 	public long addExtendLoan(LiabilityLoanItem loan) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("finance_company", loan.getCompany().getID());
 		long extend = db.insert("liability_loan", null, rowItem);
-		db.close();
+		closeDatabase();
 		if (extend == -1){
 			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND DEPOSIT");
 			return -1;
@@ -559,12 +559,12 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	}
 
 	public long addExtendCashService(LiabilityCashServiceItem cashService) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("card", cashService.getCard().getID());
 		long extend = db.insert("liability_cash_service", null, rowItem);
-		db.close();
+		closeDatabase();
 		if (extend == -1){
 			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND DEPOSIT");
 			return -1;
@@ -574,12 +574,12 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	}
 
 	public long addExtendPersonLoan(LiabilityPersonLoanItem personLoan) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", personLoan.getLoanPeopleName());
 		long extend = db.insert("liability_person_loan", null, rowItem);
-		db.close();
+		closeDatabase();
 		if (extend == -1){
 			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND DEPOSIT");
 			return -1;
@@ -591,7 +591,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	private long addDefaultStateChangeItem(LiabilityItem item) {
 		long ret = -1;
 		LiabilityItem todayItem = (LiabilityItem) getStateChangeItem(item.getCreateDate());
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("liability_id", item.getID());
@@ -606,7 +606,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			ret = db.update("liability_change_amount", rowItem, "_id=?", new String[] {String.valueOf(item.getID())});
 		}
 		
-		db.close();
+		closeDatabase();
 		return ret;
 	}
 	
@@ -628,7 +628,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	
 	public ArrayList<FinanceItem> getStateItems(int id) {
 		ArrayList<FinanceItem> LiabilityItems = new ArrayList<FinanceItem>(); 
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query("liability_change_amount", null, "liability_id=?", new String[] {String.valueOf(id)}, null, null, "change_date DESC");
 		
 		if (c.moveToFirst() != false) {
@@ -646,13 +646,13 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return LiabilityItems;
 	}
 	
 	public FinanceItem getStateChangeItem(Calendar calendar) {
 		LiabilityItem liability = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())}; 
 		Cursor c = db.query("liability_change_amount", null, "strftime('%Y-%m-%d', change_date)=?", params, null, null, null);
 		
@@ -668,14 +668,14 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			liability.setMemo(c.getString(5));
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return liability;
 		
 	}
 
 	public ArrayList<Long> getTotalLiabilityAmountMonthInYear(int liabilityID, int year) {
 		ArrayList<Long> amountArr = new ArrayList<Long>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		long lastAmount = 0L;
 		
 		for (int month = 1; month <= 12; month++) {
@@ -693,33 +693,33 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			c.close();
 		}
 		
-		db.close();
+		closeDatabase();
 		return amountArr;
 	}
 
 	public long getPurchasePrice(int id) {
 		long amount = 0L;
-		SQLiteDatabase db = getReadableDatabase(); 
+		SQLiteDatabase db = openDatabase(READ_MODE); 
 		Cursor c = db.query("liability_change_amount", new String[] {"amount"}, "liability_id=?", new String[] {String.valueOf(id)}, null, null, "change_date");
 		
 		if (c.moveToFirst() != false) {
 			amount = c.getLong(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return amount;
 	}
 
 	public long getLatestPrice(int id) {
 		long amount = 0L;
-		SQLiteDatabase db = getReadableDatabase(); 
+		SQLiteDatabase db = openDatabase(READ_MODE); 
 		Cursor c = db.query("liability_change_amount", new String[] {"amount"}, "liability_id=?", new String[] {String.valueOf(id)}, null, null, "change_date DESC");
 		
 		if (c.moveToFirst() != false) {
 			amount = c.getLong(0);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return amount;
 	}
 

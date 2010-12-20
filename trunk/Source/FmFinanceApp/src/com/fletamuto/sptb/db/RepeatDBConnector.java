@@ -16,7 +16,7 @@ public class RepeatDBConnector extends BaseDBConnector {
 	
 	public int addItem(Repeat repeat) {
 		int insertID = -1;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("type", repeat.getType());
@@ -29,12 +29,12 @@ public class RepeatDBConnector extends BaseDBConnector {
 		
 		insertID = (int)db.insert(TABLE_NAME, null, rowItem);
 		repeat.setID(insertID);
-		db.close();
+		closeDatabase();
 		return insertID;
 	}
 	
 	public boolean updateItem(Repeat repeat) {
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("type", repeat.getType());
@@ -46,13 +46,13 @@ public class RepeatDBConnector extends BaseDBConnector {
 		rowItem.put("last_apply_date", repeat.getLastApplyDateString());
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(repeat.getID())});
-		db.close();
+		closeDatabase();
 		return true;
 	}
 	
 	public  ArrayList<Repeat> getAllItems() {
 		ArrayList<Repeat> tag = new ArrayList<Repeat>();
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
 		
 		if (c.moveToFirst() != false) {
@@ -62,21 +62,21 @@ public class RepeatDBConnector extends BaseDBConnector {
 		}
 		
 		c.close();
-		db.close();
+		closeDatabase();
 		
 		return tag;
 	}
 	
 	public Repeat getItem(int id) {		
 		Repeat tag = null;
-		SQLiteDatabase db = getReadableDatabase();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query(TABLE_NAME, null, "_id=?", new String[]{String.valueOf(id)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			tag = createRepeat(c);
 		}
 		c.close();
-		db.close();
+		closeDatabase();
 		return tag;
 	}
 	
@@ -110,9 +110,9 @@ public class RepeatDBConnector extends BaseDBConnector {
 	
 	public int deleteRepeat(int id) {
 		int result = 0;
-		SQLiteDatabase db = getWritableDatabase();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		result = db.delete(TABLE_NAME, "_id=?", new String[] {String.valueOf(id)});
-		db.close();
+		closeDatabase();
 		return result;
 	}
 	

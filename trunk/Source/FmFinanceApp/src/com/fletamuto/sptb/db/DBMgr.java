@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.fletamuto.sptb.data.AccountItem;
@@ -48,6 +49,11 @@ public final class DBMgr {
 	
 	private static FinanceDBHelper mDBHelper = null; 
 	
+	private static boolean mDBOpenLock = false;
+	
+	private static SQLiteDatabase mDB;
+	
+	
 	/**
 	 * 외부에서 객체를 생성하지 못한다.
 	 */
@@ -61,6 +67,50 @@ public final class DBMgr {
 	public static void initialize(Context context) {
 		DBMgr.mDBHelper = new FinanceDBHelper(context);
 	}
+	
+	public static void dbUnLock() {
+		mDBOpenLock = false;
+	}
+
+	public static void dbLock() {
+		mDBOpenLock = true;
+	}
+	
+	public static void setDB(SQLiteDatabase mDB) {
+		DBMgr.mDB = mDB;
+	}
+
+	public static SQLiteDatabase getDB() {
+		return mDB;
+	}
+	
+	public static SQLiteDatabase getWritableDatabase() {
+		if (mDBOpenLock == true) {
+			return mDB;
+		}
+		
+		mDB = mDBHelper.getWritableDatabase();
+		return mDB;
+	}
+	
+	public static SQLiteDatabase getReadableDatabase() {
+		if (mDBOpenLock == true) {
+			return mDB;
+		}
+		
+		mDB = mDBHelper.getReadableDatabase();
+		return mDB;
+	}
+	
+	public static void closeDatabase() {
+		if (mDBOpenLock == true) {
+			Log.i(LogTag.DB, "::: DATABASE LOCK. Can't closed db ");
+			return;
+		}
+		
+		mDB.close();
+	}
+	
 	
 	
 	/**
@@ -656,4 +706,14 @@ public final class DBMgr {
 	public static int addOpneUsedItem(int type, int id) {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(type).addOpneUsedItem(id);
 	}
+
+
+
+
+
+	
+
+	
+
+	
 }
