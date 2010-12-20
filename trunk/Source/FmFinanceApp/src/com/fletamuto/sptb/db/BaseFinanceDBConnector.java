@@ -3,7 +3,6 @@ package com.fletamuto.sptb.db;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.fletamuto.sptb.data.Category;
