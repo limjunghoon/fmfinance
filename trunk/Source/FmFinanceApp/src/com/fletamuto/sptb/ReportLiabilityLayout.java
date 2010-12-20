@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.LiabilityItem;
 
 public class ReportLiabilityLayout extends ReportBaseLayout {
@@ -50,7 +51,6 @@ public class ReportLiabilityLayout extends ReportBaseLayout {
     	((TextView)convertView.findViewById(R.id.TVLiabilityReportListTitle)).setText("제목 : " + item.getTitle());
 		((TextView)convertView.findViewById(R.id.TVLiabilityReportListDate)).setText("날짜 : " + item.getCreateDateString());			
 		((TextView)convertView.findViewById(R.id.TVLiabilityReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
-		
 //		((TextView)convertView.findViewById(R.id.TVLiabilityReportListCategory)).setText("분류 : " + item.getCategory().getName());
 		((TextView)convertView.findViewById(R.id.TVLiabilityReportListCategory)).setVisibility(View.GONE);
 	}
@@ -112,4 +112,10 @@ public class ReportLiabilityLayout extends ReportBaseLayout {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+	@Override
+	protected int getLayoutResources(FinanceItem item) {
+		
+		
+		return getAdapterResource();
+	}
 }

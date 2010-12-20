@@ -80,4 +80,9 @@ public class ReportExpenseLayout extends ReportBaseLayout {
 	protected void updateListItem() {
 		mListItems = mItems;
 	}
+	
+	@Override
+	protected int getLayoutResources(FinanceItem item) {
+		return getAdapterResource();
+	}
 }
