@@ -110,4 +110,9 @@ public class ReportAssetsHistoryLayout extends ReportBaseLayout {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	protected int getLayoutResources(FinanceItem item) {
+		return getAdapterResource();
+	}
 }

@@ -41,6 +41,7 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	protected abstract void onClickAddButton();
 	protected abstract void onClickListItem(AdapterView<?> parent, View view, int position, long id);
 	protected abstract void updateListItem();
+	protected abstract int getLayoutResources(FinanceItem item);
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,7 +178,7 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 				return createSeparator(mInflater, parent, item);
 			}
 			else {
-				convertView = mInflater.inflate(mResource, parent, false);
+				convertView = mInflater.inflate(getLayoutResources(item), parent, false);
 			}
 			
 			setListViewText(item, convertView);

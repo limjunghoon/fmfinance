@@ -112,4 +112,8 @@ public class ReportCurrentExpenseLayout extends ReportBaseLayout {
 		mListItems = mItems;
 	}
 
+	@Override
+	protected int getLayoutResources(FinanceItem item) {
+		return getAdapterResource();
+	}
 }
