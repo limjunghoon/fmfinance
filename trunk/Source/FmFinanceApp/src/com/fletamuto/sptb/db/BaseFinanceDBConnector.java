@@ -11,19 +11,6 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.util.LogTag;
 
 public abstract class BaseFinanceDBConnector extends BaseDBConnector{
-	FinanceDBHelper getDBHelper() {
-		return DBMgr.getDBHelper();
-	}
-	
-	SQLiteDatabase getWritableDatabase() {
-		return getDBHelper().getWritableDatabase();
-	}
-	
-	SQLiteDatabase getReadableDatabase() {
-		return getDBHelper().getReadableDatabase();
-	}
-	
-	
 	public abstract long addItem(FinanceItem item);
 	public abstract long updateItem(FinanceItem item);
 	public abstract long updateAmountFinanceItem(int id, long amount);
