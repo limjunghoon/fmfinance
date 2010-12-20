@@ -10,6 +10,7 @@
 		</LinearLayout>
 	</HorizontalScrollView>    
    	
-<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent"><Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="변경" android:id="@+id/BtnStateAdd"></Button></LinearLayout>
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent"><Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="변경" android:id="@+id/BtnStateAdd" android:layout_weight="1"></Button><Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="환매" android:id="@+id/BtnStateDelete"></Button></LinearLayout>
+
 
 </LinearLayout>
