@@ -19,4 +19,12 @@ public abstract class BaseDBConnector {
 		DBMgr.closeDatabase();
 	}
 	
+	void LOCK() {
+		DBMgr.dbLock();
+	}
+	
+	void UNLOCK() {
+		DBMgr.dbUnLock();
+	}
+	
 }

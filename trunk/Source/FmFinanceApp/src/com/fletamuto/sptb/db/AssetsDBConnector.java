@@ -102,6 +102,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	public  ArrayList<FinanceItem> getAllItems() {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = openDatabase(READ_MODE);
+		LOCK();
 		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
 		
 		queryBilder.setTables("assets, assets_main_category");
@@ -114,6 +115,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 			} while (c.moveToNext());
 		}
 		c.close();
+		UNLOCK();
 		closeDatabase();
 		return assetsItems;
 	}
@@ -288,7 +290,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	
 	public AssetsItem createAssetsItem(int extendID) {
 		if (ItemDef.ExtendAssets.DEPOSIT == extendID) {
-			return new AssetsDepositItem();
+			return getDepositItem(extendID);
 		}
 		else if (ItemDef.ExtendAssets.SAVINGS == extendID) {
 			return new AssetsSavingsItem();
@@ -307,8 +309,9 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		}
 	}
 	
-	public AssetsDepositItem getDepositItem(SQLiteDatabase db, int extendID) {
+	public AssetsDepositItem getDepositItem(int extendID) {
 		AssetsDepositItem depoist = new AssetsDepositItem();
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		
 		Cursor c = db.query("assets_deposit", null, "_id=?", new String[]{String.valueOf(extendID)}, null, null, null);
 		
@@ -320,11 +323,11 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 				e.printStackTrace();
 			}
 			
-			AccountItem account = new AccountItem();
-			account.setID(c.getInt(2));
+			AccountItem account = DBMgr.getAccountItem(c.getInt(2));
 			depoist.setAccount(account);
 		}
 		c.close();
+		closeDatabase();
 		
 		return depoist;
 	}
