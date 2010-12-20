@@ -1,6 +1,5 @@
 package com.fletamuto.sptb.db;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 
