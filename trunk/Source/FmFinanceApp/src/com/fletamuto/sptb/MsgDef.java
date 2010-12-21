@@ -37,6 +37,7 @@ public final class MsgDef {
 		public final static int ACT_STATE_VIEW = 31;
 		public final static int ACT_CHANGE_STATE = 32;
 		public final static int ACT_BOOKMARK_SELECT = 33;
+public final static int ACT_STATE_HISTORY = 34;
 	}
 	
 	public static final class ExtraNames {
@@ -74,6 +75,7 @@ public final class MsgDef {
 		public static final String GET_CARD_INFO_ITEMS = "GET_CARD_INFO_ITEMS";
 		public static final String CARD_BILLING = "CARD_BILLING";
 		public static final String ITEM = "ITEM";
+public static final String ITEM_ID = "ITEM_ID";
 		public static final String INPUT_CHANGE_MODE = "INPUT_CHANGE_MODE";
 		
 	}
