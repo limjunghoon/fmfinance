@@ -11,9 +11,7 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
  *
  */
 public class AssetsDepositItem extends AssetsExtendItem {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 5991940214076046151L;
 
 	public final static int EXEND_TYPE = ItemDef.ExtendAssets.DEPOSIT;
@@ -32,6 +30,8 @@ public class AssetsDepositItem extends AssetsExtendItem {
 	 * °èÁÂ
 	 */
 	private AccountItem mAccount  = new AccountItem();
+	
+	private int mRate;
 	
 
 	/**
@@ -86,6 +86,16 @@ public class AssetsDepositItem extends AssetsExtendItem {
 	public AccountItem getAccount() {
 		return mAccount;
 	}
+
+	public void setRate(int rate) {
+		this.mRate = rate;
+	}
+
+	public int getRate() {
+		return mRate;
+	}
 	
-	
+	public int getExtendType() {
+		return EXEND_TYPE;
+	}
 }

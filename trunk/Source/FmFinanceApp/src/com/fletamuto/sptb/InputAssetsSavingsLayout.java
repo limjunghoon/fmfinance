@@ -128,6 +128,7 @@ public class InputAssetsSavingsLayout extends InputExtendLayout {
 	
     @Override
 	protected void updateAmount(Long amount) {
+    	mSavings.setPayment(amount);
 		super.updateAmount(amount);
 		updateBtnAmountText(R.id.BtnSavingsAmount);
 	}

@@ -7,12 +7,10 @@ package com.fletamuto.sptb.data;
  *
  */
 public class AssetsStockItem extends AssetsExtendItem {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6135037386964932339L;
 	public static final int BUY = 0;
 	public static final int SELL = 1;
+	public final static int EXEND_TYPE = ItemDef.ExtendAssets.STOCK;
 	
 	/**
 	 * 주식 DB테이블 아이디
@@ -71,8 +69,8 @@ public class AssetsStockItem extends AssetsExtendItem {
 	 * 총 구입 수량 설정
 	 * @param mTotalCount
 	 */
-	public void setTotalCount(int mTotalCount) {
-		this.mTotalCount = mTotalCount;
+	public void setTotalCount(long totalCount) {
+		this.mTotalCount = totalCount;
 	}
 
 	/**
@@ -132,5 +130,8 @@ public class AssetsStockItem extends AssetsExtendItem {
 		return mStore;
 	}
 
+	public int getExtendType() {
+		return EXEND_TYPE;
+	}
 
 }

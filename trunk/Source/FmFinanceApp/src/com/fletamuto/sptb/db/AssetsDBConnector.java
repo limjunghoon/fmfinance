@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
-import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
 import com.fletamuto.sptb.data.AssetsInsuranceItem;
@@ -273,7 +272,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	 * @return 자산 아이템
 	 */
 	public AssetsItem createAssetsItem(Cursor c) {
-		AssetsItem item = createAssetsItem(c.getInt(12));
+		AssetsItem item = createAssetsItem(c.getInt(12), c.getInt(7));
 		item.setID(c.getInt(0));
 		try {
 			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
@@ -284,24 +283,24 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		item.setTitle(c.getString(3));
 		item.setMemo(c.getString(4));
 		item.setCategory(c.getInt(5), c.getString(9));
-		item.setExtendID(c.getInt(12));
+		item.setExtendID(c.getInt(7));
 		return item;
 	}
 	
-	public AssetsItem createAssetsItem(int extendID) {
-		if (ItemDef.ExtendAssets.DEPOSIT == extendID) {
+	public AssetsItem createAssetsItem(int extendType, int extendID) {
+		if (ItemDef.ExtendAssets.DEPOSIT == extendType) {
 			return getDepositItem(extendID);
 		}
-		else if (ItemDef.ExtendAssets.SAVINGS == extendID) {
-			return new AssetsSavingsItem();
+		else if (ItemDef.ExtendAssets.SAVINGS == extendType) {
+			return getSavingsItem(extendID);
 		}
-		else if (ItemDef.ExtendAssets.STOCK == extendID) {
-			return new AssetsStockItem();
+		else if (ItemDef.ExtendAssets.STOCK == extendType) {
+			return getStockItem(extendID);
 		}
-		else if (ItemDef.ExtendAssets.FUND == extendID) {
+		else if (ItemDef.ExtendAssets.FUND == extendType) {
 			return new AssetsFundItem();
 		}
-		else if (ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE== extendID) {
+		else if (ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE== extendType) {
 			return new AssetsInsuranceItem();
 		}
 		else {
@@ -309,11 +308,27 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		}
 	}
 	
-	public AssetsDepositItem getDepositItem(int extendID) {
+	private AssetsItem getStockItem(int stockID) {
+		AssetsStockItem stock = new AssetsStockItem();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		Cursor c = db.query("assets_stock", null, "_id=?", new String[]{String.valueOf(stockID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			stock.setStockID(c.getInt(0));
+			stock.setPeresentPrice(c.getLong(1));
+			stock.setTotalCount(c.getLong(2));
+		}
+		c.close();
+		closeDatabase();
+		return stock;
+	}
+
+	public AssetsDepositItem getDepositItem(int depositID) {
 		AssetsDepositItem depoist = new AssetsDepositItem();
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		
-		Cursor c = db.query("assets_deposit", null, "_id=?", new String[]{String.valueOf(extendID)}, null, null, null);
+		Cursor c = db.query("assets_deposit", null, "_id=?", new String[]{String.valueOf(depositID)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			depoist.setDepositID(c.getInt(0));
@@ -323,13 +338,38 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 				e.printStackTrace();
 			}
 			
-			AccountItem account = DBMgr.getAccountItem(c.getInt(2));
-			depoist.setAccount(account);
+			depoist.setRate(c.getInt(2));
+			depoist.setAccount(DBMgr.getAccountItem(c.getInt(3)));
 		}
 		c.close();
 		closeDatabase();
 		
 		return depoist;
+	}
+	
+	public AssetsSavingsItem getSavingsItem(int savingsID) {
+		AssetsSavingsItem savings = new AssetsSavingsItem();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		Cursor c = db.query("assets_savings", null, "_id=?", new String[]{String.valueOf(savingsID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			savings.setSavingsID(c.getInt(0));
+			try {
+				savings.setExpiryDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+			savings.setAccount(DBMgr.getAccountItem(c.getInt(2)));
+			savings.setRate(c.getInt(3));
+			savings.setPayment(c.getLong(4));
+			
+		}
+		c.close();
+		closeDatabase();
+		
+		return savings;
 	}
 	
 	
@@ -683,6 +723,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("expiry_date", deposit.getExpriyDateString());
 		rowItem.put("account", deposit.getAccount().getID());
+		rowItem.put("rate", deposit.getRate());
 		long extend = db.insert("assets_deposit", null, rowItem);
 		closeDatabase();
 		if (extend == -1){
@@ -699,6 +740,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("expiry_date", savings.getExpriyDateString());
 		rowItem.put("account", savings.getAccount().getID());
+		rowItem.put("rate", savings.getRate());
 		rowItem.put("payment", savings.getPayment());
 		long extend = db.insert("assets_savings", null, rowItem);
 		closeDatabase();
@@ -715,6 +757,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("present_price", stock.getPrice());
+		rowItem.put("total_count", stock.getTotalCount());
 		long extend = db.insert("assets_stock", null, rowItem);
 		
 		if (extend == -1){
@@ -789,7 +832,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 
 	private long addDefaultStateChangeItem(AssetsItem item) {
 		long ret = -1;
-		AssetsItem todayItem = (AssetsItem) getStateChangeItem(item.getCreateDate());
+		AssetsItem todayItem = (AssetsItem) getStateChangeItem(item.getID(), item.getCreateDate());
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
@@ -850,11 +893,11 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		
 	}
 	
-	public FinanceItem getStateChangeItem(Calendar calendar) {
+	public FinanceItem getStateChangeItem(int id, Calendar calendar) {
 		AssetsItem assets = null;
 		SQLiteDatabase db = openDatabase(READ_MODE);
-		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())}; 
-		Cursor c = db.query("assets_change_amount", null, "strftime('%Y-%m-%d', change_date)=?", params, null, null, null);
+		String[] params = {String.valueOf(id), FinanceDataFormat.getDateFormat(calendar.getTime())}; 
+		Cursor c = db.query("assets_change_amount", null, "assets_id=? AND strftime('%Y-%m-%d', change_date)=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			assets = new AssetsItem();
