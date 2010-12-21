@@ -24,12 +24,14 @@
     <string name="input_deposit_create_date_name">예금일</string>
     <string name="input_deposit_expiry_date_name">만기일</string>
     <string name="input_deposit_account">계좌</string>
+    <string name="input_deposit_rate">이율</string>
     <string name="input_deposit_memo">메모</string>
     <string name="input_savings_title_name">제목</string>
     <string name="input_savings_amount_name">납입금액</string>
     <string name="input_savings_create_date_name">예금일</string>
     <string name="input_savings_expiry_date_name">만기일</string>
     <string name="input_savings_account">계좌</string>
+    <string name="input_savings_rate">이율</string>
     <string name="input_savings_memo">메모</string>
     <string name="input_stock_title_name">종목</string>
     <string name="input_stock_date_name">날짜</string>

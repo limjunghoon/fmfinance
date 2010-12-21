@@ -81,6 +81,10 @@ public class InputAssetsStockLayout extends InputExtendLayout {
     	String count = ((TextView)findViewById(R.id.ETStockCount)).getText().toString();
     	mStock.setCount(Long.valueOf(count));
     	
+    	if (InputMode.ADD_MODE == mInputMode) {
+    		mStock.setTotalCount(Long.valueOf(count));
+    	}
+    	
     	String store = ((TextView)findViewById(R.id.ETStockStore)).getText().toString();
     	mStock.setStore(store);
     	

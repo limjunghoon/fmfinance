@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.LiabilityItem;
 
 public class ReportLiabilityLayout extends ReportBaseLayout {

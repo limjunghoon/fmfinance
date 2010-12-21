@@ -227,4 +227,8 @@ public abstract class FinanceItem extends BaseItem {
 	public int getExtendID() {
 		return mExtendID;
 	}
+	
+	public int getExtendType() {
+		return ItemDef.EXTEND_NONE;
+	}
 }

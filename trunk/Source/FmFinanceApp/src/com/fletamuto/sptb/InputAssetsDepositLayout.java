@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -115,15 +116,23 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
 		updateBtnAmountText(R.id.BtnDepositAmount);
 		updateEditMemoText(R.id.ETDepositMemo);
 		updateAccountText();
+		updateRateText();
+	}
+
+	private void updateRateText() {
+		((EditText)findViewById(R.id.ETDepositRate)).setText(String.valueOf(mDeposit.getRate()));
 	}
 
 	@Override
 	protected void updateItem() {
 		String memo = ((TextView)findViewById(R.id.ETDepositMemo)).getText().toString();
-    	getItem().setMemo(memo);
+		mDeposit.setMemo(memo);
     	
     	String title = ((TextView)findViewById(R.id.ETDepositTitle)).getText().toString();
-    	getItem().setTitle(title);
+    	mDeposit.setTitle(title);
+    	
+    	String rate = ((TextView)findViewById(R.id.ETDepositRate)).getText().toString();
+    	mDeposit.setRate(Integer.parseInt(rate));
 	}
 	
     @Override

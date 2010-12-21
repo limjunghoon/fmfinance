@@ -11,9 +11,8 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
  *
  */
 public class AssetsSavingsItem extends AssetsExtendItem {
-	/**
-	 * 
-	 */
+	public final static int EXEND_TYPE = ItemDef.ExtendAssets.SAVINGS;
+
 	private static final long serialVersionUID = -411684904811090956L;
 
 	/**
@@ -35,6 +34,8 @@ public class AssetsSavingsItem extends AssetsExtendItem {
 	 * 납입금
 	 */
 	private long mPayment = 0;
+	
+	private int mRate;
 	
 	/**
 	 * 적금 아이디 설정
@@ -103,5 +104,27 @@ public class AssetsSavingsItem extends AssetsExtendItem {
 	 */
 	public long getPayment() {
 		return mPayment;
+	}
+	
+	public void setRate(int rate) {
+		this.mRate = rate;
+	}
+
+	public int getRate() {
+		return mRate;
+	}
+	
+	public int getExtendType() {
+		return EXEND_TYPE;
+	}
+	
+	public int getMonthPeriodTerm() {
+		int monthTerm = 0;
+		int yearTerm = mExpiryDate.get(Calendar.YEAR) - getCreateDate().get(Calendar.YEAR);
+		if (yearTerm > 0) {
+			monthTerm = yearTerm * 12;
+		}
+		
+		return  monthTerm  + (mExpiryDate.get(Calendar.MONTH) - getCreateDate().get(Calendar.MONTH));
 	}
 }

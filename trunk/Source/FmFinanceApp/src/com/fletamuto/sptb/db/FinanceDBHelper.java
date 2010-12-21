@@ -287,6 +287,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"expiry_date DATE," +
 					"account INTEGER," +
+					"rate INTEGER," +
 					"payment INTEGER NOT NULL);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
@@ -302,6 +303,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			db.execSQL("CREATE TABLE assets_deposit ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"expiry_date DATE," +
+					"rate INTEGER," +
 					"account INTEGER);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
@@ -380,7 +382,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		try {
 			db.execSQL("CREATE TABLE assets_stock ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-					"present_price INTEGER);");
+					"present_price INTEGER NOT NULL," +
+					"total_count INTEGER NOT NULL);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
