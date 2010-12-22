@@ -11,10 +11,8 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
  *
  */
 public class AssetsInsuranceItem extends AssetsExtendItem {
-	
-	/**
-	 * 
-	 */
+	public final static int EXEND_TYPE = ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE;
+ 
 	private static final long serialVersionUID = -2224085382368286553L;
 
 	/**
@@ -33,6 +31,10 @@ public class AssetsInsuranceItem extends AssetsExtendItem {
 	private long mPayment = 0;
 	
 	private String mCompany;
+	
+	public AssetsInsuranceItem() {
+		mExpiryDate.add(Calendar.YEAR, 1);
+	}
 	
 
 	/**
@@ -111,6 +113,20 @@ public class AssetsInsuranceItem extends AssetsExtendItem {
 	 */
 	public String getCompany() {
 		return mCompany;
+	}
+	
+	public int getExtendType() {
+		return EXEND_TYPE;
+	}
+	
+	public int getMonthPeriodTerm() {
+		int monthTerm = 0;
+		int yearTerm = mExpiryDate.get(Calendar.YEAR) - getCreateDate().get(Calendar.YEAR);
+		if (yearTerm > 0) {
+			monthTerm = yearTerm * 12;
+		}
+		
+		return  monthTerm  + (mExpiryDate.get(Calendar.MONTH) - getCreateDate().get(Calendar.MONTH));
 	}
 	
 }

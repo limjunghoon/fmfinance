@@ -43,6 +43,9 @@ public abstract class FinanceItem extends BaseItem {
 	/** 확장아이디 */
 	private int mExtendID = -1;
 	
+	/** 수량*/
+	private int mCount = 1;
+	
 	/**
 	 * 수입, 지출, 자산, 부채 타입을 얻는다.
 	 * @return int 수입, 지출, 자산, 부채
@@ -230,5 +233,15 @@ public abstract class FinanceItem extends BaseItem {
 	
 	public int getExtendType() {
 		return ItemDef.EXTEND_NONE;
+	}
+
+
+	public void setCount(int mCount) {
+		this.mCount = mCount;
+	}
+
+
+	public int getCount() {
+		return mCount;
 	}
 }

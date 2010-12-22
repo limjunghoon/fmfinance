@@ -31,7 +31,6 @@ public class EditAccountLayout extends FmBaseActivity {
 	public static final int ACT_ADD_ACCOUNT = 0;
 	private ArrayList<AccountItem> mAccountListItems = new ArrayList<AccountItem>();
 	protected AccountItemAdapter mAdapterAccount;
-	private String [] mAccountTypes;
 	private int mEditPositieon = -1;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,6 @@ public class EditAccountLayout extends FmBaseActivity {
         
         setContentView(R.layout.edit_account, true);
         
-        mAccountTypes = getResources().getStringArray(R.array.account_type);
         setAdapterList();
     }
 
@@ -107,19 +105,7 @@ public class EditAccountLayout extends FmBaseActivity {
 		else {
 			((TextView)convertView.findViewById(R.id.TVAccountReportListNumer)).setText("번호 : " + account.getNumber());			
 			((TextView)convertView.findViewById(R.id.TVAccountReportListBalance)).setText(String.format("잔액 : %,d원", account.getBalance()));
-			((TextView)convertView.findViewById(R.id.TVAccountReportListType)).setText("종류 : " + getAccoutTypeName(account.getType()));
-		}
-	}
-	
-	protected String getAccoutTypeName(int index) {
-		if (mAccountTypes == null) return null;
-		//if (index >= mAccountTypes.length) return null;
-		
-		if (index == AccountItem.MY_POCKET) {
-			return "내 주머니";
-		}
-		else {
-			return "예금";
+			((TextView)convertView.findViewById(R.id.TVAccountReportListType)).setText("종류 : " + AccountItem.getTypeName(account.getType()));
 		}
 	}
 	

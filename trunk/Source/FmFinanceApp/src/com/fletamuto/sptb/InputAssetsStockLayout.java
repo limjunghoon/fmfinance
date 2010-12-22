@@ -36,6 +36,7 @@ public class InputAssetsStockLayout extends InputExtendLayout {
         setDateBtnClickListener(R.id.BtnStocktDate);
         setAmountBtnClickListener(R.id.BtnStockPrice);
     }
+    
 
 	@Override
 	protected void updateRepeat(int type, int value) {
@@ -79,17 +80,20 @@ public class InputAssetsStockLayout extends InputExtendLayout {
     	mStock.setTitle(title);
     	
     	String count = ((TextView)findViewById(R.id.ETStockCount)).getText().toString();
-    	mStock.setCount(Long.valueOf(count));
+    	if (count.length() == 0) {
+    		count = "0";
+    	}
     	
-    	if (InputMode.ADD_MODE == mInputMode) {
+		mStock.setCount(Integer.valueOf(count));
+		
+		if (InputMode.ADD_MODE == mInputMode) {
     		mStock.setTotalCount(Long.valueOf(count));
     	}
     	
     	String store = ((TextView)findViewById(R.id.ETStockStore)).getText().toString();
     	mStock.setStore(store);
     	
-    	long TatalAmount = mStock.getCount() * mStock.getPrice();
-    	mStock.setAmount(TatalAmount);
+    	mStock.setAmount(mStock.getPrice());
 	}
 	
     @Override
@@ -105,12 +109,17 @@ public class InputAssetsStockLayout extends InputExtendLayout {
     
     @Override
     public boolean checkInputData() {
+    	if (mStock.getTitle().length() == 0) {
+    		displayAlertMessage("종목이 입력되지 않았습니다.");
+    		return false;
+    	}
+    	
     	if (mStock.getPrice() == 0L) {
     		displayAlertMessage(getResources().getString(R.string.input_warning_msg_not_amount));
     		return false;
     	}
     	
-    	if (mStock.getCount() == 0L) {
+    	if (mStock.getCount() == 0) {
     		displayAlertMessage("수량이 입력되지 않았습니다. ");
     		return false;
     	}

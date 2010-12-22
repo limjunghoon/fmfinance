@@ -56,14 +56,27 @@ public class SelectAccountLayout extends Activity {
 			
 			int size = mArrAccount.size();
 			for (int index = 0; index < size; index++) {
-				if (mArrAccount.get(index).getID() == mExceptionID) {
+				AccountItem account = mArrAccount.get(index); 
+				if (account.getID() == mExceptionID) {
 					mArrAccount.remove(index);
 					break;
+				}
+				
+				if (account.getType() == AccountItem.TIME_DEPOSIT || account.getType() == AccountItem.SAVINGS) {
+					mArrAccount.remove(index);
 				}
 			}
 		}
 		else {
 			mArrAccount = DBMgr.getAccountAllItems();
+			int size = mArrAccount.size();
+			for (int index = 0; index < size; index++) {
+				AccountItem account = mArrAccount.get(index);
+				
+				if (account.getType() == AccountItem.TIME_DEPOSIT || account.getType() == AccountItem.SAVINGS) {
+					mArrAccount.remove(index);
+				}
+			}
 		}
 		
     }

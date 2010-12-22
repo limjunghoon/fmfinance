@@ -53,6 +53,7 @@ public final static int ACT_STATE_HISTORY = 34;
 		public static final String CARD_EXPENSE_INFO_ITEM = "CARD_EXPENSE_INFO_ITEM";
 		public static final String ACCOUNT_ID = "ACCOUNT_ID";
 		public static final String ACCOUNT_ITEM = "ACCOUNT_ITEM";
+		public static final String ACCOUNT_TYPE = "ACCOUNT_TYPE";
 		public static final String INSTALLMENT_PLAN = "INSTALLMENT_PLAN";
 		public static final String COMPANY_ID = "COMPANY_ID";
 		public static final String RPEAT_TYPE = "RPEAT_TYPE";

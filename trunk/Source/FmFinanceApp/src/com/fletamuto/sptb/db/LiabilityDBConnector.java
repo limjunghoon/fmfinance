@@ -10,8 +10,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
+import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.LiabilityCashServiceItem;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.data.LiabilityLoanItem;
@@ -104,7 +107,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		if (c.moveToFirst() != false) {
 			do {
-				LiabilityItems.add(CreateLiabilityItem(c));
+				LiabilityItems.add(createLiabilityItem(c));
 			} while (c.moveToNext());
 		}
 		c.close();
@@ -129,7 +132,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		if (c.moveToFirst() != false) {
 			do {
-				LiabilityItems.add(CreateLiabilityItem(c));
+				LiabilityItems.add(createLiabilityItem(c));
 			} while (c.moveToNext());
 		}
 		c.close();
@@ -148,7 +151,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		if (c.moveToFirst() != false) {
 			do {
-				LiabilityItems.add(CreateLiabilityItem(c));
+				LiabilityItems.add(createLiabilityItem(c));
 			} while (c.moveToNext());
 		}
 		c.close();
@@ -168,7 +171,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		if (c.moveToFirst() != false) {
 			do {
-				assetsItems.add(CreateLiabilityItem(c));
+				assetsItems.add(createLiabilityItem(c));
 			} while (c.moveToNext());
 		}
 		c.close();
@@ -189,7 +192,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		if (c.moveToFirst() != false) {
 			do {
-				assetsItems.add(CreateLiabilityItem(c));
+				assetsItems.add(createLiabilityItem(c));
 			} while (c.moveToNext());
 		}
 		c.close();
@@ -209,7 +212,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		if (c.moveToFirst() != false) {
 			do {
-				assetsItems.add(CreateLiabilityItem(c));
+				assetsItems.add(createLiabilityItem(c));
 			} while (c.moveToNext());
 		}
 		c.close();
@@ -229,7 +232,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		if (c.moveToFirst() != false) {
 			do {
-				assetsItems.add(CreateLiabilityItem(c));
+				assetsItems.add(createLiabilityItem(c));
 			} while (c.moveToNext());
 		}
 		c.close();
@@ -252,7 +255,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		Cursor c = queryBilder.query(db, null, "liability._id=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
-				item = CreateLiabilityItem(c);
+			item = createLiabilityItem(c);
 		}
 		c.close();
 		closeDatabase();
@@ -264,8 +267,8 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 * @param c Cursor
 	 * @return 부채 아이템
 	 */
-	public LiabilityItem CreateLiabilityItem(Cursor c) {
-		LiabilityItem item = new LiabilityItem();
+	public LiabilityItem createLiabilityItem(Cursor c) {
+		LiabilityItem item = createLiabilityItem(c.getInt(12), c.getInt(7));
 		item.setID(c.getInt(0));
 		try {
 			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
@@ -278,6 +281,36 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		item.setCategory(c.getInt(5), c.getString(9));
 		
 		return item;
+	}
+	
+	public LiabilityItem createLiabilityItem(int extendType, int extendID) {
+		if (ItemDef.ExtendLiablility.LOAN == extendType) {
+			return getLoanItem(extendID);
+		}
+		else if (ItemDef.ExtendLiablility.CASH_SERVICE == extendType) {
+			return new LiabilityCashServiceItem();
+		}
+		else if (ItemDef.ExtendLiablility.PERSON_LOAN == extendType) {
+			return new LiabilityPersonLoanItem();
+		}
+		else {
+			return new LiabilityItem();
+		}
+	}
+	
+	private LiabilityItem getLoanItem(int stockID) {
+		LiabilityLoanItem loan = new LiabilityLoanItem();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		Cursor c = db.query("liability_loan", null, "_id=?", new String[]{String.valueOf(stockID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			loan.setLoanID(c.getInt(0));
+			loan.setCompany(DBMgr.getCompany(c.getInt(1)));
+		}
+		c.close();
+		closeDatabase();
+		return loan;
 	}
 	
 	/**

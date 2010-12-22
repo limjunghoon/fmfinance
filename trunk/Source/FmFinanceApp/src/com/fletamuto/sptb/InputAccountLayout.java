@@ -30,6 +30,13 @@ public class InputAccountLayout extends InputBaseLayout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_account, true);
         
+    	int type = getIntent().getIntExtra(MsgDef.ExtraNames.ACCOUNT_TYPE, AccountItem.ORDINARY_DEPOSIT); 
+    	if (type != AccountItem.ORDINARY_DEPOSIT) {
+    		findViewById(R.id.LLAccountType).setVisibility(View.GONE);
+    		findViewById(R.id.LLAccountBalance).setVisibility(View.GONE);
+    		mAccount.setType(type);
+    	}
+        
         updateChildView();
         setAmountBtnClickListener(R.id.BtnAccountAmount);
         setSelectCompanyBtnClickListener();
@@ -37,7 +44,7 @@ public class InputAccountLayout extends InputBaseLayout {
     
 	@Override
 	protected void setTitleBtn() {
-		setTitle(getResources().getString(R.string.input_account_title));
+		setTitle("계좌 등록");
 		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "완료");
 		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
 		

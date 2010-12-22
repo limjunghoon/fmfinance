@@ -199,7 +199,7 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     }
     
     public boolean checkInputData() {
-    	if (mItem.getCategory() == null) {
+    	if (mItem.getCategory().getID() == -1) {
     		displayAlertMessage(getResources().getString(R.string.input_warning_msg_not_category));
     		return false;
     	}

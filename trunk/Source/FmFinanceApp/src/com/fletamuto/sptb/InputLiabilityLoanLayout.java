@@ -146,7 +146,6 @@ public class InputLiabilityLoanLayout extends InputExtendLayout {
 		if (company == null){
 			return;
 		}
-		
 		mLoan.setCompany(company);
 		updateCompanyNameText();
 	}
@@ -161,6 +160,5 @@ public class InputLiabilityLoanLayout extends InputExtendLayout {
 		else {
 			((Button)findViewById(R.id.BtnLoanCompany)).setText(String.format("%s", mLoan.getCompany().getName()));
 		}
-		
 	}
 }

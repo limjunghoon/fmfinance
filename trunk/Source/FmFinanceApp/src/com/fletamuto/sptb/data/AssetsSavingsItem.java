@@ -37,6 +37,10 @@ public class AssetsSavingsItem extends AssetsExtendItem {
 	
 	private int mRate;
 	
+	public AssetsSavingsItem() {
+		mExpiryDate.add(Calendar.YEAR, 1);
+	}
+	
 	/**
 	 * 적금 아이디 설정
 	 * @param mDepositID 적금 아이디
