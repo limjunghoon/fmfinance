@@ -33,6 +33,10 @@ public class AssetsDepositItem extends AssetsExtendItem {
 	
 	private int mRate;
 	
+	
+	public AssetsDepositItem() {
+		mExpiryDate.add(Calendar.YEAR, 1);
+	}
 
 	/**
 	 * 예금 아이디 설정

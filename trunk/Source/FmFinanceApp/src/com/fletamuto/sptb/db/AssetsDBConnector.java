@@ -41,7 +41,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("create_date", item.getCreateDateString());
-		rowItem.put("amount", item.getAmount());
+		rowItem.put("amount", item.getAmount() * item.getCount());
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getID());
@@ -298,10 +298,10 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 			return getStockItem(extendID);
 		}
 		else if (ItemDef.ExtendAssets.FUND == extendType) {
-			return new AssetsFundItem();
+			return getFundItem(extendID);
 		}
 		else if (ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE== extendType) {
-			return new AssetsInsuranceItem();
+			return getInsuranceItem(extendID);
 		}
 		else {
 			return new AssetsItem();
@@ -370,6 +370,46 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		closeDatabase();
 		
 		return savings;
+	}
+	
+	public AssetsInsuranceItem getInsuranceItem(int insuranceID) {
+		AssetsInsuranceItem insurance = new AssetsInsuranceItem();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		Cursor c = db.query("assets_endowment_mortgage", null, "_id=?", new String[]{String.valueOf(insuranceID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			insurance.setInsuranceID(c.getInt(0));
+			try {
+				insurance.setExpiryDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+			insurance.setPayment(c.getLong(2));
+			insurance.setCompany(c.getString(3));
+			
+		}
+		c.close();
+		closeDatabase();
+		
+		return insurance;
+	}
+	
+	public AssetsFundItem getFundItem(int fundID) {
+		AssetsFundItem fund = new AssetsFundItem();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		Cursor c = db.query("assets_stock", null, "_id=?", new String[]{String.valueOf(fundID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			fund.setFundID(c.getInt(0));
+			fund.setMeanPrice(c.getLong(1));
+			fund.setStore(c.getString(2));
+		}
+		c.close();
+		closeDatabase();
+		return fund;
 	}
 	
 	
@@ -786,7 +826,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
-		rowItem.put("mena_price", fund.getAmount());
+		rowItem.put("mean_price", fund.getAmount());
 		rowItem.put("store", fund.getStore());
 		long extend = db.insert("assets_fund", null, rowItem);
 		
@@ -840,6 +880,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("change_date", item.getCreateDateString());
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("memo", item.getMemo());
+		rowItem.put("count", item.getCount());
 		
 		if (todayItem == null) {
 			ret = db.insert("assets_change_amount", null, rowItem);
@@ -860,7 +901,6 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		}
 		
 //		int extendID = item.getExtendID();
-//		
 //		if (extendID == -1) {
 			return addDefaultStateChangeItem(item);
 //		}
@@ -884,6 +924,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 				}
 				assets.setAmount(c.getLong(3));
 				assets.setMemo(c.getString(5));
+				assets.setCount(c.getInt(6));
 				assetsItems.add(assets);
 			} while (c.moveToNext());
 		}
@@ -913,7 +954,24 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		c.close();
 		closeDatabase();
 		return assets;
+	}
+	
+	public long getMeanPrice(int id) {
+		long amount = 0L;
+		int count = 1;
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		 
+		String query = "SELECT SUM(amount*count), SUM(count) FROM assets_change_amount WHERE assets_id=?";
+		Cursor c = db.rawQuery(query, new String[] {String.valueOf(id)});
 		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+			count = c.getInt(1);
+			if (count == 0) count = 1;
+		}
+		c.close();
+		closeDatabase();
+		return amount / count;
 	}
 
 	public ArrayList<Long> getTotalAssetAmountMonthInYear(int assetsID, int year) {
@@ -923,16 +981,14 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		
 		for (int month = 1; month <= 12; month++) {
 			String[] params = {String.valueOf(assetsID),  String.format("%d-%02d", year, month)};
-			String query = "SELECT amount FROM assets_change_amount WHERE assets_id=? AND strftime('%Y-%m', change_date)=? ORDER BY change_date DESC";
+			String query = "SELECT amount, count FROM assets_change_amount WHERE assets_id=? AND strftime('%Y-%m', change_date)=? ORDER BY change_date DESC";
 			Cursor c = db.rawQuery(query, params);
 			
 			if (c.moveToFirst() != false) {
-				lastAmount = c.getLong(0);
-				amountArr.add(lastAmount);
+				lastAmount = c.getLong(0) * c.getInt(1);
 			}
-			else {
-				amountArr.add(lastAmount);
-			}
+
+			amountArr.add(lastAmount);
 			c.close();
 		}
 		
@@ -943,10 +999,10 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	public long getPurchasePrice(int id) {
 		long amount = 0L;
 		SQLiteDatabase db = openDatabase(READ_MODE); 
-		Cursor c = db.query("assets_change_amount", new String[] {"amount"}, "assets_id=?", new String[] {String.valueOf(id)}, null, null, "change_date");
+		Cursor c = db.query("assets_change_amount", new String[] {"amount, count"}, "assets_id=?", new String[] {String.valueOf(id)}, null, null, "change_date");
 		
 		if (c.moveToFirst() != false) {
-			amount = c.getLong(0);
+			amount = c.getLong(0) * c.getInt(1);
 		}
 		c.close();
 		closeDatabase();
@@ -956,10 +1012,10 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	public long getLatestPrice(int id) {
 		long amount = 0L;
 		SQLiteDatabase db = openDatabase(READ_MODE); 
-		Cursor c = db.query("assets_change_amount", new String[] {"amount"}, "assets_id=?", new String[] {String.valueOf(id)}, null, null, "change_date DESC");
+		Cursor c = db.query("assets_change_amount", new String[] {"amount, count"}, "assets_id=?", new String[] {String.valueOf(id)}, null, null, "change_date DESC");
 		
 		if (c.moveToFirst() != false) {
-			amount = c.getLong(0);
+			amount = c.getLong(0) * c.getInt(1);
 		}
 		c.close();
 		closeDatabase();

@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsDepositItem;
+import com.fletamuto.sptb.data.AssetsFundItem;
+import com.fletamuto.sptb.data.AssetsInsuranceItem;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.AssetsSavingsItem;
 import com.fletamuto.sptb.data.AssetsStockItem;
@@ -65,12 +67,40 @@ public class ReportAssetsLayout extends ReportBaseLayout {
     	else if (extendType == ItemDef.ExtendAssets.STOCK) {
     		setListViewTextStock((AssetsStockItem)item, convertView);
 		}
+    	else if (extendType == ItemDef.ExtendAssets.FUND) {
+    		setListViewTextFund((AssetsFundItem)item, convertView);
+		}
+    	else if (extendType == ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE) {
+    		setListViewTextInsurance((AssetsInsuranceItem)item, convertView);
+		}
     	else {
     		setListViewTextDefault(item, convertView);
     	}
 	}
     
-    protected void setListViewTextDeposit(AssetsDepositItem deposit, View convertView) {
+    private void setListViewTextInsurance(AssetsInsuranceItem insurance,
+			View convertView) {
+		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceTitle)).setText("제목 : " + insurance.getTitle());
+		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceCreateDate)).setText("개설일자 : " + insurance.getCreateDateString());
+		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceExpiryDate)).setText("만료일자 : " + insurance.getExpriyDateString());
+		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceAmount)).setText(String.format("금액 : %,d원 (%d/%d)", insurance.getAmount(), 1, insurance.getMonthPeriodTerm()));
+		((TextView)convertView.findViewById(R.id.TVAssetsInsurancePayment)).setText(String.format("납입금 : %,d원", insurance.getPayment()));
+		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceMemo)).setText("메모 : " + insurance.getMemo());
+	}
+
+	private void setListViewTextFund(AssetsFundItem item, View convertView) {
+    	((TextView)convertView.findViewById(R.id.TVAssetsFundTitle)).setText("제목 : " + item.getTitle());
+		((TextView)convertView.findViewById(R.id.TVAssetsFundAmount)).setText(String.format("평가금액 :  %,d원", item.getAmount()));
+		
+		((TextView)convertView.findViewById(R.id.TVAssetsFundMeanPrice)).setText(String.format("평균구입 금액 : %,d원", DBMgr.getAssetsMeanPrice(item.getID())));
+		((TextView)convertView.findViewById(R.id.TVAssetsFundMemo)).setText("메모 : " + item.getMemo());
+		
+		// 속도 개선 필요
+		long purchasePrice = DBMgr.getAssetsPurchasePrice(item.getID());
+		((TextView)convertView.findViewById(R.id.TVAssetsFundRevenue)).setText(String.format("수익율 : %s", Revenue.getString(purchasePrice, item.getAmount())));
+	}
+
+	protected void setListViewTextDeposit(AssetsDepositItem deposit, View convertView) {
 		if (deposit.getAccount() != null) {
 			((TextView)convertView.findViewById(R.id.TVAssetsDepositBankingName)).setText("은행 : " + deposit.getAccount().getCompany().getName());
 		}
@@ -98,6 +128,7 @@ public class ReportAssetsLayout extends ReportBaseLayout {
     protected void setListViewTextStock(AssetsStockItem stock, View convertView) {
 		((TextView)convertView.findViewById(R.id.TVAssetsStockTitle)).setText("종목 : " + stock.getTitle());
 		((TextView)convertView.findViewById(R.id.TVAssetsStockAmount)).setText(String.format("평가금액 :  %,d원", stock.getAmount()));
+		((TextView)convertView.findViewById(R.id.TVAssetsStockMeanPrice)).setText(String.format("평균구입 금액 : %,d원", DBMgr.getAssetsMeanPrice(stock.getID())));
 		((TextView)convertView.findViewById(R.id.TVAssetsStockCurrentPrice)).setText(String.format("현재가 : %,d원", stock.getPeresentPrice()));
 		((TextView)convertView.findViewById(R.id.TVAssetsStockCount)).setText("수량 : " + stock.getTotalCount() + "주");
 		((TextView)convertView.findViewById(R.id.TVAssetsStockMemo)).setText("메모 : " + stock.getMemo());
@@ -168,9 +199,7 @@ public class ReportAssetsLayout extends ReportBaseLayout {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_ADD_ASSETS) {
 			if (resultCode == RESULT_OK) {
-				getDate();
-		        setAdapterList();
-		        updateChildView();
+				
     		}
     	}
 		
@@ -187,6 +216,12 @@ public class ReportAssetsLayout extends ReportBaseLayout {
 		}
 		else if (item.getExtendType() == ItemDef.ExtendAssets.STOCK) {
 			return R.layout.report_list_assets_stock;
+		}
+		else if (item.getExtendType() == ItemDef.ExtendAssets.FUND) {
+			return R.layout.report_list_assets_fund;
+		}
+		else if (item.getExtendType() == ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE) {
+			return R.layout.report_list_assets_insurance;
 		}
 		else {
 			return getAdapterResource();

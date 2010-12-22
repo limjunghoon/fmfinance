@@ -11,8 +11,17 @@ public class AccountItem extends BaseItem {
 	 */
 	private static final long serialVersionUID = 5366848481035789230L;
 
+	/** 내 주머니 */
 	public final static int MY_POCKET = 0;
+	
+	/** 보통 예금 */
 	public final static int ORDINARY_DEPOSIT = 1;
+	
+	/** 정기 예금 */
+	public final static int TIME_DEPOSIT = 2;
+	
+	/** 적금 */
+	public final static int SAVINGS = 3;
 	
 	private String mNumber;
 	private long mBalance = 0L;
@@ -22,6 +31,8 @@ public class AccountItem extends BaseItem {
 	private String mMemo;
 	private String mName;
 	private int mType = ORDINARY_DEPOSIT;
+	
+	private static String mTypeNames[] = {"내 주머니", "예금", "정기예금", "적금"};
 
 	
 	public void setNumber(String number) {
@@ -115,5 +126,10 @@ public class AccountItem extends BaseItem {
 	 */
 	public String getExpiryDateString() {
 		return FinanceDataFormat.getDateFormat(mCreateDate.getTime());
+	}
+	
+	public static String getTypeName(int type) {
+		if (type >= mTypeNames.length) return "";  
+		return mTypeNames[type];
 	}
 }

@@ -2,14 +2,13 @@ package com.fletamuto.sptb;
 
 import java.util.Calendar;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsInsuranceItem;
@@ -42,27 +41,30 @@ public class InputAssetsInsuranceLayout extends InputExtendLayout {
         setExpiryBtnClickListener(R.id.BtnInsuranceExpiryDate);
     }
     
-    DatePickerDialog.OnDateSetListener expiryDlg = new DatePickerDialog.OnDateSetListener() {
-		
-		public void onDateSet(DatePicker view, int year, int monthOfYear,
-				int dayOfMonth) {
-
-			mInsurance.getExpiryDate().set(Calendar.YEAR, year);
-			mInsurance.getExpiryDate().set(Calendar.MONTH, monthOfYear);
-			mInsurance.getExpiryDate().set(Calendar.DAY_OF_MONTH, dayOfMonth);
-			updateDate();
-		}
-	};
-	
+    public boolean checkInputData() {
+    	if (mInsurance.getCreateDate().after(mInsurance.getExpiryDate())) {
+    		displayAlertMessage("만기일을 다시 지정해 주세요");
+    		return false;
+    	}
+    	
+    	return super.checkInputData();
+    };
 
 	private void setExpiryBtnClickListener(int resource) {
 		((Button)findViewById(resource)).setOnClickListener(new Button.OnClickListener() {
 			
 			public void onClick(View v) {
-				new DatePickerDialog(InputAssetsInsuranceLayout.this, expiryDlg, 
-						mInsurance.getExpiryDate().get(Calendar.YEAR),
-						mInsurance.getExpiryDate().get(Calendar.MONTH), 
-						mInsurance.getExpiryDate().get(Calendar.DAY_OF_MONTH)).show(); 				
+				monthlyCalendar.showMonthlyCalendarPopup();
+				monthlyCalendar.getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
+					
+					public void onDismiss() {
+						if (monthlyCalendar.getSelectCalendar() == null) return;
+						mInsurance.getExpiryDate().set(Calendar.YEAR, monthlyCalendar.getSelectCalendar().get(Calendar.YEAR));
+						mInsurance.getExpiryDate().set(Calendar.MONTH, monthlyCalendar.getSelectCalendar().get(Calendar.MONTH));
+						mInsurance.getExpiryDate().set(Calendar.DAY_OF_MONTH, monthlyCalendar.getSelectCalendar().get(Calendar.DAY_OF_MONTH));
+						updateExpiryDate();
+					}
+				});					
 			}
 		 });
 	}

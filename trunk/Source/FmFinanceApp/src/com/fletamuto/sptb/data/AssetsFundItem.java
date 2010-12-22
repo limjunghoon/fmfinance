@@ -7,9 +7,8 @@ package com.fletamuto.sptb.data;
  *
  */
 public class AssetsFundItem extends AssetsExtendItem {
-	/**
-	 * 
-	 */
+	public final static int EXEND_TYPE = ItemDef.ExtendAssets.FUND;
+	
 	private static final long serialVersionUID = 9044769708788641644L;
 
 	/**
@@ -75,5 +74,7 @@ public class AssetsFundItem extends AssetsExtendItem {
 		return mStore;
 	}
 
-
+	public int getExtendType() {
+		return EXEND_TYPE;
+	}
 }

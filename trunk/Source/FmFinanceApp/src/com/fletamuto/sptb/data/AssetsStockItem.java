@@ -22,10 +22,6 @@ public class AssetsStockItem extends AssetsExtendItem {
 	 */
 	private long mTotalCount = 0;
 	
-	/**
-	 * 신규로 구입한 주식 수
-	 */
-	private long mCount = 0;
 	
 	/**
 	 * 현재 가격
@@ -95,15 +91,6 @@ public class AssetsStockItem extends AssetsExtendItem {
 	 */
 	public long getMeanPrice() {
 		return mMeanPrice;
-	}
-
-
-	public void setCount(long count) {
-		this.mCount = count;
-	}
-
-	public long getCount() {
-		return mCount;
 	}
 
 	public void setPeresentPrice(long peresentPrice) {

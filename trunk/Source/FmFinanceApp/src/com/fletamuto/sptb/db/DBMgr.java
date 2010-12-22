@@ -690,6 +690,10 @@ public final class DBMgr {
 		return getAssetsDBConnecter().getStateItems(id);
 	}
 	
+	public static long getAssetsMeanPrice(int id) {
+		return getAssetsDBConnecter().getMeanPrice(id);
+	}
+	
 	public static ArrayList<Long> getTotalLiabilityAmountMonthInYear(int assetsID, int year) {
 		return getLiabilityDBConnecter().getTotalLiabilityAmountMonthInYear(assetsID, year);
 	}
@@ -705,8 +709,8 @@ public final class DBMgr {
 	public static int addOpneUsedItem(int type, int id) {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(type).addOpneUsedItem(id);
 	}
-
-
+	
+	
 
 
 

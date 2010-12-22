@@ -30,7 +30,6 @@ public class AccountLayout extends FmBaseActivity {
 	private long mTatalBalance = 0L;
 	private ArrayList<AccountItem> mAccountListItems = new ArrayList<AccountItem>();
 	protected AccountItemAdapter mAdapterAccount;
-	private String [] mAccountTypes;
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +64,6 @@ public class AccountLayout extends FmBaseActivity {
 		mAccountListItems.clear();
 		
 		addSeparator(DBMgr.getAccountAllItems());
-		mAccountTypes = getResources().getStringArray(R.array.account_type);
     }
 	
 	private void addSeparator(ArrayList<AccountItem> arrAccount) {
@@ -132,22 +130,11 @@ public class AccountLayout extends FmBaseActivity {
 		else {
 			((TextView)convertView.findViewById(R.id.TVAccountReportListNumer)).setText("번호 : " + account.getNumber());			
 			((TextView)convertView.findViewById(R.id.TVAccountReportListBalance)).setText(String.format("잔액 : %,d원", account.getBalance()));
-			((TextView)convertView.findViewById(R.id.TVAccountReportListType)).setText("종류 : " + getAccoutTypeName(account.getType()));
+			((TextView)convertView.findViewById(R.id.TVAccountReportListType)).setText("종류 : " + AccountItem.getTypeName(account.getType()));
 			((TextView)convertView.findViewById(R.id.TVAccountReportListInstitution)).setVisibility(View.GONE);
 		}
 	}
 	
-	protected String getAccoutTypeName(int index) {
-		if (mAccountTypes == null) return null;
-		//if (index >= mAccountTypes.length) return null;
-		
-		if (index == AccountItem.MY_POCKET) {
-			return "내 주머니";
-		}
-		else {
-			return "예금";
-		}
-	}
 	
 	public class AccountItemAdapter extends ArrayAdapter<AccountItem> {
     	private int mResource;
@@ -194,7 +181,13 @@ public class AccountLayout extends FmBaseActivity {
 	
 	private void setTransferBtnListener(View convertView, AccountItem item, final int position) {
     	Button btnTransfer = (Button)convertView.findViewById(R.id.BtnReportAccountTransfer);
-    	btnTransfer.setEnabled(item.getBalance() != 0L);
+    	if (item.getType() == AccountItem.TIME_DEPOSIT || item.getType() == AccountItem.SAVINGS) {
+    		btnTransfer.setVisibility(View.GONE);
+    	}
+    	else {
+    		btnTransfer.setEnabled(item.getBalance() != 0L);
+    	}
+    	
 		btnTransfer.setOnClickListener(new View.OnClickListener() {
 	
 			public void onClick(View v) {

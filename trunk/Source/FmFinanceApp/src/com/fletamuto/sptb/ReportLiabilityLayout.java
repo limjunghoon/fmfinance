@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.LiabilityItem;
+import com.fletamuto.sptb.data.LiabilityLoanItem;
 
 public class ReportLiabilityLayout extends ReportBaseLayout {
 	private long mTotalAmount = 0L;
@@ -45,16 +47,42 @@ public class ReportLiabilityLayout extends ReportBaseLayout {
     	startActivityForResult(intent, MsgDef.ActRequest.ACT_STATE_VIEW);
 	}
     
-    protected void setListViewText(FinanceItem financeItem, View convertView) {
-    	LiabilityItem item = (LiabilityItem)financeItem;
+    protected void setListViewText(FinanceItem item, View convertView) {
+    	int extendType = item.getExtendType();
+    	
+    	if (extendType == ItemDef.ExtendLiablility.LOAN) {
+    		setListViewTextLoan((LiabilityLoanItem)item, convertView);
+		}
+//    	else if (extendType == ItemDef.ExtendLiablility.CASH_SERVICE) {
+//    		setListViewTextSavings((AssetsSavingsItem)item, convertView);
+//		}
+//    	else if (extendType == ItemDef.ExtendLiablility.PERSON_LOAN) {
+//    		setListViewTextStock((AssetsStockItem)item, convertView);
+//		}
+    	else {
+    		setListViewTextDefault(item, convertView);
+    	}
+	}
+    
+    private void setListViewTextLoan(LiabilityLoanItem loan, View convertView) {
+    	if (loan.getCompany().getID() != -1) {
+    		((TextView)convertView.findViewById(R.id.TVLiabilityLoanCompany)).setText("회사 : " + loan.getCompany().getName());
+    	}
+    	((TextView)convertView.findViewById(R.id.TVLiabilityLoanTitle)).setText("제목 : " + loan.getTitle());
+		((TextView)convertView.findViewById(R.id.TVLiabilityLoanDate)).setText("대출 받은날짜 : " + loan.getCreateDateString());			
+		((TextView)convertView.findViewById(R.id.TVLiabilityLoanAmount)).setText(String.format("대출금액 : %,d원", loan.getAmount()));
+		((TextView)convertView.findViewById(R.id.TVLiabilityLoanRemain)).setText(String.format("남은금액 : %,d원", 0));
+	}
+
+	private void setListViewTextDefault(FinanceItem item, View convertView) {
     	((TextView)convertView.findViewById(R.id.TVLiabilityReportListTitle)).setText("제목 : " + item.getTitle());
 		((TextView)convertView.findViewById(R.id.TVLiabilityReportListDate)).setText("날짜 : " + item.getCreateDateString());			
 		((TextView)convertView.findViewById(R.id.TVLiabilityReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
 //		((TextView)convertView.findViewById(R.id.TVLiabilityReportListCategory)).setText("분류 : " + item.getCategory().getName());
 		((TextView)convertView.findViewById(R.id.TVLiabilityReportListCategory)).setVisibility(View.GONE);
 	}
-    
-    protected void setDeleteBtnListener(View convertView, int itemId, int position) {
+
+	protected void setDeleteBtnListener(View convertView, int itemId, int position) {
     	Button btnDelete = (Button)convertView.findViewById(R.id.BtnReportLiabilityDelete);
 		btnDelete.setTag(R.id.delete_id, new Integer(itemId));
 		btnDelete.setTag(R.id.delete_position, new Integer(position));
@@ -113,8 +141,17 @@ public class ReportLiabilityLayout extends ReportBaseLayout {
 
 	@Override
 	protected int getLayoutResources(FinanceItem item) {
-		
-		
-		return getAdapterResource();
+		if (item.getExtendType() == ItemDef.ExtendLiablility.LOAN) {
+			return R.layout.report_list_liability_loan;
+		}
+//		else if (item.getExtendType() == ItemDef.ExtendLiablility.CASH_SERVICE) {
+//			return R.layout.report_list_assets_saving;
+//		}
+//		else if (item.getExtendType() == ItemDef.ExtendLiablility.PERSON_LOAN) {
+//			return R.layout.report_list_assets_stock;
+//		}
+		else {
+			return getAdapterResource();
+		}
 	}
 }

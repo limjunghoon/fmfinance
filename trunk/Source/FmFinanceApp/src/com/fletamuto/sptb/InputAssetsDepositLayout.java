@@ -2,15 +2,14 @@ package com.fletamuto.sptb;
 
 import java.util.Calendar;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
@@ -25,6 +24,7 @@ import com.fletamuto.sptb.util.LogTag;
  */
 public class InputAssetsDepositLayout extends InputExtendLayout {
 	public static final int ACT_ADD_ACCOUNT = MsgDef.ActRequest.ACT_ADD_ACCOUNT;
+	public static final int ACT_EDIT_ACCOUNT = MsgDef.ActRequest.ACT_EDIT_ACCOUNT;
 	private AssetsDepositItem mDeposit;
 	
     public void onCreate(Bundle savedInstanceState) {
@@ -41,27 +41,39 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
         
     }
     
-    DatePickerDialog.OnDateSetListener expiryDlg = new DatePickerDialog.OnDateSetListener() {
-		
-		public void onDateSet(DatePicker view, int year, int monthOfYear,
-				int dayOfMonth) {
-
-			mDeposit.getExpiryDate().set(Calendar.YEAR, year);
-			mDeposit.getExpiryDate().set(Calendar.MONTH, monthOfYear);
-			mDeposit.getExpiryDate().set(Calendar.DAY_OF_MONTH, dayOfMonth);
-			updateDate();
-		}
-	};
-	
+    @Override
+    public void finish() {
+    	if (mDeposit.getID() == -1 && mDeposit.getAccount().getID() != -1) {
+    		DBMgr.deleteAccount(mDeposit.getAccount().getID());
+    	}
+    	
+    	super.finish();
+    }
+    
+    public boolean checkInputData() {
+    	if (mDeposit.getCreateDate().after(mDeposit.getExpiryDate())) {
+    		displayAlertMessage("만기일을 다시 지정해 주세요");
+    		return false;
+    	}
+    	
+    	return super.checkInputData();
+    };
 
 	private void setExpiryBtnClickListener(int resource) {
 		((Button)findViewById(resource)).setOnClickListener(new Button.OnClickListener() {
 			
 			public void onClick(View v) {
-				new DatePickerDialog(InputAssetsDepositLayout.this, expiryDlg, 
-						mDeposit.getExpiryDate().get(Calendar.YEAR),
-						mDeposit.getExpiryDate().get(Calendar.MONTH), 
-						mDeposit.getExpiryDate().get(Calendar.DAY_OF_MONTH)).show(); 				
+				monthlyCalendar.showMonthlyCalendarPopup();
+				monthlyCalendar.getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
+					
+					public void onDismiss() {
+						if (monthlyCalendar.getSelectCalendar() == null) return;
+						mDeposit.getExpiryDate().set(Calendar.YEAR, monthlyCalendar.getSelectCalendar().get(Calendar.YEAR));
+						mDeposit.getExpiryDate().set(Calendar.MONTH, monthlyCalendar.getSelectCalendar().get(Calendar.MONTH));
+						mDeposit.getExpiryDate().set(Calendar.DAY_OF_MONTH, monthlyCalendar.getSelectCalendar().get(Calendar.DAY_OF_MONTH));
+						updateExpiryDate();
+					}
+				});			
 			}
 		 });
 	}
@@ -133,6 +145,8 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
     	
     	String rate = ((TextView)findViewById(R.id.ETDepositRate)).getText().toString();
     	mDeposit.setRate(Integer.parseInt(rate));
+    	
+    	mDeposit.getAccount().setBalance(mDeposit.getAmount());
 	}
 	
     @Override
@@ -148,6 +162,9 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(InputAssetsDepositLayout.this, InputAccountLayout.class);
+				
+				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_TYPE, AccountItem.TIME_DEPOSIT);
+				intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, mDeposit.getAccount().getID());
 				startActivityForResult(intent, MsgDef.ActRequest.ACT_ADD_ACCOUNT);
 			}
 		});
@@ -167,7 +184,7 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
 	 */
 	private void updateAccountText() {
 		if (mDeposit.getAccount().getID() == -1) {
-			((Button)findViewById(R.id.BtnDepositAccount)).setText("계좌를 선택해 주세요");
+			((Button)findViewById(R.id.BtnDepositAccount)).setText("계좌를 입력해 주세요");
 		}
 		else {
 			((Button)findViewById(R.id.BtnDepositAccount)).setText(String.format("%s : %s", mDeposit.getAccount().getCompany().getName(), mDeposit.getAccount().getNumber()));
@@ -176,7 +193,7 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
    
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == ACT_ADD_ACCOUNT) {
+		if (requestCode == ACT_ADD_ACCOUNT || requestCode == ACT_EDIT_ACCOUNT) {
     		if (resultCode == RESULT_OK) {
     			updateAccount( getAccount(data.getIntExtra(MsgDef.ExtraNames.ACCOUNT_ID, -1)));
     		}
@@ -200,6 +217,10 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
     		Log.e(LogTag.LAYOUT, "== NEW fail to the save item : " + mDeposit.getID());
     		return false;
     	}
+		
+		if (mDeposit.getAccount().getID() != -1) {
+			DBMgr.updateAccount(mDeposit.getAccount());
+		}
     	
     	if (cls != null) {
     		Intent intent = new Intent(InputAssetsDepositLayout.this, cls);

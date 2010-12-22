@@ -271,7 +271,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"change_date DATE NOT NULL," +
 					"amount INTEGER NOT NULL," +
 					"memo TEXT," +
-					"count INTEGER);");
+					"count INTEGER NOT NULL);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -318,7 +318,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		try {
 			db.execSQL("CREATE TABLE assets_fund ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-					"mena_price INTEGER," +
+					"mean_price INTEGER," +
 					"store TEXT);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
