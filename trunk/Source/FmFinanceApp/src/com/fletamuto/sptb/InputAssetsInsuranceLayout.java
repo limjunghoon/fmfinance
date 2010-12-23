@@ -42,6 +42,11 @@ public class InputAssetsInsuranceLayout extends InputExtendLayout {
     }
     
     public boolean checkInputData() {
+    	if (mInsurance.getCreateDate().after(Calendar.getInstance())) {
+    		displayAlertMessage("개설일 다시 지정해 주세요");
+    		return false;
+    	}
+    	
     	if (mInsurance.getCreateDate().after(mInsurance.getExpiryDate())) {
     		displayAlertMessage("만기일을 다시 지정해 주세요");
     		return false;

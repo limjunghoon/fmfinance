@@ -26,6 +26,8 @@ public abstract class StateBaseLayout extends FmBaseActivity {
 	int mYear = Calendar.getInstance().get(Calendar.YEAR);
 	
 	protected abstract void startChangeStateActivtiy();
+	protected abstract void getData();
+	protected abstract Class<?> getActivityClass();
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +36,12 @@ public abstract class StateBaseLayout extends FmBaseActivity {
         
         setBtnClickListener();
         updateChildView();
-        updateLineView();
+        
     }
+	
+	public FinanceItem getItem() {
+		return mItem;
+	}
 	
 	
 	@Override
@@ -51,10 +57,24 @@ public abstract class StateBaseLayout extends FmBaseActivity {
 	}
 	
 	private void setBtnClickListener() {
-		findViewById(R.id.BtnStateAdd).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.BtnStateEdit).setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				startChangeStateActivtiy();
+			}
+		});
+		
+		findViewById(R.id.BtnPreviusYear).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				movePreviousYear();
+			}
+		});
+		
+		findViewById(R.id.BtnNextYear).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				moveNextYear();
 			}
 		});
 	}
@@ -71,7 +91,7 @@ public abstract class StateBaseLayout extends FmBaseActivity {
 		super.setTitleBtn();
 	}
 	
-	private void updateLineView() {
+	protected void updateLineView() {
 		if (mAmountMonthInYear == null) return;
 		
 		mLineGraph = (LineGraph) findViewById (R.id.lgraph);
@@ -80,7 +100,7 @@ public abstract class StateBaseLayout extends FmBaseActivity {
 		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLineGraph.getLayoutParams();
 		
 		params.width = (320 > mLineGraph.getLineGraphWidth()) ? 320 : mLineGraph.getLineGraphWidth();
-		params.height = (350 > mLineGraph.getLineGraphHeight()) ? 320 : mLineGraph.getLineGraphHeight();
+		params.height = (350 > mLineGraph.getLineGraphHeight()) ? 250 : mLineGraph.getLineGraphHeight();
 		
 		mLineGraph.setLayoutParams(params);
 		mLineGraph.setOnTouchListener(new View.OnTouchListener() {
@@ -105,6 +125,26 @@ public abstract class StateBaseLayout extends FmBaseActivity {
 	protected void updateChildView() {
 		TextView tvAmount = (TextView)findViewById(R.id.TVStateTitle);
 		tvAmount.setText(String.format("현재가 : %,d원", mItem.getAmount()));
+		
+		TextView tvYear = (TextView) findViewById(R.id.TVCurrentYear);
+		tvYear.setText(String.format("%d년", mYear));
+		
+		updateLineView();
 	}
+	
+	public void moveNextYear() {
+		mYear++;
+		getData();
+    	updateChildView();
+	}
+	
+
+
+	public void movePreviousYear() {
+		mYear--;
+		getData();
+    	updateChildView();
+	}
+
 
 }

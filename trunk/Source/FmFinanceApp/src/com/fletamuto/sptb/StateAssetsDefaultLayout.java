@@ -19,8 +19,7 @@ public class StateAssetsDefaultLayout extends StateDefaultLayout {
 	protected void initialize() {
 		super.initialize();
 		
-		mAmountMonthInYear = DBMgr.getTotalAssetAmountMonthInYear(mItem.getID(), mYear);
-		mPurchasePrice = DBMgr.getAssetsPurchasePrice(mItem.getID());
+		getData();
 	}
 	
 	@Override
@@ -42,6 +41,12 @@ public class StateAssetsDefaultLayout extends StateDefaultLayout {
 		intent.putExtra(MsgDef.ExtraNames.INPUT_CHANGE_MODE, true);
 		intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, mItem.getID());
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_CHANGE_STATE);
+	}
+
+	@Override
+	protected void getData() {
+		mAmountMonthInYear = DBMgr.getTotalAssetAmountMonthInYear(mItem.getID(), mYear);
+		mPurchasePrice = DBMgr.getAssetsPurchasePrice(mItem.getID());
 	}
 	
 	

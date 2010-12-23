@@ -47,8 +47,16 @@ public class ReportAssetsLayout extends ReportBaseLayout {
 	protected void onClickListItem(AdapterView<?> parent, View view,
 			int position, long id) {
     	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
+    	Intent intent = null;
     	
-    	Intent intent = new Intent(this, StateAssetsDefaultLayout.class);
+    	
+    	if (item.getExtendType() == ItemDef.ExtendAssets.DEPOSIT) {
+    		intent = new Intent(this, StateAssetsDepositLayout.class);
+    	}
+    	else {
+    		intent = new Intent(this, StateAssetsDefaultLayout.class);
+    	}
+    	
     	intent.putExtra(MsgDef.ExtraNames.ITEM, item);
     	startActivityForResult(intent, MsgDef.ActRequest.ACT_STATE_VIEW);
     	//startEditInputActivity(InputAssetsLayout.class, item.getID());

@@ -176,7 +176,7 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     	}
 		
 		Intent intent = new Intent();
-		intent.putExtra("EDIT_ITEM_ID", mItem.getID());
+		intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, mItem.getID());
 		setResult(RESULT_OK, intent);
 		finish();
     }

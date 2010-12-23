@@ -61,6 +61,10 @@ public class InputAssetsSavingsLayout extends InputExtendLayout {
 //    		displayAlertMessage("계좌가 선택되지 않았습니다.");
 //    		return false;
 //    	}
+    	if (mSavings.getCreateDate().after(Calendar.getInstance())) {
+    		displayAlertMessage("개설일 다시 지정해 주세요");
+    		return false;
+    	}
     	
     	if (mSavings.getCreateDate().after(mSavings.getExpiryDate())) {
     		displayAlertMessage("만기일을 다시 지정해 주세요");

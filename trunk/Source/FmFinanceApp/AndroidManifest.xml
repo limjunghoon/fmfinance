@@ -100,6 +100,7 @@
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportLiabilityHistoryLayout"></activity>
 <activity android:name=".ReportChangeAssets" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".ReportCompareAssetsAndLiability" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".StateAssetsDepositLayout"></activity>
 </application>
 
 
