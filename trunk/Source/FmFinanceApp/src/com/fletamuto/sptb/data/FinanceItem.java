@@ -244,4 +244,6 @@ public abstract class FinanceItem extends BaseItem {
 	public int getCount() {
 		return mCount;
 	}
+	
+	
 }

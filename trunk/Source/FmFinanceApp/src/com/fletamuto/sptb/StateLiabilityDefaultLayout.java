@@ -20,8 +20,7 @@ public class StateLiabilityDefaultLayout extends StateDefaultLayout {
 	protected void initialize() {
 		super.initialize();
 		
-		mAmountMonthInYear = DBMgr.getTotalLiabilityAmountMonthInYear(mItem.getID(), mYear);
-		mPurchasePrice = DBMgr.getLiabilityPurchasePrice(mItem.getID());
+		getData();
 	}
 	
 	@Override
@@ -43,6 +42,12 @@ public class StateLiabilityDefaultLayout extends StateDefaultLayout {
 		intent.putExtra(MsgDef.ExtraNames.INPUT_CHANGE_MODE, true);
 		intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, mItem.getID());
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_CHANGE_STATE);
+	}
+
+	@Override
+	protected void getData() {
+		mAmountMonthInYear = DBMgr.getTotalLiabilityAmountMonthInYear(mItem.getID(), mYear);
+		mPurchasePrice = DBMgr.getLiabilityPurchasePrice(mItem.getID());
 	}
 	
 	

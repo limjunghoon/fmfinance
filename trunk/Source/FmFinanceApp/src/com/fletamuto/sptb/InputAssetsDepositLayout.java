@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsDepositItem;
+import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 
@@ -38,8 +39,8 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
         setAmountBtnClickListener(R.id.BtnDepositAmount);
         setExpiryBtnClickListener(R.id.BtnDepositExpiryDate);
         setAccountBtnClickListener();
-        
     }
+    
     
     @Override
     public void finish() {
@@ -51,6 +52,11 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
     }
     
     public boolean checkInputData() {
+    	if (mDeposit.getCreateDate().after(Calendar.getInstance())) {
+    		displayAlertMessage("개설일 다시 지정해 주세요");
+    		return false;
+    	}
+    	
     	if (mDeposit.getCreateDate().after(mDeposit.getExpiryDate())) {
     		displayAlertMessage("만기일을 다시 지정해 주세요");
     		return false;
@@ -115,7 +121,7 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
 
 	@Override
 	protected boolean getItemInstance(int id) {
-//		mSalary = (IncomeSalaryItem) DBMgr.getItem(IncomeItem.TYPE, id);
+		mDeposit = (AssetsDepositItem) DBMgr.getItem(AssetsItem.TYPE, id);
 		if (mDeposit == null) return false;
 		setItem(mDeposit);
 		return true;
@@ -127,8 +133,10 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
 		updateExpiryDate();
 		updateBtnAmountText(R.id.BtnDepositAmount);
 		updateEditMemoText(R.id.ETDepositMemo);
+		updateEditTitleText(R.id.ETDepositTitle);
 		updateAccountText();
 		updateRateText();
+		
 	}
 
 	private void updateRateText() {
@@ -234,5 +242,6 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
     	
 		return true;
 	}
+	
   
 }

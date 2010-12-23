@@ -22,6 +22,11 @@ public abstract class StateDefaultLayout extends StateBaseLayout {
 			}
 		});
 	}
+	
+	@Override
+	protected Class<?> getActivityClass() {
+		return InputAssetsLayout.class;
+	}
 
 	
 }

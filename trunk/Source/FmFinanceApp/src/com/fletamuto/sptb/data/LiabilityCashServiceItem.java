@@ -8,10 +8,9 @@ package com.fletamuto.sptb.data;
  */
 public class LiabilityCashServiceItem extends LiabilityExtendItem {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7908878232505354682L;
+	
+	public final static int EXEND_TYPE = ItemDef.ExtendLiablility.CASH_SERVICE;
 
 	/**
 	 * 현금 서비스 DB테이블 아이디
@@ -55,6 +54,8 @@ public class LiabilityCashServiceItem extends LiabilityExtendItem {
 		return mCard;
 	}
 	
-	
+	public int getExtendType() {
+		return EXEND_TYPE;
+	}
 	
 }

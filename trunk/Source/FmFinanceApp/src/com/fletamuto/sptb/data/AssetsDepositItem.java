@@ -102,4 +102,24 @@ public class AssetsDepositItem extends AssetsExtendItem {
 	public int getExtendType() {
 		return EXEND_TYPE;
 	}
+	
+	public int getMonthPeriodTerm() {
+		int monthTerm = 0;
+		int yearTerm = mExpiryDate.get(Calendar.YEAR) - getCreateDate().get(Calendar.YEAR);
+		if (yearTerm > 0) {
+			monthTerm = yearTerm * 12;
+		}
+		
+		return  monthTerm  + (mExpiryDate.get(Calendar.MONTH) - getCreateDate().get(Calendar.MONTH));
+	}
+	
+	public int getMonthProcessCount() {
+		int monthTerm = 0;
+		int yearTerm = Calendar.getInstance().get(Calendar.YEAR) - getCreateDate().get(Calendar.YEAR);
+		if (yearTerm > 0) {
+			monthTerm = yearTerm * 12;
+		}
+		
+		return  monthTerm  + (mExpiryDate.get(Calendar.MONTH) - getCreateDate().get(Calendar.MONTH)) + 1;
+	}
 }

@@ -62,7 +62,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	/**
 	 * 자산 DB테이블에서 수정
 	 * @param item 자산 아이템
-	 * @return the number of rows affected , or -1 if an error occurred
+	 * @return the number of rows affected 
 	 */
 	public long updateItem(FinanceItem financeItem) {
 		AssetsItem item = (AssetsItem)financeItem;
@@ -80,6 +80,9 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		
 		long ret = db.update("assets", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getID())});
 		closeDatabase();
+		
+		updateStateChangeItem(item);
+		
 		return ret;
 	}
 	
@@ -893,8 +896,30 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return ret;
 	}
 	
-	public long addStateChangeItem(FinanceItem fItem) {
-		AssetsItem item = (AssetsItem) fItem;
+	private long updateDefaultStateChangeItem(AssetsItem item) {
+		long ret = -1;
+		AssetsItem todayItem = (AssetsItem) getFirstStateChangeItem(item.getID());
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("assets_id", item.getID());
+		rowItem.put("change_date", item.getCreateDateString());
+		rowItem.put("amount", item.getAmount());
+		rowItem.put("memo", item.getMemo());
+		rowItem.put("count", item.getCount());
+		
+		if (todayItem == null) {
+			ret = db.insert("assets_change_amount", null, rowItem);
+		}
+		else {
+			ret = db.update("assets_change_amount", rowItem, "_id=?", new String[] {String.valueOf(item.getID())});
+		}
+		
+		closeDatabase();
+		return ret;
+	}
+	
+	public long addStateChangeItem(AssetsItem item) {
 		if (item.getID() == -1) {
 			Log.e(LogTag.DB, ":: INVAILD ASSETS ITEM ID");
 			return -1;
@@ -903,6 +928,20 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 //		int extendID = item.getExtendID();
 //		if (extendID == -1) {
 			return addDefaultStateChangeItem(item);
+//		}
+//	
+//		return -1;
+	}
+	
+	public long updateStateChangeItem(AssetsItem item) {
+		if (item.getID() == -1) {
+			Log.e(LogTag.DB, ":: INVAILD ASSETS ITEM ID");
+			return -1;
+		}
+		
+//		int extendID = item.getExtendID();
+//		if (extendID == -1) {
+			return updateDefaultStateChangeItem(item);
 //		}
 //	
 //		return -1;
@@ -956,6 +995,30 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return assets;
 	}
 	
+	public AssetsItem getFirstStateChangeItem(int id) {
+		AssetsItem assets = null;
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		String[] params = {String.valueOf(id)}; 
+		Cursor c = db.query("assets_change_amount", null, "assets_id=?", params, null, null, "change_date DESC");
+		
+		if (c.moveToFirst() != false) {
+			assets = new AssetsItem();
+			assets.setID(c.getInt(0));
+			try {
+				assets.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			assets.setAmount(c.getLong(3));
+			assets.setMemo(c.getString(5));
+		}
+		c.close();
+		closeDatabase();
+		return assets;
+	}
+	
+	
+	
 	public long getMeanPrice(int id) {
 		long amount = 0L;
 		int count = 1;
@@ -976,8 +1039,14 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 
 	public ArrayList<Long> getTotalAssetAmountMonthInYear(int assetsID, int year) {
 		ArrayList<Long> amountArr = new ArrayList<Long>();
-		SQLiteDatabase db = openDatabase(READ_MODE);
 		long lastAmount = 0L;
+		
+		AssetsItem item = getFirstStateChangeItem(assetsID);
+		if (item != null) {
+			lastAmount = item.getAmount() * item.getCount();
+		}
+		
+		SQLiteDatabase db = openDatabase(READ_MODE);
 		
 		for (int month = 1; month <= 12; month++) {
 			String[] params = {String.valueOf(assetsID),  String.format("%d-%02d", year, month)};

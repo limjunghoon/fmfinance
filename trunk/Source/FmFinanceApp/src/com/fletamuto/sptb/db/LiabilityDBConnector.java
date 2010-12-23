@@ -10,8 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
-import com.fletamuto.sptb.data.AssetsItem;
-import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.ItemDef;
@@ -288,10 +286,10 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			return getLoanItem(extendID);
 		}
 		else if (ItemDef.ExtendLiablility.CASH_SERVICE == extendType) {
-			return new LiabilityCashServiceItem();
+			return getCashServiceItem(extendID);
 		}
 		else if (ItemDef.ExtendLiablility.PERSON_LOAN == extendType) {
-			return new LiabilityPersonLoanItem();
+			return getPersonLoanItem(extendID);
 		}
 		else {
 			return new LiabilityItem();
@@ -311,6 +309,36 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		c.close();
 		closeDatabase();
 		return loan;
+	}
+	
+	private LiabilityItem getPersonLoanItem(int personID) {
+		LiabilityPersonLoanItem personLoan = new LiabilityPersonLoanItem();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		Cursor c = db.query("liability_loan", null, "_id=?", new String[]{String.valueOf(personID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			personLoan.setPersonLoanID(c.getInt(0));
+			personLoan.setLoanPeopleName(c.getString(1));
+		}
+		c.close();
+		closeDatabase();
+		return personLoan;
+	}
+	
+	private LiabilityItem getCashServiceItem(int cashServiceID) {
+		LiabilityCashServiceItem cashService = new LiabilityCashServiceItem();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		Cursor c = db.query("liability_cash_service", null, "_id=?", new String[]{String.valueOf(cashServiceID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			cashService.setCashServiceID(c.getInt(0));
+			cashService.setCard(DBMgr.getCardItem(c.getInt(1)));
+		}
+		c.close();
+		closeDatabase();
+		return cashService;
 	}
 	
 	/**

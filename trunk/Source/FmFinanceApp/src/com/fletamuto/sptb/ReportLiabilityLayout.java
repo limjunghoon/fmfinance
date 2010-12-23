@@ -10,8 +10,10 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.ItemDef;
+import com.fletamuto.sptb.data.LiabilityCashServiceItem;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.data.LiabilityLoanItem;
+import com.fletamuto.sptb.data.LiabilityPersonLoanItem;
 
 public class ReportLiabilityLayout extends ReportBaseLayout {
 	private long mTotalAmount = 0L;
@@ -53,12 +55,12 @@ public class ReportLiabilityLayout extends ReportBaseLayout {
     	if (extendType == ItemDef.ExtendLiablility.LOAN) {
     		setListViewTextLoan((LiabilityLoanItem)item, convertView);
 		}
-//    	else if (extendType == ItemDef.ExtendLiablility.CASH_SERVICE) {
-//    		setListViewTextSavings((AssetsSavingsItem)item, convertView);
-//		}
-//    	else if (extendType == ItemDef.ExtendLiablility.PERSON_LOAN) {
-//    		setListViewTextStock((AssetsStockItem)item, convertView);
-//		}
+    	else if (extendType == ItemDef.ExtendLiablility.CASH_SERVICE) {
+    		setListViewTextCashService((LiabilityCashServiceItem)item, convertView);
+		}
+    	else if (extendType == ItemDef.ExtendLiablility.PERSON_LOAN) {
+    		setListViewTextPersonLoan((LiabilityPersonLoanItem)item, convertView);
+		}
     	else {
     		setListViewTextDefault(item, convertView);
     	}
@@ -72,6 +74,24 @@ public class ReportLiabilityLayout extends ReportBaseLayout {
 		((TextView)convertView.findViewById(R.id.TVLiabilityLoanDate)).setText("대출 받은날짜 : " + loan.getCreateDateString());			
 		((TextView)convertView.findViewById(R.id.TVLiabilityLoanAmount)).setText(String.format("대출금액 : %,d원", loan.getAmount()));
 		((TextView)convertView.findViewById(R.id.TVLiabilityLoanRemain)).setText(String.format("남은금액 : %,d원", 0));
+	}
+    
+    private void setListViewTextPersonLoan(LiabilityPersonLoanItem personLoan, View convertView) {
+    	if (personLoan.getLoanPeopleName().length() != 0) {
+    		((TextView)convertView.findViewById(R.id.TVLiabilityPersonalLoanPerson)).setText("빌린사람 : " + personLoan.getLoanPeopleName());
+    	}
+    	((TextView)convertView.findViewById(R.id.TVLiabilityPersonalLoanTitle)).setText("제목 : " + personLoan.getTitle());
+		((TextView)convertView.findViewById(R.id.TVLiabilityPersonalLoanDate)).setText("빌린날짜 : " + personLoan.getCreateDateString());			
+		((TextView)convertView.findViewById(R.id.TVLiabilityPersonalLoanAmount)).setText(String.format("금액 : %,d원", personLoan.getAmount()));
+	}
+    
+    private void setListViewTextCashService(LiabilityCashServiceItem cashService, View convertView) {
+    	if (cashService.getCard().getID() != -1) {
+    		((TextView)convertView.findViewById(R.id.TVLiabilityCashServiceCardName)).setText("카드 : " + cashService.getCard().getCompenyName().getName());
+    	}
+    	((TextView)convertView.findViewById(R.id.TVLiabilityCashServiceTitle)).setText("제목 : " + cashService.getTitle());
+		((TextView)convertView.findViewById(R.id.TVLiabilityCashServiceDate)).setText("날짜 : " + cashService.getCreateDateString());			
+		((TextView)convertView.findViewById(R.id.TVLiabilityCashServiceAmount)).setText(String.format("인출금액 : %,d원", cashService.getAmount()));
 	}
 
 	private void setListViewTextDefault(FinanceItem item, View convertView) {
@@ -92,7 +112,6 @@ public class ReportLiabilityLayout extends ReportBaseLayout {
 
 	@Override
 	protected int getItemType() {
-		// TODO Auto-generated method stub
 		return LiabilityItem.TYPE;
 	}
 
@@ -144,12 +163,12 @@ public class ReportLiabilityLayout extends ReportBaseLayout {
 		if (item.getExtendType() == ItemDef.ExtendLiablility.LOAN) {
 			return R.layout.report_list_liability_loan;
 		}
-//		else if (item.getExtendType() == ItemDef.ExtendLiablility.CASH_SERVICE) {
-//			return R.layout.report_list_assets_saving;
-//		}
-//		else if (item.getExtendType() == ItemDef.ExtendLiablility.PERSON_LOAN) {
-//			return R.layout.report_list_assets_stock;
-//		}
+		else if (item.getExtendType() == ItemDef.ExtendLiablility.CASH_SERVICE) {
+			return R.layout.report_list_liability_cash_service;
+		}
+		else if (item.getExtendType() == ItemDef.ExtendLiablility.PERSON_LOAN) {
+			return R.layout.report_list_liability_personal_loan;
+		}
 		else {
 			return getAdapterResource();
 		}
