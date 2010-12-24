@@ -27,18 +27,21 @@ import com.fletamuto.sptb.db.DBMgr;
  * @version 1.0.0.0
  */
 public class InputExpenseLayout extends InputFinanceItemBaseLayout {
-	private ExpenseItem mExpensItem;
 	protected final static int ACT_TAG_SELECTED = MsgDef.ActRequest.ACT_TAG_SELECTED;
 	protected final static int ACT_CARD_SELECT = MsgDef.ActRequest.ACT_CARD_SELECT;
 	protected final static int ACT_ACCOUNT_SELECT = MsgDef.ActRequest.ACT_ACCOUNT_SELECT;
 	protected final static int ACT_BOOKMARK_SELECT = MsgDef.ActRequest.ACT_BOOKMARK_SELECT;
 	
+	private ExpenseItem mExpensItem;
+	
 	//달력 입력과 자주 사용 되는 지출을 위해 start
-	LinearLayout linear;
-	View popupview, popupviewBookmark;
-	PopupWindow popupBookmark, popupBookmarkEdit;
-	TextView tv;
+	private LinearLayout linear;
+	private View popupview, popupviewBookmark;
+	private PopupWindow popupBookmark, popupBookmarkEdit;
+	private TextView tv;
 	//달력 입력과 자주 사용 되는 지출을 위해 end
+	
+	  
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +64,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         //자주 사용 되는 지출 구현
         setBookmarkTvClickListener(R.id.TVExpenseBookmark);
         setTitle(getResources().getString(R.string.input_expense_name));
-        
-        
     }
 
 	/**
@@ -93,7 +94,11 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 
 	@Override
 	protected void createItemInstance() {
-		mExpensItem = new ExpenseItem();
+		mExpensItem = (ExpenseItem) getIntent().getSerializableExtra(MsgDef.ExtraNames.ITEM);
+		
+		if (mExpensItem == null) {
+			mExpensItem = new ExpenseItem();
+		}
 		setItem(mExpensItem);
 	}
 	
@@ -326,19 +331,17 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		ToggleButton btnCard = (ToggleButton)findViewById(R.id.TBExpenseMethodCard);
 		ToggleButton btnAccount = (ToggleButton)findViewById(R.id.TBExpenseMethodAccount);
 		
+		btnCash.setChecked(false);
+		btnCard.setChecked(false);
+		btnAccount.setChecked(false);
+		
 		if (paymentMethod.getType() == PaymentMethod.CASH) {
 			btnCash.setChecked(true);
-			btnCard.setChecked(false);
-			btnAccount.setChecked(false);
 		}
 		else if (paymentMethod.getType() == PaymentMethod.CARD) {
-			btnCash.setChecked(false);
 			btnCard.setChecked(true);
-			btnAccount.setChecked(false);
 		}
 		else if (paymentMethod.getType() == PaymentMethod.ACCOUNT) {
-			btnCash.setChecked(false);
-			btnCard.setChecked(false);
 			btnAccount.setChecked(true);
 		}
 		updatePaymentMethodText();

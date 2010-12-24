@@ -18,25 +18,25 @@ public final class ItemDef {
 	
 	/**	 학장된 수입 리스트*/
 	public static final class ExtendIncome {
-		public static final int NONE = 0;
-		public static final int SALARY = 1;
+		public static final int NONE = 100;
+		public static final int SALARY = 101;
 	}
 	
 	/**	 학장된 자산 리스트*/
 	public static final class ExtendAssets {
-		public static final int NONE = 0;
-		public static final int DEPOSIT = 1;
-		public static final int SAVINGS = 2;
-		public static final int STOCK = 3;
-		public static final int FUND = 4;
-		public static final int ENDOWMENT_MORTGAGE = 5;
+		public static final int NONE = 200;
+		public static final int DEPOSIT = 201;
+		public static final int SAVINGS = 202;
+		public static final int STOCK = 203;
+		public static final int FUND = 204;
+		public static final int ENDOWMENT_MORTGAGE = 205;
 	}
 	
 	/**	 학장된 부채 리스트*/
 	public static final class ExtendLiablility {
-		public static final int NONE = 0;
-		public static final int LOAN = 1;
-		public static final int CASH_SERVICE = 2;
-		public static final int PERSON_LOAN = 3;
+		public static final int NONE = 300;
+		public static final int LOAN = 301;
+		public static final int CASH_SERVICE = 302;
+		public static final int PERSON_LOAN = 303;
 	}
 }
