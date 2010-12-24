@@ -6,12 +6,11 @@ import com.fletamuto.sptb.util.LogTag;
 
 
 public class ExpenseItem extends FinanceItem {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 4904314900215308453L;
 
 	public final static int TYPE = ItemDef.FinanceDef.EXPENSE;
+	public final static int EXPENSE_NORMAL = ItemDef.FinanceDef.EXPENSE;
 	
 	private boolean mWaste = false;
 	private PaymentMethod mPaymentMethod;
@@ -19,7 +18,6 @@ public class ExpenseItem extends FinanceItem {
 
 	@Override
 	public int getType() {
-		// TODO Auto-generated method stub
 		return ExpenseItem.TYPE;
 	}
 

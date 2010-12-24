@@ -65,7 +65,7 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 	 * √ ±‚»≠
 	 */
 	protected void initialize() {
-		int id  = getIntent().getIntExtra("EDIT_ITEM_ID", -1);
+		int id  = getIntent().getIntExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, -1);
         if (id != -1) {
         	if (getIntent().getBooleanExtra(MsgDef.ExtraNames.INPUT_CHANGE_MODE, false)) {
         		mInputMode = InputMode.STATE_CHANGE_MODE;

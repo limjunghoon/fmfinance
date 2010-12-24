@@ -894,20 +894,34 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		String [] baseMainCategory = context.getResources().getStringArray(R.array.expense_base_main_category);
 		int categoryLenth = baseMainCategory.length;
 		int salaryCategory = categoryLenth-1;
+		int liabilityCategory = salaryCategory-1;
+		int assetsCategory = liabilityCategory-1;
 		
 		for (int index = 0; index < categoryLenth; index++) {
 			rowItem.put("name", baseMainCategory[index]);
 			rowItem.put("prioritize", index+1);
 			rowItem.put("image_index", index+1);
 			
+			// 임시코드 ///////////////////////////
 			if (salaryCategory == index) {
 				rowItem.put("type", UISelectItem.HIDE);
 				rowItem.put("extend_type", ItemDef.ExtendIncome.SALARY);
 			}
 			
+			if (liabilityCategory == index) {
+				rowItem.put("type", UISelectItem.HIDE);
+				rowItem.put("extend_type", ItemDef.ExtendLiablility.NONE);
+			}
+			
+			if (assetsCategory == index) {
+				rowItem.put("type", UISelectItem.HIDE);
+				rowItem.put("extend_type", ItemDef.ExtendAssets.NONE);
+			}
+			
 			if (db.insert("expense_main_category", null, rowItem) == -1) {
 				Log.e(LogTag.DB, "== DB Insert ERROR ==");
 			}
+			///////////////////////////////////////////
 		}
 		
 		insertExpenseSubCategoryTable(db);
@@ -960,7 +974,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			if (index == 0) rowItem.put("extend_type", ItemDef.ExtendLiablility.LOAN);
 			else if (index == 1) rowItem.put("extend_type", ItemDef.ExtendLiablility.CASH_SERVICE);
 			else if (index == 2) rowItem.put("extend_type", ItemDef.ExtendLiablility.PERSON_LOAN);
-			else rowItem.put("extend_type", ItemDef.ExtendAssets.NONE);
+			else rowItem.put("extend_type", ItemDef.ExtendLiablility.NONE);
 			//////////////////////////////////////////////////////////////////
 			
 			if (db.insert("liability_main_category", null, rowItem) == -1) {
@@ -997,6 +1011,9 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		
 		
 		int subCategoryArrLenth = baseSubCategorys.size();
+		int salaryCategory = subCategoryArrLenth-1;
+		int liabilityCategory = salaryCategory-1;
+		int assetsCategory = liabilityCategory-1;
 		
 		for (int i = 0; i < subCategoryArrLenth; i++) {
 			String [] subCategory = baseSubCategorys.get(i);
@@ -1007,6 +1024,27 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 				rowItem.put("prioritize", i+1);
 				rowItem.put("image_index", i+1);
 				rowItem.put("main_id", i+1);
+				
+				// 임시 코드 /////////////////
+				if (i == salaryCategory) {
+					rowItem.put("extend_type", ItemDef.ExtendIncome.NONE);
+				}
+				else if (i == liabilityCategory) {
+					if (j == 0) rowItem.put("extend_type", ItemDef.ExtendLiablility.LOAN);
+					else if (j == 1) rowItem.put("extend_type", ItemDef.ExtendLiablility.CASH_SERVICE);
+					else if (j == 2) rowItem.put("extend_type", ItemDef.ExtendLiablility.PERSON_LOAN);
+					else rowItem.put("extend_type",ItemDef.ExtendLiablility.NONE);
+				}
+				else if (i == assetsCategory) {
+					if (j == 0) rowItem.put("extend_type", ItemDef.ExtendAssets.DEPOSIT);
+					else if (j == 1) rowItem.put("extend_type", ItemDef.ExtendAssets.SAVINGS);
+					else if (j == 2) rowItem.put("extend_type", ItemDef.ExtendAssets.STOCK);
+					else if (j == 3) rowItem.put("extend_type", ItemDef.ExtendAssets.FUND);
+					else if (j == 4) rowItem.put("extend_type", ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE);
+					else rowItem.put("extend_type",ItemDef.ExtendAssets.NONE);
+				}
+				
+				////////////////////////////
 				
 				if (db.insert("expense_sub_category", null, rowItem) == -1) {
 					Log.e(LogTag.DB, "== DB Insert ERROR ==");

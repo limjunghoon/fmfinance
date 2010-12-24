@@ -76,7 +76,7 @@ public final static int ACT_STATE_HISTORY = 34;
 		public static final String GET_CARD_INFO_ITEMS = "GET_CARD_INFO_ITEMS";
 		public static final String CARD_BILLING = "CARD_BILLING";
 		public static final String ITEM = "ITEM";
-public static final String ITEM_ID = "ITEM_ID";
+		public static final String ITEM_ID = "ITEM_ID";
 		public static final String INPUT_CHANGE_MODE = "INPUT_CHANGE_MODE";
 		
 	}
