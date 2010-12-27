@@ -17,7 +17,7 @@ import com.fletamuto.sptb.util.LogTag;
  * @author yongbban
  * @version 1.0.0.0
  */
-public class InputLiabilityPersonLoanLayout extends InputExtendLayout {
+public class InputLiabilityPersonLoanLayout extends InputLiabilityExtendLayout {
 	
 	private LiabilityPersonLoanItem mPersonLoan;
 	

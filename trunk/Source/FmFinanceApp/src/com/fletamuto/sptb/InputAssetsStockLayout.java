@@ -17,7 +17,7 @@ import com.fletamuto.sptb.util.LogTag;
  * @author yongbban
  * @version  1.0.0.1
  */
-public class InputAssetsStockLayout extends InputExtendLayout {
+public class InputAssetsStockLayout extends InputAssetsExtendLayout {
 	private AssetsStockItem mStock;
 	
     public void onCreate(Bundle savedInstanceState) {

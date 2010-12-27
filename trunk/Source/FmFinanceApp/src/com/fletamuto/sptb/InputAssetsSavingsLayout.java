@@ -21,7 +21,7 @@ import com.fletamuto.sptb.util.LogTag;
  * @author yongbban
  * @version  1.0.0.1
  */
-public class InputAssetsSavingsLayout extends InputExtendLayout {
+public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
 	public static final int ACT_ADD_ACCOUNT = MsgDef.ActRequest.ACT_ADD_ACCOUNT;
 	public static final int ACT_EDIT_ACCOUNT = MsgDef.ActRequest.ACT_EDIT_ACCOUNT;
 	private AssetsSavingsItem mSavings;
@@ -235,5 +235,4 @@ public class InputAssetsSavingsLayout extends InputExtendLayout {
     	
 		return true;
 	}
-  
 }

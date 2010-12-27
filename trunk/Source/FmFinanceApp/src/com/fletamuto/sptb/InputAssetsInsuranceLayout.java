@@ -20,7 +20,7 @@ import com.fletamuto.sptb.util.LogTag;
  * @author yongbban
  * @version  1.0.0.1
  */
-public class InputAssetsInsuranceLayout extends InputExtendLayout {
+public class InputAssetsInsuranceLayout extends InputAssetsExtendLayout {
 	private AssetsInsuranceItem mInsurance;
 	
     public void onCreate(Bundle savedInstanceState) {

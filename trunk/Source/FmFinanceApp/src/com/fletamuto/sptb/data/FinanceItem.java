@@ -98,6 +98,10 @@ public abstract class FinanceItem extends BaseItem {
 		mCategory.set(id, name, prioritize, imageIndex, extendType, UIType);
 	}
 	
+	public void setCategory(Category category) {
+		mCategory.set(category.getID(), category.getName(), category.getPrioritize(), category.getImageIndex(), category.getExtndType(), category.getUIType());
+	}
+	
 	/**
 	 * 상위 분류객체를 얻는다.
 	 * @return 상위 분류
@@ -108,6 +112,10 @@ public abstract class FinanceItem extends BaseItem {
 	
 	public void setSubCategory(int id, String name) {
 		this.mSubCategory.set(id, name);
+	}
+	
+	public void setSubCategory(Category subCategory) {
+		mSubCategory.set(subCategory.getID(), subCategory.getName(), subCategory.getPrioritize(), subCategory.getImageIndex(), subCategory.getExtndType(), subCategory.getUIType());
 	}
 	
 	public void setSubCategory(int id, String name, int prioritize, int imageIndex, int extendType, int UIType) {
@@ -245,5 +253,7 @@ public abstract class FinanceItem extends BaseItem {
 		return mCount;
 	}
 	
-	
+	public long getTotalAmount() {
+		return mAmount * mCount;
+	}
 }

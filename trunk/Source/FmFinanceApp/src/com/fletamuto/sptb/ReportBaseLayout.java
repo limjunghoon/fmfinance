@@ -160,13 +160,13 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	}
 
 	public class ReportItemAdapter extends ArrayAdapter<FinanceItem> {
-		private int mResource;
+//		private int mResource;
     	private LayoutInflater mInflater;
 
 		public ReportItemAdapter(Context context, int resource,
 				 List<FinanceItem> objects) {
 			super(context, resource, objects);
-			this.mResource = resource;
+//			this.mResource = resource;
 			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 		

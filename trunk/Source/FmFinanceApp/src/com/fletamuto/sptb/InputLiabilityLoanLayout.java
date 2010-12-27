@@ -19,7 +19,7 @@ import com.fletamuto.sptb.util.LogTag;
  * @author yongbban
  * @version 1.0.0.0
  */
-public class InputLiabilityLoanLayout extends InputExtendLayout {
+public class InputLiabilityLoanLayout extends InputLiabilityExtendLayout {
 	public final static int ACT_COMPANY_SELECT = MsgDef.ActRequest.ACT_COMPANY_SELECT;
 	
 	private LiabilityLoanItem mLoan;

@@ -16,7 +16,7 @@ import com.fletamuto.sptb.util.LogTag;
  * @author yongbban
  * @version  1.0.0.1
  */
-public class InputAssetsFundLayout extends InputExtendLayout {
+public class InputAssetsFundLayout extends InputAssetsExtendLayout {
 	private AssetsFundItem mFund;
 	
     public void onCreate(Bundle savedInstanceState) {

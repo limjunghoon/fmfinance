@@ -19,7 +19,7 @@ import com.fletamuto.sptb.util.LogTag;
  * @author yongbban
  * @version 1.0.0.0
  */
-public class InputLiabilityCashServiceLayout extends InputExtendLayout {
+public class InputLiabilityCashServiceLayout extends InputLiabilityExtendLayout {
 	public final static int ACT_CARD_SELECT = MsgDef.ActRequest.ACT_CARD_SELECT;
 	
 	private LiabilityCashServiceItem mCashService;

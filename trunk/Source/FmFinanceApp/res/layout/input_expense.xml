@@ -42,7 +42,7 @@
 		<Button android:id="@+id/BtnExpenseTag" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		</Button>
 	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLRepeat">
 		<TextView android:id="@+id/TVExpenseRepeat" android:text="@string/input_expense_repeat_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
 		</TextView>
 		<Button android:id="@+id/BtnExpenseRepeat" android:layout_height="wrap_content" android:layout_width="fill_parent">
