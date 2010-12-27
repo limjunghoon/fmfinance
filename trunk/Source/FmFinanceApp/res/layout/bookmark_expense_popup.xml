@@ -24,16 +24,12 @@
   			android:textSize="18sp"
   			android:textColor="#000000"
   			android:text="자주 사용 되는 지출"/>
-  		<Button
-  			android:id="@+id/bookmarkEdit"
-  			android:layout_width="50dp"
-  			android:layout_height="wrap_content"
-  			android:text="편집"/>	
+
   	</LinearLayout>
   	<LinearLayout
   		android:id="@+id/bookmarkexpensepopupsub2"
   		android:layout_width="fill_parent"
-  		android:layout_height="200dp"
+  		android:layout_height="250dp"
   		android:orientation="vertical">    			
   	</LinearLayout>
 </LinearLayout>
