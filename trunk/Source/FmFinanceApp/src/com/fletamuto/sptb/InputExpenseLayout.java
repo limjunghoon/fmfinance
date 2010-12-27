@@ -1,6 +1,8 @@
 package com.fletamuto.sptb;
 
 
+import java.util.ArrayList;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -15,6 +17,7 @@ import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.ExpenseTag;
+import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.PaymentAccountMethod;
 import com.fletamuto.sptb.data.PaymentCardMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
@@ -39,6 +42,8 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	private View popupview, popupviewBookmark;
 	private PopupWindow popupBookmark, popupBookmarkEdit;
 	private TextView tv;
+	private ArrayList<FinanceItem> expenseAllItems;
+	private ArrayList<FinanceItem> itemsTemp;
 	//달력 입력과 자주 사용 되는 지출을 위해 end
 	
 	  
@@ -405,13 +410,85 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			}
 		});
 	}
+	class CategoryTemp {
+		FinanceItem item = null;
+		int count = 0;;
+	}
 	
 	protected void setBookmark () {
+		
 		
 		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_popup, null);
 		popupBookmark = new PopupWindow(popupviewBookmark, 320, 300, true);
 		popupBookmark.showAtLocation(linear, Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 0);
 		
+		LinearLayout btnlist = (LinearLayout) popupviewBookmark.findViewById(R.id.bookmarkexpensepopupsub2);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		
+		expenseAllItems = DBMgr.getAllItems(ExpenseItem.TYPE);
+				
+		ArrayList<CategoryTemp> categorysTemp = new ArrayList<CategoryTemp>();
+		
+		for (int i = expenseAllItems.size()-1 ; i >= 0 ; i--) {
+			Boolean duplicationCheck = false;
+			CategoryTemp categoryTemp = new CategoryTemp();
+			if (categorysTemp.isEmpty() == true) {				
+				categoryTemp.item = expenseAllItems.get(i);
+				categoryTemp.count++;
+				categorysTemp.add(categoryTemp);
+			} else {
+				for (int j=0; j < categorysTemp.size(); j++) {
+
+					if (categorysTemp.get(j).item.getCategory().getName().equals(expenseAllItems.get(i).getCategory().getName()) && 
+							categorysTemp.get(j).item.getSubCategory().getName().equals(expenseAllItems.get(i).getSubCategory().getName())  &&
+							categorysTemp.get(j).item.getAmount() == expenseAllItems.get(i).getAmount()) {
+						categorysTemp.get(j).count++;
+						duplicationCheck = true;
+						break;
+					} 
+				}
+				if (duplicationCheck == false) {
+					categoryTemp.item = expenseAllItems.get(i);
+					categoryTemp.count++;
+					categorysTemp.add(categoryTemp);
+				}
+			}			
+		}
+		
+		itemsTemp = new ArrayList<FinanceItem>();
+		
+		for (int i=0; i < categorysTemp.size(); i++) {
+			itemsTemp.add(null);
+		}
+
+		for (int i=0; i < categorysTemp.size(); i++) {
+			int idx=0;
+			for (int j=0; j < categorysTemp.size(); j++) {
+				if (i==j) {
+					
+				}else {
+					if (categorysTemp.get(i).count < categorysTemp.get(j).count) {
+						idx++;
+					} else if (categorysTemp.get(i).count == categorysTemp.get(j).count && i>j) {
+						idx++;
+					}
+				}
+			}
+
+			itemsTemp.set(idx, categorysTemp.get(i).item);			
+		}
+
+		for (int i=0; i < 5; i++) {
+			if (itemsTemp.size() - 1 - i < 0) break;
+			Button btnBookmark = new Button(getApplicationContext());
+			btnBookmark.setText(itemsTemp.get(i).getCategory().getName() + " - " + itemsTemp.get(i).getSubCategory().getName()
+					+ "\t\t" + String.format("%,d원", itemsTemp.get(i).getAmount()));
+			btnBookmark.setId(itemsTemp.get(i).getID());
+			btnlist.addView(btnBookmark, params);
+			
+			btnBookmark.setOnClickListener(mClickListener);
+		}
+				
 		Button btnBack = (Button) popupviewBookmark.findViewById (R.id.bookmarkBack);
 		btnBack.setOnClickListener(new View.OnClickListener() {
 			
@@ -419,7 +496,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				popupBookmark.dismiss();
 			}
 		});
-		
+/*		
 		Button btnEdit = (Button) popupviewBookmark.findViewById (R.id.bookmarkEdit);
 		btnEdit.setOnClickListener(new View.OnClickListener() {
 			
@@ -429,8 +506,9 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				
 			}
 		});
+*/
 	}
-	
+		
 	protected void setBookmarkEdit() {
 		
 		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_edit_popup, null);
@@ -454,10 +532,30 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			}
 		});
 	}
-	//자주 사용 되는 지출 구현 end
+		
+	Button.OnClickListener mClickListener = new Button.OnClickListener() {
+		public void onClick(View v) {
+			for (int i = 0 ; i < itemsTemp.size() ; i++) {
+				if (v.getId() == itemsTemp.get(i).getID()) {
+					itemsTemp.get(i).setCreateDate(mExpensItem.getCreateDate());
+					itemsTemp.get(i).setCreateTime(mExpensItem.getCreateTime());
+					
+					itemsTemp.get(i).setRepeat(mExpensItem.getRepeat());
+					
+					mExpensItem = (ExpenseItem)itemsTemp.get(i);
+					setItem(mExpensItem);
+					
+					updateBtnCategoryText(R.id.BtnExpenseCategory);
+					updateBtnAmountText(R.id.BtnExpenseAmount);
+					updateEditMemoText(R.id.ETExpenseMemo);
+					updatePaymentMethod();
+					updateTagText();
 
-	
-	
-	
+					popupBookmark.dismiss();
+				}				
+			}
+		}
+	};			
+	//자주 사용 되는 지출 구현 end	
 	
 }
