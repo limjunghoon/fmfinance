@@ -58,7 +58,8 @@ public abstract class InputAssetsBaseLayout extends InputFinanceItemBaseLayout {
 			}
 		}
 		
-		expense.setAmount(getItem().getAmount());
+		expense.setAmount(getItem().getTotalAmount());
+//		expense.setCount(getItem().getCount());
 		expense.setCreateDate(getItem().getCreateDate());
 		
 		return expense;
