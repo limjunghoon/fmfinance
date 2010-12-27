@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.UISelectItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 
 /**
@@ -331,9 +332,11 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		
 		if (c.moveToFirst() != false) {
 			do {
-				Category item = new Category(c.getInt(0), c.getString(1));
-				item.setExtndType(c.getInt(4));
-				category.add(item);
+				Category item = new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
+				
+				if (item.getUIType() != UISelectItem.HIDE) {
+					category.add(item);
+				}
 			} while (c.moveToNext());
 		}
 		c.close();

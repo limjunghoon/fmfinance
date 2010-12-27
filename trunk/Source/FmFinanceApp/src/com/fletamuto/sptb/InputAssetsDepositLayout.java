@@ -204,12 +204,6 @@ public class InputAssetsDepositLayout extends InputAssetsExtendLayout {
     			updateAccount( getAccount(data.getIntExtra(MsgDef.ExtraNames.ACCOUNT_ID, -1)));
     		}
     	}
-		else if (requestCode == MsgDef.ActRequest.ACT_ADD_ITEM) {
-			if (resultCode == RESULT_OK) {
-				saveItem();		
-				finish();
-			}
-		}
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}

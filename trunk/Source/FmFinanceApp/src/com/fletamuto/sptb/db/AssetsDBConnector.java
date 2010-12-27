@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
 import com.fletamuto.sptb.data.AssetsInsuranceItem;
@@ -47,6 +48,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("main_category", item.getCategory().getID());
 		rowItem.put("sub_category", item.getSubCategory().getID());
 		rowItem.put("extend", item.getExtendID());
+		rowItem.put("state", item.getState());
 		
 		long ret = db.insert("assets", null, rowItem);
 		item.setID((int)ret);
@@ -77,6 +79,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("main_category", item.getCategory().getID());
 		rowItem.put("sub_category", item.getSubCategory().getID());
 		rowItem.put("extend", item.getExtendID());
+		rowItem.put("state", item.getState());
 		
 		long ret = db.update("assets", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getID())});
 		closeDatabase();
@@ -275,7 +278,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	 * @return 자산 아이템
 	 */
 	public AssetsItem createAssetsItem(Cursor c) {
-		AssetsItem item = createAssetsItem(c.getInt(12), c.getInt(7));
+		AssetsItem item = createAssetsItem(c.getInt(13), c.getInt(7));
 		item.setID(c.getInt(0));
 		try {
 			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
@@ -285,8 +288,9 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		item.setAmount(c.getLong(2));
 		item.setTitle(c.getString(3));
 		item.setMemo(c.getString(4));
-		item.setCategory(c.getInt(5), c.getString(9));
+		item.setCategory(c.getInt(5), c.getString(10));
 		item.setExtendID(c.getInt(7));
+		item.setState(c.getInt(8));
 		return item;
 	}
 	
@@ -342,7 +346,12 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 			}
 			
 			depoist.setRate(c.getInt(2));
-			depoist.setAccount(DBMgr.getAccountItem(c.getInt(3)));
+			
+			AccountItem account = DBMgr.getAccountItem(c.getInt(3));
+			if (account == null) {
+				account = new AccountItem();
+			}
+			depoist.setAccount(account);
 		}
 		c.close();
 		closeDatabase();
@@ -1043,7 +1052,11 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		
 		AssetsItem item = getFirstStateChangeItem(assetsID);
 		if (item != null) {
-			lastAmount = item.getAmount() * item.getCount();
+			Calendar cal = Calendar.getInstance();
+			cal.set(year, 0, 1);
+			if (item.getCreateDate().before(cal)) {
+				lastAmount = item.getAmount() * item.getCount();
+			}
 		}
 		
 		SQLiteDatabase db = openDatabase(READ_MODE);

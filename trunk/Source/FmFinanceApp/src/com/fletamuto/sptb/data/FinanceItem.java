@@ -11,6 +11,8 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
  * @version 1.0.0.1
  */
 public abstract class FinanceItem extends BaseItem {
+	public static final int STATE_NONE = 0;
+	public static final int STATE_COMPLEATE = 1;
 	/**
 	 * 
 	 */
@@ -45,6 +47,9 @@ public abstract class FinanceItem extends BaseItem {
 	
 	/** 수량*/
 	private int mCount = 1;
+	
+	/** 상태*/
+	private int mState = STATE_NONE;
 	
 	/**
 	 * 수입, 지출, 자산, 부채 타입을 얻는다.
@@ -255,5 +260,15 @@ public abstract class FinanceItem extends BaseItem {
 	
 	public long getTotalAmount() {
 		return mAmount * mCount;
+	}
+
+
+	public void setState(int state) {
+		this.mState = state;
+	}
+
+
+	public int getState() {
+		return mState;
 	}
 }

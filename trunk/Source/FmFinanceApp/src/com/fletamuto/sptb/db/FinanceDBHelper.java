@@ -238,7 +238,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"memo TEXT," +
 					"main_category INTEGER NOT NULL," +
 					"sub_category INTEGER," +
-					"extend INTEGER);");
+					"extend INTEGER," +
+					"state INTEGER);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -271,7 +272,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"change_date DATE NOT NULL," +
 					"amount INTEGER NOT NULL," +
 					"memo TEXT," +
-					"count INTEGER NOT NULL);");
+					"count INTEGER NOT NULL," +
+					"state INTEGER);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -451,7 +453,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 				"memo TEXT," +
 				"main_category INTEGER NOT NULL," +
 				"sub_category INTEGER," +
-				"extend INTEGER);");
+				"extend INTEGER," +
+				"state INTEGER);");
 	}
 	
 	/**
@@ -477,7 +480,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"change_date DATE NOT NULL," +
 					"amount INTEGER NOT NULL," +
 					"memo TEXT," +
-					"count INTEGER);");
+					"count INTEGER NOT NULL," +
+					"state INTEGER);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -876,13 +880,49 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			rowItem.put("image_index", index+1);
 	
 			// 임시 코드  //////////////////////////////////////////////////////
-			if (index == 0) rowItem.put("extend_type", ItemDef.ExtendIncome.SALARY);
-			else rowItem.put("extend_type", ItemDef.ExtendIncome.NONE);
+			if (index == 0) {
+				rowItem.put("extend_type", ItemDef.ExtendIncome.SALARY);
+			}
+			else {
+				rowItem.put("extend_type", ItemDef.ExtendIncome.NONE);
+			}
 			//////////////////////////////////////////////////////////////////
 			if (db.insert("income_main_category", null, rowItem) == -1) {
 				Log.e(LogTag.DB, "== DB Insert ERROR ==");
 			}
 		}
+		
+		/// TEST CODE ///////////
+		String [] assetsCategory = context.getResources().getStringArray(R.array.assets_base_main_category);
+		int assetsCategoryLenth = assetsCategory.length;
+		
+		for (int index = 0; index < assetsCategoryLenth; index++) {
+			rowItem.put("name", assetsCategory[index]);
+			rowItem.put("prioritize", index+1);
+			rowItem.put("image_index", index+1);
+			rowItem.put("type", UISelectItem.HIDE);
+			rowItem.put("extend_type", ItemDef.ExtendAssets.NONE);
+			
+			if (db.insert("income_main_category", null, rowItem) == -1) {
+				Log.e(LogTag.DB, "== DB Insert ERROR ==");
+			}
+		}
+		
+		String [] liabilityCategory = context.getResources().getStringArray(R.array.liability_base_main_category);
+		int liabilityCategoryLenth = liabilityCategory.length;
+		
+		for (int index = 0; index <liabilityCategoryLenth; index++) {
+			rowItem.put("name", liabilityCategory[index]);
+			rowItem.put("prioritize", index+1);
+			rowItem.put("image_index", index+1);
+			rowItem.put("type", UISelectItem.HIDE);
+			rowItem.put("extend_type", ItemDef.ExtendLiablility.NONE);
+			
+			if (db.insert("income_main_category", null, rowItem) == -1) {
+				Log.e(LogTag.DB, "== DB Insert ERROR ==");
+			}
+		}
+		/////////////////////////////////
 	}
 	
 	/**
