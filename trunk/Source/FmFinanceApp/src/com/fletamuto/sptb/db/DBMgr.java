@@ -64,7 +64,7 @@ public final class DBMgr {
 	 * @param context 연동할 뷰 객체 컨텍스트
 	 */
 	public static void initialize(Context context) {
-		DBMgr.mDBHelper = new FinanceDBHelper(context);
+		mDBHelper = new FinanceDBHelper(context);
 	}
 	
 	public static void dbUnLock() {
@@ -75,8 +75,8 @@ public final class DBMgr {
 		mDBOpenLock = true;
 	}
 	
-	public static void setDB(SQLiteDatabase mDB) {
-		DBMgr.mDB = mDB;
+	public static void setDB(SQLiteDatabase db) {
+		mDB = db;
 	}
 
 	public static SQLiteDatabase getDB() {
@@ -117,7 +117,7 @@ public final class DBMgr {
 	 * @return DBHelper 객체
 	 */
 	public static FinanceDBHelper getDBHelper() {
-		return DBMgr.mDBHelper;
+		return mDBHelper;
 	}
 	
 	public static IncomeDBConnector getIncomeDBConnecter() {
@@ -155,17 +155,17 @@ public final class DBMgr {
 					continue;
 				}
 				
-				FinanceItem item = DBMgr.getItem(repeat.getItemType(), repeat.getItemID());
+				FinanceItem item = getItem(repeat.getItemType(), repeat.getItemID());
 				if (item == null) {
 					Log.e(LogTag.DB, ":: Fail to Repeat Item " + repeat.getItemID());
 					continue;
 				}
 				item.setCreateDate(lastApplyDate);
-				DBMgr.addFinanceItem(item);
+				addFinanceItem(item);
 			}
 			
 			repeat.setLastApplyDay(lastApplyDate);
-			DBMgr.updateRepeat(repeat);
+			updateRepeat(repeat);
 			
 		}
 		return true;
@@ -203,7 +203,7 @@ public final class DBMgr {
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
 	public static long addFinanceItem(FinanceItem item) {
-		if (DBMgr.checkFinanceItemType(item.getType()) == false) return -1; 
+		if (checkFinanceItemType(item.getType()) == false) return -1; 
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).addItem(item);
 	}
 	
@@ -213,12 +213,12 @@ public final class DBMgr {
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
 	public static long updateFinanceItem(FinanceItem item) {
-		if (DBMgr.checkFinanceItemType(item.getType()) == false) return -1;
+		if (checkFinanceItemType(item.getType()) == false) return -1;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).updateItem(item);
 	}
 	
 	public static long updateAmountFinanceItem(FinanceItem item) {
-		if (DBMgr.checkFinanceItemType(item.getType()) == false) return -1;
+		if (checkFinanceItemType(item.getType()) == false) return -1;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).updateAmountFinanceItem(item.getID(), item.getAmount());
 	}
 	
@@ -242,7 +242,7 @@ public final class DBMgr {
 	 * @return 성공여부
 	 */
 	public static int updateSubCategory(int itemType, int id, String name) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return 0;
+		if (checkFinanceItemType(itemType) == false) return 0;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).updateSubCategory(id, name);
 	}
 	
@@ -252,7 +252,7 @@ public final class DBMgr {
 	 * @return ArrayList<FinanceItem> 아이템 리스트
 	 */
 	public static ArrayList<FinanceItem> getAllItems(int itemType) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getAllItems();
 	}
 	
@@ -263,32 +263,32 @@ public final class DBMgr {
 	 * @return ArrayList<FinanceItem> 아이템 리스트
 	 */
 	public static ArrayList<FinanceItem> getItems(int itemType, Calendar calendar) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItems(calendar);
 	}
 	
 	public static ArrayList<FinanceItem> getItems(int itemType, Calendar start, Calendar end) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItems(start, end);
 	}
 	
 	public static ArrayList<FinanceItem> getItems(int itemType, int year, int month) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItems(year, month);
 	}
 	
 	public static ArrayList<FinanceItem> getItemsFromCategoryID(int itemType, int mainCategoryID, int year, int month) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItemsFromCategoryID(mainCategoryID, year, month);
 	}
 	
 	public static ArrayList<FinanceItem> getItemsFromCategoryID(int itemType, int mainCategoryID) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItemsFromCategoryID(mainCategoryID);
 	}
 	
 	public static ArrayList<FinanceItem> getItemsFromSubCategoryID(int itemType, int subCategoryID, int year, int month) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItemsFromSubCategoryID(subCategoryID, year, month);
 	}
 	
@@ -299,7 +299,7 @@ public final class DBMgr {
 	 * @return 성공시 아이템 실패시 null
 	 */
 	public static FinanceItem getItem(int itemType, int id) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItem(id);
 	}
 	
@@ -310,12 +310,12 @@ public final class DBMgr {
 	 * @return 삭제된 아이템 수
 	 */
 	public static int deleteItem(int itemType, int id) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return -1;
+		if (checkFinanceItemType(itemType) == false) return -1;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).deleteItem(id);
 	}
 	
 	public static long updateRepeat(int itemType, int itemID, int repeatID) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return -1;
+		if (checkFinanceItemType(itemType) == false) return -1;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).updateRepeat(itemID, repeatID);
 	}
 	
@@ -327,8 +327,7 @@ public final class DBMgr {
 	 * @return long 총 액수
 	 */
 	public static long getTotalAmount(int itemType) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return -1;
-		//return mInstance.mDBConnector.getTotalAmount(itemType);
+		if (checkFinanceItemType(itemType) == false) return -1;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmount();
 	}
 	
@@ -339,22 +338,22 @@ public final class DBMgr {
 	 * @return long 총 액수
 	 */
 	public static long getTotalAmountDay(int itemType, Calendar calendar) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return 0L;
+		if (checkFinanceItemType(itemType) == false) return 0L;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountDay(calendar);
 	}
 	
 	public static long getTotalAmountMonth(int itemType, int year, int month) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return 0L;
+		if (checkFinanceItemType(itemType) == false) return 0L;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountMonth(year, month);
 	}
 	
 	public static long getTotalAmountMonth(int itemType, int categorID, int year, int month) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return 0L;
+		if (checkFinanceItemType(itemType) == false) return 0L;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountMonth(categorID, year, month);
 	}
 	
 	public static ArrayList<Long> getTotalAmountMonthInYear(int itemType, int categorID, int year) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountMonthInYear(categorID, year);
 	}
 	
@@ -363,7 +362,7 @@ public final class DBMgr {
 	}
 	
 	public static long getTotalAmountYear(int itemType, int year) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return 0L;
+		if (checkFinanceItemType(itemType) == false) return 0L;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountYear(year);
 	}
 	
@@ -374,7 +373,7 @@ public final class DBMgr {
 	 * @return 아이템 갯수
 	 */
 	public static int getItemCount(int itemType, Calendar calendar) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return -1;
+		if (checkFinanceItemType(itemType) == false) return -1;
 		//return mInstance.mDBConnector.getItemCount(itemType, calendar);
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItemCount(calendar);
 	}
@@ -387,7 +386,7 @@ public final class DBMgr {
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
 	public static int addCategory(int itemType, Category category) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return -1;
+		if (checkFinanceItemType(itemType) == false) return -1;
 		return (int)mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).addCategory(category);
 	}
 	
@@ -399,7 +398,7 @@ public final class DBMgr {
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
 	public static int addSubCategory(int itemType, long mainCategoryID, String name) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return -1;
+		if (checkFinanceItemType(itemType) == false) return -1;
 		return (int)mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).addSubCategory(mainCategoryID, name);
 	}
 	
@@ -409,7 +408,7 @@ public final class DBMgr {
 	 * @return 분류 리스트
 	 */
 	public static ArrayList<Category> getCategory(int itemType) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getCategory();
 	}
 	
@@ -419,7 +418,7 @@ public final class DBMgr {
 	 * @return 분류 리스트
 	 */
 	public static Category getCategory(int itemType, int extendItem) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getCategory(extendItem);
 	}
 	
@@ -430,7 +429,7 @@ public final class DBMgr {
 	 * @return 하위 분류 리스트
 	 */
 	public static ArrayList<Category> getSubCategory(int itemType, long mainCategoryId) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return null;
+		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getSubCategory(mainCategoryId);
 	}
 	
@@ -441,12 +440,12 @@ public final class DBMgr {
 	 * @return 
 	 */
 	public static int deleteCategory(int itemType, int itemID) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return 0;
+		if (checkFinanceItemType(itemType) == false) return 0;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).deleteCategory(itemID);
 	}
 	
 	public static int deleteSubCategory(int itemType, int itemID) {
-		if (DBMgr.checkFinanceItemType(itemType) == false) return 0;
+		if (checkFinanceItemType(itemType) == false) return 0;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).deleteSubCategory(itemID);
 	}
 	
@@ -663,7 +662,7 @@ public final class DBMgr {
 	}
 	
 	public static long addStateChangeItem(FinanceItem item) {
-		if (DBMgr.checkFinanceItemType(item.getType()) == false) return 0;
+		if (checkFinanceItemType(item.getType()) == false) return 0;
 		long ret = mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).addStateChangeItem(item);
 		if (ret != -1) {
 			if (item.getType() == AssetsItem.TYPE) {

@@ -23,9 +23,10 @@ import com.fletamuto.sptb.util.LogTag;
  * @author yongbban
  * @version  1.0.0.1
  */
-public class InputAssetsDepositLayout extends InputExtendLayout {
+public class InputAssetsDepositLayout extends InputAssetsExtendLayout {
 	public static final int ACT_ADD_ACCOUNT = MsgDef.ActRequest.ACT_ADD_ACCOUNT;
 	public static final int ACT_EDIT_ACCOUNT = MsgDef.ActRequest.ACT_EDIT_ACCOUNT;
+	
 	private AssetsDepositItem mDeposit;
 	
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,6 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
         setExpiryBtnClickListener(R.id.BtnDepositExpiryDate);
         setAccountBtnClickListener();
     }
-    
     
     @Override
     public void finish() {
@@ -96,7 +96,6 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
 
 	@Override
 	protected void updateRepeat(int type, int value) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -136,7 +135,6 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
 		updateEditTitleText(R.id.ETDepositTitle);
 		updateAccountText();
 		updateRateText();
-		
 	}
 
 	private void updateRateText() {
@@ -206,6 +204,12 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
     			updateAccount( getAccount(data.getIntExtra(MsgDef.ExtraNames.ACCOUNT_ID, -1)));
     		}
     	}
+		else if (requestCode == MsgDef.ActRequest.ACT_ADD_ITEM) {
+			if (resultCode == RESULT_OK) {
+				saveItem();		
+				finish();
+			}
+		}
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -242,6 +246,8 @@ public class InputAssetsDepositLayout extends InputExtendLayout {
     	
 		return true;
 	}
+	
+   
 	
   
 }

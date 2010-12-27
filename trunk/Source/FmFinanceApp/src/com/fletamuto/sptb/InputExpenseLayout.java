@@ -15,9 +15,11 @@ import android.widget.ToggleButton;
 
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardItem;
+import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.ExpenseTag;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.PaymentAccountMethod;
 import com.fletamuto.sptb.data.PaymentCardMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
@@ -307,6 +309,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 
 	@Override
 	protected void updateChildView() {
+		updateChildViewState();
 		updateDate();
 		updateBtnCategoryText(R.id.BtnExpenseCategory);
 		updateBtnAmountText(R.id.BtnExpenseAmount);
@@ -316,6 +319,23 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		updateRepeatText(R.id.BtnExpenseRepeat);
 	}
 	
+	private void updateChildViewState() {
+		Category category = mExpensItem.getCategory();
+		
+		if (category.getExtndType() == ItemDef.ExtendAssets.NONE) {
+			findViewById(R.id.BtnExpenseCategory).setEnabled(false);
+			findViewById(R.id.BtnExpenseAmount).setEnabled(false);
+			findViewById(R.id.TBExpenseMethodCard).setVisibility(View.GONE);
+			findViewById(R.id.LLRepeat).setVisibility(View.GONE);
+		}
+		else {
+			findViewById(R.id.BtnExpenseCategory).setEnabled(true);
+			findViewById(R.id.BtnExpenseAmount).setEnabled(true);
+			findViewById(R.id.TBExpenseMethodCard).setVisibility(View.VISIBLE);
+			findViewById(R.id.LLRepeat).setVisibility(View.VISIBLE);
+		}
+	}
+
 	protected PaymentMethod createPaymentMethod(int paymentMethodSelected) {
 		if (mExpensItem.createPaymentMethod(paymentMethodSelected) == null) {
 			return null;

@@ -104,7 +104,8 @@ public class ExpenseItem extends FinanceItem {
 	public ExpenseTag getTag() {
 		return mTag;
 	}
-	
+
+
 	
 	
 }
