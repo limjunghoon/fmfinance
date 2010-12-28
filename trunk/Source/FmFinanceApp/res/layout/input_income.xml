@@ -17,7 +17,7 @@
 		<Button android:id="@+id/BtnIncomeAmount" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		</Button>
 	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
 		<TextView android:id="@+id/TVIncomeMethod" android:text="@string/input_income_method_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
 		</TextView>
 		<ToggleButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/TBIncomeMethodCash" android:text="@string/input_income_method_cash" android:textOff="@string/input_expense_method_cash" android:textOn="@string/input_income_method_cash"></ToggleButton>

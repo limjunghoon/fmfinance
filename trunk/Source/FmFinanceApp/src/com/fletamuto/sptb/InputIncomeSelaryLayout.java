@@ -10,12 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeSalaryItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.PaymentMethod;
+import com.fletamuto.sptb.data.ReceiveMethod;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
@@ -33,6 +36,7 @@ public class InputIncomeSelaryLayout extends InputIncomeExtendLayout {
 	private long mTaxAmount = 0;
 	private long mPensionAmount = 0;
 	private long mEtcAmount  = 0;
+	private ReceiveMethod mReciveMethod = new ReceiveMethod();
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +54,7 @@ public class InputIncomeSelaryLayout extends InputIncomeExtendLayout {
         setDateBtnClickListener(R.id.BtnSalaryDate);         
         setAmountBtnClickListener(R.id.BtnSalaryAmount);
         setRepeatBtnClickListener(R.id.BtnSalaryRepeat);
+        setReceiveToggleBtnClickListener();
         takeHomePayBtnClickListener();
     }
 
@@ -76,6 +81,7 @@ public class InputIncomeSelaryLayout extends InputIncomeExtendLayout {
 		updateEditMemoText(R.id.ETSalaryMemo);
 		updateRepeatText(R.id.BtnSalaryRepeat);
 		updateBtnTakeHomePayText();
+		updateReceiveMethod();
 	}
 
 	@Override
@@ -132,6 +138,18 @@ public class InputIncomeSelaryLayout extends InputIncomeExtendLayout {
     			updateChildView();
     		}
     	}
+		else if (requestCode == MsgDef.ActRequest.ACT_ACCOUNT_SELECT) {
+			if (resultCode == RESULT_OK) {
+				int selectedID = data.getIntExtra(MsgDef.ExtraNames.ACCOUNT_ID, -1);
+				if (selectedID == -1) return;
+			
+				AccountItem selectedAccount = DBMgr.getAccountItem(selectedID);
+				updateAccount(selectedAccount);
+			}
+			else {
+				updateAccount(new AccountItem());
+			}
+		}
 		
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -184,5 +202,59 @@ public class InputIncomeSelaryLayout extends InputIncomeExtendLayout {
 			
 		}
 		updateRepeatText(R.id.BtnSalaryRepeat);
+	}
+	
+	/**
+	 * 수령방법 토글버튼 클릭 시 
+	 */
+	protected void setReceiveToggleBtnClickListener() {
+		
+		((ToggleButton)findViewById(R.id.TBIncomeMethodCash)).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				mReciveMethod.setType(PaymentMethod.CASH);
+				updateReceiveMethod();
+			}
+		});
+		
+		
+		((ToggleButton)findViewById(R.id.TBIncomeMethodAccount)).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				
+				Intent intent = new Intent(InputIncomeSelaryLayout.this, SelectAccountLayout.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_ACCOUNT_SELECT);
+			}
+		});
+	}
+	
+	protected void updateAccount(AccountItem selectedAccount) {
+		mSalary.setAccount(selectedAccount);
+		mReciveMethod.setAccount(selectedAccount);
+		mReciveMethod.setType(ReceiveMethod.ACCOUNT);
+		updateReceiveMethod();
+	}
+	
+	protected void updateReceiveMethod() {		
+		ToggleButton btnCash = (ToggleButton)findViewById(R.id.TBIncomeMethodCash);
+		ToggleButton btnAccount = (ToggleButton)findViewById(R.id.TBIncomeMethodAccount);
+		
+		if (mReciveMethod.getType() == PaymentMethod.CASH) {
+			btnCash.setChecked(true);
+			btnAccount.setChecked(false);
+		}
+		else if (mReciveMethod.getType() == PaymentMethod.ACCOUNT) {
+			btnCash.setChecked(false);
+			btnAccount.setChecked(true);
+		}
+		updatePaymentMethodText();
+	}
+	
+    /**
+     * 
+     */
+	protected void updatePaymentMethodText() {
+		TextView tvPaymentMethod = (TextView)findViewById(R.id.TVPaymentMethod);
+		tvPaymentMethod.setText(mReciveMethod.getText());
 	}
 }

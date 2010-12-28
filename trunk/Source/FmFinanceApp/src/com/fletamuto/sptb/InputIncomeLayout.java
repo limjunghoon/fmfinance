@@ -6,8 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.PaymentMethod;
+import com.fletamuto.sptb.data.ReceiveMethod;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -18,6 +22,8 @@ import com.fletamuto.sptb.db.DBMgr;
  */
 public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 	private IncomeItem mIncomeItem;
+	private ReceiveMethod mReciveMethod = new ReceiveMethod();
+	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_income, true);
@@ -33,6 +39,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         setDateBtnClickListener(R.id.BtnIncomeDate); 
         setAmountBtnClickListener(R.id.BtnIncomeAmount);
         setRepeatBtnClickListener(R.id.BtnIncomeRepeat);
+        setReceiveToggleBtnClickListener();
         setTitle(mIncomeItem.getCategory().getName());
     }
   
@@ -40,8 +47,12 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
     	super.initialize();
     	int categoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1) ;
         String categoryName = getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME);
-        
         updateCategory(categoryID, categoryName);
+        if (mIncomeItem.getAccount().getID() != -1) {
+        	mReciveMethod.setAccount(mIncomeItem.getAccount());
+        	mReciveMethod.setType(ReceiveMethod.ACCOUNT);
+        }
+        
 	}
     
     protected void updateDate() {
@@ -96,6 +107,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 		updateBtnAmountText(R.id.BtnIncomeAmount);
 		updateEditMemoText(R.id.ETIncomeMemo);
 		updateRepeatText(R.id.BtnIncomeRepeat);
+		updateReceiveMethod();
 	}
 
 	@Override
@@ -142,7 +154,73 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 				}
 			}
 		}
+		else if (requestCode == MsgDef.ActRequest.ACT_ACCOUNT_SELECT) {
+			if (resultCode == RESULT_OK) {
+				int selectedID = data.getIntExtra(MsgDef.ExtraNames.ACCOUNT_ID, -1);
+				if (selectedID == -1) return;
+			
+				AccountItem selectedAccount = DBMgr.getAccountItem(selectedID);
+				updateAccount(selectedAccount);
+			}
+			else {
+				updateAccount(new AccountItem());
+			}
+		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	/**
+	 * 수령방법 토글버튼 클릭 시 
+	 */
+	protected void setReceiveToggleBtnClickListener() {
+		
+		((ToggleButton)findViewById(R.id.TBIncomeMethodCash)).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				mReciveMethod.setType(PaymentMethod.CASH);
+				updateReceiveMethod();
+			}
+		});
+		
+		
+		((ToggleButton)findViewById(R.id.TBIncomeMethodAccount)).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				
+				Intent intent = new Intent(InputIncomeLayout.this, SelectAccountLayout.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_ACCOUNT_SELECT);
+			}
+		});
+	}
+	
+	protected void updateAccount(AccountItem selectedAccount) {
+		mIncomeItem.setAccount(selectedAccount);
+		mReciveMethod.setAccount(selectedAccount);
+		mReciveMethod.setType(ReceiveMethod.ACCOUNT);
+		updateReceiveMethod();
+	}
+	
+	protected void updateReceiveMethod() {		
+		ToggleButton btnCash = (ToggleButton)findViewById(R.id.TBIncomeMethodCash);
+		ToggleButton btnAccount = (ToggleButton)findViewById(R.id.TBIncomeMethodAccount);
+		
+		if (mReciveMethod.getType() == PaymentMethod.CASH) {
+			btnCash.setChecked(true);
+			btnAccount.setChecked(false);
+		}
+		else if (mReciveMethod.getType() == PaymentMethod.ACCOUNT) {
+			btnCash.setChecked(false);
+			btnAccount.setChecked(true);
+		}
+		updatePaymentMethodText();
+	}
+	
+    /**
+     * 
+     */
+	protected void updatePaymentMethodText() {
+		TextView tvPaymentMethod = (TextView)findViewById(R.id.TVPaymentMethod);
+		tvPaymentMethod.setText(mReciveMethod.getText());
 	}
     
 }
