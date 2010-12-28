@@ -710,6 +710,14 @@ public final class DBMgr {
 	}
 	
 	
+	public static int addExpenseFromAssets(int expenseID, int assetsID) {
+		return getAssetsDBConnecter().addExpenseFromAssets(expenseID, assetsID);
+	}
+	
+	public static int addIncomeFromAssets(int incomeID, int assetsID) {
+		return getAssetsDBConnecter().addIncomeFromAssets(incomeID, assetsID);
+	}
+	
 
 
 

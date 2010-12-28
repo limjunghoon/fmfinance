@@ -69,7 +69,9 @@ public abstract class InputAssetsBaseLayout extends InputFinanceItemBaseLayout {
 
 		if (requestCode == MsgDef.ActRequest.ACT_ADD_ITEM) {
 			if (resultCode == RESULT_OK) {
-				saveItem();		
+				saveItem();	
+				DBMgr.addExpenseFromAssets(data.getIntExtra(MsgDef.ExtraNames.ADD_ITEM_ID, -1), getItem().getID());
+				
 				finish();
 			}
 		}

@@ -49,7 +49,6 @@ public class ReportAssetsLayout extends ReportBaseLayout {
     	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
     	Intent intent = null;
     	
-    	
     	if (item.getExtendType() == ItemDef.ExtendAssets.DEPOSIT) {
     		intent = new Intent(this, StateAssetsDepositLayout.class);
     	}
@@ -191,6 +190,11 @@ public class ReportAssetsLayout extends ReportBaseLayout {
 		
 		for (int index = 0; index < itemSize; index++) {
 			FinanceItem item = mItems.get(index);
+			
+			if (item.getState() == FinanceItem.STATE_COMPLEATE) {
+				continue;
+			}
+			
 			if (item.getCategory().getID() != itemCategoryID) {
 				itemCategoryID = item.getCategory().getID();
 				AssetsItem separator = new AssetsItem();

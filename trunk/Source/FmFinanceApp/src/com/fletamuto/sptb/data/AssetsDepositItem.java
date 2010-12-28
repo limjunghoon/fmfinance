@@ -122,4 +122,8 @@ public class AssetsDepositItem extends AssetsExtendItem {
 		
 		return  monthTerm  + (mExpiryDate.get(Calendar.MONTH) - getCreateDate().get(Calendar.MONTH)) + 1;
 	}
+	
+	public boolean isOverExpirationDate() {
+		return (Calendar.getInstance().before(getExpiryDate()));
+	}
 }

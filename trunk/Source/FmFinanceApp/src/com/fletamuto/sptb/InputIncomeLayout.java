@@ -48,9 +48,13 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
   
     protected void initialize() {
     	super.initialize();
-    	int categoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1) ;
-        String categoryName = getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME);
-        updateCategory(categoryID, categoryName);
+    	
+    	if (mIncomeItem.getCategory().getID() == -1) {
+    		int categoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1) ;
+            String categoryName = getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME);
+            updateCategory(categoryID, categoryName);
+    	}
+    	
         if (mIncomeItem.getAccount().getID() != -1) {
         	mReciveMethod.setAccount(mIncomeItem.getAccount());
         	mReciveMethod.setType(ReceiveMethod.ACCOUNT);
@@ -115,20 +119,6 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 		updateEditMemoText(R.id.ETIncomeMemo);
 		updateRepeatText(R.id.BtnIncomeRepeat);
 		updateReceiveMethod();
-	}
-	
-	protected void updateChildViewState() {
-		Category category = mIncomeItem.getCategory();
-		
-		if (category.getExtndType() == ItemDef.ExtendAssets.DEPOSIT) {
-			findViewById(R.id.LLRepeat).setVisibility(View.GONE);
-		}
-//		else {
-//			findViewById(R.id.BtnExpenseCategory).setEnabled(true);
-//			findViewById(R.id.BtnExpenseAmount).setEnabled(true);
-//			findViewById(R.id.TBExpenseMethodCard).setVisibility(View.VISIBLE);
-//			findViewById(R.id.LLRepeat).setVisibility(View.VISIBLE);
-//		}
 	}
 
 	@Override
@@ -242,6 +232,21 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 	protected void updatePaymentMethodText() {
 		TextView tvPaymentMethod = (TextView)findViewById(R.id.TVPaymentMethod);
 		tvPaymentMethod.setText(mReciveMethod.getText());
+	}
+	
+
+	protected void updateChildViewState() {
+		Category category = getItem().getCategory();
+		
+		if (category.getExtndType() == ItemDef.ExtendAssets.DEPOSIT) {
+			findViewById(R.id.LLRepeat).setVisibility(View.GONE);
+		}
+//		else {
+//			findViewById(R.id.BtnExpenseCategory).setEnabled(true);
+//			findViewById(R.id.BtnExpenseAmount).setEnabled(true);
+//			findViewById(R.id.TBExpenseMethodCard).setVisibility(View.VISIBLE);
+//			findViewById(R.id.LLRepeat).setVisibility(View.VISIBLE);
+//		}
 	}
     
 }
