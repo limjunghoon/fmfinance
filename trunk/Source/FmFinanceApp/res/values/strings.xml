@@ -96,6 +96,9 @@
     <string name="input_income_memo_name">메모</string>
     <string name="input_income_repeat_name">반복</string>
     <string name="input_income_btn_save">저장</string>
+    <string name="input_income_method_name">수령</string>
+    <string name="input_income_method_cash">현금</string>
+    <string name="input_income_method_account">계좌</string>
     <string name="input_account_institution">금융기관</string>
     <string name="input_account_nubmer">계좌번호</string>
     <string name="input_account_balance">잔액</string>

@@ -28,8 +28,8 @@
 		<ToggleButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/TBExpenseMethodCash" android:text="@string/input_expense_method_cash" android:textOff="@string/input_expense_method_cash" android:textOn="@string/input_expense_method_cash"></ToggleButton>
 		<ToggleButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/TBExpenseMethodCard" android:text="@string/input_expense_method_card" android:textOff="@string/input_expense_method_card" android:textOn="@string/input_expense_method_card"></ToggleButton>
 		<ToggleButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/TBExpenseMethodAccount" android:text="@string/input_expense_method_account" android:textOff="@string/input_expense_method_account" android:textOn="@string/input_expense_method_account"></ToggleButton>
-
-</LinearLayout><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="80dp" android:id="@+id/TVPaymentMethod" android:textSize="15sp"></TextView>
+	</LinearLayout>
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="80dp" android:id="@+id/TVPaymentMethod" android:textSize="15sp"></TextView>
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		<TextView android:id="@+id/TVExpenseMemo" android:text="@string/input_expense_memo_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
 		</TextView>
