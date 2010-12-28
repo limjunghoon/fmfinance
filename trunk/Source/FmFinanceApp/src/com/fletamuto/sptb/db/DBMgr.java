@@ -417,7 +417,7 @@ public final class DBMgr {
 	 * @param itemType 수입, 지출, 자산, 부채 타입
 	 * @return 분류 리스트
 	 */
-	public static Category getCategory(int itemType, int extendItem) {
+	public static ArrayList<Category> getCategory(int itemType, int extendItem) {
 		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getCategory(extendItem);
 	}

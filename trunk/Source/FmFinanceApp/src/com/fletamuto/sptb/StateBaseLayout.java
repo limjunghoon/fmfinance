@@ -6,6 +6,7 @@ import java.util.Calendar;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ public abstract class StateBaseLayout extends FmBaseActivity {
 	protected abstract void startChangeStateActivtiy();
 	protected abstract void getData();
 	protected abstract Class<?> getActivityClass();
+	protected abstract void onDeleteBtnClick();
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,13 +38,11 @@ public abstract class StateBaseLayout extends FmBaseActivity {
         
         setBtnClickListener();
         updateChildView();
-        
     }
 	
 	public FinanceItem getItem() {
 		return mItem;
 	}
-	
 	
 	@Override
 	protected void initialize() {
@@ -77,17 +77,21 @@ public abstract class StateBaseLayout extends FmBaseActivity {
 				moveNextYear();
 			}
 		});
+		
+		findViewById(R.id.BtnStateDelete).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				onDeleteBtnClick();
+			}
+		});
 	}
 	
-
 
 	@Override
 	protected void setTitleBtn() {
 		setTitle(mItem.getCategory().getName());
 		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "ÆíÁý");
 		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
-		
-		
 		super.setTitleBtn();
 	}
 	
@@ -137,14 +141,10 @@ public abstract class StateBaseLayout extends FmBaseActivity {
 		getData();
     	updateChildView();
 	}
-	
-
 
 	public void movePreviousYear() {
 		mYear--;
 		getData();
     	updateChildView();
 	}
-
-
 }

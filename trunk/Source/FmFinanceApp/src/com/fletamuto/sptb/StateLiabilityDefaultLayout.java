@@ -49,6 +49,12 @@ public class StateLiabilityDefaultLayout extends StateDefaultLayout {
 		mAmountMonthInYear = DBMgr.getTotalLiabilityAmountMonthInYear(mItem.getID(), mYear);
 		mPurchasePrice = DBMgr.getLiabilityPurchasePrice(mItem.getID());
 	}
+
+	@Override
+	protected void onDeleteBtnClick() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

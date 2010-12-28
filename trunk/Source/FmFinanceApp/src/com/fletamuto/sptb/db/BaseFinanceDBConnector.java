@@ -18,7 +18,7 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	public abstract long addSubCategory(long mainCategoryID, String name);
 	public abstract long addCategory(Category category);
 	public abstract ArrayList<Category> getCategory();
-	public abstract Category getCategory(int extendItem);
+	public abstract ArrayList<Category> getCategory(int extendItem);
 	public abstract long getTotalAmount();
 	public abstract long getTotalAmountDay(Calendar calendar);
 	public abstract long getTotalAmountMonth(int year, int month);

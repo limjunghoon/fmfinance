@@ -319,7 +319,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		updateRepeatText(R.id.BtnExpenseRepeat);
 	}
 	
-	private void updateChildViewState() {
+	protected void updateChildViewState() {
 		Category category = mExpensItem.getCategory();
 		
 		if (category.getExtndType() == ItemDef.ExtendAssets.NONE) {
@@ -436,8 +436,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	}
 	
 	protected void setBookmark () {
-		
-		
 		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_popup, null);
 		popupBookmark = new PopupWindow(popupviewBookmark, 320, 300, true);
 		popupBookmark.showAtLocation(linear, Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 0);

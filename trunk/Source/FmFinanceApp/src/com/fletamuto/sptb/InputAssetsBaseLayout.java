@@ -29,12 +29,9 @@ public abstract class InputAssetsBaseLayout extends InputFinanceItemBaseLayout {
 						saveItem();		
 						finish();
 					}
-					
 					Intent intent = new Intent(InputAssetsBaseLayout.this, InputExpenseLayout.class);
 					intent.putExtra(MsgDef.ExtraNames.ITEM, expense);
-					
 					startActivityForResult(intent, MsgDef.ActRequest.ACT_ADD_ITEM);
-
 		    	}
 			}
 		 });
@@ -43,7 +40,9 @@ public abstract class InputAssetsBaseLayout extends InputFinanceItemBaseLayout {
 	protected ExpenseItem createExpenseItem() {
 		ExpenseItem expense = new ExpenseItem();
 		
-		Category mainCategory = DBMgr.getCategory(ExpenseItem.TYPE, ItemDef.ExtendAssets.NONE);
+		ArrayList<Category> categories = DBMgr.getCategory(ExpenseItem.TYPE, ItemDef.ExtendAssets.NONE);
+		if (categories.size() != 1) return null;
+		Category mainCategory = categories.get(0);
 		if (mainCategory == null) return null;
 		
 		expense.setCategory(mainCategory);

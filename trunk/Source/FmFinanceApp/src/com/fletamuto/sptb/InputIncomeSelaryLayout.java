@@ -160,7 +160,9 @@ public class InputIncomeSelaryLayout extends InputIncomeExtendLayout {
 	
 	@Override
 	protected boolean saveNewItem(Class<?> cls) {
-		Category mainCategory = DBMgr.getCategory(ExpenseItem.TYPE, ItemDef.ExtendIncome.SALARY);
+		ArrayList<Category> categories = DBMgr.getCategory(ExpenseItem.TYPE, ItemDef.ExtendIncome.SALARY);
+		if (categories.size() != 1) return false;
+		Category mainCategory = categories.get(0);
 		if (mainCategory == null) return false;
 		
 		ArrayList<Category> subCategories = DBMgr.getSubCategory(ExpenseItem.TYPE, mainCategory.getID());

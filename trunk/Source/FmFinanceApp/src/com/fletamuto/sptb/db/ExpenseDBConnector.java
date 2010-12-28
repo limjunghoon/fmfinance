@@ -70,6 +70,11 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	public long updateItem(FinanceItem financeItem) { 
 		ExpenseItem item = (ExpenseItem)financeItem;
 		if (checkExpenseVaildItem(item) != DBDef.ValidError.SUCCESS) return -1;
+		
+		if (precedenceUpdateItem(item) == false) {
+			return -1;
+		}
+		
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
@@ -80,6 +85,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getID());
 		rowItem.put("sub_category", item.getSubCategory().getID());
+		rowItem.put("payment_method", item.getPaymentMethod().getID()); // 임시값
 		rowItem.put("repeat", item.getRepeat().getID()); // 임시값
 		rowItem.put("tag", item.getTag().getID());
 		
@@ -386,18 +392,20 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	}
 	
 	@Override
-	public Category getCategory(int extendItem) {
-		Category item = null;
+	public ArrayList<Category> getCategory(int extendItem) {
+		ArrayList<Category> category = new ArrayList<Category>();
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		
 		Cursor c = db.query("expense_main_category", null, "extend_type=?", new String[]{String.valueOf(extendItem)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
-			item = new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
+			do {
+				category.add(new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5)));
+			} while (c.moveToNext());
 		}
 		c.close();
 		closeDatabase();
-		return item;
+		return category;
 	}
 
 	/**
@@ -725,12 +733,69 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	}
 	
 	/**
+	 * 지출을 DB테이블에 추가
+	 * @param item 지출 아이템
+	 * @return the row ID of the newly inserted row, or -1 if an error occurred
+	 */
+	public long updatePaymentMethod(PaymentMethod paymentMethod) {
+		if (paymentMethod == null) return -1;
+		int type = paymentMethod.getType();
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		ContentValues rowItem = new ContentValues();
+		
+		if (type == PaymentMethod.CASH) {
+			rowItem.put("installment_plan", 0);
+		} 
+		else if (type == PaymentMethod.CARD){
+			PaymentCardMethod card = (PaymentCardMethod)paymentMethod;
+			if (card.getCard() != null) {
+				rowItem.put("card", card.getCard().getID());
+				rowItem.put("installment_plan", card.getInstallmentPlan());
+			}
+			rowItem.put("method_type", paymentMethod.getType());
+		} 
+		else if (type == PaymentMethod.ACCOUNT){
+			PaymentAccountMethod account = (PaymentAccountMethod)paymentMethod;
+			
+			if (account.getAccount() != null) {
+				rowItem.put("account", account.getAccount().getID()); // 임시값
+				rowItem.put("installment_plan", 0);
+			}
+			rowItem.put("method_type", account.getType());
+		} 
+		else {
+			Log.e(LogTag.DB, ":: PAYMENT METHOD TYPE ERROR ::");
+			closeDatabase();
+			return -1;
+		}
+		
+		rowItem.put("method_type", type);
+		
+		long ret = db.update("payment_method", rowItem, "_id=?", new String[] {String.valueOf(paymentMethod.getID())});
+		paymentMethod.setID((int)ret);
+		closeDatabase();
+		return ret;
+	}
+	
+	/**
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 * @param 지출테이블에 입력되기전에 추가되어야 할 테이블
 	 */
 	private boolean precedenceAddItem(ExpenseItem item) {
 		if (addPaymentMethod(item.getPaymentMethod()) == -1) {
 			Log.e(LogTag.DB, ":: ADD PAYMENT METHOD ERROR ::");
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * @return the row ID of the newly inserted row, or -1 if an error occurred
+	 * @param 지출테이블에 수정되기전에 수정되어야 할 테이블
+	 */
+	private boolean precedenceUpdateItem(ExpenseItem item) {
+		if (updatePaymentMethod(item.getPaymentMethod()) == -1) {
+			Log.e(LogTag.DB, ":: UPDATE PAYMENT METHOD ERROR ::");
 			return false;
 		}
 		return true;
