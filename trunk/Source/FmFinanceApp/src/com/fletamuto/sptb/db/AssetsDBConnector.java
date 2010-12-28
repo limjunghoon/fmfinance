@@ -1111,6 +1111,38 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	public int addExpenseFromAssets(int expenseID, int assetsID) {
+		if (expenseID == -1 || assetsID == -1) {
+			return -1;
+		}
+		
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("assets_id", assetsID);
+		rowItem.put("expense_id", expenseID);
+		
+		int ret = (int)db.insert("assets_expense", null, rowItem);
+		closeDatabase();
+		return ret;
+	}
+
+	public int addIncomeFromAssets(int incomeID, int assetsID) {
+		if (incomeID == -1 || assetsID == -1) {
+			return -1;
+		}
+		
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("assets_id", assetsID);
+		rowItem.put("income_id", incomeID);
+		
+		int ret = (int)db.insert("assets_income", null, rowItem);
+		closeDatabase();
+		return ret;
+	}
 	
 	
 }

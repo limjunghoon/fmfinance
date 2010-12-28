@@ -17,6 +17,7 @@
 		<Button android:id="@+id/BtnIncomeAmount" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		</Button>
 	</LinearLayout>
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="80dp" android:id="@+id/TVIncomeRate" android:textSize="15sp" android:visibility="gone"></TextView>
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
 		<TextView android:id="@+id/TVIncomeMethod" android:text="@string/input_income_method_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
 		</TextView>
@@ -30,7 +31,7 @@
 		<EditText android:id="@+id/ETIncomeMemo" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		</EditText>
 	</LinearLayout>
-		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLRepeat">
 		<TextView android:id="@+id/TVIncomeRepeat" android:text="@string/input_income_repeat_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
 		</TextView>
 		<Button android:id="@+id/BtnIncomeRepeat" android:layout_height="wrap_content" android:layout_width="fill_parent">

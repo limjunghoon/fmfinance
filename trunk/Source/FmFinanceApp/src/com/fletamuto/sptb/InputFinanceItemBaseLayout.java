@@ -158,10 +158,12 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     	
     	if (cls != null) {
     		Intent intent = new Intent(InputFinanceItemBaseLayout.this, cls);
+    		intent.putExtra(MsgDef.ExtraNames.ADD_ITEM_ID, mItem.getID());
     		startActivity(intent);
     	}
     	else {
     		Intent intent = new Intent();
+    		intent.putExtra(MsgDef.ExtraNames.ADD_ITEM_ID, mItem.getID());
 			setResult(RESULT_OK, intent);
 			finish();
     	}

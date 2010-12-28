@@ -62,6 +62,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		createChangeAssetsAmountTable(db);
 //		createAssetsExtendTable(db);
 		createAssetsExpenseTable(db);
+		createAssetsIncomeTable(db);
 		createAssetsSavingsTable(db);
 		createAssetsDepositTable(db);
 		createFundTable(db);
@@ -435,6 +436,21 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"assets_id INTEGER NOT NULL," +
 					"expense_id INTEGER NOT NULL);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * 자산으로 들어온 수입  테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createAssetsIncomeTable(SQLiteDatabase db) {
+		try {
+			db.execSQL("CREATE TABLE assets_income ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"assets_id INTEGER NOT NULL," +
+					"income_id INTEGER NOT NULL);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}

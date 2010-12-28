@@ -1,6 +1,7 @@
 package com.fletamuto.sptb;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
@@ -25,10 +27,13 @@ public class StateAssetsDepositLayout extends StateDefaultLayout {
         
         findViewById(R.id.LLPrograss).setVisibility(View.VISIBLE);
         setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.INVISIBLE);
-        ((Button)findViewById(R.id.BtnStateDelete)).setText("해약");
+        
+        updateDeleteBtnText();
+        
         setPorgress();
     }
-	
+
+
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -98,15 +103,27 @@ public class StateAssetsDepositLayout extends StateDefaultLayout {
     			}
     		}
     	}
+		else if (requestCode == MsgDef.ActRequest.ACT_ADD_ITEM) {
+			if (resultCode == RESULT_OK) {
+				completionAssets(data.getIntExtra(MsgDef.ExtraNames.ADD_ITEM_ID, -1));
+			}
+		}
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+	protected void completionAssets(int incomeID) {
+		mDeposit.setState(FinanceItem.STATE_COMPLEATE);
+		DBMgr.updateFinanceItem(mDeposit);
+		DBMgr.addIncomeFromAssets(incomeID, mDeposit.getID());
+		finish();
+	}
+
 	@Override
 	protected void onDeleteBtnClick() {
-		Intent intent = new Intent(this, InputIncomeLayout.class);
+		Intent intent = new Intent(this, InputIncomeFromAssetsLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.ITEM, createIncomeItem());
-		startActivity(intent);
+		startActivityForResult(intent, MsgDef.ActRequest.ACT_ADD_ITEM);
 	}
 	
 	protected IncomeItem createIncomeItem() {
@@ -129,5 +146,15 @@ public class StateAssetsDepositLayout extends StateDefaultLayout {
 //		income.setCreateDate(getItem().getCreateDate());
 		
 		return income;
+	}
+	
+	protected void updateDeleteBtnText() {
+		if (mDeposit.isOverExpirationDate()) {
+			((Button)findViewById(R.id.BtnStateDelete)).setText("해약");
+		}
+		else {
+			((Button)findViewById(R.id.BtnStateDelete)).setText("만기");
+		}
+		
 	}
 }
