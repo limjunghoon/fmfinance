@@ -48,6 +48,10 @@ public class StateAssetsDefaultLayout extends StateDefaultLayout {
 		mAmountMonthInYear = DBMgr.getTotalAssetAmountMonthInYear(mItem.getID(), mYear);
 		mPurchasePrice = DBMgr.getAssetsPurchasePrice(mItem.getID());
 	}
-	
-	
+
+	@Override
+	protected void onDeleteBtnClick() {
+		// TODO Auto-generated method stub
+		
+	}
 }

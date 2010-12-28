@@ -346,18 +346,20 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	}
 	
 	@Override
-	public Category getCategory(int extendItem) {
-		Category item = null;
+	public ArrayList<Category> getCategory(int extendItem) {
+		ArrayList<Category> category = new ArrayList<Category>();
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		
 		Cursor c = db.query("income_main_category", null, "extend_type=?", new String[]{String.valueOf(extendItem)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
-			item = new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
+			do {
+				category.add(new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5)));
+			} while (c.moveToNext());
 		}
 		c.close();
 		closeDatabase();
-		return item;
+		return category;
 	}
 
 	/**

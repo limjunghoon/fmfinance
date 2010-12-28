@@ -9,7 +9,10 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.data.ReceiveMethod;
 import com.fletamuto.sptb.data.Repeat;
@@ -78,7 +81,10 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 
 	@Override
 	protected void createItemInstance() {
-		mIncomeItem = new IncomeItem();
+		mIncomeItem = (IncomeItem) getIntent().getSerializableExtra(MsgDef.ExtraNames.ITEM);
+		if (mIncomeItem == null) {
+			mIncomeItem = new IncomeItem();
+		}
 		setItem(mIncomeItem);
 	}
 	
@@ -103,11 +109,26 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 
 	@Override
 	protected void updateChildView() {
+		updateChildViewState();
 		updateDate();
 		updateBtnAmountText(R.id.BtnIncomeAmount);
 		updateEditMemoText(R.id.ETIncomeMemo);
 		updateRepeatText(R.id.BtnIncomeRepeat);
 		updateReceiveMethod();
+	}
+	
+	protected void updateChildViewState() {
+		Category category = mIncomeItem.getCategory();
+		
+		if (category.getExtndType() == ItemDef.ExtendAssets.DEPOSIT) {
+			findViewById(R.id.LLRepeat).setVisibility(View.GONE);
+		}
+//		else {
+//			findViewById(R.id.BtnExpenseCategory).setEnabled(true);
+//			findViewById(R.id.BtnExpenseAmount).setEnabled(true);
+//			findViewById(R.id.TBExpenseMethodCard).setVisibility(View.VISIBLE);
+//			findViewById(R.id.LLRepeat).setVisibility(View.VISIBLE);
+//		}
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.fletamuto.sptb;
 
+import java.util.ArrayList;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,10 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class StateAssetsDepositLayout extends StateDefaultLayout {  	
@@ -95,6 +101,33 @@ public class StateAssetsDepositLayout extends StateDefaultLayout {
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+
+	@Override
+	protected void onDeleteBtnClick() {
+		Intent intent = new Intent(this, InputIncomeLayout.class);
+		intent.putExtra(MsgDef.ExtraNames.ITEM, createIncomeItem());
+		startActivity(intent);
+	}
 	
-	
+	protected IncomeItem createIncomeItem() {
+		IncomeItem income = new IncomeItem();
+		
+		ArrayList<Category> categories = DBMgr.getCategory(IncomeItem.TYPE, ItemDef.ExtendAssets.NONE);
+		int categorySize = categories.size();
+		
+		for (int index = 0; index < categorySize; index++) {
+			Category category = categories.get(index); 
+			if (category.getName().compareTo(getItem().getCategory().getName()) == 0) {
+				category.setExtndType(ItemDef.ExtendAssets.DEPOSIT);
+				income.setCategory(category);
+				break;
+			}
+		}
+		
+		income.setAmount(getItem().getTotalAmount());
+//		income.setCount(getItem().getCount());
+//		income.setCreateDate(getItem().getCreateDate());
+		
+		return income;
+	}
 }

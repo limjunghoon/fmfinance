@@ -11,7 +11,6 @@ public abstract class StateDefaultLayout extends StateBaseLayout {
         super.onCreate(savedInstanceState);
         
         setHistoryButtonListener();
- 
     }
 
 	protected void setHistoryButtonListener() {
@@ -27,6 +26,4 @@ public abstract class StateDefaultLayout extends StateBaseLayout {
 	protected Class<?> getActivityClass() {
 		return InputAssetsLayout.class;
 	}
-
-	
 }
