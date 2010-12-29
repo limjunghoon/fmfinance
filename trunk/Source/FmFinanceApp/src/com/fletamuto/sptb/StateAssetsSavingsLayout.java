@@ -9,25 +9,22 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.AssetsSavingsItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class StateAssetsDepositLayout extends StateDefaultLayout {  	
-	private AssetsDepositItem mDeposit;
+public class StateAssetsSavingsLayout extends StateDefaultLayout {  	
+	private AssetsSavingsItem mSavings;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         findViewById(R.id.LLPrograss).setVisibility(View.VISIBLE);
-        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.INVISIBLE);
-        
         updateDeleteBtnText();
-        
         setPorgress();
     }
 
@@ -43,7 +40,7 @@ public class StateAssetsDepositLayout extends StateDefaultLayout {
 	@Override
 	protected void updateChildView() {
 		TextView tvAmount = (TextView)findViewById(R.id.TVStateTitle);
-		tvAmount.setText(String.format("금액 : %,d원   이율 : %d%%", mDeposit.getAmount(), mDeposit.getRate()));
+		tvAmount.setText(String.format("금액 : %,d원   이율 : %d%%", mSavings.getAmount(), mSavings.getRate()));
 		
 		TextView tvYear = (TextView) findViewById(R.id.TVCurrentYear);
 		tvYear.setText(String.format("%d년", mYear));
@@ -53,7 +50,7 @@ public class StateAssetsDepositLayout extends StateDefaultLayout {
 
 	@Override
 	protected void onClickHistoryBtn() {
-		Intent intent = new Intent(StateAssetsDepositLayout.this, ReportAssetsHistoryLayout.class);
+		Intent intent = new Intent(StateAssetsSavingsLayout.this, ReportAssetsHistoryLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.ITEM, mItem);
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_STATE_HISTORY);
 	}
@@ -69,19 +66,19 @@ public class StateAssetsDepositLayout extends StateDefaultLayout {
 	@Override
 	protected void getData() {
 		mAmountMonthInYear = DBMgr.getTotalAssetAmountMonthInYear(mItem.getID(), mYear);
-		mDeposit = (AssetsDepositItem)getItem();
+		mSavings = (AssetsSavingsItem)getItem();
 	}
 	
 	private void setPorgress() {
 		ProgressBar progress = (ProgressBar)findViewById(R.id.PBState);
-		int monthPeriodTerm = mDeposit.getMonthPeriodTerm();
-		int monthProgressCount = mDeposit.getMonthProcessCount() ;
+		int monthPeriodTerm = mSavings.getMonthPeriodTerm();
+		int monthProgressCount = mSavings.getMonthProcessCount() ;
 		
 		progress.setMax(monthPeriodTerm);
 		progress.setProgress(monthProgressCount);
 		
 		TextView tvProgrss = (TextView) findViewById(R.id.TVStatePrograss);
-		tvProgrss.setText(String.format("진행(%d/%d)", mDeposit.getMonthProcessCount(), mDeposit.getMonthPeriodTerm()));
+		tvProgrss.setText(String.format("진행(%d/%d)", mSavings.getMonthProcessCount(), mSavings.getMonthPeriodTerm()));
 		tvProgrss.invalidate();
 	}
 
@@ -96,7 +93,7 @@ public class StateAssetsDepositLayout extends StateDefaultLayout {
     		if (resultCode == RESULT_OK) {
     			int id = data.getIntExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, -1);
     			if (id != -1) {
-    				mDeposit = (AssetsDepositItem) DBMgr.getItem(AssetsItem.TYPE, id);
+    				mSavings = (AssetsSavingsItem) DBMgr.getItem(AssetsItem.TYPE, id);
     				updateChildView();
     				setPorgress();
     			}
@@ -112,9 +109,10 @@ public class StateAssetsDepositLayout extends StateDefaultLayout {
 	}
 
 	protected void completionAssets(int incomeID) {
-		mDeposit.setState(FinanceItem.STATE_COMPLEATE);
-		DBMgr.updateFinanceItem(mDeposit);
-		DBMgr.addIncomeFromAssets(incomeID, mDeposit.getID());
+		mSavings.setState(FinanceItem.STATE_COMPLEATE);
+		DBMgr.updateFinanceItem(mSavings);
+		DBMgr.addIncomeFromAssets(incomeID, mSavings.getID());
+
 		finish();
 	}
 
@@ -148,7 +146,7 @@ public class StateAssetsDepositLayout extends StateDefaultLayout {
 	}
 	
 	protected void updateDeleteBtnText() {
-		if (mDeposit.isOverExpirationDate()) {
+		if (mSavings.isOverExpirationDate()) {
 			((Button)findViewById(R.id.BtnStateDelete)).setText("해약");
 		}
 		else {

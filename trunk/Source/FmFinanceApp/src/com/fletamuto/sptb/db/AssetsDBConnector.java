@@ -47,6 +47,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getID());
 		rowItem.put("sub_category", item.getSubCategory().getID());
+		rowItem.put("repeat", item.getRepeat().getID());
 		rowItem.put("extend", item.getExtendID());
 		rowItem.put("state", item.getState());
 		
@@ -78,6 +79,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getID());
 		rowItem.put("sub_category", item.getSubCategory().getID());
+		rowItem.put("repeat", item.getRepeat().getID());
 		rowItem.put("extend", item.getExtendID());
 		rowItem.put("state", item.getState());
 		
@@ -278,7 +280,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	 * @return 자산 아이템
 	 */
 	public AssetsItem createAssetsItem(Cursor c) {
-		AssetsItem item = createAssetsItem(c.getInt(13), c.getInt(7));
+		AssetsItem item = createAssetsItem(c.getInt(14), c.getInt(8));
 		item.setID(c.getInt(0));
 		try {
 			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
@@ -288,9 +290,10 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		item.setAmount(c.getLong(2));
 		item.setTitle(c.getString(3));
 		item.setMemo(c.getString(4));
-		item.setCategory(c.getInt(5), c.getString(10));
-		item.setExtendID(c.getInt(7));
-		item.setState(c.getInt(8));
+		item.setCategory(c.getInt(5), c.getString(11));
+		item.getRepeat().setID(c.getInt(7));
+		item.setExtendID(c.getInt(8));
+		item.setState(c.getInt(9));
 		return item;
 	}
 	
@@ -930,7 +933,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return ret;
 	}
 	
-	public long addStateChangeItem(AssetsItem item) {
+	public long addStateChangeItem(FinanceItem item) {
 		if (item.getID() == -1) {
 			Log.e(LogTag.DB, ":: INVAILD ASSETS ITEM ID");
 			return -1;
@@ -938,7 +941,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		
 //		int extendID = item.getExtendID();
 //		if (extendID == -1) {
-			return addDefaultStateChangeItem(item);
+			return addDefaultStateChangeItem((AssetsItem)item);
 //		}
 //	
 //		return -1;
@@ -1142,6 +1145,36 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		int ret = (int)db.insert("assets_income", null, rowItem);
 		closeDatabase();
 		return ret;
+	}
+
+	public ArrayList<Integer> getExpenseFromAssets(int assetsID) {
+		ArrayList<Integer> expenseID = new ArrayList<Integer>(); 
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		Cursor c = db.query("assets_expense", null, "assets_id=?", new String[] {String.valueOf(assetsID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				expenseID.add(new Integer(c.getInt(2)));
+			} while (c.moveToNext());
+		}
+		c.close();
+		closeDatabase();
+		return expenseID;
+	}
+
+	public ArrayList<Integer> getIncomeFromAssets(int assetsID) {
+		ArrayList<Integer> incomeID = new ArrayList<Integer>(); 
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		Cursor c = db.query("assets_income", null, "assets_id=?", new String[] {String.valueOf(assetsID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				incomeID.add(new Integer(c.getInt(2)));
+			} while (c.moveToNext());
+		}
+		c.close();
+		closeDatabase();
+		return incomeID;
 	}
 	
 	

@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.util.Revenue;
 
 /**

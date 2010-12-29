@@ -6,7 +6,6 @@ import java.util.Calendar;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +24,7 @@ public abstract class StateBaseLayout extends FmBaseActivity {
 	ArrayList<String> mMonthNameArr = new ArrayList<String>();
 	private LineGraph mLineGraph;
 	int mYear = Calendar.getInstance().get(Calendar.YEAR);
+	int mGraphHeigth = 280;
 	
 	protected abstract void startChangeStateActivtiy();
 	protected abstract void getData();
@@ -104,7 +104,7 @@ public abstract class StateBaseLayout extends FmBaseActivity {
 		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLineGraph.getLayoutParams();
 		
 		params.width = (320 > mLineGraph.getLineGraphWidth()) ? 320 : mLineGraph.getLineGraphWidth();
-		params.height = (350 > mLineGraph.getLineGraphHeight()) ? 250 : mLineGraph.getLineGraphHeight();
+		params.height = (350 > mLineGraph.getLineGraphHeight()) ? mGraphHeigth : mLineGraph.getLineGraphHeight();
 		
 		mLineGraph.setLayoutParams(params);
 		mLineGraph.setOnTouchListener(new View.OnTouchListener() {
@@ -146,5 +146,9 @@ public abstract class StateBaseLayout extends FmBaseActivity {
 		mYear--;
 		getData();
     	updateChildView();
+	}
+	
+	public void setGraphHeigth(int height) {
+		mGraphHeigth = height;
 	}
 }
