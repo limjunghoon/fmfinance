@@ -10,7 +10,6 @@ import android.widget.ToggleButton;
 
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.PaymentMethod;

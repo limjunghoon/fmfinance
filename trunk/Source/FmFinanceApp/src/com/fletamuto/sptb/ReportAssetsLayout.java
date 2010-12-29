@@ -52,6 +52,9 @@ public class ReportAssetsLayout extends ReportBaseLayout {
     	if (item.getExtendType() == ItemDef.ExtendAssets.DEPOSIT) {
     		intent = new Intent(this, StateAssetsDepositLayout.class);
     	}
+    	else if (item.getExtendType() == ItemDef.ExtendAssets.SAVINGS) {
+    		intent = new Intent(this, StateAssetsSavingsLayout.class);
+    	}
     	else {
     		intent = new Intent(this, StateAssetsDefaultLayout.class);
     	}
@@ -126,7 +129,7 @@ public class ReportAssetsLayout extends ReportBaseLayout {
 		((TextView)convertView.findViewById(R.id.TVAssetsSavingsTitle)).setText("제목 : " + savings.getTitle());
 		((TextView)convertView.findViewById(R.id.TVAssetsSavingsCreateDate)).setText("개설일자 : " + savings.getCreateDateString());
 		((TextView)convertView.findViewById(R.id.TVAssetsSavingsExpiryDate)).setText("만료일자 : " + savings.getExpriyDateString());
-		((TextView)convertView.findViewById(R.id.TVAssetsSavingsAmount)).setText(String.format("금액 : %,d원 (%d/%d)", savings.getAmount(), 1, savings.getMonthPeriodTerm()));
+		((TextView)convertView.findViewById(R.id.TVAssetsSavingsAmount)).setText(String.format("금액 : %,d원 (%d/%d)", savings.getAmount(), savings.getMonthProcessCount(), savings.getMonthPeriodTerm()));
 		((TextView)convertView.findViewById(R.id.TVAssetsSavingsPayment)).setText(String.format("납입금 : %,d원", savings.getPayment()));
 		((TextView)convertView.findViewById(R.id.TVAssetsSavingsRate)).setText("이율 : "+ savings.getRate());
 		((TextView)convertView.findViewById(R.id.TVAssetsSavingsMemo)).setText("메모 : " + savings.getMemo());

@@ -26,6 +26,11 @@ public class StateAssetsDefaultLayout extends StateDefaultLayout {
 	protected void updateChildView() {
 		TextView tvAmount = (TextView)findViewById(R.id.TVStateTitle);
 		tvAmount.setText(String.format("현재가 : %,d원   손익율 : %s", mItem.getAmount(), Revenue.getString(mPurchasePrice, mItem.getAmount())));
+		
+		TextView tvYear = (TextView) findViewById(R.id.TVCurrentYear);
+		tvYear.setText(String.format("%d년", mYear));
+		
+		updateLineView();
 	}
 
 	@Override

@@ -138,8 +138,14 @@ public final class DBMgr {
 	 * @return
 	 */
 	public static boolean addRepeatItems() {
+		getWritableDatabase();
+		dbLock();
+		
 		ArrayList<Repeat> repeatItems = mInstance.mDBConnector.getRepeatDBConnector().getAllItems();
-		if (repeatItems == null) return true;
+		if (repeatItems == null) {
+			dbUnLock();
+			return true;
+		}
 		
 		int length = repeatItems.size();
 		Calendar today = Calendar.getInstance();
@@ -160,14 +166,43 @@ public final class DBMgr {
 					Log.e(LogTag.DB, ":: Fail to Repeat Item " + repeat.getItemID());
 					continue;
 				}
-				item.setCreateDate(lastApplyDate);
-				addFinanceItem(item);
+				
+				if (item.getType() == ExpenseItem.TYPE || item.getType() == IncomeItem.TYPE) {
+					item.setCreateDate(lastApplyDate);
+					addFinanceItem(item);
+				}
+				else if (item.getType() == AssetsItem.TYPE) {
+					if (item.getExtendType() == ItemDef.ExtendAssets.SAVINGS) {
+						AssetsSavingsItem saving = (AssetsSavingsItem) item;
+						
+						ArrayList<Integer> expenseIDs = getExpenseFromAssets(saving.getID());
+						if (expenseIDs.size() == 0) {
+							continue;
+						}
+						
+						ExpenseItem expense = (ExpenseItem) getItem(ExpenseItem.TYPE, expenseIDs.get(0));
+						if (expense != null) {
+							expense.setCreateDate(lastApplyDate);
+							addFinanceItem(expense);
+							addExpenseFromAssets(expense.getID(), saving.getID());
+							saving.setAmount(saving.getAmount() + expense.getAmount());
+							updateAmountFinanceItem(saving);
+							saving.setCreateDate(lastApplyDate);
+//							saving.setAmount(saving.getPayment());
+							if (DBMgr.addStateChangeItem(saving) == 0) {
+					    		Log.e(LogTag.LAYOUT, "== UpdateState fail to the save item : " + saving.getID());
+					    	}
+						}
+					}
+					
+				}
 			}
 			
 			repeat.setLastApplyDay(lastApplyDate);
 			updateRepeat(repeat);
-			
 		}
+		
+		dbUnLock();
 		return true;
 	}
 	
@@ -306,7 +341,7 @@ public final class DBMgr {
 	/**
 	 * DB에 입력된 수입, 지출, 자산, 부채 중 해당하는 아이디를 지운다.
 	 * @param itemType 수입, 지출, 자산, 부채 타입
-	 * @param id 삭제할 아이디]
+	 * @param id 삭제할 아이디
 	 * @return 삭제된 아이템 수
 	 */
 	public static int deleteItem(int itemType, int id) {
@@ -318,8 +353,6 @@ public final class DBMgr {
 		if (checkFinanceItemType(itemType) == false) return -1;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).updateRepeat(itemID, repeatID);
 	}
-	
-	
 	
 	/**
 	 * DB에 입력된 수입, 지출, 자산, 부채 중 하나의 총 액수를 얻는다.
@@ -662,7 +695,8 @@ public final class DBMgr {
 	}
 	
 	public static long addStateChangeItem(FinanceItem item) {
-		if (checkFinanceItemType(item.getType()) == false) return 0;
+		int itemType = item.getType();
+		if (checkFinanceItemType(item.getType()) == false) return -1;
 		long ret = mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).addStateChangeItem(item);
 		if (ret != -1) {
 			if (item.getType() == AssetsItem.TYPE) {
@@ -718,8 +752,13 @@ public final class DBMgr {
 		return getAssetsDBConnecter().addIncomeFromAssets(incomeID, assetsID);
 	}
 	
-
-
+	public static ArrayList<Integer> getExpenseFromAssets(int assetsID) {
+		return getAssetsDBConnecter().getExpenseFromAssets(assetsID);
+	}
+	
+	public static ArrayList<Integer> getIncomeFromAssets(int assetsID) {
+		return getAssetsDBConnecter().getIncomeFromAssets(assetsID);
+	}
 
 	
 

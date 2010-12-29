@@ -239,6 +239,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"memo TEXT," +
 					"main_category INTEGER NOT NULL," +
 					"sub_category INTEGER," +
+					"repeat INTEGER," +
 					"extend INTEGER," +
 					"state INTEGER);");
 		} catch (SQLException e) {
@@ -469,6 +470,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 				"memo TEXT," +
 				"main_category INTEGER NOT NULL," +
 				"sub_category INTEGER," +
+				"repeat INTEGER," +
 				"extend INTEGER," +
 				"state INTEGER);");
 	}

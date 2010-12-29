@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsSavingsItem;
+import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 
@@ -234,5 +235,13 @@ public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
     	}
     	
 		return true;
+	}
+	
+	protected void saveItem() {
+		Repeat repeat = mSavings.getRepeat();
+		repeat.setLastApplyDay(mSavings.getCreateDate());
+		repeat.setMonthlyRepeat(mSavings.getCreateDate().get(Calendar.DAY_OF_MONTH));
+		mSavings.setRepeat(repeat);
+		super.saveItem();
 	}
 }
