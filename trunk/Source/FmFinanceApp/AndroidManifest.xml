@@ -105,6 +105,7 @@
 
 
 <activity android:name="StateAssetsSavingsLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name="StateAssetsStockLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 

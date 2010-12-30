@@ -2,8 +2,11 @@ package com.fletamuto.sptb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.fletamuto.sptb.data.Repeat;
+import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 public abstract class InputAssetsExtendLayout extends InputAssetsBaseLayout {
 	
@@ -59,6 +62,20 @@ public abstract class InputAssetsExtendLayout extends InputAssetsBaseLayout {
     	else if (mInputMode == InputMode.EDIT_MODE){
     		saveUpdateItem();
     	}
+    	else if (mInputMode == InputMode.STATE_CHANGE_MODE){
+    		saveUpdateStateItem();
+    	}
+	}
+	
+    protected void saveUpdateStateItem() {
+    	if (DBMgr.addStateChangeItem(getItem()) == 0) {
+    		Log.e(LogTag.LAYOUT, "== UpdateState fail to the save item : " + getItem().getID());
+    		return;
+    	}
+		
+		Intent intent = new Intent();
+		setResult(RESULT_OK, intent);
+		finish();
 	}
 	
 	@Override
@@ -86,6 +103,4 @@ public abstract class InputAssetsExtendLayout extends InputAssetsBaseLayout {
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
-	
 }

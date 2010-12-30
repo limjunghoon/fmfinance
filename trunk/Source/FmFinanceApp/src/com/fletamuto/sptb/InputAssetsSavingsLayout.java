@@ -12,6 +12,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.AssetsSavingsItem;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
@@ -31,8 +32,6 @@ public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
     	super.onCreate(savedInstanceState);
     	
     	setContentView(R.layout.input_assets_savings, true);
-    
-    	
     	updateChildView();
     	
     	//달력을 이용한 날짜 입력을 위해
@@ -127,7 +126,7 @@ public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
 
 	@Override
 	protected boolean getItemInstance(int id) {
-//		mSalary = (IncomeSalaryItem) DBMgr.getItem(IncomeItem.TYPE, id);
+		mSavings = (AssetsSavingsItem) DBMgr.getItem(AssetsItem.TYPE, id);
 		if (mSavings == null) return false;
 		setItem(mSavings);
 		return true;
@@ -139,6 +138,7 @@ public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
 		updateExpiryDate();
 		updateBtnAmountText(R.id.BtnSavingsAmount);
 		updateEditMemoText(R.id.ETSavingsMemo);
+		updateEditTitleText(R.id.ETSavingsTitle);
 		updateAccountText();
 	}
 
@@ -185,7 +185,7 @@ public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
 	 *  계좌 이름을 갱신한다.
 	 */
 	private void updateAccountText() {
-		if (mSavings.getAccount().getID() == -1) {
+		if (mSavings.getAccount() == null) {
 			((Button)findViewById(R.id.BtnSavingsAccount)).setText("계좌를 선택해 주세요");
 		}
 		else {
@@ -243,5 +243,10 @@ public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
 		repeat.setMonthlyRepeat(mSavings.getCreateDate().get(Calendar.DAY_OF_MONTH));
 		mSavings.setRepeat(repeat);
 		super.saveItem();
+	}
+	
+	@Override
+	protected void saveUpdateStateItem() {
+		saveUpdateItem();
 	}
 }

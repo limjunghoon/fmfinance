@@ -44,6 +44,11 @@ public class AssetsStockItem extends AssetsExtendItem {
 	 */
 	private String mStore;
 	
+	/**
+	 * 지출타입
+	 */
+	private int mPriceType = BUY;
+	
 
 	/**
 	 * 주식 아이디 설정
@@ -119,6 +124,14 @@ public class AssetsStockItem extends AssetsExtendItem {
 
 	public int getExtendType() {
 		return EXEND_TYPE;
+	}
+
+	public void setPriceType(int priceType) {
+		this.mPriceType = priceType;
+	}
+
+	public int getPriceType() {
+		return mPriceType;
 	}
 
 }

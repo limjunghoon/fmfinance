@@ -85,8 +85,9 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		
 		long ret = db.update("assets", rowItem, "_id=?", new String[] {String.valueOf(financeItem.getID())});
 		closeDatabase();
-		
-		updateStateChangeItem(item);
+
+		// 상황에 따라 변경되도록 수정
+//		updateStateChangeItem(item);
 		
 		return ret;
 	}
@@ -327,6 +328,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		if (c.moveToFirst() != false) {
 			stock.setStockID(c.getInt(0));
 			stock.setPeresentPrice(c.getLong(1));
+			stock.setPrice(c.getLong(1));
 			stock.setTotalCount(c.getLong(2));
 		}
 		c.close();
@@ -776,7 +778,6 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 
 	public long addExtendDeposit(AssetsDepositItem deposit) {
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
-		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("expiry_date", deposit.getExpriyDateString());
 		rowItem.put("account", deposit.getAccount().getID());
@@ -789,6 +790,17 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		}
 		deposit.setExtendID((int)extend);
 		return addItem(deposit);
+	}
+	
+	public long updateExtendDeposit(AssetsDepositItem deposit) {
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("expiry_date", deposit.getExpriyDateString());
+		rowItem.put("account", deposit.getAccount().getID());
+		rowItem.put("rate", deposit.getRate());
+		db.update("assets_deposit", rowItem, "_id=?", new String[] {String.valueOf(deposit.getID())});
+		closeDatabase();
+		return updateItem(deposit);
 	}
 
 	public long addExtendSavings(AssetsSavingsItem savings) {
@@ -808,12 +820,25 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		savings.setExtendID((int)extend);
 		return addItem(savings);
 	}
+	
+	public long updateExtendSavings(AssetsSavingsItem savings) {
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("expiry_date", savings.getExpriyDateString());
+		rowItem.put("account", savings.getAccount().getID());
+		rowItem.put("rate", savings.getRate());
+		rowItem.put("payment", savings.getPayment());
+		db.update("assets_savings", rowItem, "_id=?", new String[] {String.valueOf(savings.getID())});
+		closeDatabase();
+		return updateItem(savings);
+	}
 
 	public long addExtendStock(AssetsStockItem stock) {
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
-		rowItem.put("present_price", stock.getPrice());
+		stock.setPeresentPrice(stock.getPrice());
+		rowItem.put("present_price", stock.getPeresentPrice());
 		rowItem.put("total_count", stock.getTotalCount());
 		long extend = db.insert("assets_stock", null, rowItem);
 		
@@ -828,7 +853,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("count", stock.getCount());
 		rowItem.put("stock_price", stock.getPrice());
 		rowItem.put("price_type", AssetsStockItem.BUY);
-		rowItem.put("store", stock.getPrice());
+		rowItem.put("store", stock.getStore());
 		if (db.insert("assets_chage_stock", null, rowItem) == -1) {
 			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND STOCK");
 			return -1;
@@ -837,6 +862,16 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		
 		stock.setExtendID((int)extend);
 		return addItem(stock);
+	}
+	
+	public long updateExtendStock(AssetsStockItem stock) {
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("present_price", stock.getPeresentPrice());
+		rowItem.put("total_count", stock.getTotalCount());
+		db.update("assets_stock", rowItem, "_id=?", new String[] {String.valueOf(stock.getID())});
+		closeDatabase();
+		return updateItem(stock);
 	}
 
 	public long addExtendFund(AssetsFundItem fund) {
@@ -867,6 +902,15 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		fund.setExtendID((int)extend);
 		return addItem(fund);
 	}
+	
+	public long updateExtendFund(AssetsFundItem fund) {
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("mean_price", fund.getAmount());
+		rowItem.put("store", fund.getStore());
+		db.update("assets_fund", rowItem, "_id=?", new String[] {String.valueOf(fund.getID())});
+		return updateItem(fund);
+	}
 
 	public long addExtendInsurance(AssetsInsuranceItem insurance) {
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
@@ -885,6 +929,17 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		
 		insurance.setExtendID((int)extend);
 		return addItem(insurance);
+	}
+	
+	public long updateExtendInsurance(AssetsInsuranceItem insurance) {
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("expiry_date", insurance.getExpriyDateString());
+		rowItem.put("payment", insurance.getPayment());
+		rowItem.put("company", insurance.getCompany());
+		db.update("assets_endowment_mortgage", rowItem, "_id=?", new String[] {String.valueOf(insurance.getID())});
+		closeDatabase();
+		return updateItem(insurance);
 	}
 
 	private long addDefaultStateChangeItem(AssetsItem item) {
@@ -1175,6 +1230,32 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		c.close();
 		closeDatabase();
 		return incomeID;
+	}
+
+	public long addStock(AssetsStockItem stock) {
+		long ret = -1;
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("assets_id", stock.getID());
+		rowItem.put("change_date", stock.getCreateDateString());
+		rowItem.put("amount", stock.getAmount());
+		rowItem.put("memo", stock.getMemo());
+		rowItem.put("count", stock.getCount());
+		rowItem.put("state", stock.getPriceType());
+		
+		ret = db.insert("assets_change_amount", null, rowItem);
+		
+		closeDatabase();
+		
+		if (stock.getPriceType() == AssetsStockItem.BUY) {
+			AssetsStockItem origine = (AssetsStockItem) getItem(stock.getID());
+			origine.setTotalCount(origine.getTotalCount() + stock.getCount());
+			origine.setAmount(stock.getAmount() * origine.getTotalCount());
+			origine.setPeresentPrice(stock.getAmount());
+			updateExtendStock(origine);
+		}
+		return ret;
 	}
 	
 	

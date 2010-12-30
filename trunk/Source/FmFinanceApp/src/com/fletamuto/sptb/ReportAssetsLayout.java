@@ -55,6 +55,9 @@ public class ReportAssetsLayout extends ReportBaseLayout {
     	else if (item.getExtendType() == ItemDef.ExtendAssets.SAVINGS) {
     		intent = new Intent(this, StateAssetsSavingsLayout.class);
     	}
+    	else if (item.getExtendType() == ItemDef.ExtendAssets.STOCK) {
+    		intent = new Intent(this, StateAssetsStockLayout.class);
+    	}
     	else {
     		intent = new Intent(this, StateAssetsDefaultLayout.class);
     	}

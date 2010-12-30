@@ -637,6 +637,10 @@ public final class DBMgr {
 	public static long addExtendAssetsStock(AssetsStockItem stock) {
 		return getAssetsDBConnecter().addExtendStock(stock);
 	}
+	
+	public static long updateExtendAssetsStock(AssetsStockItem stock) {
+		return getAssetsDBConnecter().updateExtendStock(stock);
+	}
 
 	public static long addExtendAssetsFund(AssetsFundItem fund) {
 		return getAssetsDBConnecter().addExtendFund(fund);
@@ -695,7 +699,6 @@ public final class DBMgr {
 	}
 	
 	public static long addStateChangeItem(FinanceItem item) {
-		int itemType = item.getType();
 		if (checkFinanceItemType(item.getType()) == false) return -1;
 		long ret = mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).addStateChangeItem(item);
 		if (ret != -1) {
@@ -758,6 +761,10 @@ public final class DBMgr {
 	
 	public static ArrayList<Integer> getIncomeFromAssets(int assetsID) {
 		return getAssetsDBConnecter().getIncomeFromAssets(assetsID);
+	}
+
+	public static long addAssetsStock(AssetsStockItem stock) {
+		return getAssetsDBConnecter().addStock(stock);
 	}
 
 	

@@ -16,8 +16,7 @@ import com.fletamuto.sptb.util.LogTag;
 public abstract class InputAssetsBaseLayout extends InputFinanceItemBaseLayout {
 	
 	 protected void setSaveBtnClickListener(int btnID) {
-    	Button btnIncomeDate = (Button)findViewById(btnID);
-		 btnIncomeDate.setOnClickListener(new Button.OnClickListener() {
+    	findViewById(btnID).setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
 				updateItem();
