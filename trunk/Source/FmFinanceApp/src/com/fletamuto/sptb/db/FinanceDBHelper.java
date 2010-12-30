@@ -404,7 +404,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"stock_id INTEGER NOT NULL," +
 					"change_date DATE NOT NULL," +
 					"count INTEGER NOT NULL," +
-					"stock_price DATE NOT NULL," +
+					"stock_price INTEGER NOT NULL," +
 					"price_type INTEGER NOT NULL," +
 					"store TEXT);");
 		} catch (SQLException e) {

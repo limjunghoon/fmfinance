@@ -1,5 +1,7 @@
 package com.fletamuto.sptb;
 
+import java.util.Calendar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
@@ -35,6 +38,17 @@ public class InputAssetsStockLayout extends InputAssetsExtendLayout {
         
         setDateBtnClickListener(R.id.BtnStocktDate);
         setAmountBtnClickListener(R.id.BtnStockPrice);
+        
+        findViewById(R.id.ETStockTitle).setEnabled((mInputMode == InputMode.STATE_CHANGE_MODE) ? false :true);
+    }
+    
+    @Override
+    protected void setTitleBtn() {
+    	super.setTitleBtn();
+    	
+    	if (mInputMode == InputMode.STATE_CHANGE_MODE) {
+    		setTitle("주식 추가매수");
+    	}
     }
     
 
@@ -58,7 +72,11 @@ public class InputAssetsStockLayout extends InputAssetsExtendLayout {
 
 	@Override
 	protected boolean getItemInstance(int id) {
-//		mStock = (IncomeSalaryItem) DBMgr.getItem(IncomeItem.TYPE, id);
+		mStock = (AssetsStockItem) DBMgr.getItem(AssetsItem.TYPE, id);
+		if (mInputMode == InputMode.STATE_CHANGE_MODE) {
+			mStock.setCount(0);
+			mStock.setCreateDate(Calendar.getInstance());
+		}
 		if (mStock == null) return false;
 		setItem(mStock);
 		return true;
@@ -67,8 +85,14 @@ public class InputAssetsStockLayout extends InputAssetsExtendLayout {
 	@Override
 	protected void updateChildView() {
 		updateDate();
-	//	updateBtnAmountText(R.id.BtnStockAmount);
+		updateBtnAmountText(R.id.BtnStockPrice);
 		updateEditMemoText(R.id.ETStockMemo);
+		updateEditTitleText(R.id.ETStockTitle);
+		updateEditStoreText();
+	}
+
+	protected void updateEditStoreText() {
+		((TextView)findViewById(R.id.ETStockStore)).setText(mStock.getStore());
 	}
 
 	@Override
@@ -148,5 +172,16 @@ public class InputAssetsStockLayout extends InputAssetsExtendLayout {
     	
 		return true;
 	}
+
   
+	@Override
+	protected void saveUpdateStateItem() {
+		if (DBMgr.addAssetsStock(mStock) == -1) {
+			Log.e(LogTag.LAYOUT, "::: Fail to add stock ");
+		}
+//		saveUpdateItem();
+		// 자산에 현재가 변경
+		// 히스토리에 신규 자산 추가
+		// 지출 내역 적용
+	}
 }

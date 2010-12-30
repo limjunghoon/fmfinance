@@ -242,6 +242,9 @@ public class InputAssetsDepositLayout extends InputAssetsExtendLayout {
 	}
 	
    
-	
+	@Override
+	protected void saveUpdateStateItem() {
+		saveUpdateItem();
+	}
   
 }

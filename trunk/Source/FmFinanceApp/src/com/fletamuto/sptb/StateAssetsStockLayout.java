@@ -4,43 +4,41 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsItem;
-import com.fletamuto.sptb.data.AssetsSavingsItem;
+import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class StateAssetsSavingsLayout extends StateDefaultLayout {  	
-	private AssetsSavingsItem mSavings;
+public class StateAssetsStockLayout extends StateDefaultLayout {  	
+	private AssetsStockItem mStock;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        findViewById(R.id.LLPrograss).setVisibility(View.VISIBLE);
         updateDeleteBtnText();
-        setPorgress();
+        updateBuyBtnText();
+        
     }
-
 
 	@Override
 	protected void initialize() {
 		super.initialize();
 		
-		setGraphHeigth(250);
+		setGraphHeigth(280);
 		getData();
 	}
 	
 	@Override
 	protected void updateChildView() {
 		TextView tvAmount = (TextView)findViewById(R.id.TVStateTitle);
-		tvAmount.setText(String.format("금액 : %,d원   이율 : %d%%", mSavings.getAmount(), mSavings.getRate()));
+		tvAmount.setText(String.format("현재가:%,d원 수량:%d 총가격:%,d원", mStock.getPeresentPrice(), mStock.getTotalCount(), mStock.getAmount()));
+		//tvAmount.setTextSize(10);
 		
 		TextView tvYear = (TextView) findViewById(R.id.TVCurrentYear);
 		tvYear.setText(String.format("%d년", mYear));
@@ -50,15 +48,20 @@ public class StateAssetsSavingsLayout extends StateDefaultLayout {
 
 	@Override
 	protected void onClickHistoryBtn() {
-		Intent intent = new Intent(StateAssetsSavingsLayout.this, ReportAssetsHistoryLayout.class);
+		Intent intent = new Intent(StateAssetsStockLayout.this, ReportAssetsHistoryLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.ITEM, mItem);
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_STATE_HISTORY);
 	}
 
 	@Override
 	protected void startChangeStateActivtiy() {
+		addBuyStateActivtiy();
+
+	}
+
+	protected void addBuyStateActivtiy() {
 		Intent intent = new Intent(this, getActivityClass());
-//		intent.putExtra(MsgDef.ExtraNames.INPUT_CHANGE_MODE, true);
+		intent.putExtra(MsgDef.ExtraNames.INPUT_CHANGE_MODE, true);
 		intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, mItem.getID());
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_EDIT_ITEM);
 	}
@@ -66,25 +69,13 @@ public class StateAssetsSavingsLayout extends StateDefaultLayout {
 	@Override
 	protected void getData() {
 		mAmountMonthInYear = DBMgr.getTotalAssetAmountMonthInYear(mItem.getID(), mYear);
-		mSavings = (AssetsSavingsItem)getItem();
+		mStock = (AssetsStockItem)getItem();
 	}
 	
-	private void setPorgress() {
-		ProgressBar progress = (ProgressBar)findViewById(R.id.PBState);
-		int monthPeriodTerm = mSavings.getMonthPeriodTerm();
-		int monthProgressCount = mSavings.getMonthProcessCount() ;
-		
-		progress.setMax(monthPeriodTerm);
-		progress.setProgress(monthProgressCount);
-		
-		TextView tvProgrss = (TextView) findViewById(R.id.TVStatePrograss);
-		tvProgrss.setText(String.format("진행(%d/%d)", mSavings.getMonthProcessCount(), mSavings.getMonthPeriodTerm()));
-		tvProgrss.invalidate();
-	}
 
 	@Override
 	protected Class<?> getActivityClass() {
-		return InputAssetsSavingsLayout.class;
+		return InputAssetsStockLayout.class;
 	}
 	
 	@Override
@@ -93,9 +84,8 @@ public class StateAssetsSavingsLayout extends StateDefaultLayout {
     		if (resultCode == RESULT_OK) {
     			int id = data.getIntExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, -1);
     			if (id != -1) {
-    				mSavings = (AssetsSavingsItem) DBMgr.getItem(AssetsItem.TYPE, id);
+    				mStock = (AssetsStockItem) DBMgr.getItem(AssetsItem.TYPE, id);
     				updateChildView();
-    				setPorgress();
     			}
     		}
     	}
@@ -109,9 +99,9 @@ public class StateAssetsSavingsLayout extends StateDefaultLayout {
 	}
 
 	protected void completionAssets(int incomeID) {
-		mSavings.setState(FinanceItem.STATE_COMPLEATE);
-		DBMgr.updateFinanceItem(mSavings);
-		DBMgr.addIncomeFromAssets(incomeID, mSavings.getID());
+		mStock.setState(FinanceItem.STATE_COMPLEATE);
+		DBMgr.updateFinanceItem(mStock);
+		DBMgr.addIncomeFromAssets(incomeID, mStock.getID());
 
 		finish();
 	}
@@ -146,12 +136,12 @@ public class StateAssetsSavingsLayout extends StateDefaultLayout {
 	}
 	
 	protected void updateDeleteBtnText() {
-		if (mSavings.isOverExpirationDate()) {
-			((Button)findViewById(R.id.BtnStateDelete)).setText("해약");
-		}
-		else {
-			((Button)findViewById(R.id.BtnStateDelete)).setText("만기");
-		}
-		
+		((Button)findViewById(R.id.BtnStateDelete)).setText("매도");
 	}
+	
+	protected void updateBuyBtnText() {
+		((Button)findViewById(R.id.BtnStateEdit)).setText("매수");
+	}
+	
+	
 }

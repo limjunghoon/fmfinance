@@ -107,12 +107,6 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     	((Button)findViewById(btnID)).setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
-				/*
-				new DatePickerDialog(InputFinanceItemBaseLayout.this, dateDlg, 
-						mItem.getCreateDate().get(Calendar.YEAR),
-						mItem.getCreateDate().get(Calendar.MONTH), 
-						mItem.getCreateDate().get(Calendar.DAY_OF_MONTH)).show(); 		
-				*/
 				monthlyCalendar.showMonthlyCalendarPopup();
 				monthlyCalendar.getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
 					
