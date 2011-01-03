@@ -176,8 +176,8 @@ public class InputAssetsStockLayout extends InputAssetsExtendLayout {
   
 	@Override
 	protected void saveUpdateStateItem() {
-		if (DBMgr.addAssetsStock(mStock) == -1) {
-			Log.e(LogTag.LAYOUT, "::: Fail to add stock ");
+		if (DBMgr.updateAssetsStock(mStock) == -1) {
+			Log.e(LogTag.LAYOUT, "::: Fail to buy stock ");
 		}
 //		saveUpdateItem();
 		// 자산에 현재가 변경

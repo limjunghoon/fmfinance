@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 public class StateAssetsStockLayout extends StateDefaultLayout {  	
 	private AssetsStockItem mStock;
@@ -23,7 +25,6 @@ public class StateAssetsStockLayout extends StateDefaultLayout {
         
         updateDeleteBtnText();
         updateBuyBtnText();
-        
     }
 
 	@Override
@@ -63,6 +64,8 @@ public class StateAssetsStockLayout extends StateDefaultLayout {
 		Intent intent = new Intent(this, getActivityClass());
 		intent.putExtra(MsgDef.ExtraNames.INPUT_CHANGE_MODE, true);
 		intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, mItem.getID());
+		intent.putExtra(MsgDef.ExtraNames.STOCK_TOTAL_COUNT, mStock.getTotalCount());
+		
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_EDIT_ITEM);
 	}
 
@@ -91,7 +94,14 @@ public class StateAssetsStockLayout extends StateDefaultLayout {
     	}
 		else if (requestCode == MsgDef.ActRequest.ACT_ADD_ITEM) {
 			if (resultCode == RESULT_OK) {
-				completionAssets(data.getIntExtra(MsgDef.ExtraNames.ADD_ITEM_ID, -1));
+
+				mStock = (AssetsStockItem) DBMgr.getItem(mStock.getType(), mStock.getID());
+				updateChildView();
+				
+				if (mStock.getTotalCount() <= 0L) {
+					completionAssets(data.getIntExtra(MsgDef.ExtraNames.ADD_ITEM_ID, -1));
+				}
+//				
 			}
 		}
 
@@ -102,14 +112,15 @@ public class StateAssetsStockLayout extends StateDefaultLayout {
 		mStock.setState(FinanceItem.STATE_COMPLEATE);
 		DBMgr.updateFinanceItem(mStock);
 		DBMgr.addIncomeFromAssets(incomeID, mStock.getID());
-
 		finish();
 	}
 
 	@Override
 	protected void onDeleteBtnClick() {
-		Intent intent = new Intent(this, InputIncomeFromAssetsLayout.class);
+		Intent intent = new Intent(this, InputIncomeFromStockLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.ITEM, createIncomeItem());
+		intent.putExtra(MsgDef.ExtraNames.STOCK_ID, mStock.getID());
+		intent.putExtra(MsgDef.ExtraNames.STOCK_TOTAL_COUNT, mStock.getTotalCount());
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_ADD_ITEM);
 	}
 	
@@ -128,7 +139,8 @@ public class StateAssetsStockLayout extends StateDefaultLayout {
 			}
 		}
 		
-		income.setAmount(getItem().getTotalAmount());
+//		income.setAmount(getItem().getTotalAmount());
+		income.setAmount(mStock.getPeresentPrice());
 //		income.setCount(getItem().getCount());
 //		income.setCreateDate(getItem().getCreateDate());
 		
