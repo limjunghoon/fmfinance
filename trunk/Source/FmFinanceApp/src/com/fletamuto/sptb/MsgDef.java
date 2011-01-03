@@ -79,7 +79,9 @@ public final class MsgDef {
 		public static final String CARD_BILLING = "CARD_BILLING";
 		public static final String ITEM = "ITEM";
 		public static final String ITEM_ID = "ITEM_ID";
+		public static final String STOCK_ID = "STOCK_ID";
 		public static final String INPUT_CHANGE_MODE = "INPUT_CHANGE_MODE";
+		public static final String STOCK_TOTAL_COUNT = "STOCK_TOTAL_COUNT";
 		
 	}
 }

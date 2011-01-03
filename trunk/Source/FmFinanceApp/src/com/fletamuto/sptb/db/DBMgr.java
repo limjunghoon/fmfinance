@@ -763,8 +763,8 @@ public final class DBMgr {
 		return getAssetsDBConnecter().getIncomeFromAssets(assetsID);
 	}
 
-	public static long addAssetsStock(AssetsStockItem stock) {
-		return getAssetsDBConnecter().addStock(stock);
+	public static long updateAssetsStock(AssetsStockItem stock) {
+		return getAssetsDBConnecter().updateStock(stock);
 	}
 
 	

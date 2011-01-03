@@ -1232,7 +1232,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return incomeID;
 	}
 
-	public long addStock(AssetsStockItem stock) {
+	public long updateStock(AssetsStockItem stock) {
 		long ret = -1;
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
@@ -1251,6 +1251,13 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		if (stock.getPriceType() == AssetsStockItem.BUY) {
 			AssetsStockItem origine = (AssetsStockItem) getItem(stock.getID());
 			origine.setTotalCount(origine.getTotalCount() + stock.getCount());
+			origine.setAmount(stock.getAmount() * origine.getTotalCount());
+			origine.setPeresentPrice(stock.getAmount());
+			updateExtendStock(origine);
+		}
+		else if (stock.getPriceType() == AssetsStockItem.SELL) {
+			AssetsStockItem origine = (AssetsStockItem) getItem(stock.getID());
+			origine.setTotalCount(origine.getTotalCount() - stock.getCount());
 			origine.setAmount(stock.getAmount() * origine.getTotalCount());
 			origine.setPeresentPrice(stock.getAmount());
 			updateExtendStock(origine);

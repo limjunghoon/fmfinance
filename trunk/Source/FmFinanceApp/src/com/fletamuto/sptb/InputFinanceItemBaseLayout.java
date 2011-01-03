@@ -116,7 +116,6 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 						mItem.getCreateDate().set(Calendar.MONTH, monthlyCalendar.getSelectCalendar().get(Calendar.MONTH));
 						mItem.getCreateDate().set(Calendar.DAY_OF_MONTH, monthlyCalendar.getSelectCalendar().get(Calendar.DAY_OF_MONTH));
 						updateDate();
-						
 					}
 				});
 			}
