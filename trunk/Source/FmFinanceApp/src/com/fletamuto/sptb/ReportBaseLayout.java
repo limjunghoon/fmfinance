@@ -19,7 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.PaymentAccountMethod;
+import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
 import com.fletamuto.sptb.util.LogTag;
@@ -33,6 +37,8 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 //	private int mLatestSelectPosition = -1;
 	protected int mCategoryID = -1;
 	protected String mCategoryName;
+	
+	private AccountItem fromItem;
 	
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
 	protected abstract void setDeleteBtnListener(View convertView, int itemId, int position);
@@ -211,6 +217,20 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 				Log.e(LogTag.LAYOUT, "== noting delete id : " + id);
 			}
 			else {
+				ExpenseItem item = (ExpenseItem)mItems.get(position.intValue());
+		    	PaymentMethod paymentMethod = item.getPaymentMethod();
+		    	
+				if (paymentMethod.getType() == PaymentMethod.ACCOUNT) {
+					PaymentAccountMethod accountMethod = (PaymentAccountMethod) paymentMethod;
+					if (accountMethod.getAccount() == null) {
+						accountMethod.setAccount(DBMgr.getAccountItem(paymentMethod.getMethodItemID()));
+					}
+					fromItem = accountMethod.getAccount();
+					
+	    			long fromItemBalance = fromItem.getBalance();
+					fromItem.setBalance(fromItemBalance + item.getAmount());
+					DBMgr.updateAccount(fromItem);
+				}
 				mItems.remove(position.intValue());
 				mItemAdapter.notifyDataSetChanged();
 			}

@@ -10,9 +10,12 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.PaymentAccountMethod;
+import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 
@@ -20,6 +23,9 @@ public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
 	
 	protected CardItem mCard = null;
 	private int mCardDisplayMode = -1;
+	
+	private AccountItem fromItem;
+	private ExpenseItem item;
     
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -72,7 +78,8 @@ public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
     }    
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
-    	ExpenseItem item = (ExpenseItem)financeItem;
+//    	ExpenseItem item = (ExpenseItem)financeItem;
+    	item = (ExpenseItem)financeItem;
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
 		String categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText("분류 : " + categoryText);
@@ -94,7 +101,19 @@ public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
 				if (DBMgr.deleteItem(ExpenseItem.TYPE, id) == 0 ) {
 					Log.e(LogTag.LAYOUT, "can't delete Item  ID : " + id);
 				}
-
+		    	PaymentMethod paymentMethod = item.getPaymentMethod();
+		    	
+				if (paymentMethod.getType() == PaymentMethod.ACCOUNT) {
+					PaymentAccountMethod accountMethod = (PaymentAccountMethod) paymentMethod;
+					if (accountMethod.getAccount() == null) {
+						accountMethod.setAccount(DBMgr.getAccountItem(paymentMethod.getMethodItemID()));
+					}
+					fromItem = accountMethod.getAccount();
+					
+	    			long fromItemBalance = fromItem.getBalance();
+					fromItem.setBalance(fromItemBalance + item.getAmount());
+					DBMgr.updateAccount(fromItem);
+				}
 				updateExpandList();
 			}
 		});
