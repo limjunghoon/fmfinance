@@ -59,11 +59,13 @@ public class SelectAccountLayout extends Activity {
 				AccountItem account = mArrAccount.get(index); 
 				if (account.getID() == mExceptionID) {
 					mArrAccount.remove(index);
+					index--; size--;
 					break;
 				}
 				
 				if (account.getType() == AccountItem.TIME_DEPOSIT || account.getType() == AccountItem.SAVINGS) {
 					mArrAccount.remove(index);
+					index--; size--;
 				}
 			}
 		}
@@ -75,6 +77,7 @@ public class SelectAccountLayout extends Activity {
 				
 				if (account.getType() == AccountItem.TIME_DEPOSIT || account.getType() == AccountItem.SAVINGS) {
 					mArrAccount.remove(index);
+					index--; size--;
 				}
 			}
 		}
