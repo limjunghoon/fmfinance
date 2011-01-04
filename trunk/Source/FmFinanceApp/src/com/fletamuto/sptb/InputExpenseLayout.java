@@ -26,6 +26,7 @@ import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 
+import android.util.Log;
 /**
  * 새로운 지출을 입력하거나 기존의 지출정보를 수정할때 보여주는 레이아웃 창
  * @author yongbban
@@ -47,6 +48,9 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	private ArrayList<FinanceItem> expenseAllItems;
 	private ArrayList<FinanceItem> itemsTemp;
 	//달력 입력과 자주 사용 되는 지출을 위해 end
+	
+	private AccountItem fromItem;
+	private long beforeAmount;
 	
 	  
 	
@@ -82,11 +86,31 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     
     protected void saveItem() {
     	if (mInputMode == InputMode.ADD_MODE) {
+    		PaymentMethod paymentMethod = mExpensItem.getPaymentMethod();
+    		if(mExpensItem.getPaymentMethod().getType() == PaymentMethod.ACCOUNT) {
+    			PaymentAccountMethod accountMethod = (PaymentAccountMethod) paymentMethod;
+    			fromItem = accountMethod.getAccount();
+
+    			long fromItemBalance = fromItem.getBalance();
+
+				fromItem.setBalance(fromItemBalance - mExpensItem.getAmount());
+				DBMgr.updateAccount(fromItem);
+    		}
     		if (saveNewItem(null) == true) {
     			saveRepeat();
     		}
     	}
     	else if (mInputMode == InputMode.EDIT_MODE){
+    		PaymentMethod paymentMethod = mExpensItem.getPaymentMethod();
+    		if(mExpensItem.getPaymentMethod().getType() == PaymentMethod.ACCOUNT) {
+    			PaymentAccountMethod accountMethod = (PaymentAccountMethod) paymentMethod;
+    			fromItem = accountMethod.getAccount();
+
+    			long fromItemBalance = fromItem.getBalance();
+
+				fromItem.setBalance(fromItemBalance + beforeAmount - mExpensItem.getAmount());
+				DBMgr.updateAccount(fromItem);
+    		}
     		saveUpdateItem();
     	}
     }
@@ -106,6 +130,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		if (mExpensItem == null) {
 			mExpensItem = new ExpenseItem();
 		}
+		beforeAmount = mExpensItem.getAmount();
 		setItem(mExpensItem);
 	}
 	
@@ -114,6 +139,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		mExpensItem = (ExpenseItem)DBMgr.getItem(ExpenseItem.TYPE, id);
 		if (mExpensItem == null) return false;
 		
+		beforeAmount = mExpensItem.getAmount();
 		setItem(mExpensItem);
 		
 		loadPaymnetMethod();

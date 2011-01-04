@@ -12,11 +12,14 @@ import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
+import com.fletamuto.sptb.data.PaymentAccountMethod;
+import com.fletamuto.sptb.data.PaymentCardMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.data.ReceiveMethod;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 
+import android.util.Log;
 /**
  * 수입을 입력 또는 수정하는 화면을 제공한다.
  * @author yongbban
@@ -25,6 +28,9 @@ import com.fletamuto.sptb.db.DBMgr;
 public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 	private IncomeItem mIncomeItem;
 	private ReceiveMethod mReciveMethod = new ReceiveMethod();
+	
+	private AccountItem fromItem;
+	private long beforeAmount;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,11 +79,27 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
     
     protected void saveItem() {
     	if (mInputMode == InputMode.ADD_MODE) {
+    		if(mReciveMethod.getType() == PaymentMethod.ACCOUNT) {
+    			fromItem = mIncomeItem.getAccount();
+
+    			long fromItemBalance = fromItem.getBalance();
+
+				fromItem.setBalance(fromItemBalance + mIncomeItem.getAmount());
+				DBMgr.updateAccount(fromItem);
+    		}
     		if (saveNewItem(null) == true) {
     			saveRepeat();
     		}
     	}
     	else if (mInputMode == InputMode.EDIT_MODE){
+    		if(mReciveMethod.getType() == PaymentMethod.ACCOUNT) {
+    			fromItem = mIncomeItem.getAccount();
+
+    			long fromItemBalance = fromItem.getBalance();
+
+				fromItem.setBalance(fromItemBalance - beforeAmount + mIncomeItem.getAmount());
+				DBMgr.updateAccount(fromItem);
+    		}
     		saveUpdateItem();
     	}
     }
@@ -94,6 +116,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 		if (mIncomeItem == null) {
 			mIncomeItem = new IncomeItem();
 		}
+		beforeAmount = mIncomeItem.getAmount();
 		setItem(mIncomeItem);
 	}
 	
@@ -101,10 +124,28 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 	protected boolean getItemInstance(int id) {
 		mIncomeItem = (IncomeItem) DBMgr.getItem(IncomeItem.TYPE, id);
 		if (mIncomeItem == null) return false;
+		beforeAmount = mIncomeItem.getAmount();
 		setItem(mIncomeItem);
+		
+		loadPaymnetMethod();
+		
 		return true;
 	}
 
+	/**
+	 * 지불방법을 DB로부터 가져온다.
+	 */
+	private boolean loadPaymnetMethod() {
+		if (mIncomeItem == null) return false;
+
+		if (mReciveMethod.getType() == PaymentMethod.ACCOUNT) {
+			if (mIncomeItem.getAccount() == null) {
+				mIncomeItem.setAccount(DBMgr.getAccountItem(mReciveMethod.getMethodItemID()));
+			}
+		}
+		return true;
+		
+	}
 	@Override
 	protected void onCategoryClick() {
 		Intent intent = new Intent(InputIncomeLayout.this, SelectCategoryIncomeLayout.class);
