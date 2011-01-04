@@ -81,7 +81,6 @@ public class SelectAccountLayout extends Activity {
 				}
 			}
 		}
-		
     }
 	
 	protected void setAdapterList() {
@@ -97,7 +96,6 @@ public class SelectAccountLayout extends Activity {
 					int position, long id) {
 				
 				AccountItem account = (AccountItem)view.getTag();
-				
 				Intent intent = new Intent();
 				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ID, account.getID());
 				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, account);

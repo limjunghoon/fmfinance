@@ -1,6 +1,7 @@
 package com.fletamuto.sptb;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ public class StateAssetsStockLayout extends StateDefaultLayout {
 	protected void initialize() {
 		super.initialize();
 		
-		setGraphHeigth(280);
+		setGraphHeigth(260);
 		getData();
 	}
 	
@@ -64,15 +65,42 @@ public class StateAssetsStockLayout extends StateDefaultLayout {
 		Intent intent = new Intent(this, getActivityClass());
 		intent.putExtra(MsgDef.ExtraNames.INPUT_CHANGE_MODE, true);
 		intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, mItem.getID());
-		intent.putExtra(MsgDef.ExtraNames.STOCK_TOTAL_COUNT, mStock.getTotalCount());
 		
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_EDIT_ITEM);
 	}
 
 	@Override
 	protected void getData() {
-		mAmountMonthInYear = DBMgr.getTotalAssetAmountMonthInYear(mItem.getID(), mYear);
 		mStock = (AssetsStockItem)getItem();
+		mAmountMonthInYear = new ArrayList<Long>();
+		
+		ArrayList<FinanceItem> items = DBMgr.getAssetsStateItems(mItem.getID());
+		
+		int size = items.size();
+		long count = 0L;
+		int targetIndex = 0;
+		
+		Calendar calendar = Calendar.getInstance();	
+		calendar.set(mYear, 0, 1, 0 ,0 ,0);
+		
+		for (int month = 0; month < 12; month++) {
+			calendar.add(Calendar.MONTH, 1);
+			for (int index = targetIndex; index < size; index++) {
+				AssetsItem assets = (AssetsItem) items.get(index);
+				if (calendar.before(assets.getCreateDate())) {
+					continue;
+				}
+				
+				if (assets.getState() == AssetsStockItem.SELL) {
+					count -= assets.getCount();
+				}
+				else {
+					count += assets.getCount();
+				}
+				targetIndex++;
+			}
+			mAmountMonthInYear.add(count);
+		}
 	}
 	
 
@@ -120,7 +148,6 @@ public class StateAssetsStockLayout extends StateDefaultLayout {
 		Intent intent = new Intent(this, InputIncomeFromStockLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.ITEM, createIncomeItem());
 		intent.putExtra(MsgDef.ExtraNames.STOCK_ID, mStock.getID());
-		intent.putExtra(MsgDef.ExtraNames.STOCK_TOTAL_COUNT, mStock.getTotalCount());
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_ADD_ITEM);
 	}
 	

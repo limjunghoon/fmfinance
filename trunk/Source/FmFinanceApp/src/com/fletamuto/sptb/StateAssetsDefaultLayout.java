@@ -50,7 +50,7 @@ public class StateAssetsDefaultLayout extends StateDefaultLayout {
 
 	@Override
 	protected void getData() {
-		mAmountMonthInYear = DBMgr.getTotalAssetAmountMonthInYear(mItem.getID(), mYear);
+		mAmountMonthInYear = DBMgr.getLastAmountMonthInYear(mItem.getID(), mYear);
 		mPurchasePrice = DBMgr.getAssetsPurchasePrice(mItem.getID());
 	}
 

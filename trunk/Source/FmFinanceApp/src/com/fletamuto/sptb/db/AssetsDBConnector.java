@@ -953,6 +953,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("count", item.getCount());
+		rowItem.put("state", item.getState());
 		
 		if (todayItem == null) {
 			ret = db.insert("assets_change_amount", null, rowItem);
@@ -976,6 +977,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("count", item.getCount());
+		rowItem.put("state", item.getState());
 		
 		if (todayItem == null) {
 			ret = db.insert("assets_change_amount", null, rowItem);
@@ -1019,7 +1021,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	public ArrayList<FinanceItem> getStateItems(int id) {
 		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>(); 
 		SQLiteDatabase db = openDatabase(READ_MODE);
-		Cursor c = db.query("assets_change_amount", null, "assets_id=?", new String[] {String.valueOf(id)}, null, null, "change_date DESC");
+		Cursor c = db.query("assets_change_amount", null, "assets_id=?", new String[] {String.valueOf(id)}, null, null, "change_date ASC");
 		
 		if (c.moveToFirst() != false) {
 			do {
@@ -1031,8 +1033,9 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 					e.printStackTrace();
 				}
 				assets.setAmount(c.getLong(3));
-				assets.setMemo(c.getString(5));
-				assets.setCount(c.getInt(6));
+				assets.setMemo(c.getString(4));
+				assets.setCount(c.getInt(5));
+				assets.setState(c.getInt(6));
 				assetsItems.add(assets);
 			} while (c.moveToNext());
 		}
@@ -1057,7 +1060,9 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 				e.printStackTrace();
 			}
 			assets.setAmount(c.getLong(3));
-			assets.setMemo(c.getString(5));
+			assets.setMemo(c.getString(4));
+			assets.setCount(c.getInt(5));
+			assets.setState(c.getInt(6));
 		}
 		c.close();
 		closeDatabase();
@@ -1079,7 +1084,9 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 				e.printStackTrace();
 			}
 			assets.setAmount(c.getLong(3));
-			assets.setMemo(c.getString(5));
+			assets.setMemo(c.getString(4));
+			assets.setCount(c.getInt(5));
+			assets.setState(c.getInt(6));
 		}
 		c.close();
 		closeDatabase();
@@ -1106,7 +1113,13 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return amount / count;
 	}
 
-	public ArrayList<Long> getTotalAssetAmountMonthInYear(int assetsID, int year) {
+	/**
+	 * 입력된 금액중 달에 마지막에 입력된 금액을 얻는다. 
+	 * @param assetsID
+	 * @param year
+	 * @return
+	 */
+	public ArrayList<Long> getLastAmountMonthInYear(int assetsID, int year) {
 		ArrayList<Long> amountArr = new ArrayList<Long>();
 		long lastAmount = 0L;
 		
