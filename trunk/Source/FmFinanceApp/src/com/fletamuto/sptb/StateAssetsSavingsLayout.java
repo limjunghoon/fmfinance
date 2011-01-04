@@ -65,7 +65,7 @@ public class StateAssetsSavingsLayout extends StateDefaultLayout {
 
 	@Override
 	protected void getData() {
-		mAmountMonthInYear = DBMgr.getTotalAssetAmountMonthInYear(mItem.getID(), mYear);
+		mAmountMonthInYear = DBMgr.getLastAmountMonthInYear(mItem.getID(), mYear);
 		mSavings = (AssetsSavingsItem)getItem();
 	}
 	

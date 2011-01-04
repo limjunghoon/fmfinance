@@ -69,7 +69,7 @@ public class ReportCompareAssetsAndLiability extends FmBaseActivity {
     	
     	// 속도 개선 필요 //////////
     	for (int index = 0; index < size; index++) {
-    		ArrayList<Long> categoryAmount = DBMgr.getTotalAssetAmountMonthInYear(assetsCategory.get(index).getID(), mYear);
+    		ArrayList<Long> categoryAmount = DBMgr.getLastAmountMonthInYear(assetsCategory.get(index).getID(), mYear);
     		for (int month = 0; month < 12; month++){
     			mMonthAssetsAmount[month] += categoryAmount.get(month);
     		}

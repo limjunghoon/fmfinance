@@ -714,8 +714,8 @@ public final class DBMgr {
 		return ret;
 	}
 	
-	public static ArrayList<Long> getTotalAssetAmountMonthInYear(int assetsID, int year) {
-		return getAssetsDBConnecter().getTotalAssetAmountMonthInYear(assetsID, year);
+	public static ArrayList<Long> getLastAmountMonthInYear(int assetsID, int year) {
+		return getAssetsDBConnecter().getLastAmountMonthInYear(assetsID, year);
 	}
 
 	public static long getAssetsPurchasePrice(int id) {
