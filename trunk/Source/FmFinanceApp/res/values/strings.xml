@@ -39,10 +39,13 @@
     <string name="input_stock_price_name">주당 가격</string>
     <string name="input_stock_store_name">판매처</string>
     <string name="input_stock_memo">메모</string>
-    <string name="input_fund_title_name">제목</string>
-    <string name="input_fund_date_name">날짜</string>
+    <string name="input_fund_title_name">상품명</string>
+    <string name="input_fund_date_name">개설 날짜</string>
+    <string name="input_fund_expiry_date_name">만기 날짜</string>
     <string name="input_fund_price_name">매입 가격</string>
+    <string name="input_fund_kind_name">유형</string>
     <string name="input_fund_store_name">판매처</string>
+    <string name="input_fund_repeat_name">반복</string>
     <string name="input_fund_memo">메모</string>
     <string name="input_insurance_title_name">제목</string>
     <string name="input_insurance_create_date_name">개설일</string>

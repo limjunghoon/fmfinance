@@ -59,6 +59,7 @@ public final class MsgDef {
 		public static final String INSTALLMENT_PLAN = "INSTALLMENT_PLAN";
 		public static final String COMPANY_ID = "COMPANY_ID";
 		public static final String RPEAT_TYPE = "RPEAT_TYPE";
+		public static final String RPEAT_STYLE = "RPEAT_STYLE";
 		public static final String RPEAT_WEEKLY = "RPEAT_WEEKLY";
 		public static final String RPEAT_DAILY = "RPEAT_DAILY";
 		public static final String SALARY_TOTAL_AMOUNT = "SALARY_TOTAL_AMOUNT";
