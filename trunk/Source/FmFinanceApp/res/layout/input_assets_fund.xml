@@ -4,34 +4,63 @@
   android:id="@+id/inputAssetsFund"
   android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
 
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="30dp">
-		<TextView android:text="@string/input_fund_title_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp" android:id="@+id/TVFundTitle">
-		</TextView>
-		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/ETFundTitle">
-		</EditText>
+	<ScrollView android:id="@+id/ScrollView01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+	<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:paddingRight="5dp">
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:id="@+id/TVFundTitle" android:text="@string/input_fund_title_name" android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:layout_width="70dp">
+			</TextView>
+			<EditText android:layout_height="wrap_content" android:id="@+id/ETFundTitle" android:layout_width="fill_parent">
+			</EditText>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:id="@+id/TVFundtDate" android:text="@string/input_fund_date_name" android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:layout_width="70dp">
+			</TextView>
+			<Button android:layout_height="wrap_content" android:id="@+id/BtnFundDate" android:layout_width="fill_parent">
+			</Button>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:id="@+id/TVFundtExpiryDate" android:text="@string/input_fund_expiry_date_name" android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:layout_width="70dp">
+			</TextView>
+			<Button android:layout_height="wrap_content" android:id="@+id/BtnFundExpiryDate" android:layout_width="fill_parent">
+			</Button>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:text="@string/input_fund_price_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp" android:id="@+id/TVFundPrice">
+			</TextView>
+			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnFundPrice">
+			</Button>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:text="@string/input_fund_kind_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp" android:id="@+id/TVFundKind">
+			</TextView>
+			<Spinner android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/SpFundKind" android:entries="@array/fond_kind_list">
+			</Spinner>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:id="@+id/TVFundStore" android:text="@string/input_fund_store_name" android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:layout_width="70dp">
+			</TextView>
+			<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/ETFundStore">
+			</EditText>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:id="@+id/TVFundMemo" android:text="@string/input_fund_memo" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
+			</TextView>
+			<EditText android:id="@+id/ETFundMemo" android:layout_height="wrap_content" android:layout_width="fill_parent">
+			</EditText>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:id="@+id/TVFundRepeat" android:text="@string/input_fund_repeat_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
+			</TextView>
+			<Button android:id="@+id/BtnFundRepeat" android:layout_height="wrap_content" android:layout_width="fill_parent">
+			</Button>
+		</LinearLayout>
+	
 	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
-		<TextView android:id="@+id/TVFundtDate" android:text="@string/input_fund_date_name" android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:layout_width="70dp">
-		</TextView>
-		<Button android:layout_height="wrap_content" android:id="@+id/BtnFundDate" android:layout_width="fill_parent">
-		</Button>
-	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
-		<TextView android:text="@string/input_fund_price_name" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp" android:id="@+id/TVFundPrice">
-		</TextView>
-		<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnFundPrice">
-		</Button>
-	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
-		<TextView android:id="@+id/TVFundStore" android:text="@string/input_fund_store_name" android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:layout_width="70dp">
-		</TextView>
-		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/ETFundStore">
-		</EditText>
-	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
-		<TextView android:id="@+id/TVFundMemo" android:text="@string/input_fund_memo" android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:layout_width="70dp">
-		</TextView>
-		<EditText android:id="@+id/ETFundMemo" android:layout_height="wrap_content" android:layout_width="fill_parent">
-		</EditText>
-	</LinearLayout>
+	</ScrollView>
+	
+	
+	
+	
+
+
 </LinearLayout>

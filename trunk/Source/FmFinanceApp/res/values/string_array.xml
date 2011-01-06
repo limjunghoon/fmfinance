@@ -242,4 +242,10 @@
 		<item>1월</item><item>2월</item><item>3월</item><item>4월</item><item>5월</item><item>6월</item>
 		<item>7월</item><item>8월</item><item>9월</item><item>10월</item><item>11월</item><item>12월</item>
 	</string-array>
+	<string-array name="fond_kind_list">
+		<item>국내 정립식</item>
+		<item>국내 거취식</item>
+		<item>해외 정립식</item>
+		<item>해외 거취식</item>
+	</string-array>
 </resources>

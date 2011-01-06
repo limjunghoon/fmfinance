@@ -19,31 +19,53 @@ import com.fletamuto.sptb.util.FinanceCurrentDate;
  * @version  1.0.0.1
  */
 public class RepeatLayout extends FmBaseActivity {  	
+	public static final int STYLE_NORMAL = 0;
+	public static final int STYLE_ONLY_MONTHLY = 1;
+	
+	private int mStyle = STYLE_ONLY_MONTHLY;
+	private int mType = Repeat.WEEKLY;
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.repeat, true);
         
+        
         updateRepeatView();
+    }
+    
+    @Override
+    protected void initialize() {
+    	super.initialize();
+    	
+    	mStyle = getIntent().getIntExtra(MsgDef.ExtraNames.RPEAT_STYLE, STYLE_NORMAL) ;
+        if (mStyle == STYLE_ONLY_MONTHLY) {
+        	mType = Repeat.MONTHLY;
+        	findViewById(R.id.RBWeekly).setVisibility(View.GONE);
+        	findViewById(R.id.LLWeekend).setVisibility(View.GONE);
+        	findViewById(R.id.LLWeekly).setVisibility(View.GONE);
+        	findViewById(R.id.RBWeekly).setVisibility(View.GONE);
+        }
+        else {
+        	mType = getIntent().getIntExtra(MsgDef.ExtraNames.RPEAT_TYPE, Repeat.WEEKLY) ;
+        }
     }
 
 	private void updateRepeatView() {
 		RadioButton rbWeekly = (RadioButton)findViewById(R.id.RBWeekly);
 		RadioButton rbMonthly = (RadioButton)findViewById(R.id.RBMonthly);
 		EditText etDaily = (EditText)findViewById(R.id.ETMonthly);
-		int type = getIntent().getIntExtra(MsgDef.ExtraNames.RPEAT_TYPE, -1) ;
         int value = 0;
         
-        if (type == Repeat.WEEKLY) {
+        if (mType == Repeat.WEEKLY) {
         	rbWeekly.setChecked(true);
         	value = getIntent().getIntExtra(MsgDef.ExtraNames.RPEAT_WEEKLY, Repeat.getCalendarWeekToRepeatWeek(FinanceCurrentDate.getDate().get(Calendar.DAY_OF_WEEK))) ;
         	updateWeekButton(value);
         	etDaily.setText(String.valueOf(FinanceCurrentDate.getDate().get(Calendar.DAY_OF_MONTH)));
         }
-        else if (type == Repeat.MONTHLY) {
+        else if (mType == Repeat.MONTHLY) {
         	rbMonthly.setChecked(true);
-        	value = getIntent().getIntExtra(MsgDef.ExtraNames.RPEAT_DAILY, 1) ;
+        	value = getIntent().getIntExtra(MsgDef.ExtraNames.RPEAT_DAILY, Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) ;
         	updateWeekButton(Repeat.getCalendarWeekToRepeatWeek(FinanceCurrentDate.getDate().get(Calendar.DAY_OF_WEEK)));
         	etDaily.setText(String.valueOf(value));
         }
