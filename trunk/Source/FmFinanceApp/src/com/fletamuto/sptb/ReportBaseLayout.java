@@ -29,7 +29,7 @@ import com.fletamuto.sptb.util.FinanceCurrentDate;
 import com.fletamuto.sptb.util.LogTag;
 
 public abstract class ReportBaseLayout extends FmBaseActivity {
-	protected static final int ACT_ITEM_EDIT = 0;
+	//protected static final int ACT_ITEM_EDIT = 0;
 	
 	protected ArrayList<FinanceItem> mItems = null;
 	protected ArrayList<FinanceItem> mListItems = new ArrayList<FinanceItem>();
@@ -134,7 +134,7 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	protected void startEditInputActivity(Class<?> cls, int itemId) {
 		Intent intent = new Intent(ReportBaseLayout.this, cls);
     	intent.putExtra("EDIT_ITEM_ID", itemId);
-    	startActivityForResult(intent, ACT_ITEM_EDIT);
+    	startActivityForResult(intent, MsgDef.ActRequest.ACT_EDIT_ITEM);
 	}
 	
 	protected boolean getItemsFromDB(int itemType) {
@@ -300,4 +300,5 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
         setAdapterList();
         updateChildView();
 	}
+	
 }
