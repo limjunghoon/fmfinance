@@ -10,7 +10,7 @@ public class MainSettingLayout extends FmBaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.main_setting, true);
+        setContentView(R.layout.main_setting);
         
        
         Button btnRegistration = (Button)findViewById(R.id.BtnSettingRegistration);

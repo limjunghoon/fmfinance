@@ -19,7 +19,7 @@ public class MainReportLayout extends FmBaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.report_main, true);
+        setContentView(R.layout.report_main);
         
         setAdapterList();
       

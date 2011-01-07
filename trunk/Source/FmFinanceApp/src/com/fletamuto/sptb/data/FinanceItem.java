@@ -87,6 +87,9 @@ public abstract class FinanceItem extends BaseItem {
 	 * @return ¸Þ¸ð
 	 */
 	public String getMemo() {
+		if (mMemo == null) {
+			return "";
+		}
 		return mMemo;
 	}
 	

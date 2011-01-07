@@ -1,113 +1,146 @@
 package com.fletamuto.sptb;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.fletamuto.common.control.fmgraph.PieGraph;
+import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ReportItemAdapter;
 import com.fletamuto.sptb.data.AssetsItem;
-import com.fletamuto.sptb.data.LiabilityItem;
+import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.FinanceCurrentDate;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainAssetsLayout extends FmBaseActivity {
-	private long monthTotalAssets = 0L;
-	private long monthTotalLiability = 0L;
-	
+	protected ArrayList<FinanceItem> mAssetsItems = null;
+	protected ArrayList<FinanceItem> mLiabilityItems = null;
+	protected ArrayList<FinanceItem> mListItems = new ArrayList<FinanceItem>();
+	protected ReportItemAdapter mItemAdapter = null;
+
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	
-    	setContentView(R.layout.main_asserts, true);
+    	setContentView(R.layout.main_asserts);
     	setButtonClickListener();
+    	
+    	getListItem();
+    	setAdapterList();
     }
     
-	private void setButtonClickListener() {
+    protected void setButtonClickListener() {
 		
-		Button btnExpense = (Button)findViewById(R.id.BtnTotalAssets);
+		Button btnExpense = (Button)findViewById(R.id.BtnAssets);
 		btnExpense.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-			//	Intent intent = new Intent(MainAssetsLayout.this, ReportCompareAssetsLayout.class);
-			//	Intent intent = new Intent(MainAssetsLayout.this, SelectCategoryAssetsLayout.class);
 				Intent intent = new Intent(MainAssetsLayout.this, ReportAssetsLayout.class);
 				startActivity(intent);
 			}
 		});
 		
-		Button btnIncome = (Button)findViewById(R.id.BtnTotalLiability);
+		Button btnIncome = (Button)findViewById(R.id.BtnLiability);
 		btnIncome.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				//Intent intent = new Intent(MainAssetsLayout.this, ReportCompareLiabilityLayout.class);
-				//Intent intent = new Intent(MainAssetsLayout.this, SelectCategoryLiabilityLayout.class);
 				Intent intent = new Intent(MainAssetsLayout.this, ReportLiabilityLayout.class);
 				startActivity(intent);
 			}
 		});
 	}
+    
+    protected void getListItem() {
+    	mAssetsItems = DBMgr.getItems(IncomeItem.TYPE, FinanceCurrentDate.getDate());
+    	mLiabilityItems = DBMgr.getItems(ExpenseItem.TYPE, FinanceCurrentDate.getDate());
+    	
+    	updateListItem();
+    }
+    
+    protected void setAdapterList() {
+    	if (mListItems == null) return;
+        
+    	final ListView listItem = (ListView)findViewById(R.id.LVIncomeExpense);
+    	mItemAdapter = new ReportItemAdapter(this, R.layout.report_assets, mListItems);
+    	listItem.setAdapter(mItemAdapter);
+    	
+    	listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-	private void getData() {
-		monthTotalAssets = DBMgr.getTotalAmount(AssetsItem.TYPE);
-		monthTotalLiability = DBMgr.getTotalAmount(LiabilityItem.TYPE);
-	}
-
-	@Override
-	protected void setTitleBtn() {
-    	setTitle("자산 현황");
-
-		super.setTitleBtn();
-	}
-
-	private void updateChildView() {
-		updateBarGraph();
-		
-		TextView btnProfit = (TextView)findViewById(R.id.TVTotalProperty);
-		btnProfit.setText(String.format("총 자산 : %,d원", monthTotalAssets - monthTotalLiability));
-		
-		Button btnExpense = (Button)findViewById(R.id.BtnTotalAssets);
-		btnExpense.setText(String.format("자산                               %,d원", monthTotalAssets));
-		
-		Button btnIncome = (Button)findViewById(R.id.BtnTotalLiability);
-		btnIncome.setText(String.format("부채                              %,d원", monthTotalLiability));
-	}
-
-	private void updateBarGraph() {
-		final PieGraph pieGraph;
-		ArrayList<Long> pieGraphValues = new ArrayList<Long>();
-		
-		pieGraphValues.add(monthTotalAssets);
-		pieGraphValues.add(monthTotalLiability);
-       
-		pieGraph = (PieGraph) findViewById (R.id.pgraph);
-		pieGraph.setItemValues(pieGraphValues);
-		pieGraph.setOnTouchListener(new View.OnTouchListener() {
-
-			public boolean onTouch(View arg0, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					int sel;
-		    		sel = pieGraph.FindTouchItemID((int)event.getX(), (int)event.getY());
-		    		if (sel == -1) {
-		    			return true;
-		    		} else {
-		    			Toast.makeText(pieGraph.getContext(), "ID = " + sel + " 그래프 터치됨", Toast.LENGTH_SHORT).show();
-		    			return true;
-		    		}
-		    	}
-				return false;
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+//				onClickListItem(parent, view, position, id);
 			}
 		});
-	}
-	
-	@Override
-	protected void onResume() {
-		getData();
-    	updateChildView();
-		super.onResume();
+    }
+    
+    public class ReportItemAdapter extends ArrayAdapter<FinanceItem> {
+    	private LayoutInflater mInflater;
+
+		public ReportItemAdapter(Context context, int resource,
+				 List<FinanceItem> objects) {
+			super(context, resource, objects);
+//			this.mResource = resource;
+			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			FinanceItem item = (FinanceItem)getItem(position);
+			
+			if (item.isSeparator()) {
+				return createSeparator(mInflater, parent, item);
+			}
+			else {
+//				convertView = mInflater.inflate(getAdapterResource(item.getType()), parent, false);
+			}
+			
+//			setListViewText(item, convertView);
+//			setDeleteBtnListener(convertView, item, position);
+//			
+			return convertView;
+		}
+		
+		public View createSeparator(LayoutInflater inflater, ViewGroup parent, FinanceItem item) {
+			View convertView = inflater.inflate(R.layout.list_separators, parent, false);
+			TextView tvTitle = (TextView)convertView.findViewById(R.id.TVSeparator);
+			tvTitle.setText(item.getSeparatorTitle());
+			tvTitle.setTextColor(Color.BLACK);
+			convertView.setBackgroundColor(Color.WHITE);
+			return convertView;
+		}
+		
+		@Override
+		public boolean isEnabled(int position) {
+			return !mListItems.get(position).isSeparator();
+		}
+    }
+    
+    protected void updateListItem() {
+//    	mListItems.clear();
+//    	
+//    	if (mAssetsItems.size() > 0) {
+//    		AssetsItem separator = new AssetsItem();
+//    		separator.setSeparatorTitle("수입");
+//    		mListItems.add(separator);
+//        	mListItems.addAll(mAssetsItems);
+//    	}
+//    	if (mLiabilityItems.size() > 0) {
+//    		ExpenseItem separator = new ExpenseItem();
+//    		separator.setSeparatorTitle("지출");
+//    		mListItems.add(separator);
+//    		mListItems.addAll(mLiabilityItems);
+//    	}
 	}
 }
