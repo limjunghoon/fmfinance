@@ -71,6 +71,10 @@ public abstract class FinanceItem extends BaseItem {
 	 * @return Á¦¸ñ
 	 */
 	public String getTitle() {
+		if (mTitle == null) {
+			return "";
+		}
+		
 		return mTitle;
 	}
 	

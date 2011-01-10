@@ -22,4 +22,12 @@ public class IncomeItem extends FinanceItem {
 	public AccountItem getAccount() {
 		return mAccount;
 	}
+	
+	public String getAccountText() {
+		if (mAccount.getID() == -1) {
+			return "Çö±Ý";
+		}
+		
+		return "°èÁÂ";
+	}
 }

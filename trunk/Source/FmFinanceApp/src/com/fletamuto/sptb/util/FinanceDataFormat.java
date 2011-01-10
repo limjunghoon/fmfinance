@@ -1,6 +1,7 @@
 package com.fletamuto.sptb.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -42,5 +43,10 @@ public class FinanceDataFormat {
 	
 	public static String getDotDateFormat(Date date) {
 		return DOT_DATE_FORMAT.format(date);
+	}
+	
+	public static String getWeekText(Calendar calendar) {
+		String [] weeks = {"일", "월", "화", "수", "목", "금", "토"};
+		return weeks[calendar.get(Calendar.DAY_OF_WEEK) - 1];
 	}
 }

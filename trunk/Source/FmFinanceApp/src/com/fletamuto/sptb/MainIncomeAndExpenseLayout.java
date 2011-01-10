@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.ReportBaseCardLayout.CardItemAdapter;
 import com.fletamuto.sptb.ReportBaseLayout.ReportItemAdapter;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsItem;
@@ -27,10 +28,12 @@ import com.fletamuto.sptb.data.BudgetItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.PaymentAccountMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
+import com.fletamuto.sptb.util.FinanceDataFormat;
 import com.fletamuto.sptb.util.LogTag;
 
 /**
@@ -38,18 +41,20 @@ import com.fletamuto.sptb.util.LogTag;
  * @author yongbban
  * @version  1.0.0.1
  */
-public class MainIncomeAndExpenseLayout extends FmBaseActivity {  	
-	private ChangeActivity startActivity = new ChangeActivity();
+public class MainIncomeAndExpenseLayout extends FmBaseActivity { 
 	
 	protected ArrayList<FinanceItem> mIncomeItems = null;
 	protected ArrayList<FinanceItem> mExpenseItems = null;
-	protected ArrayList<FinanceItem> mListItems = new ArrayList<FinanceItem>();
-	protected ReportItemAdapter mItemAdapter = null;
+	protected ReportItemAdapter mIncomeDailyAdapter = null;
+	protected ReportItemAdapter mExpenseDailyAdapter = null;
+	
+	private int mCurrentViewMode = ItemDef.VIEW_DAY_OF_MONTH;
+	private Calendar mCalendarMonthly = Calendar.getInstance();
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_income_and_expense);
+        setContentView(R.layout.main_income_and_expense, false);
         
         DBMgr.initialize(getApplicationContext());
         DBMgr.addRepeatItems();
@@ -57,27 +62,49 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
         setBtnClickListener();
         setTitle(getResources().getString(R.string.app_name));
         
+       
+        
 //        updateViewText();
 //        setIncomeExpenseProgress();
+    }
+    
+    @Override
+    protected void initialize() {
+    	super.initialize();
+    	
+    	TextView tvIncomeTitle = (TextView)findViewById(R.id.TVDailyIncomeTilte); 
+    	tvIncomeTitle.setTextColor(Color.BLACK);
+    	tvIncomeTitle.setBackgroundColor(Color.WHITE);
+    	
+    	TextView tvExpenseTitle = (TextView)findViewById(R.id.TVDailyExpenseTitle); 
+    	tvExpenseTitle.setTextColor(Color.BLACK);
+    	tvExpenseTitle.setBackgroundColor(Color.WHITE);
     }
 
 	/**
      * activity가 다시 시작할 때
      */
     protected void onResume() {
-    	updateViewText();
-    	setIncomeExpenseProgress();
     	getListItem();
     	setAdapterList();
+    	updateViewText();
     	super.onResume();
     }
 
     /** 버튼 클릭시 리슨너 등록 */
     protected void setBtnClickListener() {
-    	setChangeActivityBtnClickListener(R.id.BtnInputExpense);
-    	setChangeActivityBtnClickListener(R.id.BtnInputIncome);
     	setCurrentButtonListener();
     	
+    	findViewById(R.id.BtnInput).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+//		    	Intent intent = new Intent(MainIncomeAndExpenseLayout.this, SelectCategoryIncomeLayout.class);
+//				startActivity(intent);
+				
+				Intent intent = new Intent(MainIncomeAndExpenseLayout.this, InputExpenseLayout.class);
+				startActivity(intent);
+			}
+		});
     }
     
     /**
@@ -104,32 +131,58 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 	protected void moveCurrentDay(int dayValue) {
 		FinanceCurrentDate.moveCurrentDay(dayValue);
 		getListItem();
-    	setAdapterList();
+		setAdapterList();
 		updateViewText();
 	}
-
-
-	/**
-     * 버튼 클릭시  Activity화면 전환 설정
-     * @param id 버튼 아이디
-     */
-    protected void setChangeActivityBtnClickListener(int id) {
-    	((Button)findViewById(id)).setOnClickListener(startActivity);
-    }
-
     
     /** 화면 텍스트 갱신 */
     protected void updateViewText() {
     	updateTotalIncomeText();
     	updateTotalExpenseText();
     	updateCurrentDateText();
+    	updateDailyTitleText();
     }
+    
+    /** 현재 수입 정보갱신 */
+    protected void updateCurrentIncomeText() {
+    	int count = DBMgr.getItemCount(IncomeItem.TYPE, FinanceCurrentDate.getDate());
+    	TextView tvDailyIncome = (TextView)findViewById(R.id.TVDailyIncome);
+    	tvDailyIncome.setText(String.format("수입(%d건)", count));
+    	
+    	long amount = DBMgr.getTotalAmountDay(IncomeItem.TYPE, FinanceCurrentDate.getDate());
+    	TextView tvDailyIncomeAmount = (TextView)findViewById(R.id.TVDailyIncomeAmount);
+    	tvDailyIncomeAmount.setText(String.format("%,d원", amount));
+    	tvDailyIncomeAmount.setTextColor(Color.BLUE);
+	}
+    
+    /** 현재 지출 정보갱신 */
+    protected void updateCurrentExpenseText() {
+    	int count = DBMgr.getItemCount(ExpenseItem.TYPE, FinanceCurrentDate.getDate());
+    	TextView tvDailyExpense = (TextView)findViewById(R.id.TVDailyExpense);
+    	tvDailyExpense.setText(String.format("지출(%d건)", count));
+    	
+    	long amount = DBMgr.getTotalAmountDay(ExpenseItem.TYPE, FinanceCurrentDate.getDate());
+    	TextView tvDailyExpenseAmount = (TextView)findViewById(R.id.TVDailyExpenseAmount);
+    	tvDailyExpenseAmount.setText(String.format("-%,d원", amount));
+    	tvDailyExpenseAmount.setTextColor(Color.RED);
+	}
+
+	protected void updateDailyTitleText() {
+		TextView tvDaily = (TextView)findViewById(R.id.TVDailyDay);
+		tvDaily.setText(String.valueOf(FinanceCurrentDate.getDate().get(Calendar.DAY_OF_MONTH)));
+		
+		TextView tvWeely = (TextView)findViewById(R.id.TVDailyWeekly);
+		tvWeely.setText("(" + FinanceDataFormat.getWeekText(FinanceCurrentDate.getDate()) + ")");
+		
+		updateCurrentIncomeText();
+		updateCurrentExpenseText();
+	}
 
 	/** 총 수입 액수 갱신 */
     protected void updateTotalIncomeText() {
     	long amount = DBMgr.getTotalAmount(IncomeItem.TYPE);
     	TextView totalIncome = (TextView)findViewById(R.id.TVTotalIncome);
-    	totalIncome.setText(String.format("%,d원", amount));
+    	totalIncome.setText(String.format("수입 %,d원", amount));
     	totalIncome.setTextColor(Color.BLUE);
 	}
     
@@ -137,76 +190,18 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
     protected void updateTotalExpenseText() {
     	long amount = DBMgr.getTotalAmount(ExpenseItem.TYPE);
     	TextView totalExpense = (TextView)findViewById(R.id.TVTotalExpense);
-    	totalExpense.setText(String.format("%,d원", -amount));
+    	totalExpense.setText(String.format("지출 %,d원", -amount));
     	totalExpense.setTextColor(Color.RED);
 	}
     
     /** 현재 날짜 갱신 */
     protected void updateCurrentDateText() {
-    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy. MM");
     	TextView tvCurrentDay = (TextView)findViewById(R.id.TVCurrentday);
     	tvCurrentDay.setText(dateFormat.format(FinanceCurrentDate.getTime()));
 	}
- 
     
-    /**
-     * 메인 화면에서 화면전환 이벤트 발생 시 화면 변경
-     */
-    public class ChangeActivity implements View.OnClickListener {
-    	
-    	/** 버튼 클릭 시 */
-		public void onClick(View arg0) {
-			changeActivity(arg0.getId());
-		}
-		
-		/**
-		 * Activity 화면전환
-		 * @param id 클릭된 버튼 아이디
-		 */
-		private void changeActivity(int id) {
-			Class<?> changeClass = null;
-			
-			if (id == R.id.BtnInputExpense)	changeClass = InputExpenseLayout.class;
-			else if (id == R.id.BtnInputIncome) changeClass = SelectCategoryIncomeLayout.class;
-			else {
-				Log.e(LogTag.LAYOUT, "== unregistered event hander ");
-				return;
-			}
-			
-	    	Intent intent = new Intent(MainIncomeAndExpenseLayout.this, changeClass);
-			startActivity(intent);
-	    }
-    }
-    
-    /**
-     * 수입, 지출 프로그레스 바 설정
-     */
-    private void setIncomeExpenseProgress() {
-		ProgressBar progress = (ProgressBar)findViewById(R.id.IncomeExpensePrograss);
-		
-		long incomeAmount = DBMgr.getTotalAmount(IncomeItem.TYPE);
-		long expenseAmount = DBMgr.getTotalAmount(ExpenseItem.TYPE);
-		long sumAmount = incomeAmount - expenseAmount;
-		 
-		TextView tvIncomeExpense = (TextView)findViewById(R.id.TVIncomeExpenseAmount);
-		tvIncomeExpense.setText(String.format("%,d원", sumAmount));
-		
-		
-		if (sumAmount < 0) {
-			progress.setMax(100);
-			progress.setProgress(5);
-			tvIncomeExpense.setTextColor(Color.RED);
-		}
-		else {
-			// 테스트 코드
-			int max = (int)(incomeAmount/100);
-			int pos = max - (int)(expenseAmount/100);
-			
-			progress.setMax(max);
-			progress.setProgress(pos);
-			tvIncomeExpense.setTextColor(Color.BLUE);
-		}
-	}
+
     
     protected void getListItem() {
     	mIncomeItems = DBMgr.getItems(IncomeItem.TYPE, FinanceCurrentDate.getDate());
@@ -215,38 +210,59 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
     	updateListItem();
     }
     
-    protected void setAdapterList() {
-    	if (mListItems == null) return;
-        
-    	final ListView listItem = (ListView)findViewById(R.id.LVIncomeExpense);
-    	mItemAdapter = new ReportItemAdapter(this, R.layout.report_list_expense, mListItems);
-    	listItem.setAdapter(mItemAdapter);
+	protected void setAdapterList() {
+		setDailyIncomeAdapterList();
+		setDailyExpenseAdapterList();
+    }
+    
+
+    protected void setDailyExpenseAdapterList() {
+    	if (mExpenseItems == null) return;
     	
-    	listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    	findViewById(R.id.LLDailyExpense).setVisibility((mExpenseItems.size() == 0) ? View.GONE : View.VISIBLE);
+        
+    	final ListView listExpense = (ListView)findViewById(R.id.LVDailyExpense);
+    	mExpenseDailyAdapter = new ReportItemAdapter(this, R.layout.report_list_normal, mExpenseItems);
+    	listExpense.setAdapter(mExpenseDailyAdapter);
+    	
+    	listExpense.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				onClickListItem(parent, view, position, id);
+	//			setVisibleDeleteButton((Button)view.findViewById(R.id.BtnCategoryDelete));
+				
 			}
 		});
-    }
-
-    protected int getAdapterResource(int type) {
-    	if (type == IncomeItem.TYPE) {
-    		return R.layout.report_list_income;
-    	}
-    	else {
-    		return R.layout.report_list_expense;
-    	}
 	}
+
+	protected void setDailyIncomeAdapterList() {
+    	if (mIncomeItems == null) return;
+    	
+    	findViewById(R.id.LLDailyIncome).setVisibility((mIncomeItems.size() == 0) ? View.GONE : View.VISIBLE);
+        
+    	final ListView listIncome = (ListView)findViewById(R.id.LVDailyIncome);
+    	mIncomeDailyAdapter = new ReportItemAdapter(this, R.layout.report_list_normal, mIncomeItems);
+    	listIncome.setAdapter(mIncomeDailyAdapter);
+    	
+    	listIncome.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+	//			setVisibleDeleteButton((Button)view.findViewById(R.id.BtnCategoryDelete));
+				
+			}
+		});
+	}
+
     
     public class ReportItemAdapter extends ArrayAdapter<FinanceItem> {
+    	int mResource;
     	private LayoutInflater mInflater;
 
 		public ReportItemAdapter(Context context, int resource,
 				 List<FinanceItem> objects) {
 			super(context, resource, objects);
-//			this.mResource = resource;
+			this.mResource = resource;
 			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 		
@@ -254,49 +270,17 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			FinanceItem item = (FinanceItem)getItem(position);
 			
-			if (item.isSeparator()) {
-				return createSeparator(mInflater, parent, item);
-			}
-			else {
-				convertView = mInflater.inflate(getAdapterResource(item.getType()), parent, false);
+			if (convertView == null) {
+				convertView = mInflater.inflate(mResource, parent, false);
 			}
 			
 			setListViewText(item, convertView);
-			setDeleteBtnListener(convertView, item, position);
-			
 			return convertView;
-		}
-		
-		public View createSeparator(LayoutInflater inflater, ViewGroup parent, FinanceItem item) {
-			View convertView = inflater.inflate(R.layout.list_separators, parent, false);
-			TextView tvTitle = (TextView)convertView.findViewById(R.id.TVSeparator);
-			tvTitle.setText(item.getSeparatorTitle());
-			tvTitle.setTextColor(Color.BLACK);
-			convertView.setBackgroundColor(Color.WHITE);
-			return convertView;
-		}
-		
-		@Override
-		public boolean isEnabled(int position) {
-			return !mListItems.get(position).isSeparator();
 		}
     }
     
     protected void updateListItem() {
-    	mListItems.clear();
     	
-    	if (mIncomeItems.size() > 0) {
-    		IncomeItem separator = new IncomeItem();
-    		separator.setSeparatorTitle("수입");
-    		mListItems.add(separator);
-        	mListItems.addAll(mIncomeItems);
-    	}
-    	if (mExpenseItems.size() > 0) {
-    		ExpenseItem separator = new ExpenseItem();
-    		separator.setSeparatorTitle("지출");
-    		mListItems.add(separator);
-    		mListItems.addAll(mExpenseItems);
-    	}
 	}
     
     protected void setListViewText(FinanceItem item, View convertView) {
@@ -309,10 +293,20 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 	}
     
     protected void setIncomeListViewText(IncomeItem income, View convertView) {
-    	((TextView)convertView.findViewById(R.id.TVIncomeReportListDate)).setVisibility(View.GONE);
-		((TextView)convertView.findViewById(R.id.TVIncomeReportListAmount)).setText(String.format("금액 : %,d원", income.getAmount()));
+    	((TextView)convertView.findViewById(R.id.TVListLeft)).setText(income.getCategory().getName());
+		TextView tvTitle = (TextView)convertView.findViewById(R.id.TVListCenterTop) ;
+		if (income.getTitle().length() != 0) {
+			tvTitle.setText(income.getTitle());
+		}
+		else {
+			tvTitle.setVisibility(View.GONE);
+		}
 		
-		TextView tvMemo = (TextView)convertView.findViewById(R.id.TVIncomeReportListMemo) ;
+		TextView tvAmount = (TextView)convertView.findViewById(R.id.TVListRightTop); 
+		tvAmount.setText(String.format("%,d원", income.getAmount()));
+		tvAmount.setTextColor(Color.BLUE);
+		
+		TextView tvMemo = (TextView)convertView.findViewById(R.id.TVListCenterBottom) ;
 		if (income.getMemo().length() != 0) {
 			tvMemo.setText("메모 : " + income.getMemo());
 		}
@@ -320,14 +314,21 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 			tvMemo.setVisibility(View.GONE);
 		}
 		
-		((TextView)convertView.findViewById(R.id.TVIncomeReportListCategory)).setText("분류 : " + income.getCategory().getName());
+		TextView tvMothod = (TextView)convertView.findViewById(R.id.TVListRightBottom); 
+		tvMothod.setText(income.getAccountText());
     }
     
     protected void setExpenseListViewText(ExpenseItem expense, View convertView) {
-    	((TextView)convertView.findViewById(R.id.TVExpenseReportListDate)).setVisibility(View.GONE);
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("금액 : %,d원", expense.getAmount()));
+    	
+    	((TextView)convertView.findViewById(R.id.TVListLeft)).setText(expense.getCategory().getName());
+		TextView tvSubCategory = (TextView)convertView.findViewById(R.id.TVListCenterTop) ;
+		tvSubCategory.setText(expense.getSubCategory().getName());
 		
-		TextView tvMemo = (TextView)convertView.findViewById(R.id.TVExpenseReportListMemo) ;
+		TextView tvAmount = (TextView)convertView.findViewById(R.id.TVListRightTop); 
+		tvAmount.setText(String.format("-%,d원", expense.getAmount()));
+		tvAmount.setTextColor(Color.RED);
+		
+		TextView tvMemo = (TextView)convertView.findViewById(R.id.TVListCenterBottom) ;
 		if (expense.getMemo().length() != 0) {
 			tvMemo.setText("메모 : " + expense.getMemo());
 		}
@@ -335,84 +336,19 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 			tvMemo.setVisibility(View.GONE);
 		}
 		
-		String categoryText = String.format("%s - %s", expense.getCategory().getName(), expense.getSubCategory().getName());
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText("분류 : " + categoryText);
-		
-		TextView tvTag = (TextView)convertView.findViewById(R.id.TVExpenseReportListTag) ;
-		if (expense.getMemo().compareTo("none") == 0) {
-			tvTag.setText("태그 : " + expense.getTag().getName());
-		}
-		else {
-			tvTag.setVisibility(View.GONE);
-		}
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListPaymentMethod)).setText("결제 : " + expense.getPaymentMethod().getText());
+		TextView tvMothod = (TextView)convertView.findViewById(R.id.TVListRightBottom); 
+		tvMothod.setText(expense.getPaymentMethod().getText());
     }
-    
-    
-    protected void setDeleteBtnListener(View convertView, FinanceItem item, int position) {
-    	Button btnDelete = null;
-    	
-    	if (item.getType() == IncomeItem.TYPE) {
-    		btnDelete = (Button)convertView.findViewById(R.id.BtnReportIncomeDelete);
-    	}
-    	else {
-    		btnDelete = (Button)convertView.findViewById(R.id.BtnReportExpenseDelete);
-    	}
-    	
-		btnDelete.setTag(R.id.delete_id, new Integer(item.getID()));
-		btnDelete.setTag(R.id.delete_position, new Integer(position));
-		btnDelete.setOnClickListener(mDeleteBtnListener);
-    }
-    
-    protected Button.OnClickListener mDeleteBtnListener = new  Button.OnClickListener(){
-    	
-		public void onClick(View arg0) {
-			Integer position = (Integer)arg0.getTag(R.id.delete_position);
-			Integer id = (Integer)arg0.getTag(R.id.delete_id);
-			FinanceItem item = (FinanceItem)mListItems.get(position.intValue());
-			
-			if (deleteItemToDB(item.getType(), id) == 0) {
-				Log.e(LogTag.LAYOUT, "== noting delete id : " + id);
-			}
-			else {
-				if (item.getType() == ExpenseItem.TYPE) {
-					ExpenseItem expense = (ExpenseItem) item;
-			    	PaymentMethod paymentMethod = expense.getPaymentMethod();
-			    	
-					if (paymentMethod.getType() == PaymentMethod.ACCOUNT) {
-						PaymentAccountMethod accountMethod = (PaymentAccountMethod) paymentMethod;
-						if (accountMethod.getAccount() == null) {
-							accountMethod.setAccount(DBMgr.getAccountItem(paymentMethod.getMethodItemID()));
-						}
-						AccountItem fromItem = accountMethod.getAccount();
-						
-		    			long fromItemBalance = fromItem.getBalance();
-						fromItem.setBalance(fromItemBalance + expense.getAmount());
-						DBMgr.updateAccount(fromItem);
-					}
-					
-				}
-
-				mListItems.remove(position.intValue());
-				mItemAdapter.notifyDataSetChanged();
-
-			}
-		}
-	};
-	
-	protected int deleteItemToDB(int type, int id) {
-		return DBMgr.deleteItem(type, id);
-	}
 	
 	protected void onClickListItem(AdapterView<?> parent, View view,
 			int position, long id) {
-    	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
-    	if (item.getType() == ExpenseItem.TYPE) {
-    		startEditInputActivity(InputExpenseLayout.class, item.getID());
-    	}
-    	else {
-    		startEditInputActivity(InputIncomeLayout.class, item.getID());
-    	}
+//    	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
+//    	if (item.getType() == ExpenseItem.TYPE) {
+// //   		startEditInputActivity(InputExpenseLayout.class, item.getID());
+//    	}
+//    	else {
+// //   		startEditInputActivity(InputIncomeLayout.class, item.getID());
+//    	}
 	}
 	
 	protected void startEditInputActivity(Class<?> cls, int itemId) {
