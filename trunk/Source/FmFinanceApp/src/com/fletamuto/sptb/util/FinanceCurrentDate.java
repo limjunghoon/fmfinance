@@ -27,5 +27,7 @@ public class FinanceCurrentDate {
 	public static Date getTime() {
 		return mCurrentDay.getTime();
 	}
+	
+
 
 }
