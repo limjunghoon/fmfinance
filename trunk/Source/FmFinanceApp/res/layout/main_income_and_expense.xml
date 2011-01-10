@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:orientation="vertical">
+		<LinearLayout android:id="@+id/LinearLayout02" android:layout_width="fill_parent" android:layout_marginTop="5dp" android:layout_weight="0" android:layout_height="wrap_content">
+			<ProgressBar android:layout_width="fill_parent" android:id="@+id/IncomeExpensePrograss" style="?android:attr/progressBarStyleHorizontal" android:layout_height="fill_parent" android:max="100" android:layout_weight="2"></ProgressBar>
+			<TextView android:id="@+id/TVIncomeExpenseAmount" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="4" android:textSize="17sp" android:gravity="right|center_vertical"></TextView>
+		</LinearLayout>
+		
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/TodayLayout" android:orientation="vertical" android:layout_marginTop="5dp" android:layout_weight="4">
+			<LinearLayout android:id="@+id/LinearLayout05" android:layout_height="wrap_content" android:layout_width="fill_parent">
+				<Button android:layout_width="wrap_content" android:id="@+id/BtnPreviousDay" android:text="이전날" android:textSize="11sp" android:layout_height="wrap_content"></Button>
+				<TextView android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:id="@+id/TVCurrentday" android:layout_width="wrap_content" android:text="이전달" android:layout_marginRight="5dp"></TextView>
+				<Button android:layout_width="wrap_content" android:id="@+id/BtnNextDay" android:text="다음날" android:textSize="11sp" android:layout_height="wrap_content"></Button>
+			</LinearLayout>
+			
+			
+			<ListView android:id="@+id/LVIncomeExpense" android:layout_height="fill_parent" android:layout_width="fill_parent"></ListView>
+		</LinearLayout>
+		
+		<LinearLayout android:layout_width="fill_parent" android:id="@+id/TotalLayout" android:gravity="bottom" android:layout_height="wrap_content" android:layout_weight="0">
+			<TextView android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/TVTotalIncome" android:textSize="20sp" android:gravity="center_horizontal"></TextView>
+			<TextView android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/TVTotalExpense" android:textSize="20sp" android:gravity="center_horizontal"></TextView>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout03" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="10">
+			<Button android:layout_weight="1" android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/BtnInputIncome" android:text="@string/input_income_btn_name" android:gravity="center" android:textSize="40sp"></Button>
+			<Button android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/BtnInputExpense" android:text="@string/input_expense_btn_name" android:layout_width="fill_parent" android:gravity="center" android:textSize="40sp"></Button>
+		</LinearLayout>
+
+
+	</LinearLayout>
+</LinearLayout>
