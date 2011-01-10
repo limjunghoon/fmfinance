@@ -1,33 +1,42 @@
 package com.fletamuto.sptb;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ReportItemAdapter;
+import com.fletamuto.sptb.ReportBaseCompare.CategoryAmount;
 import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
+import com.fletamuto.sptb.util.LogTag;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainAssetsLayout extends FmBaseActivity {
 	protected ArrayList<FinanceItem> mAssetsItems = null;
+	protected Map<Integer, CategoryAmount> mAssetsCategoryItems = new HashMap<Integer, CategoryAmount>();
 	protected ArrayList<FinanceItem> mLiabilityItems = null;
-	protected ArrayList<FinanceItem> mListItems = new ArrayList<FinanceItem>();
+	protected Map<Integer, CategoryAmount> mLiabilityCategoryItems = new HashMap<Integer, CategoryAmount>();
 	protected ReportItemAdapter mItemAdapter = null;
 
     /** Called when the activity is first created. */
@@ -39,6 +48,14 @@ public class MainAssetsLayout extends FmBaseActivity {
     	
     	getListItem();
     	setAdapterList();
+    }
+    
+    @Override
+    protected void onResume() {
+    	getListItem();
+    	setAdapterList();
+    	
+    	super.onResume();
     }
     
     protected void setButtonClickListener() {
@@ -70,10 +87,15 @@ public class MainAssetsLayout extends FmBaseActivity {
     }
     
     protected void setAdapterList() {
-    	if (mListItems == null) return;
+    	Collection<CategoryAmount> categoryAmountItems = mAssetsCategoryItems.values();
+    	ArrayList<CategoryAmount> assetsItems = new ArrayList<CategoryAmount>();
+		
+		for (CategoryAmount iterator:categoryAmountItems) {
+			assetsItems.add(iterator);
+		}
         
-    	final ListView listItem = (ListView)findViewById(R.id.LVIncomeExpense);
-    	mItemAdapter = new ReportItemAdapter(this, R.layout.report_assets, mListItems);
+    	final ListView listItem = (ListView)findViewById(R.id.LVAssetsCategory);
+    	mItemAdapter = new ReportItemAdapter(this, R.layout.report_list_assets_category, assetsItems);
     	listItem.setAdapter(mItemAdapter);
     	
     	listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -85,62 +107,91 @@ public class MainAssetsLayout extends FmBaseActivity {
 		});
     }
     
-    public class ReportItemAdapter extends ArrayAdapter<FinanceItem> {
+    public class ReportItemAdapter extends ArrayAdapter<CategoryAmount> {
     	private LayoutInflater mInflater;
+    	private int mResource;
 
 		public ReportItemAdapter(Context context, int resource,
-				 List<FinanceItem> objects) {
+				 List<CategoryAmount> objects) {
 			super(context, resource, objects);
-//			this.mResource = resource;
+			this.mResource = resource;
 			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			FinanceItem item = (FinanceItem)getItem(position);
+			CategoryAmount item = (CategoryAmount)getItem(position);
 			
-			if (item.isSeparator()) {
-				return createSeparator(mInflater, parent, item);
-			}
-			else {
-//				convertView = mInflater.inflate(getAdapterResource(item.getType()), parent, false);
+			if (convertView == null) {
+				convertView = mInflater.inflate(mResource, parent, false);
 			}
 			
-//			setListViewText(item, convertView);
-//			setDeleteBtnListener(convertView, item, position);
+			((TextView)convertView.findViewById(R.id.TVAssetsCategoryName)).setText(String.format("%s(%d)", item.getName(), item.getCount()));
+    		((TextView)convertView.findViewById(R.id.TVAssetsCategoryTotalAmout)).setText(String.format("%,d원", item.getTotalAmount()));			
+			
 //			
 			return convertView;
-		}
-		
-		public View createSeparator(LayoutInflater inflater, ViewGroup parent, FinanceItem item) {
-			View convertView = inflater.inflate(R.layout.list_separators, parent, false);
-			TextView tvTitle = (TextView)convertView.findViewById(R.id.TVSeparator);
-			tvTitle.setText(item.getSeparatorTitle());
-			tvTitle.setTextColor(Color.BLACK);
-			convertView.setBackgroundColor(Color.WHITE);
-			return convertView;
-		}
-		
-		@Override
-		public boolean isEnabled(int position) {
-			return !mListItems.get(position).isSeparator();
 		}
     }
     
     protected void updateListItem() {
-//    	mListItems.clear();
-//    	
-//    	if (mAssetsItems.size() > 0) {
-//    		AssetsItem separator = new AssetsItem();
-//    		separator.setSeparatorTitle("수입");
-//    		mListItems.add(separator);
-//        	mListItems.addAll(mAssetsItems);
-//    	}
-//    	if (mLiabilityItems.size() > 0) {
-//    		ExpenseItem separator = new ExpenseItem();
-//    		separator.setSeparatorTitle("지출");
-//    		mListItems.add(separator);
-//    		mListItems.addAll(mLiabilityItems);
-//    	}
+    	mAssetsCategoryItems.clear();
+    	
+    	mAssetsItems = DBMgr.getAllItems(AssetsItem.TYPE);
+		if (mAssetsItems == null) return;
+		
+		int itemSize = mAssetsItems.size();
+		for (int index = 0; index < itemSize; index++) {
+			FinanceItem item = mAssetsItems.get(index);
+			Category category = item.getCategory();
+			if (category == null) {
+				Log.w(LogTag.LAYOUT, ":: INVAILD CATEGORU :: ");
+				continue;
+			}
+			Integer categoryID = category.getID();
+			
+			CategoryAmount categoryAmount = mAssetsCategoryItems.get(categoryID);
+			if (categoryAmount == null) {
+				categoryAmount = new CategoryAmount();
+				categoryAmount.set(categoryID, category.getName(), item.getAmount());
+				mAssetsCategoryItems.put(categoryID, categoryAmount);
+			}
+			else {
+				categoryAmount.addAmount(item.getAmount());
+			}
+		}
+	}
+    
+	public class CategoryAmount {
+		private int mCategoryID;
+		private long mTotalAmount;
+		private String mName;
+		private int mCount = 1;
+		
+		public int getCategoryID() {
+			return mCategoryID;
+		}
+
+		public long getTotalAmount() {
+			return mTotalAmount;
+		}
+		public String getName() {
+			return mName;
+		}
+		
+		public int getCount() {
+			return mCount;
+		}
+		
+		public void addAmount(long amount) {
+			mTotalAmount += amount;
+			mCount++;
+		}
+		
+		public void set(int id, String name, long amount) {
+			mCategoryID = id;
+			mName = name;
+			mTotalAmount = amount;
+		}
 	}
 }
