@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ReportItemAdapter;
 import com.fletamuto.sptb.ReportBaseCompare.CategoryAmount;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
