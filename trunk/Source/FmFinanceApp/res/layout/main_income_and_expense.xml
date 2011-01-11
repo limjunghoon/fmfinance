@@ -5,42 +5,42 @@
     android:layout_height="fill_parent"
     >
 
-		<LinearLayout android:id="@+id/LinearLayout05" android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center">
-			<ToggleButton android:layout_width="wrap_content" android:id="@+id/TBViewMode" android:layout_height="wrap_content" android:textOff="일별" android:textOn="월별" android:layout_weight="1"></ToggleButton>
-			<Button android:layout_width="wrap_content" android:id="@+id/BtnPreviousDay" android:layout_height="wrap_content" android:text="이전"></Button>
-			<TextView android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:id="@+id/TVCurrentday" android:layout_width="wrap_content" android:text="이전달" android:layout_marginRight="5dp" android:textSize="24sp" android:gravity="center"></TextView>
-			<Button android:layout_width="wrap_content" android:id="@+id/BtnNextDay" android:layout_height="wrap_content" android:text="다음"></Button>
-			<Button android:layout_width="wrap_content" android:id="@+id/BtnInput" android:text="입력" android:layout_height="wrap_content" android:layout_weight="1"></Button>
-		</LinearLayout>
-		<LinearLayout android:layout_width="fill_parent" android:id="@+id/TotalLayout" android:gravity="bottom" android:layout_height="wrap_content" android:layout_weight="0">
+	<LinearLayout android:id="@+id/LinearLayout05" android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center">
+		<ToggleButton android:layout_width="wrap_content" android:id="@+id/TBViewMode" android:layout_height="wrap_content" android:textOff="일별" android:textOn="월별" android:layout_weight="1"></ToggleButton>
+		<Button android:layout_width="wrap_content" android:id="@+id/BtnPreviousDay" android:layout_height="wrap_content" android:text="이전"></Button>
+		<TextView android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:id="@+id/TVCurrentday" android:layout_width="wrap_content" android:text="이전달" android:layout_marginRight="5dp" android:textSize="24sp" android:gravity="center"></TextView>
+		<Button android:layout_width="wrap_content" android:id="@+id/BtnNextDay" android:layout_height="wrap_content" android:text="다음"></Button>
+		<Button android:layout_width="wrap_content" android:id="@+id/BtnInput" android:text="입력" android:layout_height="wrap_content" android:layout_weight="1"></Button>
+	</LinearLayout>
+	<LinearLayout android:layout_width="fill_parent" android:id="@+id/TotalLayout" android:gravity="bottom" android:layout_height="wrap_content" android:layout_weight="0">
 		<TextView android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/TVTotalIncome" android:textSize="20sp" android:gravity="center_horizontal"></TextView>
 		<TextView android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/TVTotalExpense" android:textSize="20sp" android:gravity="center_horizontal"></TextView>
-	
 	</LinearLayout>
-		<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/LLDailyView"><LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="0">
-		<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:gravity="bottom">
-		<TextView android:layout_width="wrap_content" android:id="@+id/TVDailyDay" android:textSize="25sp" android:gravity="bottom" android:layout_height="fill_parent" android:text="일"></TextView>
-		<TextView android:layout_width="wrap_content" android:id="@+id/TVDailyWeekly" android:gravity="bottom" android:text="(요일)" android:layout_height="fill_parent"></TextView>
+		<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/LLDailyView">
+			<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="0">
+				<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:gravity="bottom">
+					<TextView android:layout_width="wrap_content" android:id="@+id/TVDailyDay" android:textSize="25sp" android:gravity="bottom" android:layout_height="fill_parent" android:text="일"></TextView>
+					<TextView android:layout_width="wrap_content" android:id="@+id/TVDailyWeekly" android:gravity="bottom" android:text="(요일)" android:layout_height="fill_parent"></TextView>
+				</LinearLayout>
+				<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="wrap_content" android:layout_weight="0">
+					<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TVDailyIncome" android:text="수입"></TextView>
+					<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="지출" android:id="@+id/TVDailyExpense"></TextView>
+				</LinearLayout>
+				<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="wrap_content" android:layout_weight="0" android:layout_marginLeft="5dp">
+					<TextView android:layout_height="wrap_content" android:gravity="right" android:layout_width="fill_parent" android:id="@+id/TVDailyIncomeAmount" android:text="0원"></TextView>
+					<TextView android:layout_height="wrap_content" android:gravity="right" android:layout_width="fill_parent" android:id="@+id/TVDailyExpenseAmount" android:text="0원"></TextView>
+				</LinearLayout>
+			</LinearLayout>
+			<LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/LLDailyIncome">
+				<TextView android:layout_height="wrap_content" android:text="수입" android:layout_width="fill_parent" android:textSize="15sp" android:id="@+id/TVDailyIncomeTilte"></TextView>
+				<ListView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LVDailyIncome"></ListView>
+			</LinearLayout>
+			<LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/LLDailyExpense">
+				<TextView android:layout_height="wrap_content" android:text="지출" android:layout_width="fill_parent" android:textSize="15sp" android:id="@+id/TVDailyExpenseTitle"></TextView>
+				<ListView android:layout_height="wrap_content" android:id="@+id/LVDailyExpense" android:layout_width="fill_parent"></ListView>
+			</LinearLayout>
+		</LinearLayout>
+	<LinearLayout android:id="@+id/LLMonthlyView" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+		<ListView android:id="@+id/LVMonthly" android:layout_width="fill_parent" android:layout_height="fill_parent"></ListView>
 	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="wrap_content" android:layout_weight="0">
-		<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TVDailyIncome" android:text="수입"></TextView>
-		<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="지출" android:id="@+id/TVDailyExpense"></TextView>
-	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="wrap_content" android:layout_weight="0" android:layout_marginLeft="5dp">
-		<TextView android:layout_height="wrap_content" android:gravity="right" android:layout_width="fill_parent" android:id="@+id/TVDailyIncomeAmount" android:text="0원"></TextView>
-		<TextView android:layout_height="wrap_content" android:gravity="right" android:layout_width="fill_parent" android:id="@+id/TVDailyExpenseAmount" android:text="0원"></TextView>
-	</LinearLayout>
-	
-	</LinearLayout>
-	<LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/LLDailyIncome">
-	<TextView android:layout_height="wrap_content" android:text="수입" android:layout_width="fill_parent" android:textSize="15sp" android:id="@+id/TVDailyIncomeTilte"></TextView>
-	<ListView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LVDailyIncome"></ListView>
-	</LinearLayout>
-	<LinearLayout android:layout_width="fill_parent" android:orientation="vertical" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/LLDailyExpense">
-	<TextView android:layout_height="wrap_content" android:text="지출" android:layout_width="fill_parent" android:textSize="15sp" android:id="@+id/TVDailyExpenseTitle"></TextView>
-	<ListView android:layout_height="wrap_content" android:id="@+id/LVDailyExpense" android:layout_width="fill_parent"></ListView></LinearLayout>
-
-
-
-</LinearLayout>
 </LinearLayout>
