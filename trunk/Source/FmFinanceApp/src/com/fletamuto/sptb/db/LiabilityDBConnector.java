@@ -266,7 +266,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 * @return 부채 아이템
 	 */
 	public LiabilityItem createLiabilityItem(Cursor c) {
-		LiabilityItem item = createLiabilityItem(c.getInt(13), c.getInt(7));
+		LiabilityItem item = createLiabilityItem(c.getInt(13), c.getInt(8));
 		item.setID(c.getInt(0));
 		try {
 			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
@@ -276,9 +276,9 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		item.setAmount(c.getLong(2));
 		item.setTitle(c.getString(3));
 		item.setMemo(c.getString(4));
-		item.setCategory(c.getInt(5), c.getString(10));
-		item.setExtendID(c.getInt(7));
-		item.setState(c.getInt(8));
+		item.setCategory(c.getInt(5), c.getString(11));
+		item.setExtendID(c.getInt(8));
+		item.setState(c.getInt(9));
 		
 		return item;
 	}

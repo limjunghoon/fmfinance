@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;

@@ -85,7 +85,7 @@ public class ReportCurrentIncomeLayout extends ReportBaseLayout {
 	}
 	
 	@Override
-	protected void getDate() {
+	protected void getData() {
 		if (getItemsFromDB(getItemType(), FinanceCurrentDate.getDate()) == false) {
 			Log.e(LogTag.LAYOUT, "::: Error GET DATE");
         }

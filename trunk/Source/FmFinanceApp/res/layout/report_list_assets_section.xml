@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginBottom="5dp" android:layout_marginTop="5dp" android:paddingBottom="5dp" android:paddingTop="5dp">
+    
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="0" android:id="@+id/LLSectionTitle" android:visibility="gone">
+		<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="15sp" android:id="@+id/TVSectionTitle"></TextView>
+	</LinearLayout>
+	<LinearLayout android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="vertical" android:paddingLeft="10dp" android:id="@+id/LLSectionBody">
+		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:gravity="right" android:layout_marginRight="5dp" android:id="@+id/LLSectionLine1">
+		<TextView android:ellipsize="marquee" android:layout_height="wrap_content" android:textSize="15sp" android:id="@+id/TVSectionLine1Left" android:layout_width="wrap_content" android:layout_weight="0"/>
+		<TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="right" android:textSize="12sp" android:id="@+id/TVSectionLine1Right"/>
+	</LinearLayout><LinearLayout android:layout_height="wrap_content" android:id="@+id/LLSectionLine2" android:layout_width="fill_parent"><TextView android:singleLine="true" android:ellipsize="marquee" android:layout_height="wrap_content" android:id="@+id/TVSectionLine2Left" android:layout_width="wrap_content" android:layout_weight="0" android:textSize="11sp"/><TextView android:layout_width="fill_parent" android:singleLine="true" android:layout_height="wrap_content" android:id="@+id/TVSectionLine2Right" android:gravity="right" android:textSize="15sp"/></LinearLayout>
+		
+	</LinearLayout>	        
+	
+
+</LinearLayout>

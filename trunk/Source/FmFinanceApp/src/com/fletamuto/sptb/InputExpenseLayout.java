@@ -25,8 +25,6 @@ import com.fletamuto.sptb.data.PaymentCardMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
-
-import android.util.Log;
 /**
  * 새로운 지출을 입력하거나 기존의 지출정보를 수정할때 보여주는 레이아웃 창
  * @author yongbban

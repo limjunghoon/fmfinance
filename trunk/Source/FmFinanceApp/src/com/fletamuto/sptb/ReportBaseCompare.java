@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.fletamuto.common.control.fmgraph.PieGraph;
 import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.util.LogTag;
 
@@ -90,32 +91,7 @@ public abstract class ReportBaseCompare extends FmBaseActivity {
 		}
 	};
 	
-	public class CategoryAmount {
-		private int mCategoryID;
-		private long mTotalAmount;
-		private String mName;
-		
-		public int getCategoryID() {
-			return mCategoryID;
-		}
-
-		public long getTotalAmount() {
-			return mTotalAmount;
-		}
-		public String getName() {
-			return mName;
-		}
-		
-		public void addAmount(long amount) {
-			mTotalAmount += amount;
-		}
-		
-		public void set(int id, String name, long amount) {
-			mCategoryID = id;
-			mName = name;
-			mTotalAmount = amount;
-		}
-	}
+	
 	
 	public void updateMapCategory() {
 		mCategoryAmount.clear();

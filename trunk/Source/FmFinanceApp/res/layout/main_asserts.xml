@@ -15,9 +15,13 @@
 	</LinearLayout>
 
 
-<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="vertical"><TextView android:layout_height="wrap_content" android:text="자산" android:id="@+id/TVAssetsListTitle" android:textSize="18sp" android:layout_width="fill_parent"></TextView><ListView android:id="@+id/LVAssetsCategory" android:layout_height="fill_parent" android:layout_width="fill_parent"></ListView>
+<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="vertical"><LinearLayout android:id="@+id/LinearLayout05" android:layout_height="wrap_content" android:layout_width="fill_parent"><TextView android:layout_height="wrap_content" android:text="자산" android:id="@+id/TVAssetsListTitle" android:textSize="18sp" android:layout_width="wrap_content"></TextView><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="right" android:id="@+id/TVAssetsListAmount" android:textSize="18sp"></TextView>
+</LinearLayout><ListView android:id="@+id/LVAssetsCategory" android:layout_height="fill_parent" android:layout_width="fill_parent"></ListView>
+
 </LinearLayout>
-<LinearLayout android:id="@+id/LinearLayout04" android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="vertical"><TextView android:layout_height="wrap_content" android:text="부채" android:id="@+id/TVLiabilityListTitle" android:textSize="18sp" android:layout_width="fill_parent"></TextView><ListView android:id="@+id/LVLiabilityCategory" android:layout_height="fill_parent" android:layout_width="fill_parent"></ListView>
+<LinearLayout android:id="@+id/LinearLayout04" android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="vertical"><LinearLayout android:id="@+id/LinearLayout06" android:layout_height="wrap_content" android:layout_width="fill_parent"><TextView android:layout_height="wrap_content" android:text="부채" android:id="@+id/TVLiabilityListTitle" android:textSize="18sp" android:layout_width="wrap_content"></TextView><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVLiabilityListAmount" android:textSize="18sp" android:gravity="right"></TextView></LinearLayout><ListView android:id="@+id/LVLiabilityCategory" android:layout_height="fill_parent" android:layout_width="fill_parent"></ListView>
+
+
 </LinearLayout>
 
 

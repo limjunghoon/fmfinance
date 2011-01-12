@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.Revenue;
 
@@ -101,7 +100,7 @@ public class ReportAssetsHistoryLayout extends ReportBaseLayout {
 		btnDelete.setVisibility(View.GONE);
     }
     
-    protected void getDate() {
+    protected void getData() {
     	mItems = DBMgr.getAssetsStateItems(mItem.getID());
 		
 		mListItems.clear();
