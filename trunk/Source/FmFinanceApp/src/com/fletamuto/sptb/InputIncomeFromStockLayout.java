@@ -4,20 +4,16 @@ package com.fletamuto.sptb;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
-import com.fletamuto.sptb.util.Revenue;
 
 /**
  * 수입을 입력 또는 수정하는 화면을 제공한다.

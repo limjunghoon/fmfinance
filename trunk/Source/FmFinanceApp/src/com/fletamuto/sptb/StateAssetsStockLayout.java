@@ -5,7 +5,6 @@ import java.util.Calendar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -16,7 +15,6 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
-import com.fletamuto.sptb.util.LogTag;
 
 public class StateAssetsStockLayout extends StateDefaultLayout {  	
 	private AssetsStockItem mStock;

@@ -40,6 +40,12 @@ public abstract class FmBaseActivity extends Activity {
     	setTitleButtonListener();
     }
     
+    public void setContentView(int layoutResID) {
+    	super.setContentView(layoutResID);
+    	
+    	initialize();
+    }
+    
     /**
      * 타이틀 버튼 설정을 한다.
      */

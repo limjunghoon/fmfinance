@@ -1,11 +1,11 @@
 package com.fletamuto.sptb;
 
-import com.fletamuto.sptb.db.DBMgr;
-
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TabHost;
+
+import com.fletamuto.sptb.db.DBMgr;
 
 /**
  * 메인 레이아웃 클레스

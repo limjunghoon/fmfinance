@@ -12,14 +12,10 @@ import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
-import com.fletamuto.sptb.data.PaymentAccountMethod;
-import com.fletamuto.sptb.data.PaymentCardMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.data.ReceiveMethod;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
-
-import android.util.Log;
 /**
  * 수입을 입력 또는 수정하는 화면을 제공한다.
  * @author yongbban

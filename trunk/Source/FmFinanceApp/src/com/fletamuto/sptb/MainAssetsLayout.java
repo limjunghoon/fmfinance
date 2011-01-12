@@ -6,19 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fletamuto.sptb.ReportBaseCompare.CategoryAmount;
-import com.fletamuto.sptb.data.AssetsItem;
-import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.ExpenseItem;
-import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.IncomeItem;
-import com.fletamuto.sptb.db.DBMgr;
-import com.fletamuto.sptb.util.FinanceCurrentDate;
-import com.fletamuto.sptb.util.LogTag;
-
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,9 +16,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.CategoryAmount;
+import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.LiabilityItem;
+import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 public class MainAssetsLayout extends FmBaseActivity {
 	protected ArrayList<FinanceItem> mAssetsItems = null;
@@ -37,25 +34,39 @@ public class MainAssetsLayout extends FmBaseActivity {
 	protected ArrayList<FinanceItem> mLiabilityItems = null;
 	protected Map<Integer, CategoryAmount> mLiabilityCategoryItems = new HashMap<Integer, CategoryAmount>();
 	protected ReportItemAdapter mItemAdapter = null;
+	
+	private long mTotalAssetsAmount;
+	private long mTotalLiabilityAmount;
 
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	
-    	setContentView(R.layout.main_asserts);
+    	setContentView(R.layout.main_asserts, false);
     	setButtonClickListener();
     	
     	getListItem();
     	setAdapterList();
+    	updateChildView();
     }
-    
-    @Override
+
+	@Override
     protected void onResume() {
-    	getListItem();
-    	setAdapterList();
+//    	getListItem();
+//    	setAdapterList();
     	
     	super.onResume();
     }
+	
+	protected void updateChildView() {
+		TextView tvTotalAssets = (TextView) findViewById(R.id.TVAssetsListAmount);
+		tvTotalAssets.setText(String.format("%,d¿ø", mTotalAssetsAmount));
+		
+		TextView tvTotalLiability = (TextView) findViewById(R.id.TVLiabilityListAmount);
+		tvTotalLiability.setText(String.format("%,d¿ø", mTotalLiabilityAmount));
+		
+		updateAssetsPorgress();
+	}
     
     protected void setButtonClickListener() {
 		
@@ -79,22 +90,21 @@ public class MainAssetsLayout extends FmBaseActivity {
 	}
     
     protected void getListItem() {
-    	mAssetsItems = DBMgr.getItems(IncomeItem.TYPE, FinanceCurrentDate.getDate());
-    	mLiabilityItems = DBMgr.getItems(ExpenseItem.TYPE, FinanceCurrentDate.getDate());
-    	
-    	updateListItem();
+    	clearTotalCount();
+    	mAssetsItems = DBMgr.getAllItems(AssetsItem.TYPE);
+    	updateListItem(mAssetsCategoryItems, mAssetsItems);
+    	mLiabilityItems = DBMgr.getAllItems(LiabilityItem.TYPE);
+    	updateListItem(mLiabilityCategoryItems, mLiabilityItems);
     }
     
     protected void setAdapterList() {
-    	Collection<CategoryAmount> categoryAmountItems = mAssetsCategoryItems.values();
-    	ArrayList<CategoryAmount> assetsItems = new ArrayList<CategoryAmount>();
-		
-		for (CategoryAmount iterator:categoryAmountItems) {
-			assetsItems.add(iterator);
-		}
-        
-    	final ListView listItem = (ListView)findViewById(R.id.LVAssetsCategory);
-    	mItemAdapter = new ReportItemAdapter(this, R.layout.report_list_assets_category, assetsItems);
+    	setAdapterAssetsList();
+    	setAdapterLiabilityList();
+    }
+    
+    protected void setAdapterLiabilityList() {
+    	final ListView listItem = (ListView)findViewById(R.id.LVLiabilityCategory);
+    	mItemAdapter = new ReportItemAdapter(this, R.layout.report_list_assets_category, getListItems(LiabilityItem.TYPE));
     	listItem.setAdapter(mItemAdapter);
     	
     	listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -104,6 +114,41 @@ public class MainAssetsLayout extends FmBaseActivity {
 //				onClickListItem(parent, view, position, id);
 			}
 		});
+	}
+
+	protected void setAdapterAssetsList() {
+    	final ListView listItem = (ListView)findViewById(R.id.LVAssetsCategory);
+    	mItemAdapter = new ReportItemAdapter(this, R.layout.report_list_assets_category, getListItems(AssetsItem.TYPE));
+    	listItem.setAdapter(mItemAdapter);
+    	
+    	listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+//				onClickListItem(parent, view, position, id);
+			}
+		});
+	}
+
+	protected ArrayList<CategoryAmount> getListItems(int type) {
+    	ArrayList<CategoryAmount> listItems = new ArrayList<CategoryAmount>();
+    	Collection<CategoryAmount> categoryAmountItems = null;
+    	
+    	if (type == AssetsItem.TYPE) {
+    		categoryAmountItems = mAssetsCategoryItems.values();
+    	}
+    	else if (type == LiabilityItem.TYPE) {
+    		categoryAmountItems = mLiabilityCategoryItems.values();
+    	}
+    	else {
+    		return null;
+    	}
+    	
+    	for (CategoryAmount iterator:categoryAmountItems) {
+			listItems.add(iterator);
+		}
+    	
+    	return listItems;
     }
     
     public class ReportItemAdapter extends ArrayAdapter<CategoryAmount> {
@@ -127,70 +172,61 @@ public class MainAssetsLayout extends FmBaseActivity {
 			
 			((TextView)convertView.findViewById(R.id.TVAssetsCategoryName)).setText(String.format("%s(%d)", item.getName(), item.getCount()));
     		((TextView)convertView.findViewById(R.id.TVAssetsCategoryTotalAmout)).setText(String.format("%,d¿ø", item.getTotalAmount()));			
-			
-//			
 			return convertView;
 		}
     }
     
-    protected void updateListItem() {
-    	mAssetsCategoryItems.clear();
-    	
-    	mAssetsItems = DBMgr.getAllItems(AssetsItem.TYPE);
-		if (mAssetsItems == null) return;
+    protected void updateListItem(Map<Integer, CategoryAmount> mapCategoryItems, ArrayList<FinanceItem> arrItems) {
+    	mapCategoryItems.clear();
 		
-		int itemSize = mAssetsItems.size();
+		int itemSize = arrItems.size();
 		for (int index = 0; index < itemSize; index++) {
-			FinanceItem item = mAssetsItems.get(index);
+			FinanceItem item = arrItems.get(index);
 			Category category = item.getCategory();
 			if (category == null) {
 				Log.w(LogTag.LAYOUT, ":: INVAILD CATEGORU :: ");
 				continue;
 			}
-			Integer categoryID = category.getID();
 			
-			CategoryAmount categoryAmount = mAssetsCategoryItems.get(categoryID);
+			Integer categoryID = category.getID();
+			CategoryAmount categoryAmount = mapCategoryItems.get(categoryID);
+			
 			if (categoryAmount == null) {
 				categoryAmount = new CategoryAmount();
 				categoryAmount.set(categoryID, category.getName(), item.getAmount());
-				mAssetsCategoryItems.put(categoryID, categoryAmount);
+				mapCategoryItems.put(categoryID, categoryAmount);
 			}
 			else {
 				categoryAmount.addAmount(item.getAmount());
 			}
+			
+			addTotalCount(item);
 		}
 	}
     
-	public class CategoryAmount {
-		private int mCategoryID;
-		private long mTotalAmount;
-		private String mName;
-		private int mCount = 1;
-		
-		public int getCategoryID() {
-			return mCategoryID;
+    protected void clearTotalCount() {
+    	mTotalAssetsAmount = 0L;
+    	mTotalLiabilityAmount = 0L;
+    }
+    
+	protected void addTotalCount(FinanceItem item) {
+		if (item.getType() == AssetsItem.TYPE) {
+			mTotalAssetsAmount += item.getAmount();
 		}
+		else if (item.getType() == LiabilityItem.TYPE) {
+			mTotalLiabilityAmount += item.getAmount();
+		}
+	}
 
-		public long getTotalAmount() {
-			return mTotalAmount;
-		}
-		public String getName() {
-			return mName;
-		}
+
+	private void updateAssetsPorgress() {
+		ProgressBar progress = (ProgressBar)findViewById(R.id.AssetsLiabilityPrograss);
+
+		int max = (int)((mTotalAssetsAmount + mTotalLiabilityAmount)/100);
+		int pos = (int)(mTotalAssetsAmount/100);
 		
-		public int getCount() {
-			return mCount;
-		}
+		progress.setMax(max);
+		progress.setProgress(pos);
 		
-		public void addAmount(long amount) {
-			mTotalAmount += amount;
-			mCount++;
-		}
-		
-		public void set(int id, String name, long amount) {
-			mCategoryID = id;
-			mName = name;
-			mTotalAmount = amount;
-		}
 	}
 }

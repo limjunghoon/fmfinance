@@ -16,10 +16,8 @@ import com.fletamuto.sptb.data.AssetsSavingsItem;
 import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.ItemDef;
-import com.fletamuto.sptb.db.DBMgr;
-import com.fletamuto.sptb.util.Revenue;
 
-public class ReportAssetsLayout extends ReportBaseLayout {
+public class ReportAssetsLayout extends ReportSeparationLayout {
 	private long mTotalAmount = 0L;
 	public static final int ACT_ADD_ASSETS = MsgDef.ActRequest.ACT_ADD_ASSETS;
 
@@ -28,7 +26,11 @@ public class ReportAssetsLayout extends ReportBaseLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        findViewById(R.id.TVAmount).setVisibility(View.VISIBLE);
+    }
+    
+    @Override
+    public void initialize() {
+    	super.initialize();
     }
     
 	protected void updateChildView() {
@@ -93,76 +95,96 @@ public class ReportAssetsLayout extends ReportBaseLayout {
     
     private void setListViewTextInsurance(AssetsInsuranceItem insurance,
 			View convertView) {
-		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceTitle)).setText("제목 : " + insurance.getTitle());
-		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceCreateDate)).setText("개설일자 : " + insurance.getCreateDateString());
-		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceExpiryDate)).setText("만료일자 : " + insurance.getExpriyDateString());
-		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceAmount)).setText(String.format("금액 : %,d원 (%d/%d)", insurance.getAmount(), 1, insurance.getMonthPeriodTerm()));
-		((TextView)convertView.findViewById(R.id.TVAssetsInsurancePayment)).setText(String.format("납입금 : %,d원", insurance.getPayment()));
-		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceMemo)).setText("메모 : " + insurance.getMemo());
+    	((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(insurance.getTitle());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(insurance.getCreateDateString() + " ~ " + insurance.getExpriyDateString());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Right)).setText(String.format("%,d원", insurance.getAmount()));
+		
+//		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceTitle)).setText("제목 : " + insurance.getTitle());
+//		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceCreateDate)).setText("개설일자 : " + insurance.getCreateDateString());
+//		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceExpiryDate)).setText("만료일자 : " + insurance.getExpriyDateString());
+//		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceAmount)).setText(String.format("금액 : %,d원 (%d/%d)", insurance.getAmount(), 1, insurance.getMonthPeriodTerm()));
+//		((TextView)convertView.findViewById(R.id.TVAssetsInsurancePayment)).setText(String.format("납입금 : %,d원", insurance.getPayment()));
+//		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceMemo)).setText("메모 : " + insurance.getMemo());
 	}
 
 	private void setListViewTextFund(AssetsFundItem item, View convertView) {
-    	((TextView)convertView.findViewById(R.id.TVAssetsFundTitle)).setText("제목 : " + item.getTitle());
-		((TextView)convertView.findViewById(R.id.TVAssetsFundAmount)).setText(String.format("평가금액 :  %,d원", item.getAmount()));
-		
-		((TextView)convertView.findViewById(R.id.TVAssetsFundMeanPrice)).setText(String.format("평균구입 금액 : %,d원", DBMgr.getAssetsMeanPrice(item.getID())));
-		((TextView)convertView.findViewById(R.id.TVAssetsFundMemo)).setText("메모 : " + item.getMemo());
-		
-		// 속도 개선 필요
-		long purchasePrice = DBMgr.getAssetsPurchasePrice(item.getID());
-		((TextView)convertView.findViewById(R.id.TVAssetsFundRevenue)).setText(String.format("수익율 : %s", Revenue.getString(purchasePrice, item.getAmount())));
+		((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(item.getTitle());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(item.getCreateDateString() + " ~ " + item.getExpriyDateString());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Right)).setText(String.format("%,d원", item.getAmount()));
+//    	((TextView)convertView.findViewById(R.id.TVAssetsFundTitle)).setText("제목 : " + item.getTitle());
+//		((TextView)convertView.findViewById(R.id.TVAssetsFundAmount)).setText(String.format("평가금액 :  %,d원", item.getAmount()));
+//		
+//		((TextView)convertView.findViewById(R.id.TVAssetsFundMeanPrice)).setText(String.format("평균구입 금액 : %,d원", DBMgr.getAssetsMeanPrice(item.getID())));
+//		((TextView)convertView.findViewById(R.id.TVAssetsFundMemo)).setText("메모 : " + item.getMemo());
+//		
+//		// 속도 개선 필요
+//		long purchasePrice = DBMgr.getAssetsPurchasePrice(item.getID());
+//		((TextView)convertView.findViewById(R.id.TVAssetsFundRevenue)).setText(String.format("수익율 : %s", Revenue.getString(purchasePrice, item.getAmount())));
 	}
 
 	protected void setListViewTextDeposit(AssetsDepositItem deposit, View convertView) {
-		if (deposit.getAccount() != null) {
-			((TextView)convertView.findViewById(R.id.TVAssetsDepositBankingName)).setText("은행 : " + deposit.getAccount().getCompany().getName());
-		}
-		((TextView)convertView.findViewById(R.id.TVAssetsDepositTitle)).setText("제목 : " + deposit.getTitle());
-		((TextView)convertView.findViewById(R.id.TVAssetsDepositCreateDate)).setText("개설일자 : " + deposit.getCreateDateString());
-		((TextView)convertView.findViewById(R.id.TVAssetsDepositExpiryDate)).setText("만료일자 : " + deposit.getExpriyDateString());
-		((TextView)convertView.findViewById(R.id.TVAssetsDepositAmount)).setText(String.format("금액 : %,d원", deposit.getAmount()));
-		((TextView)convertView.findViewById(R.id.TVAssetsDepositRate)).setText("이율 : "+ deposit.getRate());
-		((TextView)convertView.findViewById(R.id.TVAssetsDepositMemo)).setText("메모 : " + deposit.getMemo());
+		((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(deposit.getTitle());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(deposit.getCreateDateString() + " ~ " + deposit.getExpriyDateString());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Right)).setText(String.format("%,d원", deposit.getAmount()));
+		
+//		if (deposit.getAccount() != null) {
+//			((TextView)convertView.findViewById(R.id.TVAssetsDepositBankingName)).setText("은행 : " + deposit.getAccount().getCompany().getName());
+//		}
+//		((TextView)convertView.findViewById(R.id.TVAssetsDepositTitle)).setText("제목 : " + deposit.getTitle());
+//		((TextView)convertView.findViewById(R.id.TVAssetsDepositCreateDate)).setText("개설일자 : " + deposit.getCreateDateString());
+//		((TextView)convertView.findViewById(R.id.TVAssetsDepositExpiryDate)).setText("만료일자 : " + deposit.getExpriyDateString());
+//		((TextView)convertView.findViewById(R.id.TVAssetsDepositAmount)).setText(String.format("금액 : %,d원", deposit.getAmount()));
+//		((TextView)convertView.findViewById(R.id.TVAssetsDepositRate)).setText("이율 : "+ deposit.getRate());
+//		((TextView)convertView.findViewById(R.id.TVAssetsDepositMemo)).setText("메모 : " + deposit.getMemo());
 	}
     
     protected void setListViewTextSavings(AssetsSavingsItem savings, View convertView) {
-		if (savings.getAccount() != null) {
-			((TextView)convertView.findViewById(R.id.TVAssetsSavingsBankingName)).setText("은행 : " + savings.getAccount().getCompany().getName());
-		}
-		((TextView)convertView.findViewById(R.id.TVAssetsSavingsTitle)).setText("제목 : " + savings.getTitle());
-		((TextView)convertView.findViewById(R.id.TVAssetsSavingsCreateDate)).setText("개설일자 : " + savings.getCreateDateString());
-		((TextView)convertView.findViewById(R.id.TVAssetsSavingsExpiryDate)).setText("만료일자 : " + savings.getExpriyDateString());
-		((TextView)convertView.findViewById(R.id.TVAssetsSavingsAmount)).setText(String.format("금액 : %,d원 (%d/%d)", savings.getAmount(), savings.getMonthProcessCount(), savings.getMonthPeriodTerm()));
-		((TextView)convertView.findViewById(R.id.TVAssetsSavingsPayment)).setText(String.format("납입금 : %,d원", savings.getPayment()));
-		((TextView)convertView.findViewById(R.id.TVAssetsSavingsRate)).setText("이율 : "+ savings.getRate());
-		((TextView)convertView.findViewById(R.id.TVAssetsSavingsMemo)).setText("메모 : " + savings.getMemo());
+    	((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(savings.getTitle());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(savings.getCreateDateString() + " ~ " + savings.getExpriyDateString());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Right)).setText(String.format("%,d원", savings.getAmount()));
+//		if (savings.getAccount() != null) {
+//			((TextView)convertView.findViewById(R.id.TVAssetsSavingsBankingName)).setText("은행 : " + savings.getAccount().getCompany().getName());
+//		}
+//		((TextView)convertView.findViewById(R.id.TVAssetsSavingsTitle)).setText("제목 : " + savings.getTitle());
+//		((TextView)convertView.findViewById(R.id.TVAssetsSavingsCreateDate)).setText("개설일자 : " + savings.getCreateDateString());
+//		((TextView)convertView.findViewById(R.id.TVAssetsSavingsExpiryDate)).setText("만료일자 : " + savings.getExpriyDateString());
+//		((TextView)convertView.findViewById(R.id.TVAssetsSavingsAmount)).setText(String.format("금액 : %,d원 (%d/%d)", savings.getAmount(), savings.getMonthProcessCount(), savings.getMonthPeriodTerm()));
+//		((TextView)convertView.findViewById(R.id.TVAssetsSavingsPayment)).setText(String.format("납입금 : %,d원", savings.getPayment()));
+//		((TextView)convertView.findViewById(R.id.TVAssetsSavingsRate)).setText("이율 : "+ savings.getRate());
+//		((TextView)convertView.findViewById(R.id.TVAssetsSavingsMemo)).setText("메모 : " + savings.getMemo());
     }
     
     protected void setListViewTextStock(AssetsStockItem stock, View convertView) {
-		((TextView)convertView.findViewById(R.id.TVAssetsStockTitle)).setText("종목 : " + stock.getTitle());
-		((TextView)convertView.findViewById(R.id.TVAssetsStockAmount)).setText(String.format("평가금액 :  %,d원", stock.getAmount()));
-		((TextView)convertView.findViewById(R.id.TVAssetsStockMeanPrice)).setText(String.format("평균구입 금액 : %,d원", DBMgr.getAssetsMeanPrice(stock.getID())));
-		((TextView)convertView.findViewById(R.id.TVAssetsStockCurrentPrice)).setText(String.format("현재가 : %,d원", stock.getPeresentPrice()));
-		((TextView)convertView.findViewById(R.id.TVAssetsStockCount)).setText("수량 : " + stock.getTotalCount() + "주");
-		((TextView)convertView.findViewById(R.id.TVAssetsStockMemo)).setText("메모 : " + stock.getMemo());
-		
-		// 속도 개선 필요
-		long purchasePrice = DBMgr.getAssetsPurchasePrice(stock.getID());
-		((TextView)convertView.findViewById(R.id.TVAssetsStockRevenue)).setText(String.format("수익율 : %s", Revenue.getString(purchasePrice, stock.getAmount())));
+    	((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(stock.getTitle());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(stock.getCreateDateString());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Right)).setText(String.format("%,d원", stock.getAmount()));
+//		((TextView)convertView.findViewById(R.id.TVAssetsStockTitle)).setText("종목 : " + stock.getTitle());
+//		((TextView)convertView.findViewById(R.id.TVAssetsStockAmount)).setText(String.format("평가금액 :  %,d원", stock.getAmount()));
+//		((TextView)convertView.findViewById(R.id.TVAssetsStockMeanPrice)).setText(String.format("평균구입 금액 : %,d원", DBMgr.getAssetsMeanPrice(stock.getID())));
+//		((TextView)convertView.findViewById(R.id.TVAssetsStockCurrentPrice)).setText(String.format("현재가 : %,d원", stock.getPeresentPrice()));
+//		((TextView)convertView.findViewById(R.id.TVAssetsStockCount)).setText("수량 : " + stock.getTotalCount() + "주");
+//		((TextView)convertView.findViewById(R.id.TVAssetsStockMemo)).setText("메모 : " + stock.getMemo());
+//		
+//		// 속도 개선 필요
+//		long purchasePrice = DBMgr.getAssetsPurchasePrice(stock.getID());
+//		((TextView)convertView.findViewById(R.id.TVAssetsStockRevenue)).setText(String.format("수익율 : %s", Revenue.getString(purchasePrice, stock.getAmount())));
     }
     
     protected void setListViewTextDefault(FinanceItem item, View convertView) {
-    	((TextView)convertView.findViewById(R.id.TVAssetsReportListTitle)).setText("제목 : " + item.getTitle());
-		((TextView)convertView.findViewById(R.id.TVAssetsReportListDate)).setText("날짜 : " + item.getCreateDateString());			
-		((TextView)convertView.findViewById(R.id.TVAssetsReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
-		//String categoryText = String.format(item.getCategory().getName());
-		//((TextView)convertView.findViewById(R.id.TVAssetsReportListCategory)).setText(categoryText);
-		((TextView)convertView.findViewById(R.id.TVAssetsReportListCategory)).setVisibility(View.GONE);
-		((TextView)convertView.findViewById(R.id.TVAssetsReportListMemo)).setText(String.format("메모 : %s", item.getMemo()));
-		
-		// 속도 개선 필요
-		long purchasePrice = DBMgr.getAssetsPurchasePrice(item.getID());
-		((TextView)convertView.findViewById(R.id.TVAssetsReportListRevenue)).setText(String.format("수익율 : %s", Revenue.getString(purchasePrice, item.getAmount())));
+    	((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(item.getTitle());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(item.getCreateDateString());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Right)).setText(String.format("%,d원", item.getAmount()));
+//    	((TextView)convertView.findViewById(R.id.TVAssetsReportListTitle)).setText("제목 : " + item.getTitle());
+//		((TextView)convertView.findViewById(R.id.TVAssetsReportListDate)).setText("날짜 : " + item.getCreateDateString());			
+//		((TextView)convertView.findViewById(R.id.TVAssetsReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
+//		//String categoryText = String.format(item.getCategory().getName());
+//		//((TextView)convertView.findViewById(R.id.TVAssetsReportListCategory)).setText(categoryText);
+//		((TextView)convertView.findViewById(R.id.TVAssetsReportListCategory)).setVisibility(View.GONE);
+//		((TextView)convertView.findViewById(R.id.TVAssetsReportListMemo)).setText(String.format("메모 : %s", item.getMemo()));
+//		
+//		// 속도 개선 필요
+//		long purchasePrice = DBMgr.getAssetsPurchasePrice(item.getID());
+//		((TextView)convertView.findViewById(R.id.TVAssetsReportListRevenue)).setText(String.format("수익율 : %s", Revenue.getString(purchasePrice, item.getAmount())));
     }
 
 	protected void setDeleteBtnListener(View convertView, int itemId, int position) {
@@ -186,12 +208,12 @@ public class ReportAssetsLayout extends ReportBaseLayout {
 
 	@Override
 	protected int getAdapterResource() {
-		return R.layout.report_list_assets;
+		return R.layout.report_list_assets_section;
 	}
 
 	protected void updateListItem() {
 		int itemSize = mItems.size();
-		int itemCategoryID = -1;
+//		int itemCategoryID = -1;
 		mTotalAmount = 0L;
 		
 		for (int index = 0; index < itemSize; index++) {
@@ -201,12 +223,12 @@ public class ReportAssetsLayout extends ReportBaseLayout {
 				continue;
 			}
 			
-			if (item.getCategory().getID() != itemCategoryID) {
-				itemCategoryID = item.getCategory().getID();
-				AssetsItem separator = new AssetsItem();
-				separator.setSeparatorTitle(item.getCategory().getName());
-				mListItems.add(separator);
-			}
+//			if (item.getCategory().getID() != itemCategoryID) {
+//				itemCategoryID = item.getCategory().getID();
+//				AssetsItem separator = new AssetsItem();
+//				separator.setSeparatorTitle(item.getCategory().getName());
+//				mListItems.add(separator);
+//			}
 			
 			mTotalAmount += item.getAmount();
 			mListItems.add(item);

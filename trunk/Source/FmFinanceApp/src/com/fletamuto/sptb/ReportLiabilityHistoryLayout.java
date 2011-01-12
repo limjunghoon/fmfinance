@@ -76,7 +76,7 @@ public class ReportLiabilityHistoryLayout extends ReportBaseLayout {
 		btnDelete.setVisibility(View.GONE);
     }
     
-    protected void getDate() {
+    protected void getData() {
     	mItems = DBMgr.getLiabilityStateItems(mItem.getID());
 		
 		mListItems.clear();

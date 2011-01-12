@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,7 +28,8 @@ import com.fletamuto.sptb.util.FinanceCurrentDate;
 import com.fletamuto.sptb.util.LogTag;
 
 public abstract class ReportBaseLayout extends FmBaseActivity {
-	//protected static final int ACT_ITEM_EDIT = 0;
+	public static final int VIEW_NORMAL = 0;
+	public static final int VIEW_TWO_LINE = 1;
 	
 	protected ArrayList<FinanceItem> mItems = null;
 	protected ArrayList<FinanceItem> mListItems = new ArrayList<FinanceItem>();
@@ -37,6 +37,8 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 //	private int mLatestSelectPosition = -1;
 	protected int mCategoryID = -1;
 	protected String mCategoryName;
+	
+	private int mViewMode = VIEW_NORMAL; 
 	
 	private AccountItem fromItem;
 	
@@ -52,7 +54,7 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.report_base, true);
+        setContentView(R.layout.report_base, false);
         
 //        getDate();
 //        setAdapterList();
@@ -61,11 +63,15 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	
 	@Override
 	protected void onResume() {
-		getDate();
+		getData();
         setAdapterList();
         updateChildView();
         
 		super.onResume();
+	}
+	
+	protected void setViewMode(int viewMode) {
+		mViewMode = viewMode;
 	}
 	
 	@Override
@@ -92,15 +98,17 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	}
 	
 	public void initialize() {
-		LinearLayout llMoveDay = (LinearLayout) findViewById(R.id.LLMoveDay);
-		llMoveDay.setVisibility(View.GONE);
+		if (mViewMode == VIEW_TWO_LINE) {
+			findViewById(R.id.LVSeparation).setVisibility(View.VISIBLE);
+			findViewById(R.id.LLListTitle).setVisibility(View.VISIBLE);
+		}
 		
 		setButtonClickListener();
 		mCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1);
 		mCategoryName = getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME);
 	}
 	
-	protected void getDate() {
+	protected void getData() {
 		
 		if (getItemsFromDB(getItemType()) == false) {
 			Log.e(LogTag.LAYOUT, ":: ERROR GET DATE");
@@ -166,29 +174,45 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	}
 
 	public class ReportItemAdapter extends ArrayAdapter<FinanceItem> {
-//		private int mResource;
+		private int mResource;
     	private LayoutInflater mInflater;
 
 		public ReportItemAdapter(Context context, int resource,
 				 List<FinanceItem> objects) {
 			super(context, resource, objects);
-//			this.mResource = resource;
+			this.mResource = resource;
 			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
+			
 			FinanceItem item = (FinanceItem)getItem(position);
 			
-			if (item.isSeparator()) {
-				return createSeparator(mInflater, parent, item);
+			if (mViewMode == VIEW_NORMAL) {
+				if (item.isSeparator()) {
+					return createSeparator(mInflater, parent, item);
+				}
+				else {
+					convertView = mInflater.inflate(getLayoutResources(item), parent, false);
+				}
+				
+				setListViewText(item, convertView);
+				setDeleteBtnListener(convertView, item.getID(), position);
 			}
-			else {
-				convertView = mInflater.inflate(getLayoutResources(item), parent, false);
+			else 
+			{
+				if (convertView == null) {
+					convertView = mInflater.inflate(mResource, parent, false);
+				}
+				
+				convertView.findViewById(R.id.LLSectionTitle).setVisibility(item.isSeparator() ? View.VISIBLE : View.GONE);
+				convertView.findViewById(R.id.LLSectionBody).setVisibility(item.isSeparator() ? View.GONE : View.VISIBLE);
+				
+				setListViewText(item, convertView);
 			}
 			
-			setListViewText(item, convertView);
-			setDeleteBtnListener(convertView, item.getID(), position);
+			
 			
 			return convertView;
 		}
@@ -263,6 +287,7 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	}
 	
 	protected void updateChildView() {
+		
 	}
 	
 	private void setButtonClickListener() {
@@ -289,14 +314,14 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	protected void movePreviousDay() {
 		FinanceCurrentDate.moveCurrentDay(-1);
 		
-		getDate();
+		getData();
         setAdapterList();
         updateChildView();
 	}
 	
 	protected void moveNextDay() {
 		FinanceCurrentDate.moveCurrentDay(1);
-		getDate();
+		getData();
         setAdapterList();
         updateChildView();
 	}

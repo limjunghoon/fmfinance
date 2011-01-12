@@ -5,38 +5,29 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
-import com.fletamuto.sptb.ReportBaseCardLayout.CardItemAdapter;
-import com.fletamuto.sptb.ReportBaseLayout.ReportItemAdapter;
-import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.AssetsItem;
-import com.fletamuto.sptb.data.BudgetItem;
+import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
-import com.fletamuto.sptb.data.PaymentAccountMethod;
-import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
 import com.fletamuto.sptb.util.FinanceDataFormat;
-import com.fletamuto.sptb.util.LogTag;
 
 /**
  * 메인 레이아웃 클레스
@@ -71,12 +62,12 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
         setBtnClickListener();
         setTitle(getResources().getString(R.string.app_name));
         
-        getDailyListItem();
-        getMonthlyListItem();
-        
-        setDailyAdapterList();
-        setMonthlyAdapterList();
-    	updateViewText();
+//        getDailyListItem();
+//        getMonthlyListItem();
+//        
+//        setDailyAdapterList();
+//        setMonthlyAdapterList();
+//    	updateViewText();
     	changeViewMode();
     }
 
@@ -84,9 +75,12 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
      * activity가 다시 시작할 때
      */
     protected void onResume() {
-//    	getListItem();
-//    	setAdapterList();
-//    	updateViewText();
+    	getDailyListItem();
+        getMonthlyListItem();
+        
+        setDailyAdapterList();
+        setMonthlyAdapterList();
+    	updateViewText();
     	super.onResume();
     }
     
@@ -111,11 +105,19 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
     	findViewById(R.id.BtnInput).setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-//		    	Intent intent = new Intent(MainIncomeAndExpenseLayout.this, SelectCategoryIncomeLayout.class);
-//				startActivity(intent);
-				
-				Intent intent = new Intent(MainIncomeAndExpenseLayout.this, InputExpenseLayout.class);
-				startActivity(intent);
+				new AlertDialog.Builder(MainIncomeAndExpenseLayout.this)
+					.setTitle("수입/지출 입력 선택")
+					.setItems(new String[] {"수입", "지출"}, 
+							new DialogInterface.OnClickListener() {
+						
+						public void onClick(DialogInterface dialog, int which) {
+							Class<?> cls = (which == 0) ? SelectCategoryIncomeLayout.class : InputExpenseLayout.class;
+							Intent intent = new Intent(MainIncomeAndExpenseLayout.this, cls);
+							startActivity(intent);
+						}
+					})
+					.setNegativeButton("취소", null)
+					.show();
 			}
 		});
     	
@@ -348,7 +350,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 						listIncome.setItem(item);
 						
 						
-						monthItem.add(listIncome);
+//						monthItem.add(listIncome);
 						
 						dailyItem.addIncomeCategoryItem(item);
 						
@@ -361,7 +363,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 						DailyListItem listIncomeCategory = new DailyListItem(DailyListItem.INCOME_CATEGORY, dailyItem.getDate());
 						listIncomeCategory.setCategoyAmount(categoryAmount);
 						
-//						monthItem.add(listIncomeCategory);
+						monthItem.add(listIncomeCategory);
 						
 					}
 					
@@ -377,7 +379,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 						DailyListItem listExpense = new DailyListItem(DailyListItem.EXPENSE_ITEM, dailyItem.getDate());
 						listExpense.setItem(item);
 						
-						monthItem.add(listExpense);
+//						monthItem.add(listExpense);
 						
 						dailyItem.addExpenseCategoryItem(item);
 					}
@@ -389,7 +391,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 						DailyListItem listExpenseCategory = new DailyListItem(DailyListItem.EXPENSE_CATEGORY, dailyItem.getDate());
 						listExpenseCategory.setCategoyAmount(categoryAmount);
 						
-//						monthItem.add(listExpenseCategory);
+						monthItem.add(listExpenseCategory);
 						
 					}
 				}
@@ -784,38 +786,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 		}
 	}
 	
-	public class CategoryAmount {
-		private int mCategoryID;
-		private long mTotalAmount;
-		private String mName;
-		private int mCount = 1;
-		
-		public int getCategoryID() {
-			return mCategoryID;
-		}
-
-		public long getTotalAmount() {
-			return mTotalAmount;
-		}
-		public String getName() {
-			return mName;
-		}
-		
-		public int getCount() {
-			return mCount;
-		}
-		
-		public void addAmount(long amount) {
-			mTotalAmount += amount;
-			mCount++;
-		}
-		
-		public void set(int id, String name, long amount) {
-			mCategoryID = id;
-			mName = name;
-			mTotalAmount = amount;
-		}
-	}
+	
 	
 	public class ReportMonthlyItemAdapter extends ArrayAdapter<DailyListItem> {
     	int mResource;
