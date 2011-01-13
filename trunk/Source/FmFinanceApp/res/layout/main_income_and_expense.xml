@@ -6,11 +6,11 @@
     >
 
 	<LinearLayout android:id="@+id/LinearLayout05" android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center">
-		<ToggleButton android:layout_width="wrap_content" android:id="@+id/TBViewMode" android:layout_height="wrap_content" android:textOff="일별" android:textOn="월별" android:layout_weight="1"></ToggleButton>
-		<Button android:layout_width="wrap_content" android:id="@+id/BtnPreviousDay" android:layout_height="wrap_content" android:text="이전"></Button>
-		<TextView android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:id="@+id/TVCurrentday" android:layout_width="wrap_content" android:text="이전달" android:layout_marginRight="5dp" android:textSize="24sp" android:gravity="center"></TextView>
-		<Button android:layout_width="wrap_content" android:id="@+id/BtnNextDay" android:layout_height="wrap_content" android:text="다음"></Button>
-		<Button android:layout_width="wrap_content" android:id="@+id/BtnInput" android:text="입력" android:layout_height="wrap_content" android:layout_weight="1"></Button>
+		<ToggleButton android:layout_width="wrap_content" android:id="@+id/TBViewMode" android:layout_height="wrap_content" android:textOff="일별" android:textOn="월별" android:layout_weight="0"></ToggleButton>
+		<Button android:layout_width="wrap_content" android:id="@+id/BtnPreviousDay" android:layout_height="wrap_content" android:text="이전" android:visibility="gone" android:layout_weight="0"></Button>
+		<TextView android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:id="@+id/TVCurrentday" android:layout_marginRight="5dp" android:textSize="24sp" android:gravity="center" android:layout_width="fill_parent" android:layout_weight="1"></TextView>
+		<Button android:layout_width="wrap_content" android:id="@+id/BtnNextDay" android:layout_height="wrap_content" android:text="다음" android:visibility="gone" android:layout_weight="0"></Button>
+		<Button android:layout_width="wrap_content" android:id="@+id/BtnInput" android:text="입력" android:layout_height="wrap_content" android:layout_weight="0"></Button>
 	</LinearLayout>
 	<LinearLayout android:layout_width="fill_parent" android:id="@+id/TotalLayout" android:gravity="bottom" android:layout_height="wrap_content" android:layout_weight="0">
 		<TextView android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/TVTotalIncome" android:textSize="20sp" android:gravity="center_horizontal"></TextView>

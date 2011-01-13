@@ -11,7 +11,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,6 +30,7 @@ import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
 import com.fletamuto.sptb.util.FinanceDataFormat;
+import com.fletamuto.sptb.util.LogTag;
 
 /**
  * 메인 레이아웃 클레스
@@ -36,6 +39,7 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
  */
 public class MainIncomeAndExpenseLayout extends FmBaseActivity { 
 	public static final int LAST_DAY_OF_MONTH = 31;
+	private static final int MOVE_SENSITIVITY = 30;
 	
 	protected ArrayList<FinanceItem> mIncomeDailyItems = null;
 	protected ArrayList<FinanceItem> mExpenseDailyItems = null;
@@ -50,6 +54,8 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 	
 	private int mCurrentViewMode = ItemDef.VIEW_DAY_OF_MONTH;
 	private Calendar mCalendarMonthly = Calendar.getInstance();
+	private float mTouchMove;
+	private boolean mTouchMoveFlag = false;
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +76,8 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 //    	updateViewText();
     	changeViewMode();
     }
+    
+    
 
 	/**
      * activity가 다시 시작할 때
@@ -95,6 +103,30 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
     	TextView tvExpenseTitle = (TextView)findViewById(R.id.TVDailyExpenseTitle); 
     	tvExpenseTitle.setTextColor(Color.BLACK);
     	tvExpenseTitle.setBackgroundColor(Color.WHITE);
+    }
+    
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+    	setMoveViewMotionEvent(event);
+    	return true;
+    }
+    
+    public void setMoveViewMotionEvent(MotionEvent event) {
+    	if (event.getAction() == MotionEvent.ACTION_DOWN) {
+    		mTouchMove = event.getX();
+    		mTouchMoveFlag = true;
+    	}
+    	else if (event.getAction() == MotionEvent.ACTION_MOVE && mTouchMoveFlag == true) {
+    		
+    		if (mTouchMove-event.getX()< -MOVE_SENSITIVITY) {
+    			mTouchMoveFlag = false;
+    			moveCurrentDate(1);
+    		}
+    		if (mTouchMove-event.getX()> MOVE_SENSITIVITY) {
+    			mTouchMoveFlag = false;
+    			moveCurrentDate(-1);
+    		}
+    	}
     }
 
 
@@ -319,6 +351,14 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 				
 			}
 		});
+    	
+    	listMonthly.setOnTouchListener(new View.OnTouchListener() {
+			
+			public boolean onTouch(View v, MotionEvent event) {
+				setMoveViewMotionEvent(event);
+		    	return true;
+			}
+		});
     }
 	
 	protected void clearMonthlyItems() {
@@ -419,6 +459,14 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 				
 			}
 		});
+    	
+    	listExpense.setOnTouchListener(new View.OnTouchListener() {
+			
+			public boolean onTouch(View v, MotionEvent event) {
+				setMoveViewMotionEvent(event);
+		    	return true;
+			}
+		});
 	}
 
 	protected void setDailyIncomeAdapterList() {
@@ -436,6 +484,14 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 					int position, long id) {
 	//			setVisibleDeleteButton((Button)view.findViewById(R.id.BtnCategoryDelete));
 				
+			}
+		});
+    	
+    	listIncome.setOnTouchListener(new View.OnTouchListener() {
+			
+			public boolean onTouch(View v, MotionEvent event) {
+				setMoveViewMotionEvent(event);
+		    	return true;
 			}
 		});
 	}
