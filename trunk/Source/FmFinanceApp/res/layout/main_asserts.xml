@@ -3,26 +3,39 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
- 	android:scrollbarStyle="outsideOverlay">
+	android:layout_height="fill_parent">
    	
-	<LinearLayout android:id="@+id/LinearLayout02" android:layout_width="fill_parent" android:layout_marginTop="5dp" android:layout_weight="0" android:layout_height="wrap_content">
-		<ProgressBar android:layout_width="fill_parent" android:id="@+id/AssetsLiabilityPrograss" style="?android:attr/progressBarStyleHorizontal" android:layout_height="fill_parent" android:max="100" android:layout_weight="2"></ProgressBar>
-	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="horizontal">
-		<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="자산" android:id="@+id/BtnAssets"></Button>
-		<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="부채" android:id="@+id/BtnLiability"></Button>
-	</LinearLayout>
 
+				
+	<ScrollView android:id="@+id/ScrollView01" android:layout_width="fill_parent" android:layout_height="fill_parent">
+		<LinearLayout android:id="@+id/LinearLayout03" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
 
-<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="vertical"><LinearLayout android:id="@+id/LinearLayout05" android:layout_height="wrap_content" android:layout_width="fill_parent"><TextView android:layout_height="wrap_content" android:text="자산" android:id="@+id/TVAssetsListTitle" android:textSize="18sp" android:layout_width="wrap_content"></TextView><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="right" android:id="@+id/TVAssetsListAmount" android:textSize="18sp"></TextView>
-</LinearLayout><ListView android:id="@+id/LVAssetsCategory" android:layout_height="fill_parent" android:layout_width="fill_parent"></ListView>
-
-</LinearLayout>
-<LinearLayout android:id="@+id/LinearLayout04" android:layout_height="fill_parent" android:layout_weight="1" android:layout_width="fill_parent" android:orientation="vertical"><LinearLayout android:id="@+id/LinearLayout06" android:layout_height="wrap_content" android:layout_width="fill_parent"><TextView android:layout_height="wrap_content" android:text="부채" android:id="@+id/TVLiabilityListTitle" android:textSize="18sp" android:layout_width="wrap_content"></TextView><TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVLiabilityListAmount" android:textSize="18sp" android:gravity="right"></TextView></LinearLayout><ListView android:id="@+id/LVLiabilityCategory" android:layout_height="fill_parent" android:layout_width="fill_parent"></ListView>
-
-
-</LinearLayout>
-
-
+   				<LinearLayout android:layout_width="fill_parent" android:layout_weight="0" android:layout_height="wrap_content" android:id="@+id/LLMainAssetsReport">
+					<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+						<LinearLayout android:id="@+id/hsv" android:orientation="vertical" android:layout_height="wrap_content" android:gravity="center_horizontal" android:layout_weight="0" android:layout_width="wrap_content" android:layout_marginLeft="20dp">
+				      		<com.fletamuto.common.control.fmgraph.PieGraph android:id="@+id/pgraph" android:layout_height="80dp" android:layout_width="80dp"/>
+						</LinearLayout>
+						<LinearLayout android:id="@+id/LinearLayout02" android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="fill_parent" android:gravity="center_vertical" android:layout_marginLeft="20dp">
+							<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TVTotalAssetsAmount" android:text="자산 :"></TextView>
+							<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="부채 :" android:id="@+id/TVTotalLiabilityAmount"></TextView>
+							<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="합계 :" android:id="@+id/TVTotalPropertyAmount"></TextView>
+						</LinearLayout>
+					</LinearLayout>
+				</LinearLayout>
+				
+				<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLMainAssetsAssetsReport" android:orientation="vertical">
+				</LinearLayout>
+				
+				<LinearLayout android:id="@+id/LLMainAssetsLiabilityReport" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="15dp">
+				</LinearLayout>
+				
+				<LinearLayout android:layout_width="fill_parent" android:id="@+id/LLMainAssetsCardReport" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="15dp">
+				</LinearLayout>
+				
+				<LinearLayout android:layout_width="fill_parent" android:id="@+id/LLMainAssetsMyPoketReport" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="15dp">
+				</LinearLayout>	
+	
+				
+		</LinearLayout>
+	</ScrollView>
 </LinearLayout>

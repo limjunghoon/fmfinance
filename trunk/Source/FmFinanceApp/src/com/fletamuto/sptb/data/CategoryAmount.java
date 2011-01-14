@@ -6,6 +6,15 @@ public class CategoryAmount {
 	private long mTotalAmount;
 	private String mName;
 	private int mCount = 1;
+	private int mType = -1;
+	
+	public CategoryAmount(int type) {
+		mType = type;
+	}
+	
+	public int getType() {
+		return mType;
+	}
 	
 	public int getCategoryID() {
 		return mCategoryID;

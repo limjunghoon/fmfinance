@@ -46,11 +46,23 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         setReceiveToggleBtnClickListener();
     }
     
+    
     @Override
     protected void setTitleBtn() {
     	super.setTitleBtn();
     	
     	setTitle(mIncomeItem.getCategory().getName());
+    	
+    	setTitleBtnText(FmTitleLayout.BTN_LEFT_01, "¡ˆ√‚");
+    	setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);   
+    }
+    
+    @Override
+    protected void onClickLeft1TitleBtn() {
+    	Intent intent = new Intent(InputIncomeLayout.this, InputExpenseLayout.class);
+		startActivity(intent);
+		
+    	super.onClickLeft1TitleBtn();
     }
   
     protected void initialize() {

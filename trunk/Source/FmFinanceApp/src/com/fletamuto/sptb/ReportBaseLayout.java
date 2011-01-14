@@ -76,9 +76,9 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	
 	@Override
 	protected void setTitleBtn() {
-		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "추가");
+		setTitleBtnText(FmMainMenuLayout.BTN_RIGTH_01, "추가");
         setAddButtonListener();
-        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+        setTitleBtnVisibility(FmMainMenuLayout.BTN_RIGTH_01, View.VISIBLE);
         
         if (isDisplayCategory()) {
         	setTitle(mCategoryName);

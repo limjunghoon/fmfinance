@@ -57,13 +57,13 @@ public class BudgetLayout extends FmBaseActivity {
 		setTitle("¿¹»ê");
         setEditButtonListener();
         setTitle(getResources().getString(R.string.btn_category_select));
-        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+        setTitleBtnVisibility(FmMainMenuLayout.BTN_RIGTH_01, View.VISIBLE);
         
 		super.setTitleBtn();
 	}
 	
 	public void setEditButtonListener() {
-		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
+		setTitleButtonListener(FmMainMenuLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(BudgetLayout.this, EditBudgetLayout.class);

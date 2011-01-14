@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,8 +27,11 @@ import com.fletamuto.sptb.util.LogTag;
 
 public abstract class ReportSeparationLayout extends ReportBaseLayout {
 	private int mSelectedSection = 0;
+	private int mSelectedCategoryID = -1;
 	protected Map<Integer, CategoryAmount> mCategoryItems = new HashMap<Integer, CategoryAmount>();
 	protected ReportSeparationAdapter mSeparationAdapter = null;
+	
+	protected ListView mSeparationList;
 	
     /** Called when the activity is first created. */
     @Override
@@ -37,19 +41,36 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
         
     }
     
+
+    
 	@Override
 	protected void onResume() {
 		getSeparationData();
 		setSeparationAdapterList();
-		
+	
+		setSelectedPosition();
 		super.onResume();
 	}
 	
+	protected void setSelectedPosition() {
+		if (mSeparationAdapter != null) {
+        	int size = mSeparationAdapter.getCount();
+        	for (int index = 0; index < size; index++) {
+        		CategoryAmount categoryAmount = mSeparationAdapter.getItem(index);
+        		if (categoryAmount.getCategoryID() == mSelectedCategoryID) {
+        			mSelectedSection = index;
+        		}
+        	}
+        }
+	}
+
+
 	@Override
 	protected void getData() {
 		if (mSeparationAdapter == null) return;		
 		CategoryAmount categoryAmount = mSeparationAdapter.getItem(mSelectedSection);
 		mCategoryID = categoryAmount.getCategoryID();
+		mSelectedCategoryID = mCategoryID;
 		
 		((TextView)findViewById(R.id.TVListTitleRight)).setText(String.format("ÃÑ ±Ý¾× %,d¿ø", categoryAmount.getTotalAmount()));
 		
@@ -60,16 +81,12 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
     
     @Override
     public void initialize() {
+    	mSeparationList = (ListView) findViewById(R.id.LVSeparation);
     	setViewMode(VIEW_TWO_LINE);
+    	mSelectedCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.ITEM_ID, -1);
     	super.initialize();
     }
     
-	protected void getSelectedDate() {
-		if (mCategoryItems.size() == 0 || mCategoryItems.size() > mSelectedSection) return;
-		
-		CategoryAmount categoryAmount = mSeparationAdapter.getItem(mSelectedSection);
-	}
-
 	protected void getSeparationData() {
 		updateListItem(DBMgr.getAllItems(getItemType()));
 	}
@@ -90,7 +107,7 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 			CategoryAmount categoryAmount = mCategoryItems.get(categoryID);
 			
 			if (categoryAmount == null) {
-				categoryAmount = new CategoryAmount();
+				categoryAmount = new CategoryAmount(item.getType());
 				categoryAmount.set(categoryID, category.getName(), item.getAmount());
 				mCategoryItems.put(categoryID, categoryAmount);
 			}
@@ -112,12 +129,12 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
     }
 	
 	protected void setSeparationAdapterList() {
-
-    	final ListView listItem = (ListView)findViewById(R.id.LVSeparation);
-    	mSeparationAdapter = new ReportSeparationAdapter(this, R.layout.report_list_separation, getListItems());
-    	listItem.setAdapter(mSeparationAdapter);
+		if (mSeparationList == null) return;
     	
-    	listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    	mSeparationAdapter = new ReportSeparationAdapter(this, R.layout.report_list_separation, getListItems());
+    	mSeparationList.setAdapter(mSeparationAdapter);
+    	
+    	mSeparationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -137,6 +154,9 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 		getData();
         setAdapterList();
         updateChildView();
+        
+        mSeparationAdapter.notifyDataSetInvalidated();
+//        mSeparationList.invalidate();
 	}
 
 	public class ReportSeparationAdapter extends ArrayAdapter<CategoryAmount> {
@@ -163,6 +183,8 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 			
 			TextView tvCount = (TextView) convertView.findViewById(R.id.TVSeparatorCount);
 			tvCount.setText(String.format("(%d)", category.getCount()));
+			
+			convertView.setBackgroundColor((category.getCategoryID() == mSelectedCategoryID) ? Color.MAGENTA : Color.BLACK);
 			
 			return convertView;
 		}

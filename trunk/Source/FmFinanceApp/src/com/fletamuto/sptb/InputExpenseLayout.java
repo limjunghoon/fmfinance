@@ -49,7 +49,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	
 	private AccountItem fromItem;
 	private long beforeAmount;
-	
 	  
 	
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +72,23 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         //자주 사용 되는 지출 구현
         setBookmarkTvClickListener(R.id.TVExpenseBookmark);
         setTitle(getResources().getString(R.string.input_expense_name));
+    }
+    
+    @Override
+    protected void setTitleBtn() {
+    	super.setTitleBtn();
+    	
+    	setTitleBtnText(FmTitleLayout.BTN_LEFT_01, "수입");
+        setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);
+    	
+    }
+    
+    @Override
+    protected void onClickLeft1TitleBtn() {
+    	Intent intent = new Intent(InputExpenseLayout.this, SelectCategoryIncomeLayout.class);
+		startActivity(intent);
+		
+    	super.onClickLeft1TitleBtn();
     }
 
 	/**

@@ -23,6 +23,12 @@ public class FmTitleLayout extends LinearLayout {
 		initialize(context, layoutResID);
 		addContent();
 	}
+	
+
+
+	public FmTitleLayout(Context context, View inflate) {
+		super(context);
+	}
 
 	private void addContent() {
 		addView(TitleLayout);

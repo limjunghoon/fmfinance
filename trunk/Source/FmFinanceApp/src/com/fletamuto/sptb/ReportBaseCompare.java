@@ -108,7 +108,7 @@ public abstract class ReportBaseCompare extends FmBaseActivity {
 			
 			CategoryAmount categoryAmount = mCategoryAmount.get(categoryID);
 			if (categoryAmount == null) {
-				categoryAmount = new CategoryAmount();
+				categoryAmount = new CategoryAmount(item.getType());
 				categoryAmount.set(categoryID, category.getName(), item.getAmount());
 				mCategoryAmount.put(categoryID, categoryAmount);
 			}
