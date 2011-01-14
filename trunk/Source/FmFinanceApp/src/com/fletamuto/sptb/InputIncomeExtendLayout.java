@@ -2,6 +2,7 @@ package com.fletamuto.sptb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.fletamuto.sptb.data.Repeat;
 
@@ -20,8 +21,19 @@ public abstract class InputIncomeExtendLayout extends InputFinanceItemBaseLayout
 	protected void setTitleBtn() {
 		 setTitle(getItem().getCategory().getName());
 		 
+		 setTitleBtnText(FmTitleLayout.BTN_LEFT_01, "¡ˆ√‚");
+		 setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);   
+		 
 		super.setTitleBtn();
 	}
+	
+    @Override
+    protected void onClickLeft1TitleBtn() {
+    	Intent intent = new Intent(InputIncomeExtendLayout.this, InputExpenseLayout.class);
+		startActivity(intent);
+		
+    	super.onClickLeft1TitleBtn();
+    }
 	
 	protected void initialize() {
     	super.initialize();

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_height="wrap_content" android:layout_width="fill_parent">
+<LinearLayout android:id="@+id/LLMainMenu" android:layout_width="fill_parent" android:layout_weight="0" android:layout_height="60dp"><Button android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/BtnMenuIncomeExpense" android:text="수입 지출" android:layout_height="fill_parent"></Button><Button android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/BtnMenuAssets" android:text="자산" android:layout_height="fill_parent"></Button><Button android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/BtnMenuReport" android:text="통계" android:layout_height="fill_parent"></Button><Button android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/BtnMenuBudget" android:text="예산" android:layout_height="fill_parent"></Button><Button android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/BtnMenuSetting" android:text="설정" android:layout_height="fill_parent"></Button></LinearLayout>
+
+
+
+
+
+</LinearLayout>

@@ -137,19 +137,8 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
     	findViewById(R.id.BtnInput).setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				new AlertDialog.Builder(MainIncomeAndExpenseLayout.this)
-					.setTitle("수입/지출 입력 선택")
-					.setItems(new String[] {"수입", "지출"}, 
-							new DialogInterface.OnClickListener() {
-						
-						public void onClick(DialogInterface dialog, int which) {
-							Class<?> cls = (which == 0) ? SelectCategoryIncomeLayout.class : InputExpenseLayout.class;
-							Intent intent = new Intent(MainIncomeAndExpenseLayout.this, cls);
-							startActivity(intent);
-						}
-					})
-					.setNegativeButton("취소", null)
-					.show();
+				Intent intent = new Intent(MainIncomeAndExpenseLayout.this, InputExpenseLayout.class);
+				startActivity(intent);
 			}
 		});
     	
@@ -715,7 +704,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 		public void addIncomeCategoryItem(FinanceItem item) {
 			CategoryAmount categoryAmount = getIncomeCategoryItem(item);
 			if (categoryAmount == null) {
-				categoryAmount = new CategoryAmount();
+				categoryAmount = new CategoryAmount(item.getType());
 				categoryAmount.set(item.getCategory().getID(), item.getCategory().getName(), item.getAmount());
 				mIncomeDailyCategory.add(categoryAmount);
 			}
@@ -738,7 +727,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 		public void addExpenseCategoryItem(FinanceItem item) {
 			CategoryAmount categoryAmount = getExpenseCategoryItem(item);
 			if (categoryAmount == null) {
-				categoryAmount = new CategoryAmount();
+				categoryAmount = new CategoryAmount(item.getType());
 				categoryAmount.set(item.getCategory().getID(), item.getCategory().getName(), item.getAmount());
 				mExpenseDailyCategory.add(categoryAmount);
 			}

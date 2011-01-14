@@ -3,6 +3,7 @@ package com.fletamuto.sptb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.IncomeItem;
@@ -17,6 +18,22 @@ public class SelectCategoryIncomeLayout extends InputAfterSelectCategoryLayout {
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+    
+    @Override
+	protected void setTitleBtn() {
+		 setTitleBtnText(FmTitleLayout.BTN_LEFT_01, "¡ˆ√‚");
+		 setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);   
+		 
+		super.setTitleBtn();
+	}
+	
+    @Override
+    protected void onClickLeft1TitleBtn() {
+    	Intent intent = new Intent(SelectCategoryIncomeLayout.this, InputExpenseLayout.class);
+		startActivity(intent);
+		
+    	super.onClickLeft1TitleBtn();
     }
 
 	@Override

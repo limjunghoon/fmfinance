@@ -31,6 +31,8 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
         setTitle(mLiabilityItem.getCategory().getName());
     }
     
+  
+    
     @Override
     protected void initialize() {
     	super.initialize();

@@ -60,10 +60,10 @@ public class EditCategoryLayout  extends FmBaseActivity {
     @Override
     protected void setTitleBtn() {
     	setTitle("분류 편집");
-        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01,View.VISIBLE);
-        setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, getResources().getString(R.string.btn_add));
+        setTitleBtnVisibility(FmMainMenuLayout.BTN_RIGTH_01,View.VISIBLE);
+        setTitleBtnText(FmMainMenuLayout.BTN_RIGTH_01, getResources().getString(R.string.btn_add));
         
-        setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
+        setTitleButtonListener(FmMainMenuLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				if (mHasSubCategory == true) {
@@ -202,7 +202,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
     	Button editCategoryBtn = ((Button)findViewById(R.id.BtnMainCategoryEdit));
     	
 		if (isNewCategoryWithSub()) {
-    		setTitleBtnEnabled(FmTitleLayout.BTN_RIGTH_01, false);
+    		setTitleBtnEnabled(FmMainMenuLayout.BTN_RIGTH_01, false);
     		editCategoryBtn.setText("완료");
     		mEditTextEnable = true;
     	}
@@ -215,7 +215,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 				editCategoryBtn.setText("완료");
 	    		mEditTextEnable = true;
 			}
-			setTitleBtnEnabled(FmTitleLayout.BTN_RIGTH_01, true);
+			setTitleBtnEnabled(FmMainMenuLayout.BTN_RIGTH_01, true);
     	}
 		
 		((EditText)findViewById(R.id.ETMainCategoryName)).setEnabled(mEditTextEnable);
