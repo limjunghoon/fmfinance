@@ -35,14 +35,14 @@ public abstract class EditSelectItemBaseLayout  extends FmBaseActivity {
     protected void setTitleBtn() {
         setAddButtonListener();
         setTitle(getResources().getString(R.string.tag_edit_select));
-        setTitleBtnVisibility(FmMainMenuLayout.BTN_RIGTH_01, View.VISIBLE);
-        setTitleBtnText(FmMainMenuLayout.BTN_RIGTH_01, getResources().getString(R.string.btn_add));
+        setTitleBtnVisibility(FmMainMenu.BTN_RIGTH_01, View.VISIBLE);
+        setTitleBtnText(FmMainMenu.BTN_RIGTH_01, getResources().getString(R.string.btn_add));
         
     	super.setTitleBtn();
     }
 
 	private void setAddButtonListener() {
-		setTitleButtonListener(FmMainMenuLayout.BTN_RIGTH_01, new View.OnClickListener() {
+		setTitleButtonListener(FmMainMenu.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				onAddButtonClick();

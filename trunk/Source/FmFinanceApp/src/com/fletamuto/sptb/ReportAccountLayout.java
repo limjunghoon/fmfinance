@@ -6,19 +6,16 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.db.DBMgr;
-import com.fletamuto.sptb.util.LogTag;
 
 public class ReportAccountLayout extends FmBaseActivity {
 	public static final int ACT_ADD_ACCOUNT = 0;
@@ -115,20 +112,20 @@ public class ReportAccountLayout extends FmBaseActivity {
     }
 	
 	private void setDeleteBtnListener(View convertView, int id, int position) {
-    	Button btnDelete = (Button)convertView.findViewById(R.id.BtnReportAccountDelete);
-    	final int ItemID = id;
-    	final int Itempsition = position;
-    	
-		btnDelete.setOnClickListener(new View.OnClickListener() {
-	
-			public void onClick(View v) {
-				if (DBMgr.deleteAccount(ItemID) == 0 ) {
-					Log.e(LogTag.LAYOUT, "can't delete accoutn Item  ID : " + ItemID);
-				}
-				mArrAccount.remove(Itempsition);
-				mAdapterAccount.notifyDataSetChanged();
-			}
-		});
+//    	Button btnDelete = (Button)convertView.findViewById(R.id.BtnReportAccountDelete);
+//    	final int ItemID = id;
+//    	final int Itempsition = position;
+//    	
+//		btnDelete.setOnClickListener(new View.OnClickListener() {
+//	
+//			public void onClick(View v) {
+//				if (DBMgr.deleteAccount(ItemID) == 0 ) {
+//					Log.e(LogTag.LAYOUT, "can't delete accoutn Item  ID : " + ItemID);
+//				}
+//				mArrAccount.remove(Itempsition);
+//				mAdapterAccount.notifyDataSetChanged();
+//			}
+//		});
 	}
 	
 	

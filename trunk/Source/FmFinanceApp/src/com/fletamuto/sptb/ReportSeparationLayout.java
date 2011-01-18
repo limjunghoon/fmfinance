@@ -52,22 +52,34 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 		super.onResume();
 	}
 	
+	  @Override
+	    public void initialize() {
+	    	mSeparationList = (ListView) findViewById(R.id.LVSeparation);
+	    	setViewMode(VIEW_TWO_LINE);
+	    	mSelectedCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.ITEM_ID, -1);
+	    	super.initialize();
+	    }
+	
 	protected void setSelectedPosition() {
-		if (mSeparationAdapter != null) {
-        	int size = mSeparationAdapter.getCount();
-        	for (int index = 0; index < size; index++) {
-        		CategoryAmount categoryAmount = mSeparationAdapter.getItem(index);
-        		if (categoryAmount.getCategoryID() == mSelectedCategoryID) {
-        			mSelectedSection = index;
-        		}
-        	}
-        }
+		if (mSeparationAdapter == null) {
+			return;
+		}
+		
+    	int size = mSeparationAdapter.getCount();
+    	for (int index = 0; index < size; index++) {
+    		CategoryAmount categoryAmount = mSeparationAdapter.getItem(index);
+    		if (categoryAmount.getCategoryID() == mSelectedCategoryID) {
+    			mSelectedSection = index;
+    		}
+    	}
 	}
 
 
 	@Override
 	protected void getData() {
-		if (mSeparationAdapter == null) return;		
+		if (mSeparationAdapter == null || mSeparationAdapter.getCount() == 0) 
+			return;
+		
 		CategoryAmount categoryAmount = mSeparationAdapter.getItem(mSelectedSection);
 		mCategoryID = categoryAmount.getCategoryID();
 		mSelectedCategoryID = mCategoryID;
@@ -79,13 +91,7 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 	
 
     
-    @Override
-    public void initialize() {
-    	mSeparationList = (ListView) findViewById(R.id.LVSeparation);
-    	setViewMode(VIEW_TWO_LINE);
-    	mSelectedCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.ITEM_ID, -1);
-    	super.initialize();
-    }
+  
     
 	protected void getSeparationData() {
 		updateListItem(DBMgr.getAllItems(getItemType()));

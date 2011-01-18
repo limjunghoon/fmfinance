@@ -53,8 +53,8 @@ public class AccountLayout extends FmBaseActivity {
 	@Override
 	protected void setTitleBtn() {
 		setTitle("계좌");
-		setTitleBtnText(FmMainMenuLayout.BTN_RIGTH_01, "편집");
-		setTitleBtnVisibility(FmMainMenuLayout.BTN_RIGTH_01, View.VISIBLE);
+		setTitleBtnText(FmMainMenu.BTN_RIGTH_01, "편집");
+		setTitleBtnVisibility(FmMainMenu.BTN_RIGTH_01, View.VISIBLE);
 		setEidtButtonListener();
 		
 		super.setTitleBtn();
@@ -109,7 +109,7 @@ public class AccountLayout extends FmBaseActivity {
     }
 	
 	public void setEidtButtonListener() {
-		setTitleButtonListener(FmMainMenuLayout.BTN_RIGTH_01, new View.OnClickListener() {
+		setTitleButtonListener(FmMainMenu.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(AccountLayout.this, EditAccountLayout.class);

@@ -3,15 +3,16 @@ package com.fletamuto.sptb.data;
 import java.util.Calendar;
 
 public class CardItem extends BaseItem{
+	public final static int TYPE = ItemDef.FinanceDef.CARD;
 
 	private static final long serialVersionUID = -1671898251206337042L;
 	public static final int BILLING = 0;
 	public static final int NEXT_BILLING = 1;
 	
-	public final static int CREDIT_CARD = 1;
-	public final static int CHECK_CARD = 2;
-	public final static int PREPAID_CARD = 3;
-	public final static int CASH_CARD = 4;
+	public final static int CREDIT_CARD = 0;
+	public final static int CHECK_CARD = 1;
+	public final static int PREPAID_CARD = 2;
+	public final static int CASH_CARD = 3;
 	
 	private CardCompanyName mCompenyName = new CardCompanyName();
 	private String mName;
@@ -23,6 +24,8 @@ public class CardItem extends BaseItem{
 	private int mSettlementDay = 1;
 	private int mBillingPeriodDay = 1;
 	private int mBillingPeriodMonth = 0;
+	
+	private String mCardTypeNames[] = {"신용카드", "체크카드", "선불카드", "현금카드"};
 	
 	public CardItem(int type) {
 		mType = type;
@@ -132,5 +135,9 @@ public class CardItem extends BaseItem{
 		Calendar endBillingPeriod = getEndBillingPeriod(currentDate);
 		endBillingPeriod.add(Calendar.MONTH, 1);
 		return endBillingPeriod;
+	}
+	
+	public String getCardTypeName() {
+		return mCardTypeNames[mType];
 	}
 }

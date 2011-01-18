@@ -12,7 +12,7 @@ public class MainSettingLayout extends FmBaseActivity {
         
         setContentView(R.layout.main_setting);
         
-       
+        setRootView(true);
         Button btnRegistration = (Button)findViewById(R.id.BtnSettingRegistration);
         btnRegistration.setOnClickListener(new View.OnClickListener() {
 			
