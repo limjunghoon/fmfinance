@@ -3,35 +3,30 @@ package com.fletamuto.sptb;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fletamuto.common.control.fmgraph.PieGraph;
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
+import com.fletamuto.sptb.util.Percentage;
 
 public class MainAssetsLayout extends FmBaseActivity {
 	private static final int REPORT_ASSETS = 0;
@@ -44,14 +39,19 @@ public class MainAssetsLayout extends FmBaseActivity {
 	protected Map<Integer, CategoryAmount> mAssetsCategoryItems = new HashMap<Integer, CategoryAmount>();
 	protected ArrayList<FinanceItem> mLiabilityItems = null;
 	protected Map<Integer, CategoryAmount> mLiabilityCategoryItems = new HashMap<Integer, CategoryAmount>();
+	protected ArrayList<CardItem> mCardItems = null;
+	protected Map<Integer, CategoryAmount> mCardCategoryItems = new HashMap<Integer, CategoryAmount>();
+	protected AccountItem mMyPocket;
+	protected ArrayList<AccountItem> mAccountItems = null;
 	
 	protected LinearLayout mLLReport[] = new LinearLayout[MAX_REPORT];
+	
 //	protected ReportItemAdapter mItemAdapter = null;
 	
 
 //	
 	private long mTotalAmount[] = new long[MAX_REPORT];
-
+	private long mTatalAccountBalance = 0L;
 
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +60,7 @@ public class MainAssetsLayout extends FmBaseActivity {
     	setContentView(R.layout.main_asserts, true);
 //    	setButtonClickListener();
 //    	
+    	setRootView(true);
     	getListItem();
 //    	setAdapterList();
     	updateChildView();
@@ -76,10 +77,10 @@ public class MainAssetsLayout extends FmBaseActivity {
     }
     
     @Override
-    	protected void setTitleBtn() {
-    		setTitle("자산내역");
-    		super.setTitleBtn();
-    	}
+	protected void setTitleBtn() {
+		setTitle("자산내역");
+		super.setTitleBtn();
+	}
 
 	@Override
     protected void onResume() {
@@ -92,8 +93,8 @@ public class MainAssetsLayout extends FmBaseActivity {
 	protected void updateChildView() {
 		updateBarGraph();
 		
-		((TextView)findViewById(R.id.TVTotalAssetsAmount)).setText(String.format("자산 : %,d원", mTotalAmount[REPORT_ASSETS]));
-		((TextView)findViewById(R.id.TVTotalLiabilityAmount)).setText(String.format("부채 : %,d원", mTotalAmount[REPORT_LIABILITY]));
+		((TextView)findViewById(R.id.TVTotalAssetsAmount)).setText(String.format("자산 : %,d원 (%s)", mTotalAmount[REPORT_ASSETS], Percentage.getString(mTotalAmount[REPORT_ASSETS], mTotalAmount[REPORT_ASSETS] + mTotalAmount[REPORT_LIABILITY])));
+		((TextView)findViewById(R.id.TVTotalLiabilityAmount)).setText(String.format("부채 : %,d원 (%s)", mTotalAmount[REPORT_LIABILITY], Percentage.getString(mTotalAmount[REPORT_LIABILITY], mTotalAmount[REPORT_ASSETS] + mTotalAmount[REPORT_LIABILITY])));
 		((TextView)findViewById(R.id.TVTotalPropertyAmount)).setText(String.format("합계 : %,d원", mTotalAmount[REPORT_ASSETS] - mTotalAmount[REPORT_LIABILITY]));
 		
 		makeReportList();
@@ -105,18 +106,76 @@ public class MainAssetsLayout extends FmBaseActivity {
 		
 		makeReportListAssets();
 		makeReportListLiability();
+		makeReportListCard();
+		makeReportListMyPocket();
+	}
+
+	protected void makeReportListCard() {
+		addTitleLayout(REPORT_CARD, "카드", mTotalAmount[REPORT_CARD]);
+		
+		//if (mCardItems.size() == 0) return;
+		Collection<CategoryAmount> categoryAmountItems = mCardCategoryItems.values();
+		
+		for (CategoryAmount iterator:categoryAmountItems) {
+			LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.main_assets_member, null);
+			LinearLayout.LayoutParams params = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
+			TextView tvName = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberName);
+			tvName.setText(iterator.getName());
+			TextView tvCount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberCount);
+			tvCount.setText(String.format("%d건", iterator.getCount()));
+			TextView tvAmount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberTotalAmout);
+			tvAmount.setText(String.format("%,d원", iterator.getTotalAmount()));
+			
+			llMember.setTag(iterator);
+			llMember.setOnClickListener(mMemberClickLinter);
+			mLLReport[REPORT_CARD].addView(llMember, params);
+		}
+		mLLReport[REPORT_CARD].invalidate();
+		
+	}
+
+	protected void makeReportListMyPocket() {
+		addTitleLayout(REPORT_MYPORKET, "현금", mTotalAmount[REPORT_MYPORKET]);
+		
+		LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.main_assets_member, null);
+		LinearLayout.LayoutParams params = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
+		TextView tvName = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberName);
+		tvName.setText("내 주머니");
+		TextView tvAmount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberTotalAmout);
+		tvAmount.setText(String.format("%,d원", mTotalAmount[REPORT_MYPORKET]));
+		llMember.setTag(mMyPocket);
+		llMember.setOnClickListener(mMemberClickLinter);
+		mLLReport[REPORT_MYPORKET].addView(llMember, params);
+		mLLReport[REPORT_MYPORKET].invalidate();
 	}
 
 	protected void makeReportListAssets() {
-		int assetsSize = mAssetsCategoryItems.size();
-		if (assetsSize == 0) {
-			mLLReport[REPORT_ASSETS].setVisibility(View.GONE);
-			return;
-		}
-		mLLReport[REPORT_ASSETS].setVisibility(View.VISIBLE);
-		
 		addTitleLayout(REPORT_ASSETS, "자산", mTotalAmount[REPORT_ASSETS]);
 		
+//		int assetsSize = mAssetsCategoryItems.size();
+		int accountSize = mAccountItems.size();
+//		if (assetsSize + accountSize == 0) {
+//			mLLReport[REPORT_ASSETS].setVisibility(View.GONE);
+//			return;
+//		}
+//		mLLReport[REPORT_ASSETS].setVisibility(View.VISIBLE);
+		
+		if (accountSize > 0) {
+			LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.main_assets_member, null);
+			LinearLayout.LayoutParams params = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
+			TextView tvName = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberName);
+			tvName.setText("요구불");
+			TextView tvCount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberCount);
+			tvCount.setText(String.format("%d건", accountSize));
+			TextView tvAmount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberTotalAmout);
+			tvAmount.setText(String.format("%,d원", mTatalAccountBalance));
+			TextView tvPercent = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberPercent);
+			tvPercent.setText(Percentage.getString(mTatalAccountBalance, mTotalAmount[REPORT_ASSETS]));
+			llMember.setTag(ItemDef.FinanceDef.ACCOUNT);
+			llMember.setOnClickListener(mMemberClickLinter);
+			mLLReport[REPORT_ASSETS].addView(llMember, params);
+		}
+			
 		Collection<CategoryAmount> categoryAmountItems = mAssetsCategoryItems.values();
 		
 		for (CategoryAmount iterator:categoryAmountItems) {
@@ -128,6 +187,8 @@ public class MainAssetsLayout extends FmBaseActivity {
 			tvCount.setText(String.format("%d건", iterator.getCount()));
 			TextView tvAmount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberTotalAmout);
 			tvAmount.setText(String.format("%,d원", iterator.getTotalAmount()));
+			TextView tvPercent = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberPercent);
+			tvPercent.setText(Percentage.getString(iterator.getTotalAmount(), mTotalAmount[REPORT_ASSETS]));
 			llMember.setTag(iterator);
 			llMember.setOnClickListener(mMemberClickLinter);
 			mLLReport[REPORT_ASSETS].addView(llMember, params);
@@ -151,19 +212,39 @@ public class MainAssetsLayout extends FmBaseActivity {
 					intent.putExtra(MsgDef.ExtraNames.ITEM_ID, categoryAmount.getCategoryID());
 					startActivity(intent);
 				}
+				else if (categoryAmount.getType() == CardItem.TYPE) {
+					if (categoryAmount.getCategoryID() == CardItem.CREDIT_CARD) {
+						Intent intent = new Intent(MainAssetsLayout.this, ReportCreditCardLayout.class);
+						startActivity(intent);
+					}
+					else if (categoryAmount.getCategoryID() == CardItem.CHECK_CARD) {
+						Intent intent = new Intent(MainAssetsLayout.this, ReportCheckCardLayout.class);
+						startActivity(intent);
+					}
+					else if (categoryAmount.getCategoryID() == CardItem.PREPAID_CARD) {
+						Intent intent = new Intent(MainAssetsLayout.this, ReportPrepaidCardLayout.class);
+						startActivity(intent);
+					}
+				}
+			}
+			else if (v.getTag() == Integer.valueOf(ItemDef.FinanceDef.ACCOUNT)) {
+				Intent intent = new Intent(MainAssetsLayout.this, ReportDemandAccountLayout.class);
+				startActivity(intent);
 			}
 		}
 	};
 	
 	protected void makeReportListLiability() {
-		int liabilitySize = mLiabilityCategoryItems.size();
-		if (liabilitySize == 0) {
-			mLLReport[REPORT_LIABILITY].setVisibility(View.GONE);
-			return;
-		}
+		addTitleLayout(REPORT_LIABILITY, "부채", mTotalAmount[REPORT_LIABILITY]);
+		
+//		int liabilitySize = mLiabilityCategoryItems.size();
+//		if (liabilitySize == 0) {
+//			mLLReport[REPORT_LIABILITY].setVisibility(View.GONE);
+//			return;
+//		}
 		mLLReport[REPORT_LIABILITY].setVisibility(View.VISIBLE);
 		
-		addTitleLayout(REPORT_LIABILITY, "부채", mTotalAmount[REPORT_LIABILITY]);
+		
 		
 		Collection<CategoryAmount> categoryAmountItems = mLiabilityCategoryItems.values();
 		
@@ -176,6 +257,8 @@ public class MainAssetsLayout extends FmBaseActivity {
 			tvCount.setText(String.format("%d건", iterator.getCount()));
 			TextView tvAmount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberTotalAmout);
 			tvAmount.setText(String.format("%,d원", iterator.getTotalAmount()));
+			TextView tvPercent = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberPercent);
+			tvPercent.setText(Percentage.getString(iterator.getTotalAmount(), mTotalAmount[REPORT_LIABILITY]));
 			llMember.setOnClickListener(mMemberClickLinter);
 			llMember.setTag(iterator);
 			mLLReport[REPORT_LIABILITY].addView(llMember, params);
@@ -215,115 +298,64 @@ public class MainAssetsLayout extends FmBaseActivity {
 			}
 		});
 	}
-    
-//    protected void setButtonClickListener() {
-//		
-//		Button btnExpense = (Button)findViewById(R.id.BtnAssets);
-//		btnExpense.setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				Intent intent = new Intent(MainAssetsLayout.this, ReportAssetsLayout.class);
-//				startActivity(intent);
-//			}
-//		});
-//		
-//		Button btnIncome = (Button)findViewById(R.id.BtnLiability);
-//		btnIncome.setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				Intent intent = new Intent(MainAssetsLayout.this, ReportLiabilityLayout.class);
-//				startActivity(intent);
-//			}
-//		});
-//	}
-//    
+       
     protected void getListItem() {
     	clearTotalCount();
     	mAssetsItems = DBMgr.getAllItems(AssetsItem.TYPE);
     	updateListItem(mAssetsCategoryItems, mAssetsItems);
     	mLiabilityItems = DBMgr.getAllItems(LiabilityItem.TYPE);
     	updateListItem(mLiabilityCategoryItems, mLiabilityItems);
+    	mAccountItems = getAccountItems(); 
+    	
+    	mCardItems = DBMgr.getCardItems();
+    	updateCardListItem();
+    	
+    	mMyPocket = DBMgr.getAccountMyPoctet();
+    	mTotalAmount[REPORT_MYPORKET] = mMyPocket.getBalance();
     }
-//    
-//    protected void setAdapterList() {
-//    	setAdapterAssetsList();
-//    	setAdapterLiabilityList();
-//    }
-//    
-//    protected void setAdapterLiabilityList() {
-//    	final ListView listItem = (ListView)findViewById(R.id.LVLiabilityCategory);
-//    	mItemAdapter = new ReportItemAdapter(this, R.layout.report_list_assets_category, getListItems(LiabilityItem.TYPE));
-//    	listItem.setAdapter(mItemAdapter);
-//    	
-//    	listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//			public void onItemClick(AdapterView<?> parent, View view,
-//					int position, long id) {
-////				onClickListItem(parent, view, position, id);
-//			}
-//		});
-//	}
-//
-//	protected void setAdapterAssetsList() {
-//    	final ListView listItem = (ListView)findViewById(R.id.LVAssetsCategory);
-//    	mItemAdapter = new ReportItemAdapter(this, R.layout.report_list_assets_category, getListItems(AssetsItem.TYPE));
-//    	listItem.setAdapter(mItemAdapter);
-//    	
-//    	listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//			public void onItemClick(AdapterView<?> parent, View view,
-//					int position, long id) {
-////				onClickListItem(parent, view, position, id);
-//			}
-//		});
-//	}
-//
-//	protected ArrayList<CategoryAmount> getListItems(int type) {
-//    	ArrayList<CategoryAmount> listItems = new ArrayList<CategoryAmount>();
-//    	Collection<CategoryAmount> categoryAmountItems = null;
-//    	
-//    	if (type == AssetsItem.TYPE) {
-//    		categoryAmountItems = mAssetsCategoryItems.values();
-//    	}
-//    	else if (type == LiabilityItem.TYPE) {
-//    		categoryAmountItems = mLiabilityCategoryItems.values();
-//    	}
-//    	else {
-//    		return null;
-//    	}
-//    	
-//    	for (CategoryAmount iterator:categoryAmountItems) {
-//			listItems.add(iterator);
-//		}
-//    	
-//    	return listItems;
-//    }
-//    
-//    public class ReportItemAdapter extends ArrayAdapter<CategoryAmount> {
-//    	private LayoutInflater mInflater;
-//    	private int mResource;
-//
-//		public ReportItemAdapter(Context context, int resource,
-//				 List<CategoryAmount> objects) {
-//			super(context, resource, objects);
-//			this.mResource = resource;
-//			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//		}
-//		
-//		@Override
-//		public View getView(int position, View convertView, ViewGroup parent) {
-//			CategoryAmount item = (CategoryAmount)getItem(position);
-//			
-//			if (convertView == null) {
-//				convertView = mInflater.inflate(mResource, parent, false);
-//			}
-//			
-//			((TextView)convertView.findViewById(R.id.TVAssetsCategoryName)).setText(String.format("%s(%d)", item.getName(), item.getCount()));
-//    		((TextView)convertView.findViewById(R.id.TVAssetsCategoryTotalAmout)).setText(String.format("%,d원", item.getTotalAmount()));			
-//			return convertView;
-//		}
-//    }
-//    
+    
+
+
+	private ArrayList<AccountItem> getAccountItems() {
+		ArrayList<AccountItem> accountItems = DBMgr.getAccountAllItems();
+		int size = accountItems.size();
+		for (int index = 0; index < size; index++) {
+			AccountItem account = accountItems.get(index); 
+			
+			if (account.getType() == AccountItem.TIME_DEPOSIT || account.getType() == AccountItem.SAVINGS) {
+				accountItems.remove(index);
+				index--; size--;
+				continue;
+			}
+			mTotalAmount[REPORT_ASSETS] += account.getBalance();
+			mTatalAccountBalance += account.getBalance();
+		}
+		
+		return accountItems;
+	}
+
+	protected void updateCardListItem() {
+		mCardCategoryItems.clear();
+		
+		int itemSize = mCardItems.size();
+		for (int index = 0; index < itemSize; index++) {
+			CardItem item = mCardItems.get(index);
+			Integer cardType = item.getType();
+			CategoryAmount categoryAmount = mCardCategoryItems.get(cardType);
+			
+			if (categoryAmount == null) {
+				categoryAmount = new CategoryAmount(ItemDef.FinanceDef.CARD);
+				categoryAmount.set(item.getType(), item.getCardTypeName(), item.getBalance());
+				mCardCategoryItems.put(cardType, categoryAmount);
+			}
+			else {
+				categoryAmount.addAmount(item.getBalance());
+			}
+			
+			mTotalAmount[REPORT_CARD] += item.getBalance();
+		}
+	}
+
     protected void updateListItem(Map<Integer, CategoryAmount> mapCategoryItems, ArrayList<FinanceItem> arrItems) {
     	mapCategoryItems.clear();
 		
@@ -351,11 +383,13 @@ public class MainAssetsLayout extends FmBaseActivity {
 			addTotalCount(item);
 		}
 	}
+   
     
     protected void clearTotalCount() {
     	for (int index = 0; index < MAX_REPORT; index++) {
     		mTotalAmount[index] = 0L; 
     	}
+    	mTatalAccountBalance = 0L;
     }
     
 	protected void addTotalCount(FinanceItem item) {
@@ -367,45 +401,48 @@ public class MainAssetsLayout extends FmBaseActivity {
 		}
 	}
 	
-	public void addTitleLayout(int reportIndex, String name, long amount) {
+	public void addTitleLayout(final int reportIndex, String name, long amount) {
 		LinearLayout llMain = mLLReport[reportIndex];
 		LinearLayout llTitle = (LinearLayout)View.inflate(this, R.layout.main_assets_title, null);
 		llTitle.setBackgroundColor(Color.WHITE);
 		LinearLayout.LayoutParams params = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
 		llMain.addView(llTitle, params);
 		
+		
 		TextView tvTitle = (TextView) llTitle.findViewById(R.id.TVMainAssetsTitleName);
 		tvTitle.setText(name);
 		tvTitle.setTextColor(Color.BLACK);
 		
-		TextView tvAmount = (TextView) llTitle.findViewById(R.id.TVMainAssetsTitleTotalAmout);
-		tvAmount.setText(String.format("%,d원", amount));
-		tvAmount.setTextColor(Color.BLACK);
+		if (!(reportIndex == REPORT_MYPORKET || reportIndex == REPORT_CARD)) {
+			TextView tvAmount = (TextView) llTitle.findViewById(R.id.TVMainAssetsTitleTotalAmout);
+			tvAmount.setText(String.format("%,d원", amount));
+			tvAmount.setTextColor(Color.BLACK);
+		}
 		
-		
-		
-//		Collection<CategoryAmount> categoryAmountItems = mCategoryAmount.values();
-//		
-//		for (CategoryAmount iterator:categoryAmountItems) {
-//			Button btnItem = new Button(getApplicationContext());
-//			btnItem.setText(String.format("%s    : %,d원", iterator.getName(), iterator.getTotalAmount()));
-//			btnItem.setOnClickListener(categoryListener);
-//			btnItem.setTag(iterator);
-//			ll.addView(btnItem);
-//		}
+		llTitle.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent intent = null;
+				
+				if (reportIndex == REPORT_ASSETS) {
+					intent = new Intent(MainAssetsLayout.this, ReportAssetsLayout.class);
+				}
+				else if (reportIndex == REPORT_LIABILITY) {
+					intent = new Intent(MainAssetsLayout.this, ReportLiabilityLayout.class);
+				}
+				else if (reportIndex == REPORT_CARD) {
+					intent = new Intent(MainAssetsLayout.this, ReportCreditCardLayout.class);				
+				}
+				else if (reportIndex == REPORT_MYPORKET) {
+					
+				}
+				
+				if (intent != null) {
+					startActivity(intent);
+				}
+				
+			}
+		});
 		
 	}
-	
-//
-//
-//	private void updateAssetsPorgress() {
-//		ProgressBar progress = (ProgressBar)findViewById(R.id.AssetsLiabilityPrograss);
-//
-//		int max = (int)((mTotalAssetsAmount + mTotalLiabilityAmount)/100);
-//		int pos = (int)(mTotalAssetsAmount/100);
-//		
-//		progress.setMax(max);
-//		progress.setProgress(pos);
-//		
-//	}
 }

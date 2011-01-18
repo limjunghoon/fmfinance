@@ -130,7 +130,7 @@ public class ReportLiabilityLayout extends ReportSeparationLayout {
 	
 	protected void updateListItem() {
 		int itemSize = mItems.size();
-		int itemCategoryID = -1;
+//		int itemCategoryID = -1;
 		mTotalAmount = 0L;
 		
 		for (int index = 0; index < itemSize; index++) {

@@ -8,7 +8,7 @@
 
 				
 	<ScrollView android:id="@+id/ScrollView01" android:layout_width="fill_parent" android:layout_height="fill_parent">
-		<LinearLayout android:id="@+id/LinearLayout03" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
+		<LinearLayout android:id="@+id/LinearLayout03" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical" android:paddingLeft="5dp" android:paddingRight="5dp">
 
    				<LinearLayout android:layout_width="fill_parent" android:layout_weight="0" android:layout_height="wrap_content" android:id="@+id/LLMainAssetsReport">
 					<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
@@ -23,13 +23,13 @@
 					</LinearLayout>
 				</LinearLayout>
 				
-				<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLMainAssetsAssetsReport" android:orientation="vertical">
+				<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLMainAssetsAssetsReport" android:orientation="vertical" android:paddingBottom="20dp">
 				</LinearLayout>
 				
-				<LinearLayout android:id="@+id/LLMainAssetsLiabilityReport" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="15dp">
+				<LinearLayout android:id="@+id/LLMainAssetsLiabilityReport" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="15dp" android:paddingBottom="20dp">
 				</LinearLayout>
 				
-				<LinearLayout android:layout_width="fill_parent" android:id="@+id/LLMainAssetsCardReport" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="15dp">
+				<LinearLayout android:layout_width="fill_parent" android:id="@+id/LLMainAssetsCardReport" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="15dp" android:paddingBottom="20dp">
 				</LinearLayout>
 				
 				<LinearLayout android:layout_width="fill_parent" android:id="@+id/LLMainAssetsMyPoketReport" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="15dp">

@@ -32,7 +32,7 @@ public class AccountItem extends BaseItem {
 	private String mName;
 	private int mType = ORDINARY_DEPOSIT;
 	
-	private static String mTypeNames[] = {"내 주머니", "예금", "정기예금", "적금"};
+	private static String mTypeNames[] = {"내 주머니", "보통예금", "정기예금", "적금"};
 
 	
 	public void setNumber(String number) {
@@ -131,5 +131,9 @@ public class AccountItem extends BaseItem {
 	public static String getTypeName(int type) {
 		if (type >= mTypeNames.length) return "";  
 		return mTypeNames[type];
+	}
+	
+	public String getTypeName() {
+		return mTypeNames[mType];
 	}
 }

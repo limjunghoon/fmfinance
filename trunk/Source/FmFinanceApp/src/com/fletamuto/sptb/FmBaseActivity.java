@@ -1,13 +1,13 @@
 package com.fletamuto.sptb;
 
-import com.fletamuto.sptb.util.LogTag;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.fletamuto.sptb.util.LogTag;
 
 /**
  * finance에서 기본이 되는 뷰 엑티비티
@@ -16,15 +16,25 @@ import android.widget.Button;
  */
 public abstract class FmBaseActivity extends Activity {
 //	private FmTitleLayout mTitleLayout;
-	private FmMainMenuLayout  mMenuLayout;
+	private FmMainMenu  mMenuLayout;
 	
+	private boolean mRootView = false;
 	private boolean mMenuVisible = true;
-	private static int mCurrentMenu = R.id.BtnMenuIncomeExpense;
+	//private static int mCurrentMenu;
 	
 	private View.OnClickListener mMenuClickListener = new View.OnClickListener() {
 		
 		public void onClick(View v) {
-			onMenuClick(v.getId());
+			int id = v.getId();
+			int menuIndex = FmMainMenu.MENU_INCOME_EXPENSE;
+			
+			if (id == R.id.BtnMenuIncomeExpense)	menuIndex = FmMainMenu.MENU_INCOME_EXPENSE;
+			else if (id == R.id.BtnMenuAssets) menuIndex = FmMainMenu.MENU_ASSETS;
+			else if (id == R.id.BtnMenuReport) menuIndex = FmMainMenu.MENU_REPORT;
+			else if (id == R.id.BtnMenuBudget) 	menuIndex = FmMainMenu.MENU_BUDGET;
+			else if (id == R.id.BtnMenuSetting) menuIndex = FmMainMenu.MENU_SETTING;
+					
+			onMenuClick(menuIndex);
 		}
 	};
 	
@@ -35,7 +45,18 @@ public abstract class FmBaseActivity extends Activity {
         
         
         
-        
+    }
+    
+    @Override
+    protected void onResume() {
+    	if (FmMainMenu.isChanging()) {
+    		if (isRootView()) {
+    			changeMenu();
+    		}
+    		finish();
+    	}
+    	
+    	super.onResume();
     }
     
     /**
@@ -48,7 +69,7 @@ public abstract class FmBaseActivity extends Activity {
     		
     		
  //   		if (mMenuVisible == true) {
-    			mMenuLayout = new FmMainMenuLayout(this, layoutResID, true);
+    			mMenuLayout = new FmMainMenu(this, layoutResID, true);
     			super.setContentView(mMenuLayout);
 //    		}
 //    		else {
@@ -59,7 +80,7 @@ public abstract class FmBaseActivity extends Activity {
     	}
     	else {
     		if (mMenuVisible == true) {
-    			mMenuLayout = new FmMainMenuLayout(this, layoutResID, false);
+    			mMenuLayout = new FmMainMenu(this, layoutResID, false);
     			super.setContentView(mMenuLayout);
     		}
     		else {
@@ -77,7 +98,7 @@ public abstract class FmBaseActivity extends Activity {
     public void setContentView(int layoutResID) {
     	
     	if (mMenuVisible == true) {
-			mMenuLayout = new FmMainMenuLayout(this, layoutResID, false);
+			mMenuLayout = new FmMainMenu(this, layoutResID, false);
 			super.setContentView(mMenuLayout);
 		}
 		else {
@@ -127,10 +148,10 @@ public abstract class FmBaseActivity extends Activity {
     	Button button = null;
     	
     	if (btnIndex == FmTitleLayout.BTN_LEFT_01) {
-    		button = mMenuLayout.getButton(FmMainMenuLayout.BTN_LEFT_01);
+    		button = mMenuLayout.getButton(FmMainMenu.BTN_LEFT_01);
     	}
     	else if (btnIndex == FmTitleLayout.BTN_RIGTH_01) {
-    		button = mMenuLayout.getButton(FmMainMenuLayout.BTN_RIGTH_01);
+    		button = mMenuLayout.getButton(FmMainMenu.BTN_RIGTH_01);
     	}
     	else {
     		return;
@@ -163,23 +184,45 @@ public abstract class FmBaseActivity extends Activity {
     	mMenuLayout.setEnabledButton(layoutResID, enabled);
     }
     
-	protected void onMenuClick(int id) {
-		if (id == mCurrentMenu) return;
+	protected void onMenuClick(int menuIndex) {
+		if (menuIndex == FmMainMenu.getCurrentMenu()) return;
 		
+		FmMainMenu.setChanging(true);
+		FmMainMenu.setCurrentMenu(menuIndex);
+		
+		if (isRootView()) {
+			changeMenu();
+		} 
+		
+		finish();
+	}
+	
+	protected void changeMenu() {
+		int menuIndex = FmMainMenu.getCurrentMenu();
 		Class<?> changeClass = null;
 		
-		if (id == R.id.BtnMenuIncomeExpense)	changeClass = MainIncomeAndExpenseLayout.class;
-		else if (id == R.id.BtnMenuAssets) changeClass = MainAssetsLayout.class;
-		else if (id == R.id.BtnMenuReport) changeClass = MainReportLayout.class;
-		else if (id == R.id.BtnMenuBudget) 	changeClass = BudgetLayout.class;
-		else if (id == R.id.BtnMenuSetting) 	changeClass = MainSettingLayout.class;
+		if (menuIndex == FmMainMenu.MENU_INCOME_EXPENSE)	changeClass = MainIncomeAndExpenseLayout.class;
+		else if (menuIndex == FmMainMenu.MENU_ASSETS) changeClass = MainAssetsLayout.class;
+		else if (menuIndex == FmMainMenu.MENU_REPORT) changeClass = MainReportLayout.class;
+		else if (menuIndex == FmMainMenu.MENU_BUDGET) 	changeClass = BudgetLayout.class;
+		else if (menuIndex == FmMainMenu.MENU_SETTING) 	changeClass = MainSettingLayout.class;
 		else {
 			Log.e(LogTag.LAYOUT, "== unregistered event hander ");
-			return;
+			menuIndex = FmMainMenu.MENU_INCOME_EXPENSE;
+			changeClass = MainIncomeAndExpenseLayout.class;
 		}
 		
-		mCurrentMenu = id;
+		FmMainMenu.setChanging(false);
 		Intent intent = new Intent(this, changeClass);
-		startActivity(intent);
+		startActivity(intent);   
 	}
+
+	public void setRootView(boolean mRootView) {
+		this.mRootView = mRootView;
+	}
+
+	public boolean isRootView() {
+		return mRootView;
+	}
+
 }

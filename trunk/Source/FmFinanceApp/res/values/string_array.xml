@@ -163,14 +163,9 @@
 		<item>적금</item>
 		<item>주식</item>
 		<item>펀드</item>
-		<item>저축성 보험</item>
-		<item>아파트/주택</item>
-		<item>토지</item>
-		<item>보증금</item>
-		<item>금</item>
-		<item>외화</item>
-		<item>회원권</item>
-		<item>기타 부동산</item>
+		<item>보험</item>
+		<item>부동산</item>
+		<item>기타</item>
 	</string-array>
 	<string-array name="liability_base_main_category">
 		<item>대출</item>

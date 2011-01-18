@@ -5,13 +5,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,7 +27,6 @@ import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
 import com.fletamuto.sptb.util.FinanceDataFormat;
-import com.fletamuto.sptb.util.LogTag;
 
 /**
  * 메인 레이아웃 클레스
@@ -40,6 +36,8 @@ import com.fletamuto.sptb.util.LogTag;
 public class MainIncomeAndExpenseLayout extends FmBaseActivity { 
 	public static final int LAST_DAY_OF_MONTH = 31;
 	private static final int MOVE_SENSITIVITY = 30;
+	
+	private static boolean mDBInit = false; 
 	
 	protected ArrayList<FinanceItem> mIncomeDailyItems = null;
 	protected ArrayList<FinanceItem> mExpenseDailyItems = null;
@@ -62,9 +60,13 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_income_and_expense, false);
         
-        DBMgr.initialize(getApplicationContext());
-        DBMgr.addRepeatItems();
+        if (mDBInit == false) {
+        	DBMgr.initialize(getApplicationContext());
+            DBMgr.addRepeatItems();
+            mDBInit = true;
+        }
         
+        setRootView(true);
         setBtnClickListener();
         setTitle(getResources().getString(R.string.app_name));
         
@@ -83,6 +85,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
      * activity가 다시 시작할 때
      */
     protected void onResume() {
+    	
     	getDailyListItem();
         getMonthlyListItem();
         

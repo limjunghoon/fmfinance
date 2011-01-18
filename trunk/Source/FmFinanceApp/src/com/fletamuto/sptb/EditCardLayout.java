@@ -48,8 +48,8 @@ public class EditCardLayout extends FmBaseActivity {
 	@Override
 	protected void setTitleBtn() {
 		setTitle("카드 편집");
-		setTitleBtnText(FmMainMenuLayout.BTN_RIGTH_01, "추가");
-		setTitleBtnVisibility(FmMainMenuLayout.BTN_RIGTH_01, View.VISIBLE);
+		setTitleBtnText(FmMainMenu.BTN_RIGTH_01, "추가");
+		setTitleBtnVisibility(FmMainMenu.BTN_RIGTH_01, View.VISIBLE);
 		setAddButtonListener();
 		
 		super.setTitleBtn();
@@ -93,7 +93,7 @@ public class EditCardLayout extends FmBaseActivity {
 	}
 	
 	public void setAddButtonListener() {
-		setTitleButtonListener(FmMainMenuLayout.BTN_RIGTH_01, new View.OnClickListener() {
+		setTitleButtonListener(FmMainMenu.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(EditCardLayout.this, SelectInputCardLayout.class);		

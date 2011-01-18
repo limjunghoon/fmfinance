@@ -54,7 +54,7 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.report_base, false);
+        setContentView(R.layout.report_base, true);
         
 //        getDate();
 //        setAdapterList();
@@ -76,9 +76,9 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	
 	@Override
 	protected void setTitleBtn() {
-		setTitleBtnText(FmMainMenuLayout.BTN_RIGTH_01, "추가");
+		setTitleBtnText(FmMainMenu.BTN_RIGTH_01, "추가");
         setAddButtonListener();
-        setTitleBtnVisibility(FmMainMenuLayout.BTN_RIGTH_01, View.VISIBLE);
+        setTitleBtnVisibility(FmMainMenu.BTN_RIGTH_01, View.VISIBLE);
         
         if (isDisplayCategory()) {
         	setTitle(mCategoryName);

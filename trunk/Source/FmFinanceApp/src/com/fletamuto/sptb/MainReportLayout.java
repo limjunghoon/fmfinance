@@ -21,6 +21,7 @@ public class MainReportLayout extends FmBaseActivity {
         
         setContentView(R.layout.report_main);
         
+        setRootView(true);
         setAdapterList();
       
         mReportActivityList.add(new ReportActivity(ReportMonthLayout.class));

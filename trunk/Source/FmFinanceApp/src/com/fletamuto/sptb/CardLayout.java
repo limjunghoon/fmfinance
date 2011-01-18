@@ -49,8 +49,8 @@ public class CardLayout extends FmBaseActivity {
 	@Override
 	protected void setTitleBtn() {
 		setTitle("카드");
-		setTitleBtnText(FmMainMenuLayout.BTN_RIGTH_01, "편집");
-		setTitleBtnVisibility(FmMainMenuLayout.BTN_RIGTH_01, View.VISIBLE);
+		setTitleBtnText(FmMainMenu.BTN_RIGTH_01, "편집");
+		setTitleBtnVisibility(FmMainMenu.BTN_RIGTH_01, View.VISIBLE);
 		setEditButtonListener();
 		
 		super.setTitleBtn();
@@ -126,7 +126,7 @@ public class CardLayout extends FmBaseActivity {
 	}
 	
 	public void setEditButtonListener() {
-		setTitleButtonListener(FmMainMenuLayout.BTN_RIGTH_01, new View.OnClickListener() {
+		setTitleButtonListener(FmMainMenu.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(CardLayout.this, EditCardLayout.class);

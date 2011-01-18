@@ -7,13 +7,17 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class FmMainMenuLayout extends LinearLayout {
+public class FmMainMenu extends LinearLayout {
 	public static final int MENU_INCOME_EXPENSE  = 0;
 	public static final int MENU_ASSETS  = 1;
 	public static final int MENU_REPORT  = 2;
 	public static final int MENU_BUDGET  = 3;
 	public static final int MENU_SETTING  = 4;
 	public static final int MAX_MENU_COUNT  = 5;
+	
+	private static boolean mChanging = false; 
+	private static int mCurrentMenu;
+//	private static int mMenuIndex = MENU_INCOME_EXPENSE;
 	
 	private ViewGroup mBodyLayout;
 	private LinearLayout mMenuLayout;	
@@ -29,7 +33,7 @@ public class FmMainMenuLayout extends LinearLayout {
 	public static final int BTN_RIGTH_01 = 1;
 
 	
-	public FmMainMenuLayout(Context context, int layoutResID, boolean title) {
+	public FmMainMenu(Context context, int layoutResID, boolean title) {
 		super(context);
 		
 		mTitle = title;
@@ -128,5 +132,29 @@ public class FmMainMenuLayout extends LinearLayout {
 	public void setTitle(CharSequence title) {
 		if (mTitleLayout == null) return;
 		tvTitle.setText(title);
+	}
+
+	public static void setChanging(boolean mChanging) {
+		FmMainMenu.mChanging = mChanging;
+	}
+
+	public static boolean isChanging() {
+		return mChanging;
+	}
+//
+//	public static void setCurrentMenuIndex(int mMenuIndex) {
+//		FmMainMenuLayout.mMenuIndex = mMenuIndex;
+//	}
+//
+//	public static int getCurrentMenuIndex() {
+//		return mMenuIndex;
+//	}
+
+	public static void setCurrentMenu(int currentMenu) {
+		FmMainMenu.mCurrentMenu = currentMenu;
+	}
+
+	public static int getCurrentMenu() {
+		return mCurrentMenu;
 	}
 }

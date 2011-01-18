@@ -39,6 +39,7 @@ public final class MsgDef {
 		public final static int ACT_BOOKMARK_SELECT = 33;
 		public final static int ACT_STATE_HISTORY = 34;
 		public final static int ACT_ADD_ITEM = 35;
+		public final static int ACT_CHANGE_MENU = 36;
 	}
 	
 	public static final class ExtraNames {
@@ -82,6 +83,7 @@ public final class MsgDef {
 		public static final String ITEM_ID = "ITEM_ID";
 		public static final String STOCK_ID = "STOCK_ID";
 		public static final String INPUT_CHANGE_MODE = "INPUT_CHANGE_MODE";
+		public static final String CHANGE_MENU = "CHANGE_MENU";
 		
 	}
 }
