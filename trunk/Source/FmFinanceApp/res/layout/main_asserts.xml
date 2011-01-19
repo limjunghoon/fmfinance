@@ -23,13 +23,13 @@
 					</LinearLayout>
 				</LinearLayout>
 				
-				<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLMainAssetsAssetsReport" android:orientation="vertical" android:paddingBottom="20dp">
+				<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLMainAssetsAssetsReport" android:orientation="vertical" android:paddingBottom="15dp">
 				</LinearLayout>
 				
-				<LinearLayout android:id="@+id/LLMainAssetsLiabilityReport" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="15dp" android:paddingBottom="20dp">
+				<LinearLayout android:id="@+id/LLMainAssetsLiabilityReport" android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="15dp" android:paddingBottom="15dp">
 				</LinearLayout>
 				
-				<LinearLayout android:layout_width="fill_parent" android:id="@+id/LLMainAssetsCardReport" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="15dp" android:paddingBottom="20dp">
+				<LinearLayout android:layout_width="fill_parent" android:id="@+id/LLMainAssetsCardReport" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="15dp" android:paddingBottom="15dp">
 				</LinearLayout>
 				
 				<LinearLayout android:layout_width="fill_parent" android:id="@+id/LLMainAssetsMyPoketReport" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="15dp">

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
@@ -63,6 +64,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
         if (mDBInit == false) {
         	DBMgr.initialize(getApplicationContext());
             DBMgr.addRepeatItems();
+            settlementDay();
             mDBInit = true;
         }
         
@@ -70,16 +72,23 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
         setBtnClickListener();
         setTitle(getResources().getString(R.string.app_name));
         
-//        getDailyListItem();
-//        getMonthlyListItem();
-//        
-//        setDailyAdapterList();
-//        setMonthlyAdapterList();
-//    	updateViewText();
     	changeViewMode();
     }
-    
-    
+
+	protected void settlementDay() {
+		ArrayList<CardItem> items =DBMgr.getCardItems();
+		int today = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+		int size = items.size();
+		
+		for (int index = 0; index < size; index++) {
+			CardItem card = items.get(index);
+			
+			if (card.getSettlementDay() == today) {
+				// 결제
+			}
+		}
+		
+	}
 
 	/**
      * activity가 다시 시작할 때
