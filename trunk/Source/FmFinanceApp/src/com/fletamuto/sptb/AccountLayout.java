@@ -35,7 +35,6 @@ public class AccountLayout extends FmBaseActivity {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.main_account, true);
-        
         updateData();
     }
 	

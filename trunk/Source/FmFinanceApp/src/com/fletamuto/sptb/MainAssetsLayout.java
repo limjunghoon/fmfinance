@@ -5,16 +5,20 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.common.control.fmgraph.PieGraph;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsItem;
@@ -46,12 +50,10 @@ public class MainAssetsLayout extends FmBaseActivity {
 	
 	protected LinearLayout mLLReport[] = new LinearLayout[MAX_REPORT];
 	
-//	protected ReportItemAdapter mItemAdapter = null;
-	
-
-//	
 	private long mTotalAmount[] = new long[MAX_REPORT];
 	private long mTatalAccountBalance = 0L;
+	
+	private Button mBtnAmount;
 
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -131,22 +133,85 @@ public class MainAssetsLayout extends FmBaseActivity {
 			mLLReport[REPORT_CARD].addView(llMember, params);
 		}
 		mLLReport[REPORT_CARD].invalidate();
-		
 	}
 
 	protected void makeReportListMyPocket() {
 		addTitleLayout(REPORT_MYPORKET, "현금", mTotalAmount[REPORT_MYPORKET]);
 		
 		LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.main_assets_member, null);
-		LinearLayout.LayoutParams params = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
 		TextView tvName = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberName);
 		tvName.setText("내 주머니");
 		TextView tvAmount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberTotalAmout);
 		tvAmount.setText(String.format("%,d원", mTotalAmount[REPORT_MYPORKET]));
-		llMember.setTag(mMyPocket);
-		llMember.setOnClickListener(mMemberClickLinter);
+//		llMember.setTag(mMyPocket);
+		llMember.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				inputMypocket();
+//				Intent intent = new Intent(MainAssetsLayout.this, AccountLayout.class);
+//				startActivity(intent);
+			}
+		});
 		mLLReport[REPORT_MYPORKET].addView(llMember, params);
 		mLLReport[REPORT_MYPORKET].invalidate();
+	}
+	
+	protected void inputMypocket() {
+		final LinearLayout LLMyPocket = (LinearLayout) View.inflate(this, R.layout.input_mypocket, null);
+		mBtnAmount = (Button) LLMyPocket.findViewById(R.id.BtnMyPocketAmount);
+		mBtnAmount.setText(String.format("%,d원", mMyPocket.getBalance()));
+		
+		mBtnAmount.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent intent = new Intent(MainAssetsLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT);
+			}
+		});
+    
+		
+		
+		new AlertDialog.Builder(this)
+		.setTitle("내 주머니 잔액입력")
+		.setView(LLMyPocket)
+		.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				Long amount = (Long) mBtnAmount.getTag();
+				mMyPocket.setBalance(amount);
+				DBMgr.updateAccount(mMyPocket);
+				
+				getListItem();
+		    	updateChildView();
+			}
+		})
+		.setNegativeButton("최소", new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		})
+		.show();
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	
+		if (requestCode == MsgDef.ActRequest.ACT_AMOUNT) {
+    		if (resultCode == RESULT_OK) {
+    			updateMypocketPopupText(data.getLongExtra("AMOUNT", 0L));
+    		}
+    	}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	protected void updateMypocketPopupText(long amount) {
+		if (mBtnAmount == null) return;
+		
+		mBtnAmount.setText(String.format("%,d원", amount));
+		mBtnAmount.setTag(new Long(amount));
 	}
 
 	protected void makeReportListAssets() {
