@@ -47,7 +47,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	private ArrayList<FinanceItem> itemsTemp;
 	//달력 입력과 자주 사용 되는 지출을 위해 end
 	
-	private AccountItem fromItem;
+//	private AccountItem fromItem;
 	private long beforeAmount;
 	  
 	
@@ -80,7 +80,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     	
     	setTitleBtnText(FmTitleLayout.BTN_LEFT_01, "수입");
         setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);
-    	
     }
     
     @Override
@@ -100,36 +99,48 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     
     protected void saveItem() {
     	if (mInputMode == InputMode.ADD_MODE) {
-    		PaymentMethod paymentMethod = mExpensItem.getPaymentMethod();
-    		if(mExpensItem.getPaymentMethod().getType() == PaymentMethod.ACCOUNT) {
-    			PaymentAccountMethod accountMethod = (PaymentAccountMethod) paymentMethod;
-    			fromItem = accountMethod.getAccount();
-
-    			long fromItemBalance = fromItem.getBalance();
-
-				fromItem.setBalance(fromItemBalance - mExpensItem.getAmount());
-				DBMgr.updateAccount(fromItem);
-    		}
+    		
     		if (saveNewItem(null) == true) {
+    			updateAccountBalance();
     			saveRepeat();
     		}
     	}
     	else if (mInputMode == InputMode.EDIT_MODE){
-    		PaymentMethod paymentMethod = mExpensItem.getPaymentMethod();
-    		if(mExpensItem.getPaymentMethod().getType() == PaymentMethod.ACCOUNT) {
-    			PaymentAccountMethod accountMethod = (PaymentAccountMethod) paymentMethod;
-    			fromItem = accountMethod.getAccount();
-
-    			long fromItemBalance = fromItem.getBalance();
-
-				fromItem.setBalance(fromItemBalance + beforeAmount - mExpensItem.getAmount());
-				DBMgr.updateAccount(fromItem);
-    		}
+//    		PaymentMethod paymentMethod = mExpensItem.getPaymentMethod();
+//    		if(mExpensItem.getPaymentMethod().getType() == PaymentMethod.ACCOUNT) {
+//    			PaymentAccountMethod accountMethod = (PaymentAccountMethod) paymentMethod;
+//    			fromItem = accountMethod.getAccount();
+//
+//    			long fromItemBalance = fromItem.getBalance();
+//
+//				fromItem.setBalance(fromItemBalance + beforeAmount - mExpensItem.getAmount());
+//				DBMgr.updateAccount(fromItem);
+//    		}
     		saveUpdateItem();
     	}
     }
 
-    /**
+    protected void updateAccountBalance() {
+    	PaymentMethod paymentMethod = mExpensItem.getPaymentMethod();
+    	int paymentMethodType = mExpensItem.getPaymentMethod().getType();
+    	AccountItem account = null; 
+    	
+    	if (paymentMethodType == PaymentMethod.CASH) {
+    		account = DBMgr.getAccountMyPoctet();
+    	} 
+    	else if (paymentMethodType == PaymentMethod.ACCOUNT) {
+    		PaymentAccountMethod accountMethod = (PaymentAccountMethod) paymentMethod;
+			account = accountMethod.getAccount();
+    	}
+    	
+    	if (account != null) {
+    		long remainPocketBalace = account.getBalance() - mExpensItem.getAmount();
+    		account.setBalance((remainPocketBalace < 0L) ? 0L : remainPocketBalace);
+    		DBMgr.updateAccount(account);
+    	}
+	}
+
+	/**
      * 금액을 갱신
      */
 	protected void updateAmount(Long amount) {
