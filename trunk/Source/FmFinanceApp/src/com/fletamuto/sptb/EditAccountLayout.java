@@ -37,7 +37,6 @@ public class EditAccountLayout extends FmBaseActivity {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.edit_account, true);
-        
         setAdapterList();
     }
 
