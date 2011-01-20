@@ -357,7 +357,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 			
 			public boolean onTouch(View v, MotionEvent event) {
 				setMoveViewMotionEvent(event);
-		    	return true;
+		    	return false;
 			}
 		});
     }
@@ -465,7 +465,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 			
 			public boolean onTouch(View v, MotionEvent event) {
 				setMoveViewMotionEvent(event);
-		    	return true;
+		    	return false;
 			}
 		});
 	}
@@ -492,7 +492,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 			
 			public boolean onTouch(View v, MotionEvent event) {
 				setMoveViewMotionEvent(event);
-		    	return true;
+		    	return false;
 			}
 		});
 	}
