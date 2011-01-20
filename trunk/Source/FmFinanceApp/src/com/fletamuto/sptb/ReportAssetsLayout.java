@@ -96,7 +96,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     private void setListViewTextInsurance(AssetsInsuranceItem insurance,
 			View convertView) {
     	((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(insurance.getTitle());
-		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(insurance.getCreateDateString() + " ~ " + insurance.getExpriyDateString());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(insurance.getCreateDateString() + "~" + insurance.getExpriyDateString());
 		((TextView)convertView.findViewById(R.id.TVSectionLine2Right)).setText(String.format("%,d원", insurance.getAmount()));
 		
 //		((TextView)convertView.findViewById(R.id.TVAssetsInsuranceTitle)).setText("제목 : " + insurance.getTitle());
@@ -109,7 +109,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
 
 	private void setListViewTextFund(AssetsFundItem item, View convertView) {
 		((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(item.getTitle());
-		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(item.getCreateDateString() + " ~ " + item.getExpriyDateString());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(item.getCreateDateString() + "~" + item.getExpriyDateString());
 		((TextView)convertView.findViewById(R.id.TVSectionLine2Right)).setText(String.format("%,d원", item.getAmount()));
 //    	((TextView)convertView.findViewById(R.id.TVAssetsFundTitle)).setText("제목 : " + item.getTitle());
 //		((TextView)convertView.findViewById(R.id.TVAssetsFundAmount)).setText(String.format("평가금액 :  %,d원", item.getAmount()));
@@ -124,7 +124,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
 
 	protected void setListViewTextDeposit(AssetsDepositItem deposit, View convertView) {
 		((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(deposit.getTitle());
-		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(deposit.getCreateDateString() + " ~ " + deposit.getExpriyDateString());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(deposit.getCreateDateString() + "~" + deposit.getExpriyDateString());
 		((TextView)convertView.findViewById(R.id.TVSectionLine2Right)).setText(String.format("%,d원", deposit.getAmount()));
 		
 //		if (deposit.getAccount() != null) {
@@ -140,7 +140,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     
     protected void setListViewTextSavings(AssetsSavingsItem savings, View convertView) {
     	((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(savings.getTitle());
-		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(savings.getCreateDateString() + " ~ " + savings.getExpriyDateString());
+		((TextView)convertView.findViewById(R.id.TVSectionLine2Left)).setText(savings.getCreateDateString() + "~" + savings.getExpriyDateString());
 		((TextView)convertView.findViewById(R.id.TVSectionLine2Right)).setText(String.format("%,d원", savings.getAmount()));
 //		if (savings.getAccount() != null) {
 //			((TextView)convertView.findViewById(R.id.TVAssetsSavingsBankingName)).setText("은행 : " + savings.getAccount().getCompany().getName());
