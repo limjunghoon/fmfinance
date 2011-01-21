@@ -1,33 +1,41 @@
 package com.fletamuto.common.control;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
+import android.content.Context;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.R;
 
-public class InputAmountDialog extends Activity {
+public class InputAmountView extends LinearLayout {
+	
+	public InputAmountView(Context context) {
+		super(context);
+      setInputNumberListener();
+      setRemoveNumberListener();
+      setOkCancelListener();
+      
+      displayAmount();
+	}
+
 	private Long Amount = 0L;
 	final static int MAX_VALUE_DIGIT = 9;
 	
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.input_amount);
-        
-        setInputNumberListener();
-        setRemoveNumberListener();
-        setOkCancelListener();
-        
-        displayAmount();
-    }
+//    /** Called when the activity is first created. */
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        setContentView(R.layout.input_amount);
+//        
+//        setInputNumberListener();
+//        setRemoveNumberListener();
+//        setOkCancelListener();
+//        
+//        displayAmount();
+//    }
     
     private void setInputNumberListener() {
     	InputAmount inputAmount = new InputAmount();
@@ -64,26 +72,26 @@ public class InputAmountDialog extends Activity {
     }
     
     private void setOkCancelListener() {
-    	Button btnOK = (Button)findViewById(R.id.BtnAmountOK);
-    	btnOK.setOnClickListener(new Button.OnClickListener() {
-		
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.putExtra("AMOUNT", Amount);
-				setResult(RESULT_OK, intent);
-				finish();
-				
-			}
-		 });
+//    	Button btnOK = (Button)findViewById(R.id.BtnAmountOK);
+//    	btnOK.setOnClickListener(new Button.OnClickListener() {
+//		
+//			public void onClick(View v) {
+//				Intent intent = new Intent();
+//				intent.putExtra("AMOUNT", Amount);
+//				setResult(RESULT_OK, intent);
+//				finish();
+//				
+//			}
+//		 });
     	
-    	Button btnCancel = (Button)findViewById(R.id.BtnAmountCancel);
-    	btnCancel.setOnClickListener(new Button.OnClickListener() {
-		
-			public void onClick(View v) {
-				setResult(RESULT_CANCELED);
-				finish();
-			}
-		 });
+//    	Button btnCancel = (Button)findViewById(R.id.BtnAmountCancel);
+//    	btnCancel.setOnClickListener(new Button.OnClickListener() {
+//		
+//			public void onClick(View v) {
+//				setResult(RESULT_CANCELED);
+//				finish();
+//			}
+//		 });
     }
     
     public void clear() {

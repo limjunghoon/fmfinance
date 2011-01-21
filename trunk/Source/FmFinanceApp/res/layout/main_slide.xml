@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent" android:layout_height="fill_parent" android:gravity="bottom" android:orientation="vertical">
+
+	<LinearLayout android:id="@+id/LinearLayout02" android:layout_width="fill_parent" android:visibility="invisible" android:layout_height="wrap_content" android:background="#C0C0C0">
+	</LinearLayout>
+	
+	<LinearLayout android:layout_width="fill_parent" android:id="@+id/LLBottomSlide" android:visibility="invisible" android:layout_height="wrap_content" android:background="#C0C0C0" android:orientation="vertical">
+		<LinearLayout android:layout_width="fill_parent" android:id="@+id/LLBottomSlideBody" android:layout_height="wrap_content" android:background="#C0C0C0">
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LLBottomSlideTitle" android:layout_height="wrap_content" android:layout_width="fill_parent">
+			<Button android:id="@+id/BtnSlideOK" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="완료"></Button>
+			<Button android:id="@+id/BtnSlideCancel" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="취소"></Button>
+		</LinearLayout>
+	</LinearLayout>
+
+</LinearLayout>

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.fletamuto.sptb.util.LogTag;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 /**
  * finance에서 기본이 되는 뷰 엑티비티
@@ -16,7 +17,7 @@ import com.fletamuto.sptb.util.LogTag;
  */
 public abstract class FmBaseActivity extends Activity {
 //	private FmTitleLayout mTitleLayout;
-	private FmMainMenu  mMenuLayout;
+	private FmBaseLayout  mBaseLayout;
 	
 	private boolean mRootView = false;
 	private boolean mMenuVisible = true;
@@ -26,13 +27,13 @@ public abstract class FmBaseActivity extends Activity {
 		
 		public void onClick(View v) {
 			int id = v.getId();
-			int menuIndex = FmMainMenu.MENU_INCOME_EXPENSE;
+			int menuIndex = FmBaseLayout.MENU_INCOME_EXPENSE;
 			
-			if (id == R.id.BtnMenuIncomeExpense)	menuIndex = FmMainMenu.MENU_INCOME_EXPENSE;
-			else if (id == R.id.BtnMenuAssets) menuIndex = FmMainMenu.MENU_ASSETS;
-			else if (id == R.id.BtnMenuReport) menuIndex = FmMainMenu.MENU_REPORT;
-			else if (id == R.id.BtnMenuBudget) 	menuIndex = FmMainMenu.MENU_BUDGET;
-			else if (id == R.id.BtnMenuSetting) menuIndex = FmMainMenu.MENU_SETTING;
+			if (id == R.id.BtnMenuIncomeExpense)	menuIndex = FmBaseLayout.MENU_INCOME_EXPENSE;
+			else if (id == R.id.BtnMenuAssets) menuIndex = FmBaseLayout.MENU_ASSETS;
+			else if (id == R.id.BtnMenuReport) menuIndex = FmBaseLayout.MENU_REPORT;
+			else if (id == R.id.BtnMenuBudget) 	menuIndex = FmBaseLayout.MENU_BUDGET;
+			else if (id == R.id.BtnMenuSetting) menuIndex = FmBaseLayout.MENU_SETTING;
 					
 			onMenuClick(menuIndex);
 		}
@@ -49,7 +50,7 @@ public abstract class FmBaseActivity extends Activity {
     
     @Override
     protected void onResume() {
-    	if (FmMainMenu.isChanging()) {
+    	if (FmBaseLayout.isChanging()) {
     		if (isRootView()) {
     			changeMenu();
     		}
@@ -69,8 +70,8 @@ public abstract class FmBaseActivity extends Activity {
     		
     		
  //   		if (mMenuVisible == true) {
-    			mMenuLayout = new FmMainMenu(this, layoutResID, true);
-    			super.setContentView(mMenuLayout);
+    			mBaseLayout = new FmBaseLayout(this, layoutResID, true);
+    			super.setContentView(mBaseLayout);
 //    		}
 //    		else {
 //    			mTitleLayout = new FmTitleLayout(this, layoutResID);
@@ -80,8 +81,8 @@ public abstract class FmBaseActivity extends Activity {
     	}
     	else {
     		if (mMenuVisible == true) {
-    			mMenuLayout = new FmMainMenu(this, layoutResID, false);
-    			super.setContentView(mMenuLayout);
+    			mBaseLayout = new FmBaseLayout(this, layoutResID, false);
+    			super.setContentView(mBaseLayout);
     		}
     		else {
     			super.setContentView(layoutResID);
@@ -92,21 +93,21 @@ public abstract class FmBaseActivity extends Activity {
     	setTitleBtn();
     	setTitleButtonListener();
     	
-    	mMenuLayout.setMenuBtnClickListener(mMenuClickListener);
+    	mBaseLayout.setMenuBtnClickListener(mMenuClickListener);
     }
     
     public void setContentView(int layoutResID) {
     	
     	if (mMenuVisible == true) {
-			mMenuLayout = new FmMainMenu(this, layoutResID, false);
-			super.setContentView(mMenuLayout);
+			mBaseLayout = new FmBaseLayout(this, layoutResID, false);
+			super.setContentView(mBaseLayout);
 		}
 		else {
 			super.setContentView(layoutResID);
 		}
     	
     	initialize();
-    	mMenuLayout.setMenuBtnClickListener(mMenuClickListener);
+    	mBaseLayout.setMenuBtnClickListener(mMenuClickListener);
     }
     
     /**
@@ -124,9 +125,9 @@ public abstract class FmBaseActivity extends Activity {
     
     /** 제목창 버튼 클릭시 리스너 설정 */
     protected void setTitleButtonListener() {
-    	if (mMenuLayout == null) return;
+    	if (mBaseLayout == null) return;
     	
-    	Button btnBack = mMenuLayout.getButton(FmTitleLayout.BTN_LEFT_01);
+    	Button btnBack = mBaseLayout.getButton(FmTitleLayout.BTN_LEFT_01);
     	if (btnBack == null) return;
     	btnBack.setOnClickListener(new View.OnClickListener() {
 
@@ -144,14 +145,14 @@ public abstract class FmBaseActivity extends Activity {
 	}
 
 	protected void setTitleButtonListener(int btnIndex, View.OnClickListener listener) {
-    	if (mMenuLayout == null) return;
+    	if (mBaseLayout == null) return;
     	Button button = null;
     	
     	if (btnIndex == FmTitleLayout.BTN_LEFT_01) {
-    		button = mMenuLayout.getButton(FmMainMenu.BTN_LEFT_01);
+    		button = mBaseLayout.getButton(FmBaseLayout.BTN_LEFT_01);
     	}
     	else if (btnIndex == FmTitleLayout.BTN_RIGTH_01) {
-    		button = mMenuLayout.getButton(FmMainMenu.BTN_RIGTH_01);
+    		button = mBaseLayout.getButton(FmBaseLayout.BTN_RIGTH_01);
     	}
     	else {
     		return;
@@ -165,30 +166,30 @@ public abstract class FmBaseActivity extends Activity {
 	 * @param title 설정할 뷰 제목
 	 */
     public void setTitle(CharSequence title) {
-    	if (mMenuLayout == null) return;
-    	mMenuLayout.setTitle(title);
+    	if (mBaseLayout == null) return;
+    	mBaseLayout.setTitle(title);
     };
     
     public void setTitleBtnVisibility(int btnIndex, int visibility) {
-    	if (mMenuLayout == null) return;
-    	mMenuLayout.setVisibility(btnIndex, visibility);
+    	if (mBaseLayout == null) return;
+    	mBaseLayout.setVisibility(btnIndex, visibility);
     }
     
     public void setTitleBtnText(int btnIndex, CharSequence name) {
-    	if (mMenuLayout == null) return;
-    	mMenuLayout.setButtonText(btnIndex, name);
+    	if (mBaseLayout == null) return;
+    	mBaseLayout.setButtonText(btnIndex, name);
     }
     
     public void setTitleBtnEnabled(int layoutResID, boolean enabled) {
-    	if (mMenuLayout == null) return;
-    	mMenuLayout.setEnabledButton(layoutResID, enabled);
+    	if (mBaseLayout == null) return;
+    	mBaseLayout.setEnabledButton(layoutResID, enabled);
     }
     
 	protected void onMenuClick(int menuIndex) {
-		if (menuIndex == FmMainMenu.getCurrentMenu()) return;
+		if (menuIndex == FmBaseLayout.getCurrentMenu()) return;
 		
-		FmMainMenu.setChanging(true);
-		FmMainMenu.setCurrentMenu(menuIndex);
+		FmBaseLayout.setChanging(true);
+		FmBaseLayout.setCurrentMenu(menuIndex);
 		
 		if (isRootView()) {
 			changeMenu();
@@ -198,21 +199,21 @@ public abstract class FmBaseActivity extends Activity {
 	}
 	
 	protected void changeMenu() {
-		int menuIndex = FmMainMenu.getCurrentMenu();
+		int menuIndex = FmBaseLayout.getCurrentMenu();
 		Class<?> changeClass = null;
 		
-		if (menuIndex == FmMainMenu.MENU_INCOME_EXPENSE)	changeClass = MainIncomeAndExpenseLayout.class;
-		else if (menuIndex == FmMainMenu.MENU_ASSETS) changeClass = MainAssetsLayout.class;
-		else if (menuIndex == FmMainMenu.MENU_REPORT) changeClass = MainReportLayout.class;
-		else if (menuIndex == FmMainMenu.MENU_BUDGET) 	changeClass = BudgetLayout.class;
-		else if (menuIndex == FmMainMenu.MENU_SETTING) 	changeClass = MainSettingLayout.class;
+		if (menuIndex == FmBaseLayout.MENU_INCOME_EXPENSE)	changeClass = MainIncomeAndExpenseLayout.class;
+		else if (menuIndex == FmBaseLayout.MENU_ASSETS) changeClass = MainAssetsLayout.class;
+		else if (menuIndex == FmBaseLayout.MENU_REPORT) changeClass = MainReportLayout.class;
+		else if (menuIndex == FmBaseLayout.MENU_BUDGET) 	changeClass = BudgetLayout.class;
+		else if (menuIndex == FmBaseLayout.MENU_SETTING) 	changeClass = MainSettingLayout.class;
 		else {
 			Log.e(LogTag.LAYOUT, "== unregistered event hander ");
-			menuIndex = FmMainMenu.MENU_INCOME_EXPENSE;
+			menuIndex = FmBaseLayout.MENU_INCOME_EXPENSE;
 			changeClass = MainIncomeAndExpenseLayout.class;
 		}
 		
-		FmMainMenu.setChanging(false);
+		FmBaseLayout.setChanging(false);
 		Intent intent = new Intent(this, changeClass);
 		startActivity(intent);   
 	}
@@ -224,5 +225,27 @@ public abstract class FmBaseActivity extends Activity {
 	public boolean isRootView() {
 		return mRootView;
 	}
-
+	
+	public void showSlideView() {
+		mBaseLayout.setSlideVisibility(View.VISIBLE);
+		mBaseLayout.showOpenAnimatioin();
+//		mBaseLayout.setAnimation( AnimationUtils.loadAnimation(this, R.anim.popup_effect));
+	}
+	
+	public void hideSlideView() {
+		mBaseLayout.showCloseAnimatioin();
+		mBaseLayout.setSlideVisibility(View.INVISIBLE);
+	}
+	
+	public boolean isActiveSliding() {
+		return mBaseLayout.isActiveSliding();
+	}
+	
+    protected void setSlideView(int layoutResource) {
+    	mBaseLayout.setSlideView(layoutResource);
+    }
+    
+    protected void setSlideView(View layout) {
+    	mBaseLayout.setSlideView(layout);
+    }
 }

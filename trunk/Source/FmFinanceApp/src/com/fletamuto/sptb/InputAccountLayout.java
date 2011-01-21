@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.db.DBMgr;
@@ -71,8 +70,8 @@ public class InputAccountLayout extends InputBaseLayout {
     	btnAmount.setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
-				Intent intent = new Intent(InputAccountLayout.this, InputAmountDialog.class);
-				startActivityForResult(intent, ACT_AMOUNT);
+//				Intent intent = new Intent(InputAccountLayout.this, InputAmountDialog.class);
+//				startActivityForResult(intent, ACT_AMOUNT);
 			}
 		 });
     }

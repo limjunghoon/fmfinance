@@ -12,11 +12,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 
-import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
+import com.fletamuto.sptb.view.InputAmountLayout;
 
 /**
  * 수입, 지출, 자산, 부채  입력 또는 수정 기본 레이아웃 클래스
@@ -28,6 +28,8 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 	protected final static int ACT_REPEAT = MsgDef.ActRequest.ACT_REPEAT;
 	
 	private FinanceItem mItem;
+	
+	protected InputAmountLayout mAmountLayout;
 	
 	protected abstract void updateDate();
 	protected abstract void updateCategory(int id, String name);
@@ -54,6 +56,15 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 
         
     }
+	@Override
+	protected void initialize() {
+		super.initialize();
+		 
+		mAmountLayout = new InputAmountLayout(this);
+//		mAmountLayout = (InputAmountLayout) View.inflate(this, R.layout.input_amount, null);
+//		LayoutInflater inflater = LayoutInflater.from(this);
+//		mAmountLayout = (InputAmountLayout) inflater.inflate(R.layout.input_amount, null);
+	}
 	
 	@Override
 	protected void setTitleBtn() {
@@ -128,12 +139,30 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
      * @param btnID 금액버튼 아이디
      */
     protected void setAmountBtnClickListener(int btnID) {
+    	
     	Button btnAmount = (Button)findViewById(btnID);
     	btnAmount.setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
-				Intent intent = new Intent(InputFinanceItemBaseLayout.this, InputAmountDialog.class);
-				startActivityForResult(intent, ACT_AMOUNT);
+				setSlideView(mAmountLayout);
+				
+				if (isActiveSliding()) {
+					hideSlideView();
+				}
+				else {
+					showSlideView();
+				}
+				//
+				
+//				Intent intent = new Intent(InputFinanceItemBaseLayout.this, InputAmountDialog.class);
+//				startActivityForResult(intent, ACT_AMOUNT);
+//				if (isActiveSliding()) {
+//					hideSlideView();
+//				}
+//				else {
+//					showSlideView();
+//				}
+//				
 			}
 		 });
     }

@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.common.control.fmgraph.PieGraph;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsItem;
@@ -165,8 +164,8 @@ public class MainAssetsLayout extends FmBaseActivity {
 		mBtnAmount.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(MainAssetsLayout.this, InputAmountDialog.class);
-				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT);
+//				Intent intent = new Intent(MainAssetsLayout.this, InputAmountDialog.class);
+//				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT);
 			}
 		});
     
