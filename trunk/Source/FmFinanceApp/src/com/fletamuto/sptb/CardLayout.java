@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.CardExpenseInfo;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 /**
  * 카드 레이아웃 클레스
@@ -49,8 +50,8 @@ public class CardLayout extends FmBaseActivity {
 	@Override
 	protected void setTitleBtn() {
 		setTitle("카드");
-		setTitleBtnText(FmMainMenu.BTN_RIGTH_01, "편집");
-		setTitleBtnVisibility(FmMainMenu.BTN_RIGTH_01, View.VISIBLE);
+		setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "편집");
+		setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
 		setEditButtonListener();
 		
 		super.setTitleBtn();
@@ -126,7 +127,7 @@ public class CardLayout extends FmBaseActivity {
 	}
 	
 	public void setEditButtonListener() {
-		setTitleButtonListener(FmMainMenu.BTN_RIGTH_01, new View.OnClickListener() {
+		setTitleButtonListener(FmBaseLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(CardLayout.this, EditCardLayout.class);

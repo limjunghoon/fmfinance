@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class ReportDemandAccountLayout extends FmBaseActivity {
 	public static final int VIEW_NORMAL = 0;
@@ -137,9 +138,9 @@ public class ReportDemandAccountLayout extends FmBaseActivity {
 	
 	@Override
 	protected void setTitleBtn() {
-		setTitleBtnText(FmMainMenu.BTN_RIGTH_01, "추가");
+		setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "추가");
         setAddButtonListener();
-        setTitleBtnVisibility(FmMainMenu.BTN_RIGTH_01, View.VISIBLE);
+        setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
         
         setTitle("요구불");
         

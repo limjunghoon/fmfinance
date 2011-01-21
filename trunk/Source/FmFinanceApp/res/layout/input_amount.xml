@@ -2,52 +2,49 @@
 
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
+  android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent" android:gravity="center_horizontal">
 		
 	
 	<TextView android:id="@+id/TVAmount" android:layout_height="wrap_content" android:text="" android:layout_width="fill_parent" android:gravity="right" android:paddingRight="10dp" android:textSize="30dp">
 	</TextView>
-	<TableLayout android:id="@+id/TableLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:paddingTop="5dp">
-		<TableRow android:id="@+id/TableRow01" android:layout_width="wrap_content" android:layout_height="wrap_content">
-			<Button android:id="@+id/BtnAmount_1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1" android:minWidth="80dp">
-			</Button>
-			<Button android:id="@+id/BtnAmount_2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2" android:minWidth="80dp">
-			</Button>
-			<Button android:id="@+id/BtnAmount_3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3" android:minWidth="80dp">
-			</Button>
-		</TableRow>
-		<TableRow android:id="@+id/TableRow02" android:layout_width="wrap_content" android:layout_height="wrap_content">
-			<Button android:id="@+id/BtnAmount_4" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="4" android:minWidth="80dp">
-			</Button>
-			<Button android:id="@+id/BtnAmount_5" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5" android:minWidth="80dp">
-			</Button>
-			<Button android:id="@+id/BtnAmount_6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="6" android:minWidth="80dp">
-			</Button>
-		</TableRow>
-		<TableRow android:id="@+id/TableRow02" android:layout_width="wrap_content" android:layout_height="wrap_content">
-			<Button android:id="@+id/BtnAmount_7" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="7" android:minWidth="80dp">
-			</Button>
-			<Button android:id="@+id/BtnAmount_8" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="8" android:minWidth="80dp">
-			</Button>
-			<Button android:id="@+id/BtnAmount_9" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="9" android:minWidth="80dp">
-			</Button>
-		</TableRow>
-		<TableRow android:id="@+id/TableRow02" android:layout_width="wrap_content" android:layout_height="wrap_content">
-			<Button android:id="@+id/BtnAmountRemoveAll" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/input_amount_remove_all" android:minWidth="80dp">
-			</Button>
-			<Button android:id="@+id/BtnAmount_0" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:minWidth="80dp">
-			</Button>
-			<Button android:id="@+id/BtnAmountRemove" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/input_amount_remove" android:minWidth="80dp">
-			</Button>
-		</TableRow>
-	</TableLayout>
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
-	<Button android:id="@+id/BtnAmountOK" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="확인"></Button>
-	<Button android:id="@+id/BtnAmountCancel" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="취소"></Button></LinearLayout>
+	
+	
 
 
 
 
 
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<Button android:id="@+id/BtnAmount_1" android:layout_height="wrap_content" android:text="1" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
+		</Button>
+		<Button android:id="@+id/BtnAmount_2" android:layout_height="wrap_content" android:text="2" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
+		</Button>
+		<Button android:id="@+id/BtnAmount_3" android:layout_height="wrap_content" android:text="3" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<Button android:id="@+id/BtnAmount_4" android:layout_height="wrap_content" android:text="4" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
+		</Button>
+		<Button android:id="@+id/BtnAmount_5" android:layout_height="wrap_content" android:text="5" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
+		</Button>
+		<Button android:id="@+id/BtnAmount_6" android:layout_height="wrap_content" android:text="6" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<Button android:id="@+id/BtnAmount_7" android:layout_height="wrap_content" android:text="7" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
+		</Button>
+		<Button android:id="@+id/BtnAmount_8" android:layout_height="wrap_content" android:text="8" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
+		</Button>
+		<Button android:id="@+id/BtnAmount_9" android:layout_height="wrap_content" android:text="9" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout04" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<Button android:id="@+id/BtnAmountRemoveAll" android:layout_height="wrap_content" android:text="@string/input_amount_remove_all" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
+		</Button>
+		<Button android:id="@+id/BtnAmount_0" android:layout_height="wrap_content" android:text="0" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
+		</Button>
+		<Button android:id="@+id/BtnAmountRemove" android:layout_height="wrap_content" android:text="@string/input_amount_remove" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
+		</Button>
+	</LinearLayout>
 </LinearLayout>
 

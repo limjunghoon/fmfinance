@@ -1,13 +1,20 @@
-package com.fletamuto.sptb;
+package com.fletamuto.sptb.view;
+
+import com.fletamuto.sptb.R;
+import com.fletamuto.sptb.R.anim;
+import com.fletamuto.sptb.R.id;
+import com.fletamuto.sptb.R.layout;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class FmMainMenu extends LinearLayout {
+public class FmBaseLayout extends FrameLayout {
 	public static final int MENU_INCOME_EXPENSE  = 0;
 	public static final int MENU_ASSETS  = 1;
 	public static final int MENU_REPORT  = 2;
@@ -23,7 +30,14 @@ public class FmMainMenu extends LinearLayout {
 	private LinearLayout mMenuLayout;	
 	private Button mBtnMenu[] = new Button[MAX_MENU_COUNT];
 	private boolean mTitle = false;
+	private boolean mSlide = true;
 	private LinearLayout mTitleLayout = null;
+	private LinearLayout mMainLayout;
+	private LinearLayout mSlideLayout;
+	private LinearLayout mSlideBottomLayout;
+	private LinearLayout mSlideBottomBodyLayout;
+	private LinearLayout mSlideBottomTitleLayout;
+	private boolean mActiveSliding = false;
 	
 	private Button btnLeft01;
 	private Button btnRigth01;
@@ -33,7 +47,7 @@ public class FmMainMenu extends LinearLayout {
 	public static final int BTN_RIGTH_01 = 1;
 
 	
-	public FmMainMenu(Context context, int layoutResID, boolean title) {
+	public FmBaseLayout(Context context, int layoutResID, boolean title) {
 		super(context);
 		
 		mTitle = title;
@@ -48,18 +62,42 @@ public class FmMainMenu extends LinearLayout {
 	}
 
 	private void addContent() {
+		mMainLayout = new LinearLayout(getContext());
+		
 		if (mTitleLayout != null) {
-			addView(mTitleLayout);
+			mMainLayout.addView(mTitleLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 		}
 		
 		setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
-		addView(mBodyLayout, new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT, 1));
+		mMainLayout.addView(mBodyLayout, new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT, 1));
 		LinearLayout.LayoutParams params = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
-		addView(mMenuLayout, params);
+		mMainLayout.addView(mMenuLayout, params);
+		mMainLayout.setOrientation(LinearLayout.VERTICAL);
+		addView(mMainLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
+		
+		if (mSlideLayout != null) {
+			addView(mSlideLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
+		}
+	}
+	
+	public void setSlideVisibility(int visibility) {
+		if (mSlideBottomLayout == null) return;
+		mSlideBottomLayout.setVisibility(visibility);
+		mActiveSliding = (visibility == View.VISIBLE); 
+	}
+	
+	public void showOpenAnimatioin() {
+		if (mSlideBottomLayout == null) return;
+		mSlideBottomLayout.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_show_effect));
+	}
+	
+	public void showCloseAnimatioin() {
+		if (mSlideBottomLayout == null) return;
+		mSlideBottomLayout.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_hide_effect));
 	}
 	
 	private void initialize(Context context, int layoutResID) {
-		setOrientation(LinearLayout.VERTICAL);
+//		setOrientation(LinearLayout.VERTICAL);
 		mBodyLayout = (ViewGroup)View.inflate(context, layoutResID, null);
 		mMenuLayout = (LinearLayout)View.inflate(context, R.layout.menu, null);
 		mBtnMenu[MENU_INCOME_EXPENSE] = (Button)mMenuLayout.findViewById(R.id.BtnMenuIncomeExpense);
@@ -75,6 +113,13 @@ public class FmMainMenu extends LinearLayout {
 			btnRigth01 = (Button)mTitleLayout.findViewById(R.id.BtnTitleRigth01);
 			btnRigth01.setVisibility(View.INVISIBLE);
 			tvTitle = (TextView)mTitleLayout.findViewById(R.id.TVTitle);
+		}
+		
+		if (mSlide) {
+			mSlideLayout = (LinearLayout) View.inflate(context, R.layout.main_slide, null);
+			mSlideBottomLayout = (LinearLayout) mSlideLayout.findViewById(R.id.LLBottomSlide);
+			mSlideBottomBodyLayout = (LinearLayout) mSlideLayout.findViewById(R.id.LLBottomSlideBody);
+			mSlideBottomTitleLayout = (LinearLayout) mSlideLayout.findViewById(R.id.LLBottomSlideTitle);
 		}
 	}
 	
@@ -135,7 +180,7 @@ public class FmMainMenu extends LinearLayout {
 	}
 
 	public static void setChanging(boolean mChanging) {
-		FmMainMenu.mChanging = mChanging;
+		FmBaseLayout.mChanging = mChanging;
 	}
 
 	public static boolean isChanging() {
@@ -151,10 +196,42 @@ public class FmMainMenu extends LinearLayout {
 //	}
 
 	public static void setCurrentMenu(int currentMenu) {
-		FmMainMenu.mCurrentMenu = currentMenu;
+		FmBaseLayout.mCurrentMenu = currentMenu;
 	}
 
 	public static int getCurrentMenu() {
 		return mCurrentMenu;
 	}
+
+	public void setActiveSliding(boolean activeSliding) {
+		this.mActiveSliding = activeSliding;
+	}
+
+	public boolean isActiveSliding() {
+		return mActiveSliding;
+	}
+
+	public void setSlideView(int layoutResource) {
+		if (mSlideBottomBodyLayout == null) return;
+		mSlideBottomBodyLayout.removeAllViews();
+		View layout = View.inflate(getContext(), layoutResource, null);
+		mSlideBottomBodyLayout.addView(layout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
+	}
+
+	public void setSlideView(View layout) {
+		if (mSlideBottomBodyLayout == null) return;
+		mSlideBottomBodyLayout.removeAllViews();
+		mSlideBottomBodyLayout.addView(layout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
+	}
+	
+	public void setBottomSlideCompleateListener(View.OnClickListener listener) {
+		if (mSlideBottomTitleLayout == null) return;
+		mSlideBottomTitleLayout.findViewById(R.id.BtnSlideOK).setOnClickListener(listener);
+	}
+	
+	public void setBottomSlideCancelListener(View.OnClickListener listener) {
+		if (mSlideBottomTitleLayout == null) return;
+		mSlideBottomTitleLayout.findViewById(R.id.BtnSlideCancel).setOnClickListener(listener);
+	}
+	 
 }

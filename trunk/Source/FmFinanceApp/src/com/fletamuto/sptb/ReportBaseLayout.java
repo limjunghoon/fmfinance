@@ -26,6 +26,7 @@ import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
 import com.fletamuto.sptb.util.LogTag;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 public abstract class ReportBaseLayout extends FmBaseActivity {
 	public static final int VIEW_NORMAL = 0;
@@ -76,9 +77,9 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	
 	@Override
 	protected void setTitleBtn() {
-		setTitleBtnText(FmMainMenu.BTN_RIGTH_01, "추가");
+		setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "추가");
         setAddButtonListener();
-        setTitleBtnVisibility(FmMainMenu.BTN_RIGTH_01, View.VISIBLE);
+        setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
         
         if (isDisplayCategory()) {
         	setTitle(mCategoryName);

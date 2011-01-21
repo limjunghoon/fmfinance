@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.BudgetItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 /**
  * 카드 레이아웃 클레스
@@ -58,13 +59,13 @@ public class BudgetLayout extends FmBaseActivity {
 		setTitle("예산");
         setEditButtonListener();
         setTitle(getResources().getString(R.string.btn_category_select));
-        setTitleBtnVisibility(FmMainMenu.BTN_RIGTH_01, View.VISIBLE);
+        setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
         
 		super.setTitleBtn();
 	}
 	
 	public void setEditButtonListener() {
-		setTitleButtonListener(FmMainMenu.BTN_RIGTH_01, new View.OnClickListener() {
+		setTitleButtonListener(FmBaseLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(BudgetLayout.this, EditBudgetLayout.class);

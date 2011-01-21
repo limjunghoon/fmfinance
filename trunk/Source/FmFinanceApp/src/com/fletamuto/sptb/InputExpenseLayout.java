@@ -569,7 +569,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	protected void setBookmark () {
 		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_popup, null);
 		popupBookmark = new PopupWindow(popupviewBookmark, 320, 300, true);
-		popupBookmark.showAtLocation(linear, Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 0);
+		
 		
 		LinearLayout btnlist = (LinearLayout) popupviewBookmark.findViewById(R.id.bookmarkexpensepopupsub2);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -644,6 +644,14 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				popupBookmark.dismiss();
 			}
 		});
+		
+
+		//popupBookmark.showAtLocation(linear, Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 0);
+	//	popupBookmark.showAsDropDown(anchor, xoff, yoff)
+//		popupBookmark.update();
+		
+//		Animation Ani = AnimationUtils.loadAnimation(this, R.anim.popup_effect);
+//		linear.startAnimation(Ani);
 /*		
 		Button btnEdit = (Button) popupviewBookmark.findViewById (R.id.bookmarkEdit);
 		btnEdit.setOnClickListener(new View.OnClickListener() {

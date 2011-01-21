@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.fletamuto.sptb.view.FmBaseLayout;
+
 /**
  * 그리드로 선택하는 아이템 편집창의 기본 클래스
  * @author yongbban
@@ -35,14 +37,14 @@ public abstract class EditSelectItemBaseLayout  extends FmBaseActivity {
     protected void setTitleBtn() {
         setAddButtonListener();
         setTitle(getResources().getString(R.string.tag_edit_select));
-        setTitleBtnVisibility(FmMainMenu.BTN_RIGTH_01, View.VISIBLE);
-        setTitleBtnText(FmMainMenu.BTN_RIGTH_01, getResources().getString(R.string.btn_add));
+        setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
+        setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, getResources().getString(R.string.btn_add));
         
     	super.setTitleBtn();
     }
 
 	private void setAddButtonListener() {
-		setTitleButtonListener(FmMainMenu.BTN_RIGTH_01, new View.OnClickListener() {
+		setTitleButtonListener(FmBaseLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				onAddButtonClick();

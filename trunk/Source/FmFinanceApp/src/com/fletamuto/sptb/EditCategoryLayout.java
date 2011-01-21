@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 
 public class EditCategoryLayout  extends FmBaseActivity {  	
@@ -60,10 +61,10 @@ public class EditCategoryLayout  extends FmBaseActivity {
     @Override
     protected void setTitleBtn() {
     	setTitle("분류 편집");
-        setTitleBtnVisibility(FmMainMenu.BTN_RIGTH_01,View.VISIBLE);
-        setTitleBtnText(FmMainMenu.BTN_RIGTH_01, getResources().getString(R.string.btn_add));
+        setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01,View.VISIBLE);
+        setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, getResources().getString(R.string.btn_add));
         
-        setTitleButtonListener(FmMainMenu.BTN_RIGTH_01, new View.OnClickListener() {
+        setTitleButtonListener(FmBaseLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				if (mHasSubCategory == true) {
@@ -202,7 +203,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
     	Button editCategoryBtn = ((Button)findViewById(R.id.BtnMainCategoryEdit));
     	
 		if (isNewCategoryWithSub()) {
-    		setTitleBtnEnabled(FmMainMenu.BTN_RIGTH_01, false);
+    		setTitleBtnEnabled(FmBaseLayout.BTN_RIGTH_01, false);
     		editCategoryBtn.setText("완료");
     		mEditTextEnable = true;
     	}
@@ -215,7 +216,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 				editCategoryBtn.setText("완료");
 	    		mEditTextEnable = true;
 			}
-			setTitleBtnEnabled(FmMainMenu.BTN_RIGTH_01, true);
+			setTitleBtnEnabled(FmBaseLayout.BTN_RIGTH_01, true);
     	}
 		
 		((EditText)findViewById(R.id.ETMainCategoryName)).setEnabled(mEditTextEnable);

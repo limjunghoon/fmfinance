@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 /**
  * 카드 레이아웃 클레스
@@ -50,8 +51,8 @@ public class EditAccountLayout extends FmBaseActivity {
 	@Override
 	protected void setTitleBtn() {
 		setTitle("계좌 편집");
-		setTitleBtnText(FmMainMenu.BTN_RIGTH_01, "추가");
-		setTitleBtnVisibility(FmMainMenu.BTN_RIGTH_01, View.VISIBLE);
+		setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "추가");
+		setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
 		setAddButtonListener();
 		
 		super.setTitleBtn();
@@ -85,7 +86,7 @@ public class EditAccountLayout extends FmBaseActivity {
 	}
 
 	public void setAddButtonListener() {
-		setTitleButtonListener(FmMainMenu.BTN_RIGTH_01, new View.OnClickListener() {
+		setTitleButtonListener(FmBaseLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(EditAccountLayout.this, InputAccountLayout.class);		
