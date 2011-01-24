@@ -114,24 +114,46 @@ public class MainAssetsLayout extends FmBaseActivity {
 	protected void makeReportListCard() {
 		addTitleLayout(REPORT_CARD, "카드", mTotalAmount[REPORT_CARD]);
 		
-		//if (mCardItems.size() == 0) return;
-		Collection<CategoryAmount> categoryAmountItems = mCardCategoryItems.values();
+		int size = mCardItems.size();
+		if (size == 0) return;
 		
-		for (CategoryAmount iterator:categoryAmountItems) {
-			LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.main_assets_member, null);
-			LinearLayout.LayoutParams params = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
-			TextView tvName = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberName);
-			tvName.setText(iterator.getName());
-			TextView tvCount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberCount);
-			tvCount.setText(String.format("%d건", iterator.getCount()));
-			TextView tvAmount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberTotalAmout);
-			tvAmount.setText(String.format("%,d원", iterator.getTotalAmount()));
+		LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.main_assets_member, null);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
+		TextView tvName = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberName);
+		tvName.setText("카드");
+		TextView tvCount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberCount);
+		tvCount.setText(String.format("%d건", size));
+//		TextView tvAmount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberTotalAmout);
+//		tvAmount.setText(String.format("%,d원", mTotalAmount[REPORT_MYPORKET]));
+//		llMember.setTag(mMyPocket);
+		llMember.setOnClickListener(new View.OnClickListener() {
 			
-			llMember.setTag(iterator);
-			llMember.setOnClickListener(mMemberClickLinter);
-			mLLReport[REPORT_CARD].addView(llMember, params);
-		}
+			public void onClick(View v) {
+				Intent intent = new Intent(MainAssetsLayout.this, ReportCardLayout.class);
+				startActivity(intent);
+			}
+		});
+		mLLReport[REPORT_CARD].addView(llMember, params);
 		mLLReport[REPORT_CARD].invalidate();
+		
+		//if (mCardItems.size() == 0) return;
+//		Collection<CategoryAmount> categoryAmountItems = mCardCategoryItems.values();
+//		
+//		for (CategoryAmount iterator:categoryAmountItems) {
+//			LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.main_assets_member, null);
+//			LinearLayout.LayoutParams params = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
+//			TextView tvName = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberName);
+//			tvName.setText(iterator.getName());
+//			TextView tvCount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberCount);
+//			tvCount.setText(String.format("%d건", iterator.getCount()));
+//			TextView tvAmount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberTotalAmout);
+//			tvAmount.setText(String.format("%,d원", iterator.getTotalAmount()));
+//			
+//			llMember.setTag(iterator);
+//			llMember.setOnClickListener(mMemberClickLinter);
+//			mLLReport[REPORT_CARD].addView(llMember, params);
+//		}
+//		mLLReport[REPORT_CARD].invalidate();
 	}
 
 	protected void makeReportListMyPocket() {
@@ -372,7 +394,7 @@ public class MainAssetsLayout extends FmBaseActivity {
     	mAccountItems = getAccountItems(); 
     	
     	mCardItems = DBMgr.getCardItems();
-    	updateCardListItem();
+ //   	updateCardListItem();
     	
     	mMyPocket = DBMgr.getAccountMyPoctet();
     	mTotalAmount[REPORT_MYPORKET] = mMyPocket.getBalance();
