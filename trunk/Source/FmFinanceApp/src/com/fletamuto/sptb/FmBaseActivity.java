@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SlidingDrawer;
 
 import com.fletamuto.sptb.util.LogTag;
+import com.fletamuto.sptb.view.BaseSliderLayout;
 import com.fletamuto.sptb.view.FmBaseLayout;
 
 /**
@@ -44,9 +46,20 @@ public abstract class FmBaseActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        
-        
     }
+    
+    /**
+     * 타이틀 버튼 설정을 한다.
+     */
+    protected  void setTitleBtn() {
+		
+	}
+    
+    protected void initialize() {
+    	setBottomSlideComplateListener();
+    	setBottomSlideCancelListener();
+    }
+    
     
     @Override
     protected void onResume() {
@@ -110,16 +123,7 @@ public abstract class FmBaseActivity extends Activity {
     	mBaseLayout.setMenuBtnClickListener(mMenuClickListener);
     }
     
-    /**
-     * 타이틀 버튼 설정을 한다.
-     */
-    protected  void setTitleBtn() {
-		
-	}
-    
-    protected void initialize() {
-    	
-    }
+
     
     
     
@@ -229,7 +233,6 @@ public abstract class FmBaseActivity extends Activity {
 	public void showSlideView() {
 		mBaseLayout.setSlideVisibility(View.VISIBLE);
 		mBaseLayout.showOpenAnimatioin();
-//		mBaseLayout.setAnimation( AnimationUtils.loadAnimation(this, R.anim.popup_effect));
 	}
 	
 	public void hideSlideView() {
@@ -241,11 +244,43 @@ public abstract class FmBaseActivity extends Activity {
 		return mBaseLayout.isActiveSliding();
 	}
 	
-    protected void setSlideView(int layoutResource) {
-    	mBaseLayout.setSlideView(layoutResource);
-    }
+//    protected void setSlideView(int layoutResource) {
+//    	mBaseLayout.setSlideView(layoutResource);
+//    }
     
     protected void setSlideView(View layout) {
     	mBaseLayout.setSlideView(layout);
     }
+    
+    public void setBottomSlideComplateListener() {
+    	mBaseLayout.setBottomSlideComplateListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				onClickBottomSlideComplate(v);
+			}
+		});
+	}
+    
+    /**
+     * 슬라인더뷰에서 완료버튼 클릭시
+     */
+    protected void onClickBottomSlideComplate(View v) {
+    	hideSlideView();
+	}
+    
+    public void setBottomSlideCancelListener() {
+    	mBaseLayout.setBottomSlideCancelListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				onClickBottomSlideCancel(v);
+			}
+		});
+	}
+    
+    /**
+     * 슬라인더뷰에서 취소버튼 클릭시
+     */
+    protected void onClickBottomSlideCancel(View v) {
+    	hideSlideView();
+	}
 }

@@ -58,12 +58,12 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     }
 	@Override
 	protected void initialize() {
-		super.initialize();
-		 
 		mAmountLayout = new InputAmountLayout(this);
 //		mAmountLayout = (InputAmountLayout) View.inflate(this, R.layout.input_amount, null);
 //		LayoutInflater inflater = LayoutInflater.from(this);
 //		mAmountLayout = (InputAmountLayout) inflater.inflate(R.layout.input_amount, null);
+		
+		super.initialize();
 	}
 	
 	@Override
@@ -138,31 +138,15 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
      * 금액버튼 클릭시 리슨너 설정
      * @param btnID 금액버튼 아이디
      */
-    protected void setAmountBtnClickListener(int btnID) {
+    protected void setAmountBtnClickListener(final int btnID) {
     	
-    	Button btnAmount = (Button)findViewById(btnID);
-    	btnAmount.setOnClickListener(new Button.OnClickListener() {
+    	findViewById(btnID).setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
+//				mAmountLayout.setSliderListenerBtnId(btnID);
+				mAmountLayout.setAmount(mItem.getAmount());
 				setSlideView(mAmountLayout);
-				
-				if (isActiveSliding()) {
-					hideSlideView();
-				}
-				else {
-					showSlideView();
-				}
-				//
-				
-//				Intent intent = new Intent(InputFinanceItemBaseLayout.this, InputAmountDialog.class);
-//				startActivityForResult(intent, ACT_AMOUNT);
-//				if (isActiveSliding()) {
-//					hideSlideView();
-//				}
-//				else {
-//					showSlideView();
-//				}
-//				
+				showSlideView();
 			}
 		 });
     }
@@ -322,4 +306,14 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 			}
 		});
 	}
+	
+	protected void onClickBottomSlideComplate(View v) {
+		View targetView = (View) v.getTag();
+		if (targetView == mAmountLayout) {
+			updateAmount(mAmountLayout.getAmount());
+		}
+		
+    	super.onClickBottomSlideComplate(v);
+	}
+
 }
