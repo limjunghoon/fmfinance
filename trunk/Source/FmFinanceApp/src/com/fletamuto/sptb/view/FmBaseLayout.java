@@ -211,20 +211,24 @@ public class FmBaseLayout extends FrameLayout {
 		return mActiveSliding;
 	}
 
-	public void setSlideView(int layoutResource) {
-		if (mSlideBottomBodyLayout == null) return;
-		mSlideBottomBodyLayout.removeAllViews();
-		View layout = View.inflate(getContext(), layoutResource, null);
-		mSlideBottomBodyLayout.addView(layout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
-	}
+//	public void setSlideView(int layoutResource) {
+//		if (mSlideBottomBodyLayout == null) return;
+//		mSlideBottomBodyLayout.removeAllViews();
+//		View layout = View.inflate(getContext(), layoutResource, null);
+//		mSlideBottomBodyLayout.addView(layout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
+//	}
 
 	public void setSlideView(View layout) {
 		if (mSlideBottomBodyLayout == null) return;
 		mSlideBottomBodyLayout.removeAllViews();
 		mSlideBottomBodyLayout.addView(layout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
+		
+		if (mSlideBottomTitleLayout != null) {
+			mSlideBottomTitleLayout.findViewById(R.id.BtnSlideOK).setTag(layout);
+		}
 	}
 	
-	public void setBottomSlideCompleateListener(View.OnClickListener listener) {
+	public void setBottomSlideComplateListener(View.OnClickListener listener) {
 		if (mSlideBottomTitleLayout == null) return;
 		mSlideBottomTitleLayout.findViewById(R.id.BtnSlideOK).setOnClickListener(listener);
 	}

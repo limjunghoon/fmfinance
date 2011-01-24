@@ -82,6 +82,8 @@ public abstract class InputBaseLayout extends FmBaseActivity {
         else {
         	createItemInstance();
         }
+        
+        super.initialize();
 	}
     
 	/**

@@ -10,8 +10,10 @@ import android.widget.TextView;
 import com.fletamuto.sptb.R;
 
 public class InputAmountLayout extends LinearLayout {
+	final static int MAX_VALUE_DIGIT = 9;
 	
 	private LinearLayout mBody;
+	private Long mAmount = 0L;
 	
 	public InputAmountLayout(Context context) {
 		super(context);
@@ -27,8 +29,7 @@ public class InputAmountLayout extends LinearLayout {
 		displayAmount();
 	}
 
-	private Long Amount = 0L;
-	final static int MAX_VALUE_DIGIT = 9;
+	
 //	
 //    /** Called when the activity is first created. */
 //    @Override
@@ -102,37 +103,37 @@ public class InputAmountLayout extends LinearLayout {
 //		 });
     }
     
+    public long getAmount() {
+    	return mAmount;
+    }
+    
     public void clear() {
-    	Amount = 0L;
+    	mAmount = 0L;
     }
     
     public void remove() {
-    	if (Amount == 0L) return;
-    	Amount /= 10;
+    	if (mAmount == 0L) return;
+    	mAmount /= 10;
     }
     
     public void setAmount(Long amount) {
-    	Amount = amount;
-	}
-
-	public long getAmount() {
-		return Amount;
+    	mAmount = amount;
 	}
 	
 	public void inputNumber(int number) {
     	if (checkNumber() == false) return;
-    	Amount *= 10;
-    	Amount += number;
+    	mAmount *= 10;
+    	mAmount += number;
 	}
  
 	public void displayAmount() {
 		TextView tvAmount = (TextView)mBody.findViewById(R.id.TVAmount);
-		Amount.toString();
-		tvAmount.setText(String.format("%,d¿ø", Amount));
+		mAmount.toString();
+		tvAmount.setText(String.format("%,d¿ø", mAmount));
 	}
 	
 	public boolean checkNumber() {
-		String amount = Amount.toString();
+		String amount = mAmount.toString();
 		return (amount.length() > MAX_VALUE_DIGIT) ? false : true;
 	}
 
