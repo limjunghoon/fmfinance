@@ -124,6 +124,8 @@ public abstract class ReportBaseCardLayout extends FmBaseActivity {
 		}
 	}
 	
+	
+	
 	private void setBudgetPorgress(View convertView, CardExpenseInfo cardInfo) {
 		ProgressBar progress = (ProgressBar)convertView.findViewById(R.id.PBPrepaidCardExpense);
 		long maxBalance = cardInfo.getCard().getBalance();
