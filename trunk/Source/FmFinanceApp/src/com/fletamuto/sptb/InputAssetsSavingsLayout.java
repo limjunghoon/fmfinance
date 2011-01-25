@@ -40,11 +40,16 @@ public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
         
-        setCreateDateBtnClickListener(R.id.BtnSavingsCreateDate); 
+        
+    }
+    
+    @Override
+	protected void setBtnClickListener() {
+    	setCreateDateBtnClickListener(R.id.BtnSavingsCreateDate); 
         setAmountBtnClickListener(R.id.BtnSavingsAmount);
         setExpiryBtnClickListener(R.id.BtnSavingsExpiryDate);
         setAccountBtnClickListener();
-    }
+	}
     
     @Override
     public void finish() {

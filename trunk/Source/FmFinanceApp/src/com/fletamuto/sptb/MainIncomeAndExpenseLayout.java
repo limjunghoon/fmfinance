@@ -456,7 +456,14 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-	//			setVisibleDeleteButton((Button)view.findViewById(R.id.BtnCategoryDelete));
+				FinanceItem item = mExpenseDailyItems.get(position);
+				
+		    	if (item.getType() == ExpenseItem.TYPE) {
+		    		startEditInputActivity(InputExpenseLayout.class, item.getID());
+		    	}
+		    	else {
+		    		startEditInputActivity(InputIncomeLayout.class, item.getID());
+		    	}
 				
 			}
 		});
@@ -626,17 +633,6 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 		TextView tvMothod = viewHolder.getRightBottomTextView(); 
 		tvMothod.setText(expense.getPaymentMethod().getText());
     }
-	
-	protected void onClickListItem(AdapterView<?> parent, View view,
-			int position, long id) {
-//    	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
-//    	if (item.getType() == ExpenseItem.TYPE) {
-// //   		startEditInputActivity(InputExpenseLayout.class, item.getID());
-//    	}
-//    	else {
-// //   		startEditInputActivity(InputIncomeLayout.class, item.getID());
-//    	}
-	}
 	
 	protected void startEditInputActivity(Class<?> cls, int itemId) {
 		Intent intent = new Intent(this, cls);

@@ -67,6 +67,12 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 	}
 	
 	@Override
+	protected void deleteItem() {
+		DBMgr.deleteItem(mItem.getType(), mItem.getID());
+		super.deleteItem();
+	}
+	
+	@Override
 	protected void setTitleBtn() {
 		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
         setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "¿Ï·á");

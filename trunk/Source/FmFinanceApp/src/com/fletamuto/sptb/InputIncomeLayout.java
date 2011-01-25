@@ -40,11 +40,16 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
         
-        setDateBtnClickListener(R.id.BtnIncomeDate); 
+        
+    }
+    
+    @Override
+	protected void setBtnClickListener() {
+    	setDateBtnClickListener(R.id.BtnIncomeDate); 
         setAmountBtnClickListener(R.id.BtnIncomeAmount);
         setRepeatBtnClickListener(R.id.BtnIncomeRepeat);
         setReceiveToggleBtnClickListener();
-    }
+	}
     
     
     @Override
@@ -53,8 +58,10 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
     	
     	setTitle(mIncomeItem.getCategory().getName());
     	
-    	setTitleBtnText(FmTitleLayout.BTN_LEFT_01, "지출");
-    	setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);   
+    	if (mInputMode == InputMode.ADD_MODE) {
+    		setTitleBtnText(FmTitleLayout.BTN_LEFT_01, "지출");
+        	setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);
+    	}
     }
     
     @Override

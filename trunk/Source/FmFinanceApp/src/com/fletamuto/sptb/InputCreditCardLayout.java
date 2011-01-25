@@ -32,14 +32,22 @@ public class InputCreditCardLayout extends InputBaseLayout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_credit_card, true);
         
-        
-        setSelectCardCompenyNameBtnClickListener();
-        setAccountBtnClickListener(R.id.BtnCreditCardAccount);
-        setSettlemntDaySelectedListioner();
-        setBillPeriodSelectedListioner();
-        
         updateChildView();
     }
+    
+    @Override
+	protected void deleteItem() {
+		DBMgr.deleteCardItem(mCreditCard.getID());
+		super.deleteItem();
+	}
+    
+    @Override
+	protected void setBtnClickListener() {
+    	 setSelectCardCompenyNameBtnClickListener();
+         setAccountBtnClickListener(R.id.BtnCreditCardAccount);
+         setSettlemntDaySelectedListioner();
+         setBillPeriodSelectedListioner();
+	}
     
 	private void setBillPeriodSelectedListioner() {
 		Spinner spBillPeriodMonth = (Spinner)findViewById(R.id.SpnCreditCardBillPeriodMonth);

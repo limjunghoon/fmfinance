@@ -51,12 +51,17 @@ public class InputIncomeSelaryLayout extends InputIncomeExtendLayout {
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
         
-        setDateBtnClickListener(R.id.BtnSalaryDate);         
+        
+    }
+    
+    @Override
+	protected void setBtnClickListener() {
+    	setDateBtnClickListener(R.id.BtnSalaryDate);         
         setAmountBtnClickListener(R.id.BtnSalaryAmount);
         setRepeatBtnClickListener(R.id.BtnSalaryRepeat);
         setReceiveToggleBtnClickListener();
         takeHomePayBtnClickListener();
-    }
+	}
 
 	@Override
 	protected void createItemInstance() {

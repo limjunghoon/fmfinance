@@ -14,6 +14,7 @@ import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.fletamuto.sptb.InputBaseLayout.InputMode;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
@@ -67,17 +68,22 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
         
-        setDateBtnClickListener(R.id.BtnExpenseDate);
+        
+        setTitle(getResources().getString(R.string.input_expense_name));
+        initBookmark();
+    }
+    
+    @Override
+	protected void setBtnClickListener() {
+    	setDateBtnClickListener(R.id.BtnExpenseDate);
         setAmountBtnClickListener(R.id.BtnExpenseAmount);
         setCategoryClickListener(R.id.BtnExpenseCategory);
         setPaymentToggleBtnClickListener();
         setTagButtonListener();
         setRepeatBtnClickListener(R.id.BtnExpenseRepeat);
-        //자주 사용 되는 지출 구현
         setBookmarkTvClickListener(R.id.TVExpenseBookmark);
-        setTitle(getResources().getString(R.string.input_expense_name));
-        initBookmark();
-    }
+        setDeleteBtnListener(R.id.BtnExpenseDelete);
+	}
     
     @Override
     protected void initialize() {
@@ -90,10 +96,10 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     protected void setTitleBtn() {
     	super.setTitleBtn();
     	
-    	setTitleBtnText(FmTitleLayout.BTN_LEFT_01, "수입");
-        setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);
-        
-        
+    	if (mInputMode == InputMode.ADD_MODE) {
+    		setTitleBtnText(FmTitleLayout.BTN_LEFT_01, "수입");
+            setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);
+    	}
     }
     
     @Override

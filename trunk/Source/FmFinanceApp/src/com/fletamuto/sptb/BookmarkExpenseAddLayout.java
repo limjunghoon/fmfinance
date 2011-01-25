@@ -34,14 +34,19 @@ public class BookmarkExpenseAddLayout extends InputFinanceItemBaseLayout {
         
         updateChildView();
         
-        setAmountBtnClickListener(R.id.BtnExpenseAmount);
-        setCategoryClickListener(R.id.BtnExpenseCategory);
-        setPaymentToggleBtnClickListener();
-        setTagButtonListener();
+        
         setTitle("자주 사용 되는 지출");
         
         
     }
+    
+	@Override
+	protected void setBtnClickListener() {
+		setAmountBtnClickListener(R.id.BtnExpenseAmount);
+        setCategoryClickListener(R.id.BtnExpenseCategory);
+        setPaymentToggleBtnClickListener();
+        setTagButtonListener();
+	}
 
 	/**
      * 날짜 갱신
@@ -365,4 +370,6 @@ public class BookmarkExpenseAddLayout extends InputFinanceItemBaseLayout {
 		String memo = ((TextView)findViewById(R.id.ETExpenseMemo)).getText().toString();
     	getItem().setMemo(memo);
 	}
+
+
 }

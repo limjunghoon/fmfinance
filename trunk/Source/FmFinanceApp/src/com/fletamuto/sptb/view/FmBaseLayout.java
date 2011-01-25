@@ -237,5 +237,13 @@ public class FmBaseLayout extends FrameLayout {
 		if (mSlideBottomTitleLayout == null) return;
 		mSlideBottomTitleLayout.findViewById(R.id.BtnSlideCancel).setOnClickListener(listener);
 	}
+	
+	public void setMenuVisible(int visibility) {
+		if (mMenuLayout == null) {
+			return;
+		}
+		
+		mMenuLayout.setVisibility(visibility);
+	}
 	 
 }

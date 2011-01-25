@@ -36,10 +36,15 @@ public class InputAssetsInsuranceLayout extends InputAssetsExtendLayout {
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
         
-        setCreateDateBtnClickListener(R.id.BtnInsuranceCreateDate); 
+        
+    }
+    
+    @Override
+	protected void setBtnClickListener() {
+    	setCreateDateBtnClickListener(R.id.BtnInsuranceCreateDate); 
         setAmountBtnClickListener(R.id.BtnInsuranceAmount);
         setExpiryBtnClickListener(R.id.BtnInsuranceExpiryDate);
-    }
+	}
     
     public boolean checkInputData() {
     	if (mInsurance.getCreateDate().after(Calendar.getInstance())) {

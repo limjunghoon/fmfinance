@@ -30,9 +30,14 @@ public class InputCheckCardLayout extends InputBaseLayout {
         setContentView(R.layout.input_check_card, true);
         
         updateChildView();
-        setSelectCardCompenyNameBtnClickListener();
-        setAccountBtnClickListener(R.id.BtnCheckCardAccount);
+        
     }
+    
+    @Override
+	protected void setBtnClickListener() {
+    	setSelectCardCompenyNameBtnClickListener();
+        setAccountBtnClickListener(R.id.BtnCheckCardAccount);
+	}
     
     @Override
 	protected void setTitleBtn() {
@@ -43,6 +48,12 @@ public class InputCheckCardLayout extends InputBaseLayout {
 		setSaveBtnClickListener(R.id.BtnTitleRigth01);
 		
 		super.setTitleBtn();
+	}
+    
+    @Override
+	protected void deleteItem() {
+		DBMgr.deleteCardItem(mCheckCard.getID());
+		super.deleteItem();
 	}
 
 	private void setSelectCardCompenyNameBtnClickListener() {
