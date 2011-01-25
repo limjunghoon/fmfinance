@@ -36,11 +36,16 @@ public class InputAssetsStockLayout extends InputAssetsExtendLayout {
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
         
-        setDateBtnClickListener(R.id.BtnStocktDate);
-        setAmountBtnClickListener(R.id.BtnStockPrice);
+        
         
         findViewById(R.id.ETStockTitle).setEnabled((mInputMode == InputMode.STATE_CHANGE_MODE) ? false :true);
     }
+    
+    @Override
+	protected void setBtnClickListener() {
+    	setDateBtnClickListener(R.id.BtnStocktDate);
+        setAmountBtnClickListener(R.id.BtnStockPrice);
+	}
     
     @Override
     protected void setTitleBtn() {

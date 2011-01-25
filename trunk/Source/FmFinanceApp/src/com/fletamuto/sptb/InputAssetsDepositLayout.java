@@ -36,11 +36,16 @@ public class InputAssetsDepositLayout extends InputAssetsExtendLayout {
     	
     	updateChildView();
     	
-    	setCreateDateBtnClickListener(R.id.BtnDepositCreateDate); 
+    	
+    }
+    
+	@Override
+	protected void setBtnClickListener() {
+		setCreateDateBtnClickListener(R.id.BtnDepositCreateDate); 
         setAmountBtnClickListener(R.id.BtnDepositAmount);
         setExpiryBtnClickListener(R.id.BtnDepositExpiryDate);
         setAccountBtnClickListener();
-    }
+	}
     
     @Override
     public void finish() {
@@ -246,5 +251,7 @@ public class InputAssetsDepositLayout extends InputAssetsExtendLayout {
 	protected void saveUpdateStateItem() {
 		saveUpdateItem();
 	}
+
+
   
 }

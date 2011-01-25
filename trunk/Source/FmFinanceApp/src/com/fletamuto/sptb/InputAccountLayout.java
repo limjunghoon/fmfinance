@@ -37,9 +37,17 @@ public class InputAccountLayout extends InputBaseLayout {
     	}
         
         updateChildView();
-        setAmountBtnClickListener(R.id.BtnAccountAmount);
-        setSelectCompanyBtnClickListener();
+        
     }
+    
+	@Override
+	protected void setBtnClickListener() {
+		setAmountBtnClickListener(R.id.BtnAccountAmount);
+        setSelectCompanyBtnClickListener();
+		setSaveBtnClickListener(R.id.BtnTitleRigth01);
+		
+	}
+	
     
 	@Override
 	protected void setTitleBtn() {
@@ -47,9 +55,15 @@ public class InputAccountLayout extends InputBaseLayout {
 		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "¿Ï·á");
 		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
 		
-		setSaveBtnClickListener(R.id.BtnTitleRigth01);
+		
 		
 		super.setTitleBtn();
+	}
+	
+	@Override
+	protected void deleteItem() {
+		DBMgr.deleteAccount(mAccount.getID());
+		super.deleteItem();
 	}
 	
 
@@ -212,5 +226,7 @@ public class InputAccountLayout extends InputBaseLayout {
 		}
 		
 	}
+
+
 	
 }

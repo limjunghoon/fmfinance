@@ -43,7 +43,6 @@ public class InputTakeHomePayLayout extends InputBaseLayout {
         
         getExteaInfo();
         updateChildView();
-        setButtonClickListener();
        
     }
     
@@ -57,8 +56,9 @@ public class InputTakeHomePayLayout extends InputBaseLayout {
 		
 		super.setTitleBtn();
 	}
-
-	private void setButtonClickListener() {
+	
+	@Override
+	protected void setBtnClickListener() {
 		Button btnInsurance = (Button)findViewById(R.id.BtnTakeHomePayInsurance);
 		btnInsurance.setTextColor(Color.RED);
 		btnInsurance.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +100,7 @@ public class InputTakeHomePayLayout extends InputBaseLayout {
 			}
 		});
 	}
+
 
 	private void getExteaInfo() {
 		mTotalAmount = getIntent().getLongExtra(MsgDef.ExtraNames.SALARY_TOTAL_AMOUNT, 0);
@@ -197,4 +198,6 @@ public class InputTakeHomePayLayout extends InputBaseLayout {
     	}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+	
+	
 }

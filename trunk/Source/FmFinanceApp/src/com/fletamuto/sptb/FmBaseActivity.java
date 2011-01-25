@@ -283,4 +283,10 @@ public abstract class FmBaseActivity extends Activity {
     protected void onClickBottomSlideCancel(View v) {
     	hideSlideView();
 	}
+    
+    public void setMenuVisible(int visibility) {
+    	if (mBaseLayout == null) return;
+    	
+    	mBaseLayout.setMenuVisible(visibility);
+    }
 }

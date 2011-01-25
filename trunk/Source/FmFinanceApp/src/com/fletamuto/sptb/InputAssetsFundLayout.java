@@ -38,11 +38,16 @@ public class InputAssetsFundLayout extends InputAssetsExtendLayout {
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
         
-        setDateBtnClickListener(R.id.BtnFundDate); 
-        setAmountBtnClickListener(R.id.BtnFundPrice);
-        setExpiryBtnClickListener(R.id.BtnFundExpiryDate);
-        setRepeatBtnClickListener(R.id.BtnFundRepeat);
+       
     }
+    
+    @Override
+	protected void setBtnClickListener() {
+    	 setDateBtnClickListener(R.id.BtnFundDate); 
+         setAmountBtnClickListener(R.id.BtnFundPrice);
+         setExpiryBtnClickListener(R.id.BtnFundExpiryDate);
+         setRepeatBtnClickListener(R.id.BtnFundRepeat);
+	}
 
 	@Override
 	protected void updateRepeat(int type, int value) {

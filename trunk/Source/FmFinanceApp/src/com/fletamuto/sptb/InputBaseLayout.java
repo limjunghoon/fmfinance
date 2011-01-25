@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 
 public abstract class InputBaseLayout extends FmBaseActivity {
@@ -33,6 +34,8 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 	 */
 	protected abstract void updateItem();
 	
+	
+	
 	/**
 	 * 입력할 아이템을 생성한다.
 	 */
@@ -51,6 +54,11 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 	protected abstract void updateChildView();
 	
 	/**
+	 * 버튼이 클릭되었을 경우 상태 정의
+	 */
+	protected abstract void setBtnClickListener();
+	
+	/**
 	 * 입력된 아이템의 유효성을 확인한다.
 	 * @return 성공여부
 	 */
@@ -65,6 +73,8 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 	 * 초기화
 	 */
 	protected void initialize() {
+		setMenuVisible(View.GONE);
+		
 		int id  = getIntent().getIntExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, -1);
         if (id != -1) {
         	if (getIntent().getBooleanExtra(MsgDef.ExtraNames.INPUT_CHANGE_MODE, false)) {
@@ -83,6 +93,8 @@ public abstract class InputBaseLayout extends FmBaseActivity {
         	createItemInstance();
         }
         
+        setBtnClickListener();
+        
         super.initialize();
 	}
     
@@ -91,8 +103,7 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 	 * @param btnID 저장버튼 아이디
 	 */
     protected void setSaveBtnClickListener(int btnID) {
-    	Button btnIncomeDate = (Button)findViewById(btnID);
-		 btnIncomeDate.setOnClickListener(new Button.OnClickListener() {
+    	findViewById(btnID).setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
 				updateItem();
@@ -121,6 +132,39 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 		});
     	alert.show();
     }
+    
+    
+    public void setDeleteBtnListener(int btnId) {
+    	findViewById(btnId).setOnClickListener(new Button.OnClickListener() {
+    		
+			public void onClick(View v) {
+				AlertDialog.Builder alert = new AlertDialog.Builder(InputBaseLayout.this);
+		    	alert.setMessage("삭제하시겠습니까?");
+		    	alert.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						deleteItem();
+					}
+				});
+		    	alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+		    	alert.show();
+			}
+		 });
+    }
+    
+
+    /**
+	 * 아이템 삭제
+	 */
+	protected void deleteItem() {
+		finish();
+	}
     
 
 }

@@ -34,10 +34,15 @@ public class InputAssetsLayout extends InputAssetsBaseLayout {
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
         
-        setDateBtnClickListener(R.id.BtnAssetsDate); 
+        
+    }
+    
+    @Override
+	protected void setBtnClickListener() {
+    	setDateBtnClickListener(R.id.BtnAssetsDate); 
         setAmountBtnClickListener(R.id.BtnAssetsAmount);
         setTitle(mAssetsItem.getCategory().getName());
-    }
+	}
     
     @Override
     protected void initialize() {

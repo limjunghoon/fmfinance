@@ -30,9 +30,14 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
         setContentView(R.layout.input_prepaid_card, true);
         
         updateChildView();
-        setSelectCardCompenyNameBtnClickListener();
-        setBalanceBtnClickListener(R.id.BtnPrepaidCardBalance);
+        
     }
+    
+    @Override
+	protected void setBtnClickListener() {
+    	setSelectCardCompenyNameBtnClickListener();
+        setBalanceBtnClickListener(R.id.BtnPrepaidCardBalance);
+	}
     
     @Override
 	protected void setTitleBtn() {
@@ -43,6 +48,12 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 		setSaveBtnClickListener(R.id.BtnTitleRigth01);
 		
 		super.setTitleBtn();
+	}
+    
+    @Override
+	protected void deleteItem() {
+		DBMgr.deleteCardItem(mPrepaidCard.getID());
+		super.deleteItem();
 	}
 
 	private void setSelectCardCompenyNameBtnClickListener() {

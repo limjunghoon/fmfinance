@@ -34,9 +34,14 @@ public class InputLiabilityPersonLoanLayout extends InputLiabilityExtendLayout {
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
         
-        setDateBtnClickListener(R.id.BtnPersonLoanDate); 
-        setAmountBtnClickListener(R.id.BtnPersonLoanAmount);
+        
     }
+    
+    @Override
+	protected void setBtnClickListener() {
+    	setDateBtnClickListener(R.id.BtnPersonLoanDate); 
+        setAmountBtnClickListener(R.id.BtnPersonLoanAmount);
+	}
    
 
 	@Override

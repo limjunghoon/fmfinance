@@ -26,12 +26,15 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
         
-        setDateBtnClickListener(R.id.BtnLiabilityDate); 
-        setAmountBtnClickListener(R.id.BtnLiabilityAmount);
-        setTitle(mLiabilityItem.getCategory().getName());
+        
     }
     
-  
+    @Override
+	protected void setBtnClickListener() {
+    	setDateBtnClickListener(R.id.BtnLiabilityDate); 
+        setAmountBtnClickListener(R.id.BtnLiabilityAmount);
+        setTitle(mLiabilityItem.getCategory().getName());
+	}
     
     @Override
     protected void initialize() {

@@ -37,10 +37,15 @@ public class InputLiabilityCashServiceLayout extends InputLiabilityExtendLayout 
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
         
-        setDateBtnClickListener(R.id.BtnCashServiceDate); 
+        
+    }
+    
+    @Override
+	protected void setBtnClickListener() {
+    	setDateBtnClickListener(R.id.BtnCashServiceDate); 
         setAmountBtnClickListener(R.id.BtnCashServiceAmount);
         setSelectCardBtnClickListener();
-    }
+	}
     
 	protected void setSelectCardBtnClickListener() {
 		Button button = (Button)findViewById(R.id.BtnCashServiceCard);
