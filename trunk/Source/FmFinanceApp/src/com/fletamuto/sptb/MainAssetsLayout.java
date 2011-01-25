@@ -366,6 +366,12 @@ public class MainAssetsLayout extends FmBaseActivity {
 		pieGraphValues.add(mTotalAmount[REPORT_LIABILITY]);
        
 		pieGraph = (PieGraph) findViewById (R.id.pgraph);
+		
+		//Pie 그래프 여백 기본값 20에서 5로 변경
+		pieGraph.setGraphPadding(5);
+		//Pie 그래프 외곽선 기본값 2에서 0으로 변경
+		pieGraph.setBoundaryLine(0);
+		
 		pieGraph.setItemValues(pieGraphValues);
 		pieGraph.setOnTouchListener(new View.OnTouchListener() {
 
