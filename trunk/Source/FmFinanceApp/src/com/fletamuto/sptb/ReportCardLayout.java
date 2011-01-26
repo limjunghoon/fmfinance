@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.fletamuto.sptb.data.CardExpenseInfo;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class ReportCardLayout extends FmBaseActivity {
@@ -167,8 +169,18 @@ public class ReportCardLayout extends FmBaseActivity {
 	}
 	
 	protected void onClickAddButton() {
-		Intent intent = new Intent(this, SelectCardLayout.class);
-		startActivity(intent);
+		Class<?> changeClass = null;
+		
+		if (mSelectedSection == CardItem.CREDIT_CARD) changeClass = InputCreditCardLayout.class;
+		else if (mSelectedSection == CardItem.CHECK_CARD) changeClass = InputCheckCardLayout.class;
+		else if (mSelectedSection == CardItem.PREPAID_CARD) changeClass = InputPrepaidCardLayout.class;
+		else {
+			Log.e(LogTag.LAYOUT, "== unregistered event hander ");
+			return;
+		}
+		
+    	Intent intent = new Intent(this, changeClass);
+    	startActivityForResult(intent, MsgDef.ActRequest.ACT_ADD_CARD);
 	}
 	
 
@@ -359,37 +371,23 @@ public class ReportCardLayout extends FmBaseActivity {
 		
 		if (card.getType() == CardItem.CREDIT_CARD) {
 			((TextView)convertView.findViewById(R.id.TVCreditCardName)).setText(card.getCompenyName().getName());
-			((TextView)convertView.findViewById(R.id.TVCreditCardType)).setText(getCardTypeName(card.getType()));
+			((TextView)convertView.findViewById(R.id.TVCreditCardType)).setText(CardItem.getCardTypeName(card.getType()));
 			((TextView)convertView.findViewById(R.id.TVCreditCardTotalExpeanseAmount)).setText(String.format("총 지출 금액  : %,d 원", cardInfo.getTotalExpenseAmount()));
 			((TextView)convertView.findViewById(R.id.TVCreditCardExpectAmount)).setText(String.format("%d일 결제 예정금액 : %,d 원",card.getSettlementDay(), cardInfo.getBillingExpenseAmount()));
 		}
 		else if (card.getType() == CardItem.CHECK_CARD) {
 			((TextView)convertView.findViewById(R.id.TVCheckCardName)).setText(card.getCompenyName().getName());
-			((TextView)convertView.findViewById(R.id.TVCheckCardType)).setText(getCardTypeName(card.getType()));
+			((TextView)convertView.findViewById(R.id.TVCheckCardType)).setText(CardItem.getCardTypeName(card.getType()));
 			((TextView)convertView.findViewById(R.id.TVCheckCardTotalExpeanseAmount)).setText(String.format("총 지출 금액  : %,d 원", cardInfo.getTotalExpenseAmount()));
 			((TextView)convertView.findViewById(R.id.TVCheckCardAccount)).setText(String.format("계좌 잔액  : %,d 원", card.getAccount().getBalance()));
 		}
 		else if (card.getType() == CardItem.PREPAID_CARD) {
 			((TextView)convertView.findViewById(R.id.TVPrepaidCardName)).setText(card.getCompenyName().getName());
-			((TextView)convertView.findViewById(R.id.TVPrepaidCardType)).setText(getCardTypeName(card.getType()));
+			((TextView)convertView.findViewById(R.id.TVPrepaidCardType)).setText(CardItem.getCardTypeName(card.getType()));
 			((TextView)convertView.findViewById(R.id.TVPrepaidCardTotalExpeanseAmount)).setText(String.format("총 지출 금액  : %,d 원", cardInfo.getTotalExpenseAmount()));
 			((TextView)convertView.findViewById(R.id.TVPrepaidRemainAmount)).setText(String.format("남은 금액  : %,d 원", card.getBalance() - cardInfo.getTotalExpenseAmount()));
 			setBudgetPorgress(convertView, cardInfo);
 		}
-	}
-	
-	private CharSequence getCardTypeName(int type) {
-		if (type == CardItem.CREDIT_CARD) {
-			return  "신용카드";
-		}
-		else if (type == CardItem.CHECK_CARD) {
-			return  "체크카드";
-		}
-		else if (type == CardItem.PREPAID_CARD) {
-			return "선불카드";
-		}
-		
-		return "";
 	}
 	
 	private void setBudgetPorgress(View convertView, CardExpenseInfo cardInfo) {
@@ -445,7 +443,7 @@ public class ReportCardLayout extends FmBaseActivity {
 			TextView tvCount = (TextView) convertView.findViewById(R.id.TVSeparatorCount);
 			tvCount.setText(String.format("(%d)", category.getCount()));
 			
-			convertView.setBackgroundColor((category.getCategoryID() == mSelectedCategoryID) ? Color.MAGENTA : Color.BLACK);
+			convertView.setBackgroundColor((position == mSelectedSection) ? Color.MAGENTA : Color.BLACK);
 			
 			return convertView;
 		}

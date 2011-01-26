@@ -141,19 +141,19 @@ public class CardLayout extends FmBaseActivity {
 		
 		if (card.getType() == CardItem.CREDIT_CARD) {
 			((TextView)convertView.findViewById(R.id.TVCreditCardName)).setText(card.getCompenyName().getName());
-			((TextView)convertView.findViewById(R.id.TVCreditCardType)).setText(getCardTypeName(card.getType()));
+			((TextView)convertView.findViewById(R.id.TVCreditCardType)).setText(CardItem.getCardTypeName(card.getType()));
 			((TextView)convertView.findViewById(R.id.TVCreditCardTotalExpeanseAmount)).setText(String.format("총 지출 금액  : %,d 원", cardInfo.getTotalExpenseAmount()));
 			((TextView)convertView.findViewById(R.id.TVCreditCardExpectAmount)).setText(String.format("%d일 결제 예정금액 : %,d 원",card.getSettlementDay(), cardInfo.getBillingExpenseAmount()));
 		}
 		else if (card.getType() == CardItem.CHECK_CARD) {
 			((TextView)convertView.findViewById(R.id.TVCheckCardName)).setText(card.getCompenyName().getName());
-			((TextView)convertView.findViewById(R.id.TVCheckCardType)).setText(getCardTypeName(card.getType()));
+			((TextView)convertView.findViewById(R.id.TVCheckCardType)).setText(CardItem.getCardTypeName(card.getType()));
 			((TextView)convertView.findViewById(R.id.TVCheckCardTotalExpeanseAmount)).setText(String.format("총 지출 금액  : %,d 원", cardInfo.getTotalExpenseAmount()));
 			((TextView)convertView.findViewById(R.id.TVCheckCardAccount)).setText(String.format("계좌 잔액  : %,d 원", card.getAccount().getBalance()));
 		}
 		else if (card.getType() == CardItem.PREPAID_CARD) {
 			((TextView)convertView.findViewById(R.id.TVPrepaidCardName)).setText(card.getCompenyName().getName());
-			((TextView)convertView.findViewById(R.id.TVPrepaidCardType)).setText(getCardTypeName(card.getType()));
+			((TextView)convertView.findViewById(R.id.TVPrepaidCardType)).setText(CardItem.getCardTypeName(card.getType()));
 			((TextView)convertView.findViewById(R.id.TVPrepaidCardTotalExpeanseAmount)).setText(String.format("총 지출 금액  : %,d 원", cardInfo.getTotalExpenseAmount()));
 			((TextView)convertView.findViewById(R.id.TVPrepaidRemainAmount)).setText(String.format("남은 금액  : %,d 원", card.getBalance() - cardInfo.getTotalExpenseAmount()));
 			setBudgetPorgress(convertView, cardInfo);
@@ -182,24 +182,6 @@ public class CardLayout extends FmBaseActivity {
 		
 	}
 	
-
-	
-	private CharSequence getCardTypeName(int type) {
-		if (type == CardItem.CREDIT_CARD) {
-			return  "신용카드";
-		}
-		else if (type == CardItem.CHECK_CARD) {
-			return  "체크카드";
-		}
-		else if (type == CardItem.PREPAID_CARD) {
-			return "선불카드";
-		}
-		
-		return "";
-	}
-
-
-
 	public class CardItemAdapter extends ArrayAdapter<CardExpenseInfo> {
     	int mResource;
     	LayoutInflater mInflater;

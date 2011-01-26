@@ -411,6 +411,21 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		closeDatabase();
 		return category;
 	}
+	
+	@Override
+	public Category getCategoryFromID(int categoryID) {
+		Category category = null;
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		Cursor c = db.query("expense_main_category", null, "_id=?", new String[]{String.valueOf(categoryID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			category = new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
+		}
+		c.close();
+		closeDatabase();
+		return category;
+	}
 
 	/**
 	 * 지출 하위분류 목록을 얻는다.

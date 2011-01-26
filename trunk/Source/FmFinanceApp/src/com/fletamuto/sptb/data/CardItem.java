@@ -25,7 +25,7 @@ public class CardItem extends BaseItem{
 	private int mBillingPeriodDay = 1;
 	private int mBillingPeriodMonth = 0;
 	
-	private String mCardTypeNames[] = {"신용카드", "체크카드", "선불카드", "현금카드"};
+	private static String mCardTypeNames[] = {"신용카드", "체크카드", "선불카드", "현금카드"};
 	
 	public CardItem(int type) {
 		mType = type;
@@ -139,5 +139,10 @@ public class CardItem extends BaseItem{
 	
 	public String getCardTypeName() {
 		return mCardTypeNames[mType];
+	}
+	
+	public static String getCardTypeName(int type) {
+		if (type > CASH_CARD) return "";
+		return mCardTypeNames[type];
 	}
 }
