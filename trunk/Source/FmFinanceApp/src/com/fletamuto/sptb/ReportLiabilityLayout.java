@@ -8,12 +8,15 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.LiabilityCashServiceItem;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.data.LiabilityLoanItem;
 import com.fletamuto.sptb.data.LiabilityPersonLoanItem;
+import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportLiabilityLayout extends ReportSeparationLayout {
 	private long mTotalAmount = 0L;
@@ -124,7 +127,24 @@ public class ReportLiabilityLayout extends ReportSeparationLayout {
 
 	@Override
 	protected void onClickAddButton() {
-		Intent intent = new Intent(this, SelectCategoryLiabilityLayout.class);
+		Intent intent = null;
+		Category category = DBMgr.getCategoryFromID(LiabilityItem.TYPE, getSelectedCategoryID());
+		if (category == null) return;
+		
+		if (category.getExtndType() == ItemDef.ExtendLiablility.LOAN) {
+			intent = new Intent(this, InputLiabilityLoanLayout.class);
+		}
+    	else if (category.getExtndType() == ItemDef.ExtendLiablility.CASH_SERVICE) {
+			intent = new Intent(this, InputLiabilityCashServiceLayout.class);
+		}
+    	else if (category.getExtndType() == ItemDef.ExtendLiablility.PERSON_LOAN) {
+			intent = new Intent(this, InputLiabilityPersonLoanLayout.class);
+		}
+    	else {
+    		intent = new Intent(this, InputLiabilityLayout.class);
+    	}
+		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, category.getID());
+		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, category.getName());
 		startActivityForResult(intent, ACT_ADD_LIABLITY);
 	}
 	

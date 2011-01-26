@@ -30,6 +30,7 @@ import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 import com.fletamuto.sptb.util.Percentage;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class MainAssetsLayout extends FmBaseActivity {
 	private static final int REPORT_ASSETS = 0;
@@ -62,9 +63,9 @@ public class MainAssetsLayout extends FmBaseActivity {
 //    	setButtonClickListener();
 //    	
     	setRootView(true);
-    	getListItem();
-//    	setAdapterList();
-    	updateChildView();
+//    	getListItem();
+////    	setAdapterList();
+//    	updateChildView();
     }
     
     @Override
@@ -75,6 +76,10 @@ public class MainAssetsLayout extends FmBaseActivity {
     	mLLReport[REPORT_LIABILITY]  = (LinearLayout) findViewById(R.id.LLMainAssetsLiabilityReport);
     	mLLReport[REPORT_CARD]  = (LinearLayout) findViewById(R.id.LLMainAssetsCardReport);
     	mLLReport[REPORT_MYPORKET]  = (LinearLayout) findViewById(R.id.LLMainAssetsMyPoketReport);
+    	
+    	setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "Ãß°¡");
+        setAddButtonListener();
+        setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
     }
     
     @Override
@@ -85,11 +90,21 @@ public class MainAssetsLayout extends FmBaseActivity {
 
 	@Override
     protected void onResume() {
-//    	getListItem();
-//    	setAdapterList();
+    	getListItem();
+    	updateChildView();
     	
     	super.onResume();
     }
+	
+	public void setAddButtonListener() {
+		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent intent = new Intent(MainAssetsLayout.this, ReportInputAssetsCategoryLayout.class);
+				startActivity(intent);
+			}
+		});
+	}
 	
 	protected void updateChildView() {
 		updateBarGraph();

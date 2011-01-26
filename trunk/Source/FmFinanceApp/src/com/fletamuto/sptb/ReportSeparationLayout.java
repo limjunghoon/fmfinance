@@ -52,13 +52,17 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 		super.onResume();
 	}
 	
-	  @Override
-	    public void initialize() {
-	    	mSeparationList = (ListView) findViewById(R.id.LVSeparation);
-	    	setViewMode(VIEW_TWO_LINE);
-	    	mSelectedCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.ITEM_ID, -1);
-	    	super.initialize();
-	    }
+	@Override
+	public void initialize() {
+		mSeparationList = (ListView) findViewById(R.id.LVSeparation);
+		setViewMode(VIEW_TWO_LINE);
+		mSelectedCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.ITEM_ID, -1);
+		super.initialize();
+	}
+	
+	protected int getSelectedCategoryID() {
+		return mSelectedCategoryID;
+	}
 	
 	protected void setSelectedPosition() {
 		if (mSeparationAdapter == null) {

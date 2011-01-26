@@ -445,6 +445,11 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getCategory();
 	}
 	
+	public static Category getCategoryFromID(int itemType, int categoryID) {
+		if (checkFinanceItemType(itemType) == false) return null;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getCategoryFromID(categoryID);
+	}
+	
 	/**
 	 * DB에 입력된 분류 리스트를 가져온다.
 	 * @param itemType 수입, 지출, 자산, 부채 타입

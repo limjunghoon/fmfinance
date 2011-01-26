@@ -14,8 +14,10 @@ import com.fletamuto.sptb.data.AssetsInsuranceItem;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.AssetsSavingsItem;
 import com.fletamuto.sptb.data.AssetsStockItem;
+import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.ItemDef;
+import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportAssetsLayout extends ReportSeparationLayout {
 	private long mTotalAmount = 0L;
@@ -41,7 +43,6 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     @Override
     protected void setTitleBtn() {
     	setTitle("자산 목록");
-    	
     	super.setTitleBtn();
     }
     
@@ -68,7 +69,6 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     	startActivityForResult(intent, MsgDef.ActRequest.ACT_STATE_VIEW);
     	//startEditInputActivity(InputAssetsLayout.class, item.getID());
 	}
-
     
     protected void setListViewText(FinanceItem item, View convertView) {
     	int extendType = item.getExtendType();
@@ -202,8 +202,32 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
 
 	@Override
 	protected void onClickAddButton() {
-		Intent intent = new Intent(ReportAssetsLayout.this, SelectCategoryAssetsLayout.class);
-		startActivityForResult(intent, ACT_ADD_ASSETS);
+		Intent intent = null;
+		Category category = DBMgr.getCategoryFromID(AssetsItem.TYPE, getSelectedCategoryID());
+		if (category == null) return;
+		
+		if (category.getExtndType() == ItemDef.ExtendAssets.DEPOSIT) {
+			intent = new Intent(this, InputAssetsDepositLayout.class);
+		}
+		else if (category.getExtndType() == ItemDef.ExtendAssets.SAVINGS) {
+			intent = new Intent(this, InputAssetsSavingsLayout.class);
+		}
+		else if (category.getExtndType() == ItemDef.ExtendAssets.STOCK) {
+			intent = new Intent(this, InputAssetsStockLayout.class);
+		}
+		else if (category.getExtndType() == ItemDef.ExtendAssets.FUND) {
+			intent = new Intent(this, InputAssetsFundLayout.class);
+		}
+		else if (category.getExtndType() == ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE) {
+			intent = new Intent(this, InputAssetsInsuranceLayout.class);
+		}
+		else {
+			intent = new Intent(this, InputAssetsLayout.class);
+		}
+    	
+		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, category.getID());
+		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, category.getName());
+		startActivityForResult(intent, MsgDef.ActRequest.ACT_ADD_ASSETS);
 	}
 
 	@Override
