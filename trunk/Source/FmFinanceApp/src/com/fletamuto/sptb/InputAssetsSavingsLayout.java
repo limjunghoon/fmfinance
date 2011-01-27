@@ -35,10 +35,12 @@ public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
     	updateChildView();
     	
     	//달력을 이용한 날짜 입력을 위해
+/*
         LinearLayout linear = (LinearLayout) findViewById(R.id.inputAssetsSavings);
         View popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
+*/
         
         
     }
@@ -84,7 +86,7 @@ public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
 		((Button)findViewById(resource)).setOnClickListener(new Button.OnClickListener() {
 			
 			public void onClick(View v) {
-
+/*
 				monthlyCalendar.showMonthlyCalendarPopup();
 				monthlyCalendar.getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
 					
@@ -96,6 +98,9 @@ public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
 						updateExpiryDate();
 					}
 				});
+*/
+				Intent intent = new Intent(InputAssetsSavingsLayout.this, MonthlyCalendar.class);
+				startActivityForResult(intent,37);
 			}
 		 });
 	}
@@ -205,6 +210,19 @@ public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
     			updateAccount( getAccount(data.getIntExtra(MsgDef.ExtraNames.ACCOUNT_ID, -1)));
     		}
     	}
+		//좀 있다 요청코드 만들기
+    	if (requestCode == 37) {
+    		if (resultCode == RESULT_OK) {
+    			
+    			int[] values = data.getIntArrayExtra("SELECTED_DATE");
+
+    			mSavings.getCreateDate().set(Calendar.YEAR, values[0]);
+    			mSavings.getCreateDate().set(Calendar.MONTH, values[1]);
+    			mSavings.getCreateDate().set(Calendar.DAY_OF_MONTH, values[2]);
+				
+    			updateDate();
+    		}
+    	}
 
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -254,4 +272,5 @@ public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
 	protected void saveUpdateStateItem() {
 		saveUpdateItem();
 	}
+
 }

@@ -29,10 +29,12 @@ public class InputAssetsLayout extends InputAssetsBaseLayout {
         updateChildView();
         
       //달력을 이용한 날짜 입력을 위해
+/*
         LinearLayout linear = (LinearLayout) findViewById(R.id.inputAssets);
         View popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
+*/
         
         
     }
