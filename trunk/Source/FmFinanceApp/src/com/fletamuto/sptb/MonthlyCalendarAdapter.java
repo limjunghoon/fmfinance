@@ -1,9 +1,9 @@
 package com.fletamuto.sptb;
 
-
 import java.util.Calendar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
@@ -11,21 +11,18 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
-
+import android.util.Log;
 
 public class MonthlyCalendarAdapter extends BaseAdapter {
-
+	
+	private MonthlyCalendar mCalendar;
 	private Context mContext;
 	private Calendar mBaseDate;
-	private Calendar todayDate;
 	private int mStartPos;
 	private int mEndPos;
 	private int mDaysInMonth;
 	private static final int CELL_WIDTH = 20;
 	private static final int CELL_HEIGH = 20;
-	private View selectDate;
-	private MonthlyCalendar mCalendar;
-	
 	
 	private static final String[] mWeekTitleIds = { 
 		   "일"
@@ -36,7 +33,15 @@ public class MonthlyCalendarAdapter extends BaseAdapter {
 		   ,"금"
 		   ,"토"
 	};
-
+	private static final String[] mFullWeekTitleIds = { 
+	    "일요일"
+	   ,"월요일"
+	   ,"화요일"
+	   ,"수요일"
+	   ,"목요일"
+	   ,"금요일"
+	   ,"토요일"
+};
 	private static final int[] mWeekColorIds = { 
 		   	Color.RED
 		   ,Color.BLACK
@@ -47,13 +52,10 @@ public class MonthlyCalendarAdapter extends BaseAdapter {
 		   ,Color.BLUE
 	};
 	
-	public View getSelectDate () {
-		return selectDate;
-	}
-	public MonthlyCalendarAdapter(Context c, Calendar cal, MonthlyCalendar mc) {
+
+	public MonthlyCalendarAdapter(/*Context*/MonthlyCalendar c, Calendar cal) {
         mContext = c;
-        mCalendar = mc;
-        todayDate = Calendar.getInstance();
+        mCalendar = c;
         setBaseDate(cal);
     }
 
@@ -70,11 +72,9 @@ public class MonthlyCalendarAdapter extends BaseAdapter {
                 + mDaysInMonth;    	
     }
     
-
 	public int getCount() {
     	return mEndPos; 
 	}
-
 
 
 	public Object getItem(int arg0) {
@@ -82,68 +82,69 @@ public class MonthlyCalendarAdapter extends BaseAdapter {
 		return null;
 	}
 
-
 	public long getItemId(int arg0) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-
 	public View getView(int position, View oldView, ViewGroup parent) {
 		// TODO Auto-generated method stub
+
+		View v;
 
 		if (position < 7) { // 제목 행
 			
 			if (oldView == null) {
-				selectDate = new TextView(mContext);
+				v = new TextView(mContext);
 				
-				((TextView)selectDate).setGravity(Gravity.CENTER);
-				((TextView)selectDate).setText(mWeekTitleIds[position]);
-				((TextView)selectDate).setTextColor(mWeekColorIds[position]);
+				((TextView)v).setGravity(Gravity.CENTER);
+				((TextView)v).setText(mWeekTitleIds[position]);
+				((TextView)v).setTextColor(mWeekColorIds[position]);
 			}
 			else {
-				selectDate = oldView;
+				v = oldView;
 			}
 		}
 		
 		else if (position >= mStartPos && position <= mEndPos) { // 유효한 날짜 영역
 			if (oldView == null) {
-				selectDate = new TextView(mContext);
-			((TextView)selectDate).setGravity(Gravity.CENTER);
+			v = new TextView(mContext);
+			((TextView)v).setGravity(Gravity.CENTER);
 			int nDay = getDayFromPosition(position);
 			Calendar c = (Calendar)mBaseDate.clone();
 			c.set(Calendar.DATE, nDay);
-			selectDate.setTag(c);
-			((TextView)selectDate).setText(Integer.toString(nDay));
-			((TextView)selectDate).setTextColor(mWeekColorIds[c.get(Calendar.DAY_OF_WEEK) - Calendar.SUNDAY]);
-
-			if (c.get(Calendar.DAY_OF_MONTH) == todayDate.get(Calendar.DAY_OF_MONTH) && c.get(Calendar.MONTH) == todayDate.get(Calendar.MONTH)
-					&& c.get(Calendar.YEAR) == todayDate.get(Calendar.YEAR)) {
-				((TextView)selectDate).setBackgroundColor(Color.GRAY);
-			}
+			v.setTag(c);
+			((TextView)v).setText(Integer.toString(nDay));
+			((TextView)v).setTextColor(mWeekColorIds[c.get(Calendar.DAY_OF_WEEK) - Calendar.SUNDAY]);
 			//날짜가 선택 되었을 때
-			selectDate.setOnClickListener(new View.OnClickListener() {
+			v.setOnClickListener(new View.OnClickListener() {
 	            public void onClick(View v) {
-	            	Calendar c = (Calendar)v.getTag();
-	            	if (c == null) return;
-	            	mCalendar.setSelectCalendar(c);
-	            	mCalendar.getPopupWindow().dismiss();	            	 
-	            	}
-	        	});
+
+					Calendar c = (Calendar)v.getTag();
+					if (c == null) return;
+					int [] values = {c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)};
+
+					Intent intent = new Intent();
+	            	intent.putExtra("SELECTED_DATE", values);
+	            	mCalendar.setResult(mCalendar.RESULT_OK,intent);
+	            	mCalendar.disAppearAnimation();
+
+	            }
+	          	});
 			
 			}
 			else {
-				selectDate = oldView;
+				v = oldView;
 			}
 		} else { // 빈 영역
-			selectDate = new TextView(mContext);
+			v = new TextView(mContext);
 		}
 
 		if (oldView == null) {
-			selectDate.setLayoutParams(new GridView.LayoutParams(CELL_WIDTH, CELL_HEIGH));
+			v.setLayoutParams(new GridView.LayoutParams(CELL_WIDTH, CELL_HEIGH));
 		}
 
-		return selectDate;
+		return v;
 	}
 
 	private int getDayFromPosition(int position) {
