@@ -60,6 +60,10 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 		super.initialize();
 	}
 	
+	protected int getSelectedSection() {
+		return mSelectedSection;
+	}
+	
 	protected int getSelectedCategoryID() {
 		return mSelectedCategoryID;
 	}
@@ -93,10 +97,6 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 		super.getData();
 	}
 	
-
-    
-  
-    
 	protected void getSeparationData() {
 		updateListItem(DBMgr.getAllItems(getItemType()));
 	}
@@ -194,7 +194,7 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 			TextView tvCount = (TextView) convertView.findViewById(R.id.TVSeparatorCount);
 			tvCount.setText(String.format("(%d)", category.getCount()));
 			
-			convertView.setBackgroundColor((category.getCategoryID() == mSelectedCategoryID) ? Color.MAGENTA : Color.BLACK);
+			convertView.setBackgroundColor((mSelectedSection == position) ? Color.MAGENTA : Color.BLACK);
 			
 			return convertView;
 		}

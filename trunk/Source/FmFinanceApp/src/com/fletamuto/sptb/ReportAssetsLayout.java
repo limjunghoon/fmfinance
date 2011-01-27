@@ -1,13 +1,26 @@
 package com.fletamuto.sptb;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.ReportDemandAccountLayout.ReportItemAdapter;
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
 import com.fletamuto.sptb.data.AssetsInsuranceItem;
@@ -15,13 +28,20 @@ import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.AssetsSavingsItem;
 import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 
 public class ReportAssetsLayout extends ReportSeparationLayout {
-	private long mTotalAmount = 0L;
 	public static final int ACT_ADD_ASSETS = MsgDef.ActRequest.ACT_ADD_ASSETS;
+	
+	private long mTotalAmount = 0L;
+	private long mTotalAccountAmount = 0L;
+	private ArrayList<AccountItem> mArrDemand;
+	protected ReportAccountItemAdapter mAccountItemAdapter = null;
 
     /** Called when the activity is first created. */
     @Override
@@ -45,6 +65,85 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     	setTitle("자산 목록");
     	super.setTitleBtn();
     }
+    
+    @Override
+	protected void getSeparationData() {
+    	mArrDemand = DBMgr.getAccountAllItems();
+    	mTotalAccountAmount = 0L;
+		int size = mArrDemand.size();
+		for (int index = 0; index < size; index++) {
+			AccountItem account = mArrDemand.get(index);
+			
+			if (account.getType() == AccountItem.TIME_DEPOSIT || account.getType() == AccountItem.SAVINGS) {
+				mArrDemand.remove(index);
+				index--; size--;
+			}
+			
+			mTotalAccountAmount += account.getBalance();
+		}
+		
+		super.getSeparationData();
+	}
+    
+    @Override
+    protected void setAdapterList() {
+    	if (isSelectedAccount()) {
+    		setAccountAdapterList();
+		}
+    	else {
+    		super.setAdapterList();
+    	}
+    }
+    
+    protected boolean isSelectedAccount() {
+    	return (mSeparationAdapter.getItem(getSelectedSection()).getType() == ItemDef.FinanceDef.ACCOUNT);
+    }
+    
+    @Override
+    protected ArrayList<CategoryAmount> getListItems() {
+    	ArrayList<CategoryAmount> listItems = new ArrayList<CategoryAmount>();
+    	Collection<CategoryAmount> categoryAmountItems = mCategoryItems.values();
+    	
+    	if (mArrDemand.size() != 0) {
+    		CategoryAmount categoryAmount = new CategoryAmount(ItemDef.FinanceDef.ACCOUNT);
+    		categoryAmount.set(-1, "요구불", mTotalAccountAmount);
+    		categoryAmount.setCount(mArrDemand.size());
+    		listItems.add(categoryAmount);
+    	}
+    	
+    	for (CategoryAmount iterator:categoryAmountItems) {
+			listItems.add(iterator);
+		}
+    	
+    	return listItems;
+    }
+    
+    protected void setAccountAdapterList() {
+        
+    	mAccountItemAdapter = new ReportAccountItemAdapter(this, R.layout.report_list_account, mArrDemand);
+    	mMemberList.setAdapter(mAccountItemAdapter);
+    	
+    	mMemberList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				Intent intent = new Intent(ReportAssetsLayout.this, ReportAccountHistoryLayout.class);
+				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, mAccountItemAdapter.getItem(position));
+				startActivity(intent);
+			}
+		});
+    }
+    
+    @Override
+	protected void getData() {
+		if (!isSelectedAccount()) {
+			super.getData();
+		}
+		else {
+			((TextView)findViewById(R.id.TVListTitleRight)).setText(String.format("총 금액 %,d원", mTotalAccountAmount));
+		}
+	}
     
 	@Override
 	protected void onClickListItem(AdapterView<?> parent, View view,
@@ -237,7 +336,6 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
 
 	protected void updateListItem() {
 		int itemSize = mItems.size();
-//		int itemCategoryID = -1;
 		mTotalAmount = 0L;
 		
 		for (int index = 0; index < itemSize; index++) {
@@ -246,13 +344,6 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
 			if (item.getState() == FinanceItem.STATE_COMPLEATE) {
 				continue;
 			}
-			
-//			if (item.getCategory().getID() != itemCategoryID) {
-//				itemCategoryID = item.getCategory().getID();
-//				AssetsItem separator = new AssetsItem();
-//				separator.setSeparatorTitle(item.getCategory().getName());
-//				mListItems.add(separator);
-//			}
 			
 			mTotalAmount += item.getAmount();
 			mListItems.add(item);
@@ -291,4 +382,41 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
 			return getAdapterResource();
 		}
 	}
+	
+	public class ReportAccountItemAdapter extends ArrayAdapter<AccountItem> {
+		private int mResource;
+    	private LayoutInflater mInflater;
+
+		public ReportAccountItemAdapter(Context context, int resource,
+				 List<AccountItem> objects) {
+			super(context, resource, objects);
+			this.mResource = resource;
+			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			
+			AccountItem item = (AccountItem)getItem(position);
+			
+			if (convertView == null) {
+				convertView = mInflater.inflate(mResource, parent, false);
+			}
+			
+			setAccountListViewText(item, convertView);			
+			
+			return convertView;
+		}
+		
+    }
+	
+	protected void setAccountListViewText(AccountItem account, View convertView) {
+		
+		((TextView)convertView.findViewById(R.id.TVAccountReportListNumer)).setText(account.getNumber());			
+		((TextView)convertView.findViewById(R.id.TVAccountReportListBalance)).setText(String.format("%,d원", account.getBalance()));
+		((TextView)convertView.findViewById(R.id.TVAccountReportListType)).setText(account.getTypeName());
+		((TextView)convertView.findViewById(R.id.TVAccountReportListInstitution)).setText(account.getCompany().getName());
+	}
+	
+	
 }

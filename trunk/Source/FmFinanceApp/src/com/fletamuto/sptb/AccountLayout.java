@@ -180,23 +180,23 @@ public class AccountLayout extends FmBaseActivity {
     }
 	
 	private void setTransferBtnListener(View convertView, AccountItem item, final int position) {
-    	Button btnTransfer = (Button)convertView.findViewById(R.id.BtnReportAccountTransfer);
-    	if (item.getType() == AccountItem.TIME_DEPOSIT || item.getType() == AccountItem.SAVINGS) {
-    		btnTransfer.setVisibility(View.GONE);
-    	}
-    	else {
-    		btnTransfer.setEnabled(item.getBalance() != 0L);
-    	}
-    	
-		btnTransfer.setOnClickListener(new View.OnClickListener() {
-	
-			public void onClick(View v) {
-				Intent intent = new Intent(AccountLayout.this, TransferAccountLayout.class);
-				AccountItem item = mAccountListItems.get(position);
-				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, item);
-				startActivityForResult(intent, MsgDef.ActRequest.ACT_TRANFER_ACCOUNT);
-			}
-		});
+//    	Button btnTransfer = (Button)convertView.findViewById(R.id.BtnReportAccountTransfer);
+//    	if (item.getType() == AccountItem.TIME_DEPOSIT || item.getType() == AccountItem.SAVINGS) {
+//    		btnTransfer.setVisibility(View.GONE);
+//    	}
+//    	else {
+//    		btnTransfer.setEnabled(item.getBalance() != 0L);
+//    	}
+//    	
+//		btnTransfer.setOnClickListener(new View.OnClickListener() {
+//	
+//			public void onClick(View v) {
+//				Intent intent = new Intent(AccountLayout.this, TransferAccountLayout.class);
+//				AccountItem item = mAccountListItems.get(position);
+//				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, item);
+//				startActivityForResult(intent, MsgDef.ActRequest.ACT_TRANFER_ACCOUNT);
+//			}
+//		});
 	}
 	
 
