@@ -1,5 +1,6 @@
 package com.fletamuto.sptb;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.DatePickerDialog;
@@ -10,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.PopupWindow;
 
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.Repeat;
@@ -124,6 +124,7 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     	((Button)findViewById(btnID)).setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
+/*
 				monthlyCalendar.showMonthlyCalendarPopup();
 				monthlyCalendar.getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
 					
@@ -135,6 +136,9 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 						updateDate();
 					}
 				});
+*/
+				Intent intent = new Intent(InputFinanceItemBaseLayout.this, MonthlyCalendar.class);
+				startActivityForResult(intent,37);
 			}
 		 });
     }
@@ -239,6 +243,20 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     			updateCategory(data.getIntExtra("CATEGORY_ID", -1), data.getStringExtra("CATEGORY_NAME"));
     		}
     	}
+    	//좀 있다 요청코드 만들기
+    	else if (requestCode == 37) {
+    		if (resultCode == RESULT_OK) {
+    			
+    			int[] values = data.getIntArrayExtra("SELECTED_DATE");
+
+    			mItem.getCreateDate().set(Calendar.YEAR, values[0]);
+				mItem.getCreateDate().set(Calendar.MONTH, values[1]);
+				mItem.getCreateDate().set(Calendar.DAY_OF_MONTH, values[2]);
+				
+    			updateDate();
+    		}
+    	}
+
     	
     	super.onActivityResult(requestCode, resultCode, data);
     }

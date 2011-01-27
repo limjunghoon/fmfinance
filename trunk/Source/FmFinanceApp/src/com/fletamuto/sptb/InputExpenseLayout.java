@@ -41,8 +41,11 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	private ExpenseItem mExpensItem;
 	
 	//달력 입력과 자주 사용 되는 지출을 위해 start
+/*	
+	private View popupview;
+*/
 	private LinearLayout linear;
-	private View popupview, popupviewBookmark;
+	private View popupviewBookmark;
 	private PopupWindow popupBookmark, popupBookmarkEdit;
 	private TextView tv;
 	private ArrayList<FinanceItem> expenseAllItems;
@@ -63,10 +66,12 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         updateChildView();
         
         //달력을 이용한 날짜 입력을 위해
+/*
         final Intent intent = getIntent();
         linear = (LinearLayout) findViewById(R.id.inputAssetsExpense);
         popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
+*/
         
         
         setTitle(getResources().getString(R.string.input_expense_name));
