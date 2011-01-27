@@ -329,7 +329,9 @@ public class MainAssetsLayout extends FmBaseActivity {
 				}
 			}
 			else if (v.getTag() == Integer.valueOf(ItemDef.FinanceDef.ACCOUNT)) {
-				Intent intent = new Intent(MainAssetsLayout.this, ReportDemandAccountLayout.class);
+//				Intent intent = new Intent(MainAssetsLayout.this, ReportDemandAccountLayout.class);
+//				startActivity(intent);
+				Intent intent = new Intent(MainAssetsLayout.this, ReportAssetsLayout.class);
 				startActivity(intent);
 			}
 		}

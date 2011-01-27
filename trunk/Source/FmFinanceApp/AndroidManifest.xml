@@ -107,6 +107,8 @@
 <activity android:name=".FmFinanceLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name="ReportDemandAccountLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportCardLayout"></activity>
+<activity android:name=".ReportInputAssetsCategoryLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportAccountHistoryLayout"></activity>
 </application>
 
 

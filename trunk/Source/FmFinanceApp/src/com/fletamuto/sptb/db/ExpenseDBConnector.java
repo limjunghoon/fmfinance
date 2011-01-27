@@ -925,4 +925,25 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	}
 
 
+	public ArrayList<FinanceItem> getItemFromAccount(int accountId, int year, int month) {
+		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		String[] params = {String.format("%d-%02d", year, month), String.valueOf(accountId)};
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		
+		queryBilder.setTables("expense, expense_main_category, expense_sub_category, expense_tag, payment_method");
+		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id AND expense.tag=expense_tag._id AND expense.payment_method=payment_method._id");
+		Cursor c = queryBilder.query(db, null, "strftime('%Y-%m', create_date)=? AND payment_method.account=?", params, null, null, "create_date DESC");
+		
+		if (c.moveToFirst() != false) {
+			do {
+				expenseItems.add(createExpenseItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		closeDatabase();
+		return expenseItems;
+	}
+
+
 }

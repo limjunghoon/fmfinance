@@ -35,7 +35,7 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
  * @version  1.0.0.1
  */
 public class MainIncomeAndExpenseLayout extends FmBaseActivity { 
-	public static final int LAST_DAY_OF_MONTH = 31;
+	private static final int LAST_DAY_OF_MONTH = ItemDef.LAST_DAY_OF_MONTH;
 	private static final int MOVE_SENSITIVITY = 30;
 	
 	private static boolean mDBInit = false; 

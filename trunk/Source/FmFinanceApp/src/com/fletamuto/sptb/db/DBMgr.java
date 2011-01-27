@@ -124,6 +124,10 @@ public final class DBMgr {
 		return (IncomeDBConnector)mInstance.mDBConnector.getBaseFinanceDBInstance(IncomeItem.TYPE);
 	}
 	
+	public static ExpenseDBConnector getExpenseDBConnecter() {
+		return (ExpenseDBConnector)mInstance.mDBConnector.getBaseFinanceDBInstance(ExpenseItem.TYPE);
+	}
+	
 	public static AssetsDBConnector getAssetsDBConnecter() {
 		return (AssetsDBConnector)mInstance.mDBConnector.getBaseFinanceDBInstance(AssetsItem.TYPE);
 	}
@@ -770,6 +774,14 @@ public final class DBMgr {
 
 	public static long updateAssetsStock(AssetsStockItem stock) {
 		return getAssetsDBConnecter().updateStock(stock);
+	}
+
+	public static ArrayList<FinanceItem> getExpenseItemFromAccount(int accountId, int year, int month) {
+		return getExpenseDBConnecter().getItemFromAccount(accountId, year, month);
+	}
+
+	public static ArrayList<FinanceItem> getIncomeItemFromAccount(int accountId, int year, int month) {
+		return getIncomeDBConnecter().getItemFromAccount(accountId, year, month);
 	}
 
 	

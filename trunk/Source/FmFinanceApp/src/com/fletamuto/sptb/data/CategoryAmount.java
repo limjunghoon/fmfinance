@@ -31,6 +31,10 @@ public class CategoryAmount {
 		return mCount;
 	}
 	
+	public void setCount(int count) {
+		mCount = count;
+	}
+	
 	public void addAmount(long amount) {
 		mTotalAmount += amount;
 		mCount++;

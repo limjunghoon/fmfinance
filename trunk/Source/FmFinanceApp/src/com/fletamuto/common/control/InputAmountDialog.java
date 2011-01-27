@@ -1,41 +1,33 @@
 package com.fletamuto.common.control;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.R;
 
-public class InputAmountView extends LinearLayout {
-	
-	public InputAmountView(Context context) {
-		super(context);
-      setInputNumberListener();
-      setRemoveNumberListener();
-      setOkCancelListener();
-      
-      displayAmount();
-	}
-
+public class InputAmountDialog extends Activity {
 	private Long Amount = 0L;
 	final static int MAX_VALUE_DIGIT = 9;
 	
-//    /** Called when the activity is first created. */
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        setContentView(R.layout.input_amount);
-//        
-//        setInputNumberListener();
-//        setRemoveNumberListener();
-//        setOkCancelListener();
-//        
-//        displayAmount();
-//    }
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.input_amount);
+        
+        setInputNumberListener();
+        setRemoveNumberListener();
+        setOkCancelListener();
+        
+        displayAmount();
+    }
     
     private void setInputNumberListener() {
     	InputAmount inputAmount = new InputAmount();
@@ -83,7 +75,7 @@ public class InputAmountView extends LinearLayout {
 //				
 //			}
 //		 });
-    	
+//    	
 //    	Button btnCancel = (Button)findViewById(R.id.BtnAmountCancel);
 //    	btnCancel.setOnClickListener(new Button.OnClickListener() {
 //		

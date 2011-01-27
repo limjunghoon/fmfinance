@@ -43,6 +43,9 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	
 	private AccountItem fromItem;
 	
+	protected ListView mMemberList;
+	
+	
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
 	protected abstract void setDeleteBtnListener(View convertView, int itemId, int position);
 	protected abstract int getItemType();
@@ -107,6 +110,8 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 		setButtonClickListener();
 		mCategoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1);
 		mCategoryName = getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME);
+		
+		mMemberList = (ListView)findViewById(R.id.LVCurrentList);
 	}
 	
 	protected void getData() {
@@ -120,13 +125,10 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	}
 	
 	protected void setAdapterList() {
-    	if (mItems == null) return;
-        
-    	final ListView listItem = (ListView)findViewById(R.id.LVCurrentList);
     	mItemAdapter = new ReportItemAdapter(this, getAdapterResource(), mListItems);
-    	listItem.setAdapter(mItemAdapter);
+    	mMemberList.setAdapter(mItemAdapter);
     	
-    	listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    	mMemberList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -134,6 +136,7 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 			}
 		});
     }
+	
 	
 //	
 //	protected void onListItemClick(ListView l, View v, int position, long id) {

@@ -576,5 +576,26 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		return 0;
 	}
 
+	public ArrayList<FinanceItem> getItemFromAccount(int accountId, int year,
+			int month) {
+		ArrayList<FinanceItem> incomeItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.format("%d-%02d", year, month), String.valueOf(accountId)};
+		
+		queryBilder.setTables("income, income_main_category");
+		queryBilder.appendWhere("income.main_category=income_main_category._id");
+		Cursor c = queryBilder.query(db, null, "strftime('%Y-%m', create_date)=? AND income.account=?", params, null, null, "create_date DESC");
+		
+		if (c.moveToFirst() != false) {
+			do {
+				incomeItems.add(CreateIncomeItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		closeDatabase();
+		return incomeItems;
+	}
+
 
 }
