@@ -33,10 +33,12 @@ public class InputAssetsFundLayout extends InputAssetsExtendLayout {
     	updateChildView();
     	
     	//달력을 이용한 날짜 입력을 위해
+/*
         LinearLayout linear = (LinearLayout) findViewById(R.id.inputAssetsFund);
         View popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
+*/
         
        
     }
@@ -140,7 +142,7 @@ public class InputAssetsFundLayout extends InputAssetsExtendLayout {
 		((Button)findViewById(resource)).setOnClickListener(new Button.OnClickListener() {
 			
 			public void onClick(View v) {
-
+/*
 				monthlyCalendar.showMonthlyCalendarPopup();
 				monthlyCalendar.getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
 					
@@ -152,6 +154,9 @@ public class InputAssetsFundLayout extends InputAssetsExtendLayout {
 						updateExpiryDate();
 					}
 				});
+*/
+				Intent intent = new Intent(InputAssetsFundLayout.this, MonthlyCalendar.class);
+				startActivityForResult(intent,37);
 			}
 		 });
 	}
@@ -192,4 +197,23 @@ public class InputAssetsFundLayout extends InputAssetsExtendLayout {
 			}
 		});
 	}
+	
+	
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    
+		//좀 있다 요청코드 만들기
+    	if (requestCode == 37) {
+    		if (resultCode == RESULT_OK) {
+    			
+    			int[] values = data.getIntArrayExtra("SELECTED_DATE");
+
+    			mFund.getCreateDate().set(Calendar.YEAR, values[0]);
+    			mFund.getCreateDate().set(Calendar.MONTH, values[1]);
+    			mFund.getCreateDate().set(Calendar.DAY_OF_MONTH, values[2]);
+				
+    			updateDate();
+    		}
+    	}
+    }
 }
