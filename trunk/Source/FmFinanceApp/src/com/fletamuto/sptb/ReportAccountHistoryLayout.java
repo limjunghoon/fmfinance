@@ -3,12 +3,10 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,8 +19,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.MainIncomeAndExpenseLayout.DailyItem;
-import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ReportDailyItemAdapter;
 import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ViewHolder;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.ExpenseItem;

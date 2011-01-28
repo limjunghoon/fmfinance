@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.SlidingDrawer;
 
 import com.fletamuto.sptb.util.LogTag;
-import com.fletamuto.sptb.view.BaseSliderLayout;
 import com.fletamuto.sptb.view.FmBaseLayout;
 
 /**

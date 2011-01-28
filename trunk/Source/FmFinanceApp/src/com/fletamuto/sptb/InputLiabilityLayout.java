@@ -3,8 +3,6 @@ package com.fletamuto.sptb;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.LiabilityItem;

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.util.Log;
 
 public class MonthlyCalendarAdapter extends BaseAdapter {
 	

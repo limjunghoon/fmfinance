@@ -1,6 +1,5 @@
 package com.fletamuto.sptb;
 
-import com.fletamuto.common.control.BaseSlidingActivity;
 import java.util.Calendar;
 
 import android.content.Intent;
@@ -9,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+
+import com.fletamuto.common.control.BaseSlidingActivity;
 
 public class MonthlyCalendar extends BaseSlidingActivity {
 	
