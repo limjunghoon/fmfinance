@@ -1,17 +1,19 @@
 package com.fletamuto.common.control;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.MsgDef;
 import com.fletamuto.sptb.R;
+import com.fletamuto.sptb.data.ItemDef;
 
-public class InputAmountDialog extends Activity {
-	private Long Amount = 0L;
+public class InputAmountDialog extends BaseSlidingActivity {
+	private Long mAmount = 0L;
 	final static int MAX_VALUE_DIGIT = 9;
 	
     /** Called when the activity is first created. */
@@ -19,15 +21,23 @@ public class InputAmountDialog extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.input_amount);
+        
+      //sliding 을 위해 View 설정 하고 animation 시작 함수 호출 하는 부분 start
+        setSlidingView(findViewById(R.id.LLAmount));
+        appearAnimation();
+        //end
         
         setInputNumberListener();
         setRemoveNumberListener();
         setOkCancelListener();
         
+        ((TextView)findViewById(R.id.TVAmount)).setTextColor(Color.BLACK);
+        mAmount = getIntent().getLongExtra(MsgDef.ExtraNames.AMOUNT, 0L);
+        
         displayAmount();
     }
+   
     
     private void setInputNumberListener() {
     	InputAmount inputAmount = new InputAmount();
@@ -41,6 +51,7 @@ public class InputAmountDialog extends Activity {
         ((Button)findViewById(R.id.BtnAmount_8)).setOnClickListener(inputAmount);
         ((Button)findViewById(R.id.BtnAmount_9)).setOnClickListener(inputAmount);
         ((Button)findViewById(R.id.BtnAmount_0)).setOnClickListener(inputAmount);
+
     }
     
     private void setRemoveNumberListener() {
@@ -64,59 +75,59 @@ public class InputAmountDialog extends Activity {
     }
     
     private void setOkCancelListener() {
-//    	Button btnOK = (Button)findViewById(R.id.BtnAmountOK);
-//    	btnOK.setOnClickListener(new Button.OnClickListener() {
-//		
-//			public void onClick(View v) {
-//				Intent intent = new Intent();
-//				intent.putExtra("AMOUNT", Amount);
-//				setResult(RESULT_OK, intent);
-//				finish();
-//				
-//			}
-//		 });
-//    	
-//    	Button btnCancel = (Button)findViewById(R.id.BtnAmountCancel);
-//    	btnCancel.setOnClickListener(new Button.OnClickListener() {
-//		
-//			public void onClick(View v) {
-//				setResult(RESULT_CANCELED);
-//				finish();
-//			}
-//		 });
+    	Button btnOK = (Button)findViewById(R.id.BtnAmountOK);
+    	btnOK.setOnClickListener(new Button.OnClickListener() {
+		
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.putExtra("AMOUNT", mAmount);
+				setResult(RESULT_OK, intent);
+				finish();
+				
+			}
+		 });
+    	
+    	Button btnCancel = (Button)findViewById(R.id.BtnAmountCancel);
+    	btnCancel.setOnClickListener(new Button.OnClickListener() {
+		
+			public void onClick(View v) {
+				setResult(RESULT_CANCELED);
+				finish();
+			}
+		 });
     }
     
     public void clear() {
-    	Amount = 0L;
+    	mAmount = 0L;
     }
     
     public void remove() {
-    	if (Amount == 0L) return;
-    	Amount /= 10;
+    	if (mAmount == 0L) return;
+    	mAmount /= 10;
     }
     
     public void setAmount(Long amount) {
-    	Amount = amount;
+    	mAmount = amount;
 	}
 
 	public long getAmount() {
-		return Amount;
+		return mAmount;
 	}
 	
 	public void inputNumber(int number) {
     	if (checkNumber() == false) return;
-    	Amount *= 10;
-    	Amount += number;
+    	mAmount *= 10;
+    	mAmount += number;
 	}
  
 	public void displayAmount() {
 		TextView tvAmount = (TextView)findViewById(R.id.TVAmount);
-		Amount.toString();
-		tvAmount.setText(String.format("%,d원", Amount));
+		mAmount.toString();
+		tvAmount.setText(String.format("%,d원", mAmount));
 	}
 	
 	public boolean checkNumber() {
-		String amount = Amount.toString();
+		String amount = mAmount.toString();
 		return (amount.length() > MAX_VALUE_DIGIT) ? false : true;
 	}
 
