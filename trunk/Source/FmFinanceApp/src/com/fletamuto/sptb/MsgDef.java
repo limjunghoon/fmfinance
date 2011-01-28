@@ -84,6 +84,7 @@ public final class MsgDef {
 		public static final String STOCK_ID = "STOCK_ID";
 		public static final String INPUT_CHANGE_MODE = "INPUT_CHANGE_MODE";
 		public static final String CHANGE_MENU = "CHANGE_MENU";
+		public static final String AMOUNT = "AMOUNT";
 		
 	}
 }

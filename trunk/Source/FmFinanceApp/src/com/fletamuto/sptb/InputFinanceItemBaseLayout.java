@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
@@ -29,7 +30,7 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 	
 	private FinanceItem mItem;
 	
-	protected InputAmountLayout mAmountLayout;
+//	protected InputAmountLayout mAmountLayout;
 	
 	protected abstract void updateDate();
 	protected abstract void updateCategory(int id, String name);
@@ -58,7 +59,7 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     }
 	@Override
 	protected void initialize() {
-		mAmountLayout = new InputAmountLayout(this);
+//		mAmountLayout = new InputAmountLayout(this);
 //		mAmountLayout = (InputAmountLayout) View.inflate(this, R.layout.input_amount, null);
 //		LayoutInflater inflater = LayoutInflater.from(this);
 //		mAmountLayout = (InputAmountLayout) inflater.inflate(R.layout.input_amount, null);
@@ -154,9 +155,12 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 		
 			public void onClick(View v) {
 //				mAmountLayout.setSliderListenerBtnId(btnID);
-				mAmountLayout.setAmount(mItem.getAmount());
-				setSlideView(mAmountLayout);
-				showSlideView();
+//				mAmountLayout.setAmount(mItem.getAmount());
+//				setSlideView(mAmountLayout);
+//				showSlideView();
+				Intent intent = new Intent(InputFinanceItemBaseLayout.this, InputAmountDialog.class);
+				intent.putExtra(MsgDef.ExtraNames.AMOUNT, mItem.getAmount());
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT);
 			}
 		 });
     }
@@ -332,10 +336,10 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 	}
 	
 	protected void onClickBottomSlideComplate(View v) {
-		View targetView = (View) v.getTag();
-		if (targetView == mAmountLayout) {
-			updateAmount(mAmountLayout.getAmount());
-		}
+//		View targetView = (View) v.getTag();
+//		if (targetView == mAmountLayout) {
+//			updateAmount(mAmountLayout.getAmount());
+//		}
 		
     	super.onClickBottomSlideComplate(v);
 	}
