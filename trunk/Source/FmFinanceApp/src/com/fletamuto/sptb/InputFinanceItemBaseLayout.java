@@ -209,7 +209,9 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     	((Button)findViewById(btnID)).setOnClickListener(new Button.OnClickListener() {
     		
     		public void onClick(View v) {
-    			onCategoryClick();
+    			Intent intent = new Intent(InputFinanceItemBaseLayout.this, SelectCategoryExpenseLayout.class);
+    			startActivityForResult(intent, ACT_CATEGORY);
+//    			onCategoryClick();
     		}
         });    
     }    
