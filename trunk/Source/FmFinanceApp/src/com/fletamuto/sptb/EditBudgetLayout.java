@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.BudgetItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
@@ -87,8 +88,8 @@ public class EditBudgetLayout  extends FmBaseActivity {
 			
 			public void onClick(View v) {
 				mSelectedPosition = position;
-//				Intent intent = new Intent(EditBudgetLayout.this, InputAmountDialog.class);
-//				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT);
+				Intent intent = new Intent(EditBudgetLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT);
 			}
 		});
     }

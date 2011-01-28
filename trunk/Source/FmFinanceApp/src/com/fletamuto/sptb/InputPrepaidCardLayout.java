@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
@@ -72,8 +73,8 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
     	btnAmount.setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
-//				Intent intent = new Intent(InputPrepaidCardLayout.this, InputAmountDialog.class);
-//				startActivityForResult(intent, ACT_BALANCE);
+				Intent intent = new Intent(InputPrepaidCardLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, ACT_BALANCE);
 			}
 		 });
     }

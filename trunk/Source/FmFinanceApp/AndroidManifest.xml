@@ -110,6 +110,7 @@
 <activity android:name=".ReportInputAssetsCategoryLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportAccountHistoryLayout"></activity>
 <activity android:name=".MonthlyCalendar" android:launchMode="standard" android:theme="@android:style/Theme.Translucent"></activity>
+<activity android:name="com.fletamuto.common.control.InputAmountDialog" android:theme="@android:style/Theme.Dialog"></activity>
 </application>
 
 

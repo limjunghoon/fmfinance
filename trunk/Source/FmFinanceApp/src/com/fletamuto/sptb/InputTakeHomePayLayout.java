@@ -1,6 +1,8 @@
 package com.fletamuto.sptb;
 
 
+import com.fletamuto.common.control.InputAmountDialog;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -64,8 +66,8 @@ public class InputTakeHomePayLayout extends InputBaseLayout {
 		btnInsurance.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-//				Intent intent = new Intent(InputTakeHomePayLayout.this, InputAmountDialog.class);
-//				startActivityForResult(intent, ACT_TAKE_HOME_PAY_INSURANCE_AMOUNT);
+				Intent intent = new Intent(InputTakeHomePayLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, ACT_TAKE_HOME_PAY_INSURANCE_AMOUNT);
 			}
 		});
 		
@@ -74,8 +76,8 @@ public class InputTakeHomePayLayout extends InputBaseLayout {
 		btnTax.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-//				Intent intent = new Intent(InputTakeHomePayLayout.this, InputAmountDialog.class);
-//				startActivityForResult(intent, ACT_TAKE_HOME_PAY_TAX_AMOUNT);
+				Intent intent = new Intent(InputTakeHomePayLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, ACT_TAKE_HOME_PAY_TAX_AMOUNT);
 			}
 		});
 		
@@ -84,8 +86,8 @@ public class InputTakeHomePayLayout extends InputBaseLayout {
 		btnPension.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-//				Intent intent = new Intent(InputTakeHomePayLayout.this, InputAmountDialog.class);
-//				startActivityForResult(intent, ACT_TAKE_HOME_PAY_PENSION_AMOUNT);
+				Intent intent = new Intent(InputTakeHomePayLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, ACT_TAKE_HOME_PAY_PENSION_AMOUNT);
 			}
 		});
 		
@@ -95,8 +97,8 @@ public class InputTakeHomePayLayout extends InputBaseLayout {
 		btnEtc.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-//				Intent intent = new Intent(InputTakeHomePayLayout.this, InputAmountDialog.class);
-//				startActivityForResult(intent, ACT_TAKE_HOME_PAY_ETC_AMOUNT);
+				Intent intent = new Intent(InputTakeHomePayLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, ACT_TAKE_HOME_PAY_ETC_AMOUNT);
 			}
 		});
 	}
