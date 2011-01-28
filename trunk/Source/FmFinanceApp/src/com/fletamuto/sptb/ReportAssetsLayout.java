@@ -7,19 +7,15 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.ReportDemandAccountLayout.ReportItemAdapter;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
@@ -30,10 +26,8 @@ import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
-import com.fletamuto.sptb.util.LogTag;
 
 public class ReportAssetsLayout extends ReportSeparationLayout {
 	public static final int ACT_ADD_ASSETS = MsgDef.ActRequest.ACT_ADD_ASSETS;

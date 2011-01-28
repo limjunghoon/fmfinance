@@ -1,12 +1,8 @@
 package com.fletamuto.sptb;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,20 +14,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsItem;
-import com.fletamuto.sptb.data.CardExpenseInfo;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.CategoryAmount;
-import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
-import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class ReportInputAssetsCategoryLayout extends FmBaseActivity {
 	public static final int VIEW_NORMAL = 0;

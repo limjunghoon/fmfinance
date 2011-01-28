@@ -3,12 +3,11 @@ package com.fletamuto.sptb;
 
 import java.util.Calendar;
 
-import com.fletamuto.sptb.view.FmBaseLayout;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 public abstract class ReportBaseHistoryLayout extends FmBaseActivity {
 	private Calendar mCalendar = Calendar.getInstance();

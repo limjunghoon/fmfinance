@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 
 public abstract class InputBaseLayout extends FmBaseActivity {

@@ -14,7 +14,6 @@ import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.fletamuto.sptb.InputBaseLayout.InputMode;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;

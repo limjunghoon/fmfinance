@@ -1,6 +1,5 @@
 package com.fletamuto.sptb;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.DatePickerDialog;
@@ -17,7 +16,6 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
-import com.fletamuto.sptb.view.InputAmountLayout;
 
 /**
  * 수입, 지출, 자산, 부채  입력 또는 수정 기본 레이아웃 클래스
