@@ -3,18 +3,25 @@ package com.fletamuto.sptb;
 import android.os.Bundle;
 import android.view.View;
 
-public abstract class SelectGridBaseLayout extends FmBaseActivity {
-	
+import com.fletamuto.common.control.BaseSlidingActivity;
+
+//public abstract class SelectGridBaseLayout extends FmBaseActivity {
+public abstract class SelectGridBaseLayout extends BaseSlidingActivity {
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       
-        setContentView(R.layout.select_grid_base, true);
+//        setContentView(R.layout.select_grid_base, true);
+        setContentView(R.layout.select_grid_base);
+        
+        setSlidingView(findViewById(R.id.GridBase));
+        appearAnimation();
+        
         getData();
         setAdaper();
     }
 	
-	@Override
+/*
 	protected void setTitleBtn() {
         setEditButtonListener();
         setTitle(getResources().getString(R.string.btn_category_select));
@@ -31,7 +38,7 @@ public abstract class SelectGridBaseLayout extends FmBaseActivity {
 			}
 		});
 	}
-	
+*/	
 	protected void updateAdapter() {
 		
 		clearAdapter();

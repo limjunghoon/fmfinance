@@ -19,7 +19,8 @@ public class SelectCategoryIncomeLayout extends InputAfterSelectCategoryLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    
+
+/*
     @Override
 	protected void setTitleBtn() {
 		 setTitleBtnText(FmTitleLayout.BTN_LEFT_01, "¡ˆ√‚");
@@ -35,7 +36,7 @@ public class SelectCategoryIncomeLayout extends InputAfterSelectCategoryLayout {
 		
     	super.onClickLeft1TitleBtn();
     }
-
+*/
 	@Override
 	protected void startInputActivity(Category category) {
     	Intent intent = null;

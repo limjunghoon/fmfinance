@@ -31,7 +31,7 @@ public class SelectSubCategoryLayout extends SelectCategoryBaseLayout {
 		setCategoryAdaper();
         
 	}
-    
+/*    
     public void setEditButtonListener() {
 		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
@@ -46,6 +46,7 @@ public class SelectSubCategoryLayout extends SelectCategoryBaseLayout {
 			}
 		});
 	}
+*/
     
   
     protected void onClickCategoryButton(Category category) {
