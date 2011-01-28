@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -45,8 +46,8 @@ public class TransferAccountLayout extends FmBaseActivity {
 		findViewById(R.id.BtnAccountAmount).setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-//				Intent intent = new Intent(TransferAccountLayout.this, InputAmountDialog.class);
-//				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT);
+				Intent intent = new Intent(TransferAccountLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT);
 			}
 		});
 	}

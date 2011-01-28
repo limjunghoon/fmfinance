@@ -5,12 +5,15 @@ import java.util.Calendar;
 
 import com.fletamuto.sptb.view.FmBaseLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 public abstract class ReportBaseHistoryLayout extends FmBaseActivity {
 	private Calendar mCalendar = Calendar.getInstance();
+	
+	public abstract void onEditBtnClick();
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,9 +27,20 @@ public abstract class ReportBaseHistoryLayout extends FmBaseActivity {
     	super.initialize();
     }
 
+    public void setEidtButtonListener() {
+		setTitleButtonListener(FmBaseLayout.BTN_RIGTH_01, new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				onEditBtnClick();
+				
+			}
+		});
+	}
     
     
-    @Override
+
+
+	@Override
     protected void setTitleBtn() {
     	super.setTitleBtn();
     	
@@ -35,7 +49,7 @@ public abstract class ReportBaseHistoryLayout extends FmBaseActivity {
     	
     	
     	setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "ÆíÁý");
-        //setAddButtonListener();
+    	setEidtButtonListener();
         setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
     	
     	

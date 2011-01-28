@@ -140,4 +140,9 @@ public class ReportAssetsHistoryLayout extends ReportBaseHistoryLayout {
 //	protected int getLayoutResources(FinanceItem item) {
 //		return getAdapterResource();
 //	}
+
+	@Override
+	public void onEditBtnClick() {
+		
+	}
 }
