@@ -23,11 +23,11 @@
 		<activity android:name=".ReportExpenseLayout" android:label="지출내역" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".ReportIncomeLayout" android:label="수입내역" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".ReportLiabilityLayout" android:label="부채내역" android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:name=".SelectCategoryIncomeLayout" android:label="분류선택" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:name=".SelectCategoryAssetsLayout" android:label="상위분류 선택" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:name=".SelectCategoryExpenseLayout" android:label="상위분류 선택" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:name=".SelectCategoryLiabilityLayout" android:label="분류선택" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:label="하위분류 선택" android:name=".SelectSubCategoryLayout" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name=".SelectCategoryIncomeLayout" android:label="분류선택" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent"></activity>
+		<activity android:name=".SelectCategoryAssetsLayout" android:label="상위분류 선택" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent"></activity>
+		<activity android:name=".SelectCategoryExpenseLayout" android:label="상위분류 선택" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent"></activity>
+		<activity android:name=".SelectCategoryLiabilityLayout" android:label="분류선택" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent"></activity>
+		<activity android:label="하위분류 선택" android:name=".SelectSubCategoryLayout" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent"></activity>
 		<activity android:name=".ReportCurrentExpenseLayout" android:label="금일 지출목록" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:label="금일 수입목록" android:name=".ReportCurrentIncomeLayout" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".EditCategoryLayout" android:theme="@android:style/Theme.NoTitleBar" android:label="분류편집"></activity>
@@ -49,7 +49,7 @@
 		<activity android:name=".AccountLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".BudgetLayout"></activity>
 		<activity android:name=".SearchLayout"></activity>
-		<activity android:name=".SelectTagLayout"></activity>
+		<activity android:name=".SelectTagLayout"android:theme="@android:style/Theme.Translucent"></activity>
 		<activity android:name=".RepeatLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".PurposeLayout"></activity>
 		<activity android:name=".SelectCardLayout" android:theme="@android:style/Theme.Dialog" android:label="카드선택"></activity>
