@@ -27,7 +27,7 @@ import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class ReportAccountHistoryLayout extends ReportBaseHistoryLayout {
+public class DetailAccountLayout extends DetailBaseLayout {
 	private static final int LAST_DAY_OF_MONTH = ItemDef.LAST_DAY_OF_MONTH;
 	public static final int STATE_CREATE = 0;
 	public static final int STATE_EDIT = 1;
@@ -36,6 +36,7 @@ public class ReportAccountHistoryLayout extends ReportBaseHistoryLayout {
 	public static final int STATE_TRANSFOR = 4;
 	public static final int STATE_SETTLEMENT = 5;
 	
+	private Calendar mCalendar = Calendar.getInstance();
     private AccountItem mAccount;
     protected ReportAccountHistoryAdapter mAccountHistoryAdapter = null;
     
@@ -45,8 +46,56 @@ public class ReportAccountHistoryLayout extends ReportBaseHistoryLayout {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        
+        setContentView(R.layout.detail_account, true);
     }
+    
+	@Override
+	public void initialize() {
+	  	super.initialize();
+	  	
+	  	mAccount = (AccountItem) getIntent().getSerializableExtra(MsgDef.ExtraNames.ACCOUNT_ITEM);
+	  	
+	  	TextView tvInstitution = (TextView) findViewById(R.id.TVAccountInstitution);
+	  	tvInstitution.setText(mAccount.getCompany().getName());
+	  	
+	  	TextView tvBalance = (TextView) findViewById(R.id.TVAccountAmount);
+	  	tvBalance.setText(String.format("%,d원", mAccount.getBalance()));
+	  	
+	  	TextView tvType = (TextView) findViewById(R.id.TVAccountType);
+	  	tvType.setText(mAccount.getTypeName());
+	  	
+	  	TextView tvNumber = (TextView) findViewById(R.id.TVAccountNumber);
+	  	tvNumber.setText(mAccount.getNumber());
+	}
+    
+    @Override
+  	protected void setTitleBtn() {
+		super.setTitleBtn();
+		
+		setTitle("보통예금 내역");
+		
+		TextView tvCurrentMonth = (TextView)findViewById(R.id.TVCurrentMonth);
+		tvCurrentMonth.setText(String.format("%d년 %d월", mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1));
+	
+		Button btnTrans = (Button)findViewById(R.id.BtnTrans);
+		btnTrans.setText("이체");
+		
+		btnTrans.setOnClickListener(new View.OnClickListener() {
+				
+				public void onClick(View v) {
+		//				Intent intent = new Intent(ReportAccountHistoryLayout.this, TransferAccountLayout.class);
+		//				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, mAccount);
+		//				startActivityForResult(intent, MsgDef.ActRequest.ACT_TRANFER_ACCOUNT);
+				}
+			});
+  	}
+    
+	@Override
+	public void onEditBtnClick() {
+    	Intent intent = new Intent(this, InputAccountLayout.class);
+    	intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, mAccount.getID());
+    	startActivityForResult(intent, MsgDef.ActRequest.ACT_EDIT_ITEM);
+	}
     
     @Override
     protected void onResume() {
@@ -57,41 +106,13 @@ public class ReportAccountHistoryLayout extends ReportBaseHistoryLayout {
     	super.onResume();
     }
     
-    @Override
-    public void initialize() {
-    	super.initialize();
-    	
-    	mAccount = (AccountItem) getIntent().getSerializableExtra(MsgDef.ExtraNames.ACCOUNT_ITEM);
-    	setVisibleTitle();
-    	
-    }
-
 
 	protected void updateChildView() {
-		Button btnBalance = (Button)findViewById(R.id.BtnTitle);
-    	btnBalance.setText(String.format("잔액 %,d원", mAccount.getBalance()));
-    	btnBalance.setVisibility(View.VISIBLE);
+//		Button btnBalance = (Button)findViewById(R.id.BtnTitle);
+//    	btnBalance.setText(String.format("잔액 %,d원", mAccount.getBalance()));
+//    	btnBalance.setVisibility(View.VISIBLE);
 	}
     
-    @Override
-    protected void setTitleBtn() {
-    	super.setTitleBtn();
-    	
-    	setTitle(mAccount.getCompany().getName() + " 계좌 내역");
-    	findViewById(R.id.BtnTitle).setVisibility(View.VISIBLE);
-  
-    	Button btnTrans = (Button)findViewById(R.id.BtnFunction);
-    	btnTrans.setText("이체");
-    	
-    	btnTrans.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				Intent intent = new Intent(ReportAccountHistoryLayout.this, TransferAccountLayout.class);
-				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, mAccount);
-				startActivityForResult(intent, MsgDef.ActRequest.ACT_TRANFER_ACCOUNT);
-			}
-		});
-    }
     
 	protected void setAccountHistoryList() {
     	final ListView listIncome = (ListView)findViewById(R.id.LVCurrentList);
@@ -116,14 +137,6 @@ public class ReportAccountHistoryLayout extends ReportBaseHistoryLayout {
 		});
 	}
 	
-	@Override
-	public void onEditBtnClick() {
-    	Intent intent = new Intent(this, InputAccountLayout.class);
-    	intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, mAccount.getID());
-    	startActivityForResult(intent, MsgDef.ActRequest.ACT_EDIT_ITEM);
-//		intent.putExtra(MsgDef.ExtraNames.GET_ACCOUNT_ITEMS, mAccountListItems);
-//		startActivityForResult(intent, ACT_EDIT_ACCOUNT);
-	}
     
     protected List<AccountDailyItem> getListItems() {
     	ArrayList<AccountDailyItem> listItems = new ArrayList<AccountDailyItem>();
@@ -256,8 +269,8 @@ public class ReportAccountHistoryLayout extends ReportBaseHistoryLayout {
     protected void updateMonthlyItems() {
 		clearMonthlyItems();
 		
-		ArrayList<FinanceItem> expenseItems = DBMgr.getExpenseItemFromAccount(mAccount.getID(), getCalendar().get(Calendar.YEAR), getCalendar().get(Calendar.MONTH)+1);
-    	ArrayList<FinanceItem> incomeItems = DBMgr.getIncomeItemFromAccount(mAccount.getID(), getCalendar().get(Calendar.YEAR), getCalendar().get(Calendar.MONTH)+1);
+		ArrayList<FinanceItem> expenseItems = DBMgr.getExpenseItemFromAccount(mAccount.getID(), mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1);
+    	ArrayList<FinanceItem> incomeItems = DBMgr.getIncomeItemFromAccount(mAccount.getID(), mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1);
     	
 		
 		int incomeItemSize = incomeItems.size();
@@ -354,4 +367,6 @@ public class ReportAccountHistoryLayout extends ReportBaseHistoryLayout {
 			return convertView;
 		}
     }
+
+
 }

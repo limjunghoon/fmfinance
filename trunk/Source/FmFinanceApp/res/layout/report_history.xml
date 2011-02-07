@@ -19,5 +19,6 @@
 		<ListView android:layout_width="fill_parent" android:id="@+id/LVCurrentList" android:layout_height="fill_parent">
 
 </ListView>
-	</LinearLayout><LinearLayout android:layout_height="wrap_content" android:id="@+id/LLFunction" android:layout_weight="0" android:layout_width="fill_parent"><Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="0" android:id="@+id/BtnFunction"></Button></LinearLayout>
+	</LinearLayout>
+	<LinearLayout android:layout_height="wrap_content" android:id="@+id/LLFunction" android:layout_weight="0" android:layout_width="fill_parent"><Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="0" android:id="@+id/BtnFunction"></Button></LinearLayout>
 </LinearLayout>

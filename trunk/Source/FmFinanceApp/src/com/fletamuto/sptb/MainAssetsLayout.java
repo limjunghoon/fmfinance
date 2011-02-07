@@ -266,7 +266,7 @@ public class MainAssetsLayout extends FmBaseActivity {
 			LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.main_assets_member, null);
 			LinearLayout.LayoutParams params = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
 			TextView tvName = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberName);
-			tvName.setText("요구불");
+			tvName.setText("보통예금");
 			TextView tvCount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberCount);
 			tvCount.setText(String.format("%d건", accountSize));
 			TextView tvAmount = (TextView) llMember.findViewById(R.id.TVMainAssetsMemberTotalAmout);

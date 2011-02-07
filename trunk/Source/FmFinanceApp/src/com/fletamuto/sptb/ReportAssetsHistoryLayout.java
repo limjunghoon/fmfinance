@@ -11,7 +11,7 @@ import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.util.Revenue;
 
-public class ReportAssetsHistoryLayout extends ReportBaseHistoryLayout {
+public class ReportAssetsHistoryLayout extends DetailBaseLayout {
     private AssetsItem mItem;
 	private long mPurchasePrice = 0L;
     @Override

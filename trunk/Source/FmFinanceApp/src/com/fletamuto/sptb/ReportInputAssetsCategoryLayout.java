@@ -172,7 +172,7 @@ public class ReportInputAssetsCategoryLayout extends FmBaseActivity {
 	
 	protected ArrayList<Category> getCategoryListItems() {
 		if (mSelectedSection == SELECT_ASSETS) {
-			mListItems.add(0, new Category(-1, "요구불"));
+			mListItems.add(0, new Category(-1, "보통예금"));
 		}
 		return mListItems;
 	}

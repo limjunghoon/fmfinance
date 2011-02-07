@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+  
+  	
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:text="@string/input_account_institution" android:id="@+id/TVAccountInstiitutionT" android:layout_width="80dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVAccountInstitution">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:id="@+id/TVAccountNumberT" android:text="@string/input_account_nubmer" android:layout_width="80dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:numeric="integer" android:id="@+id/TVAccountNumber">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp" android:id="@+id/LLAccountType">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:text="@string/input_account_type" android:id="@+id/TVAccountTypeT" android:layout_width="80dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVAccountType" android:entries="@array/account_type">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLAccountBalance" android:layout_marginTop="10dp">
+		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:id="@+id/TVAccountBalanceT" android:text="@string/input_account_balance" android:layout_width="80dp">
+		</TextView>
+		<TextView android:id="@+id/TVAccountAmount" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1">
+		</TextView>
+	<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="0" android:text="이체" android:id="@+id/BtnTrans"></Button>
+</LinearLayout>
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/LLList" android:orientation="vertical" android:layout_weight="1">
+		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center" android:orientation="horizontal" android:id="@+id/LLMoveDay" android:visibility="visible">
+	   		<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="이전날" android:visibility="gone" android:id="@+id/BtnPreviusMonth">
+	   		</Button>
+	   		<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="년도" android:textSize="20sp" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:id="@+id/TVCurrentMonth">
+	   		</TextView>
+	   		<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="다음날" android:visibility="gone" android:id="@+id/BtnNextMonth">
+	   		</Button>
+		</LinearLayout>
+		<ListView android:layout_width="fill_parent" android:id="@+id/LVCurrentList" android:layout_height="fill_parent">
+
+</ListView>
+	</LinearLayout>
+  
+  
+</LinearLayout>
