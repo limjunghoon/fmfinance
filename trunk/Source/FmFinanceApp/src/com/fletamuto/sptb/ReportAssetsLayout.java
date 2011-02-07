@@ -100,7 +100,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     	
     	if (mArrDemand.size() != 0) {
     		CategoryAmount categoryAmount = new CategoryAmount(ItemDef.FinanceDef.ACCOUNT);
-    		categoryAmount.set(-1, "요구불", mTotalAccountAmount);
+    		categoryAmount.set(-1, "보통예금", mTotalAccountAmount);
     		categoryAmount.setCount(mArrDemand.size());
     		listItems.add(categoryAmount);
     	}
@@ -122,7 +122,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
-				Intent intent = new Intent(ReportAssetsLayout.this, ReportAccountHistoryLayout.class);
+				Intent intent = new Intent(ReportAssetsLayout.this, DetailAccountLayout.class);
 				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, mAccountItemAdapter.getItem(position));
 				startActivity(intent);
 			}

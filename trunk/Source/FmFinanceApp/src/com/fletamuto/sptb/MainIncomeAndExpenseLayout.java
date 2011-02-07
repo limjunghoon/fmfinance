@@ -36,7 +36,7 @@ import com.fletamuto.sptb.util.FinanceDataFormat;
  */
 public class MainIncomeAndExpenseLayout extends FmBaseActivity { 
 	private static final int LAST_DAY_OF_MONTH = ItemDef.LAST_DAY_OF_MONTH;
-	private static final int MOVE_SENSITIVITY = 30;
+	private static final int MOVE_SENSITIVITY = 80;
 	
 	private static boolean mDBInit = false; 
 	
@@ -44,8 +44,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 	protected ArrayList<FinanceItem> mExpenseDailyItems = null;
 	protected ArrayList<FinanceItem> mIncomeMonthlyItems = null;
 	protected ArrayList<FinanceItem> mExpenseMonthlyItems = null;
-//	protected ArrayList<DailyItem> mMonthlyItems = new ArrayList<DailyItem>();
-	//protected ArrayList<ArrayList<DailyItem>> mMonthlyItems = new ArrayList<ArrayList<DailyItem>>();
+	
 	protected DailyItem mMonthlyItems[] = new DailyItem[LAST_DAY_OF_MONTH];
 	protected ReportDailyItemAdapter mIncomeDailyAdapter = null;
 	protected ReportDailyItemAdapter mExpenseDailyAdapter = null;
@@ -55,6 +54,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 	private Calendar mCalendarMonthly = Calendar.getInstance();
 	private float mTouchMove;
 	private boolean mTouchMoveFlag = false;
+	private int mSelectedCategoryId = -1;
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -290,6 +290,33 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
     protected void getDailyListItem() {
     	mIncomeDailyItems = DBMgr.getItems(IncomeItem.TYPE, FinanceCurrentDate.getDate());
     	mExpenseDailyItems = DBMgr.getItems(ExpenseItem.TYPE, FinanceCurrentDate.getDate());
+    	
+    	mSelectedCategoryId = -1;
+    }
+    
+    protected void getDailyListItem(DailyListItem dailyItem) {
+    	
+    	if (DailyListItem.EXPENSE_CATEGORY == dailyItem.getType()) {
+    		mIncomeDailyItems = DBMgr.getItems(IncomeItem.TYPE, FinanceCurrentDate.getDate());
+    		
+    		mExpenseDailyItems.clear();
+    		ArrayList<FinanceItem> expenseItems = DBMgr.getItems(ExpenseItem.TYPE, FinanceCurrentDate.getDate());
+    		int size = expenseItems.size();
+    		for (int index = 0; index < size; index++) {
+    			FinanceItem item = expenseItems.get(index);
+    			if (dailyItem.mCategoyAmount.getCategoryID() == item.getCategory().getID()) {
+    				mExpenseDailyItems.add(item);
+    				expenseItems.remove(index);
+    				size--;
+    			}
+    		}
+    		mExpenseDailyItems.addAll(expenseItems);
+    		mSelectedCategoryId = dailyItem.getCategoyAmount().getCategoryID();
+    	}
+    	else {
+    		getDailyListItem();
+    	}
+    	
     }
     
     protected void getMonthlyListItem() {
@@ -348,7 +375,15 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-	//			setVisibleDeleteButton((Button)view.findViewById(R.id.BtnCategoryDelete));
+				
+				DailyListItem item = mMonthlyAdapter.getItem(position);
+				FinanceCurrentDate.setDate(item.getCalendar());
+				getDailyListItem(item);
+				setDailyAdapterList();
+				updateViewText();
+				
+				mCurrentViewMode = ItemDef.VIEW_DAY_OF_MONTH;
+				changeViewMode();
 				
 			}
 		});
@@ -570,6 +605,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 				convertView.setTag(viewHolder);
 			}
 			
+			convertView.setBackgroundColor((mSelectedCategoryId == item.getCategory().getID()) ? Color.MAGENTA : Color.BLACK);
 			setListViewText(item, convertView);
 			return convertView;
 		}
@@ -978,6 +1014,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 				
 				TextView tvRightBottom = (TextView) convertView.findViewById(R.id.TVListRightBottom);
 				tvRightBottom.setText(expense.getPaymentMethod().getText());
+				
 			}
 			else if (item.getType() == DailyListItem.EXPENSE_CATEGORY) {
 				CategoryAmount categoryAmount = item.getCategoyAmount();

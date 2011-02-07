@@ -142,7 +142,7 @@ public class ReportDemandAccountLayout extends FmBaseActivity {
         setAddButtonListener();
         setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
         
-        setTitle("요구불");
+        setTitle("보통예금");
         
 		super.setTitleBtn();
 	}

@@ -28,6 +28,10 @@ public class FinanceCurrentDate {
 		return mCurrentDay.getTime();
 	}
 	
+	public static void setDate(Calendar day) {
+		mCurrentDay = day;
+	}
+	
 
 
 }
