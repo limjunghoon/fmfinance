@@ -660,7 +660,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 				"occurrence_date DATE," +
 				"to_account INTEGER," +
 				"from_account INTEGER," +
-				"amount INTEGER NOT NULL);");
+				"amount INTEGER NOT NULL," +
+				"memo TEXT);");
 	}
 	
 	/**

@@ -783,6 +783,14 @@ public final class DBMgr {
 	public static ArrayList<FinanceItem> getIncomeItemFromAccount(int accountId, int year, int month) {
 		return getIncomeDBConnecter().getItemFromAccount(accountId, year, month);
 	}
+	
+	public static ArrayList<FinanceItem> getExpenseItemFromMypocket(int year, int month) {
+		return getExpenseDBConnecter().getItemFromMypocket(year, month);
+	}
+
+	public static ArrayList<FinanceItem> getIncomeItemFromMypocket(int year, int month) {
+		return getIncomeDBConnecter().getItemFromMypocket(year, month);
+	}
 
 	
 

@@ -8,27 +8,27 @@
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:gravity="center" android:text="@string/input_account_institution" android:id="@+id/TVAccountInstiitutionT" android:layout_width="80dp">
 		</TextView>
-		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVAccountInstitution">
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVAccountInstitution" android:textSize="18sp">
 		</TextView>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp">
 		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:id="@+id/TVAccountNumberT" android:text="@string/input_account_nubmer" android:layout_width="80dp">
 		</TextView>
-		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:numeric="integer" android:id="@+id/TVAccountNumber">
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:numeric="integer" android:id="@+id/TVAccountNumber" android:textSize="18sp">
 		</TextView>
 	</LinearLayout>
-	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp" android:id="@+id/LLAccountType">
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="10dp" android:id="@+id/LLAccountType" android:visibility="gone">
 		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:text="@string/input_account_type" android:id="@+id/TVAccountTypeT" android:layout_width="80dp">
 		</TextView>
-		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVAccountType" android:entries="@array/account_type">
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVAccountType" android:entries="@array/account_type" android:textSize="18sp">
 		</TextView>
 	</LinearLayout>
 	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLAccountBalance" android:layout_marginTop="10dp">
 		<TextView android:layout_height="wrap_content" android:gravity="center" android:textSize="18sp" android:id="@+id/TVAccountBalanceT" android:text="@string/input_account_balance" android:layout_width="80dp">
 		</TextView>
-		<TextView android:id="@+id/TVAccountAmount" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1">
+		<TextView android:id="@+id/TVAccountAmount" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:textSize="18sp">
 		</TextView>
-	<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="0" android:text="이체" android:id="@+id/BtnTrans"></Button>
+	<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="0" android:text="이체" android:id="@+id/BtnTrans" android:textSize="18sp"></Button>
 </LinearLayout>
 
 		<LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/LLList" android:orientation="vertical" android:layout_weight="1">

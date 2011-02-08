@@ -195,42 +195,45 @@ public class MainAssetsLayout extends FmBaseActivity {
 	}
 	
 	protected void inputMypocket() {
-		final LinearLayout LLMyPocket = (LinearLayout) View.inflate(this, R.layout.input_mypocket, null);
-		mBtnAmount = (Button) LLMyPocket.findViewById(R.id.BtnMyPocketAmount);
-		mBtnAmount.setText(String.format("%,d원", mMyPocket.getBalance()));
+		Intent intent = new Intent(this, DetailMyPoketLayout.class);
+		startActivity(intent);
 		
-		mBtnAmount.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				Intent intent = new Intent(MainAssetsLayout.this, InputAmountDialog.class);
-				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT);
-			}
-		});
-    
-		
-		
-		new AlertDialog.Builder(this)
-		.setTitle("내 주머니 잔액입력")
-		.setView(LLMyPocket)
-		.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-			
-			public void onClick(DialogInterface dialog, int which) {
-				Long amount = (Long) mBtnAmount.getTag();
-				mMyPocket.setBalance(amount);
-				DBMgr.updateAccount(mMyPocket);
-				
-				getListItem();
-		    	updateChildView();
-			}
-		})
-		.setNegativeButton("최소", new DialogInterface.OnClickListener() {
-			
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				
-			}
-		})
-		.show();
+//		final LinearLayout LLMyPocket = (LinearLayout) View.inflate(this, R.layout.input_mypocket, null);
+//		mBtnAmount = (Button) LLMyPocket.findViewById(R.id.BtnMyPocketAmount);
+//		mBtnAmount.setText(String.format("%,d원", mMyPocket.getBalance()));
+//		
+//		mBtnAmount.setOnClickListener(new View.OnClickListener() {
+//			
+//			public void onClick(View v) {
+//				Intent intent = new Intent(MainAssetsLayout.this, InputAmountDialog.class);
+//				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT);
+//			}
+//		});
+//    
+//		
+//		
+//		new AlertDialog.Builder(this)
+//		.setTitle("내 주머니 잔액입력")
+//		.setView(LLMyPocket)
+//		.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+//			
+//			public void onClick(DialogInterface dialog, int which) {
+//				Long amount = (Long) mBtnAmount.getTag();
+//				mMyPocket.setBalance(amount);
+//				DBMgr.updateAccount(mMyPocket);
+//				
+//				getListItem();
+//		    	updateChildView();
+//			}
+//		})
+//		.setNegativeButton("최소", new DialogInterface.OnClickListener() {
+//			
+//			public void onClick(DialogInterface dialog, int which) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		})
+//		.show();
 	}
 	
 	@Override

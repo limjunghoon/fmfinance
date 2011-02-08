@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.data.TransferItem;
 
 /**
  * 카드 레이아웃 클레스
@@ -15,9 +17,7 @@ import com.fletamuto.sptb.db.DBMgr;
  * @version  1.0.0.1
  */
 public class TransferAccountLayout extends FmBaseActivity {  	
-	private AccountItem fromItem;
-	private AccountItem toItem;
-	private long mTrasferAmount = 0L;
+	private TransferItem mTrans = new TransferItem(); 
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,22 +28,32 @@ public class TransferAccountLayout extends FmBaseActivity {
     }
 	
 	private void updateChildView() {
+		updateBtnDateText();
 		updateAccountText();
 		updateAmountText();
+		updateEditMemoText();
 	}
+	
+	protected void updateEditMemoText() {
+    	((EditText)findViewById(R.id.ETTransferMemo)).setText(mTrans.getMemo());
+    }
+	
+	protected void updateBtnDateText() {	
+    	((Button)findViewById(R.id.BtnTransferDate)).setText(mTrans.getOccurrentceDateString());
+    }
 
 	private void setBtnClickListener() {
-		findViewById(R.id.BtnAccountSelect).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.BtnTransferToSelect).setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(TransferAccountLayout.this, SelectAccountLayout.class);
-				intent.putExtra(MsgDef.ExtraNames.SELECT_ACCOUNT_MODE, SelectAccountLayout.MODE_TRASFER);
-				intent.putExtra(MsgDef.ExtraNames.SELECT_ACCOUNT_EXCEPTION, fromItem.getID());
+//				intent.putExtra(MsgDef.ExtraNames.SELECT_ACCOUNT_MODE, SelectAccountLayout.MODE_TRASFER);
+//				intent.putExtra(MsgDef.ExtraNames.SELECT_ACCOUNT_EXCEPTION, fromItem.getID());
 				startActivityForResult(intent, MsgDef.ActRequest.ACT_ACCOUNT_SELECT);
 			}
 		});
 		
-		findViewById(R.id.BtnAccountAmount).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.BtnTransferAmount).setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(TransferAccountLayout.this, InputAmountDialog.class);
@@ -54,10 +64,28 @@ public class TransferAccountLayout extends FmBaseActivity {
 
 	@Override
 	protected void initialize() {
-		fromItem = (AccountItem) getIntent().getSerializableExtra(MsgDef.ExtraNames.ACCOUNT_ITEM);
+		AccountItem fromAccount = (AccountItem) getIntent().getSerializableExtra(MsgDef.ExtraNames.ACCOUNT_ITEM);
+		if (fromAccount == null) finish();
+		mTrans.setFromAccount(fromAccount);
+		
+		setFromAccountText();
 		super.initialize();
+
 	}
 	
+	private void setFromAccountText() {
+		AccountItem fromAccount = mTrans.getFromAccount();
+		if (fromAccount.getType() == AccountItem.MY_POCKET) {
+			TextView tvFromAccount = (TextView)findViewById(R.id.TVFromAccount);
+			tvFromAccount.setText("출금 : " + "내주머니");
+		}
+		else {
+			TextView tvFromAccount = (TextView)findViewById(R.id.TVFromAccount);
+			tvFromAccount.setText("출금 : " + mTrans.getFromAccount().getCompany().getName());
+		}
+		
+	}
+
 	@Override
 	protected void setTitleBtn() {
 		setTitle("계좌 이체");
@@ -71,13 +99,13 @@ public class TransferAccountLayout extends FmBaseActivity {
 		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				long fromItemBalance = fromItem.getBalance();
-				long toItemBalance = toItem.getBalance();
-				
-				fromItem.setBalance(fromItemBalance - mTrasferAmount);
-				toItem.setBalance(toItemBalance + mTrasferAmount);
-				DBMgr.updateAccount(fromItem);
-				DBMgr.updateAccount(toItem);
+//				long fromItemBalance = fromItem.getBalance();
+//				long toItemBalance = toItem.getBalance();
+//				
+//				fromItem.setBalance(fromItemBalance - mTrasferAmount);
+//				toItem.setBalance(toItemBalance + mTrasferAmount);
+//				DBMgr.updateAccount(fromItem);
+//				DBMgr.updateAccount(toItem);
 				finish();
 			}
 		});
@@ -100,25 +128,25 @@ public class TransferAccountLayout extends FmBaseActivity {
 	}
 
 	private void updateAmount(long trasferAmount) {
-		mTrasferAmount = trasferAmount;
+//		mTrasferAmount = trasferAmount;
 		updateAmountText();
 	}
 
 	private void updateAccount(AccountItem selectedAccount) {
 		if (selectedAccount == null) return;
-		toItem = selectedAccount;
+//		toItem = selectedAccount;
 		updateAccountText();
 	}
 	
 	protected void updateAccountText() {
-		Button btnTrasferAccount = (Button) findViewById(R.id.BtnAccountSelect);
+		Button btnTrasferAccount = (Button) findViewById(R.id.BtnTransferToSelect);
 		
-		if (toItem == null) {
+		if (mTrans.getToAccount().getID() == -1) {
 			btnTrasferAccount.setText("계좌를 선택하세요");
 		}
 		else {
-			if (toItem.getType() != AccountItem.MY_POCKET) {
-				btnTrasferAccount.setText(toItem.getCompany().getName());
+			if (mTrans.getToAccount().getType() != AccountItem.MY_POCKET) {
+				btnTrasferAccount.setText(mTrans.getToAccount().getCompany().getName());
 			}
 			else {
 				btnTrasferAccount.setText("내 주머니");
@@ -127,8 +155,8 @@ public class TransferAccountLayout extends FmBaseActivity {
 	}
 	
 	private void updateAmountText() {
-		Button btnTrasferAmout = (Button) findViewById(R.id.BtnAccountAmount);
-		btnTrasferAmout.setText(String.format("%,d원", mTrasferAmount));
+		Button btnTrasferAmout = (Button) findViewById(R.id.BtnTransferAmount);
+		btnTrasferAmout.setText(String.format("%,d원", mTrans.getAmount()));
 	
 	}
 }

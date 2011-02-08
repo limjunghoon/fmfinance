@@ -1,16 +1,20 @@
 package com.fletamuto.sptb;
 
 
-import java.util.Calendar;
-
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.view.FmBaseLayout;
 
 public abstract class DetailBaseLayout extends FmBaseActivity {
-	
+	protected static final int LAST_DAY_OF_MONTH = ItemDef.LAST_DAY_OF_MONTH;
+	public static final int STATE_CREATE = 0;
+	public static final int STATE_EDIT = 1;
+	public static final int STATE_EXPENSE = 2;
+	public static final int STATE_INCOME = 3;
+	public static final int STATE_TRANSFOR = 4;
+	public static final int STATE_SETTLEMENT = 5;
 	
 	public abstract void onEditBtnClick();
 	

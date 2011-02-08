@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+  
+  	
+	
+	
+	
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLAccountBalance" android:layout_marginTop="10dp" android:gravity="right">
+		
+		
+	<Button android:layout_height="wrap_content" android:id="@+id/BtnBalance" android:text="잔액" android:layout_width="fill_parent" android:layout_weight="1" android:textSize="18sp"></Button>
+
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="이체" android:id="@+id/BtnTrans" android:layout_weight="0" android:textSize="18sp"></Button>
+</LinearLayout>
+
+		<LinearLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/LLList" android:orientation="vertical" android:layout_weight="1">
+		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center" android:orientation="horizontal" android:id="@+id/LLMoveDay" android:visibility="visible">
+	   		<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="이전날" android:visibility="gone" android:id="@+id/BtnPreviusMonth">
+	   		</Button>
+	   		<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="년도" android:textSize="20sp" android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:id="@+id/TVCurrentMonth">
+	   		</TextView>
+	   		<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="다음날" android:visibility="gone" android:id="@+id/BtnNextMonth">
+	   		</Button>
+		</LinearLayout>
+		<ListView android:layout_width="fill_parent" android:id="@+id/LVCurrentList" android:layout_height="fill_parent">
+
+</ListView>
+	</LinearLayout>
+  
+  
+</LinearLayout>
