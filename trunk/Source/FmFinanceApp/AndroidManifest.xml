@@ -88,7 +88,7 @@
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportExpenseRateExpandLayout"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportMonthLayout"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".EditAccountLayout"></activity>
-<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".TransferAccountLayout"></activity>
+<activity android:name=".TransferAccountLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".EditCardLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".CardDetailCreditLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".CardDetailCheckLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
@@ -111,6 +111,7 @@
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".DetailAccountLayout"></activity>
 <activity android:name=".MonthlyCalendar" android:launchMode="standard" android:theme="@android:style/Theme.Translucent"></activity>
 <activity android:name="com.fletamuto.common.control.InputAmountDialog" android:theme="@android:style/Theme.Translucent"></activity>
+<activity android:name=".DetailMyPoketLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 
