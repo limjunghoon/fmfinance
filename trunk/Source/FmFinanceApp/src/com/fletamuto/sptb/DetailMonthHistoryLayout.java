@@ -1,12 +1,12 @@
 package com.fletamuto.sptb;
 
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,11 +19,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ViewHolder;
+import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
-import com.fletamuto.sptb.util.FinanceCurrentDate;
+import com.fletamuto.sptb.data.TransferItem;
 
 public abstract class DetailMonthHistoryLayout extends DetailBaseLayout {
 	private static final int MOVE_SENSITIVITY = ItemDef.MOVE_SENSITIVITY;
@@ -67,14 +68,12 @@ public abstract class DetailMonthHistoryLayout extends DetailBaseLayout {
 		tvCurrentMonth.setText(String.format("%d년 %d월", mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1));
 	}
 	
-	
-	 protected void updateMonthlyItems() {
+	protected void updateMonthlyItems() {
 		clearMonthlyItems();
 		
 		ArrayList<FinanceItem> expenseItems = getExpenseItem();
     	ArrayList<FinanceItem> incomeItems = getIncomeItem();
     	
-		
 		int incomeItemSize = incomeItems.size();
 		for (int index = 0; index < incomeItemSize; index++) {
 			addMonthlyItem(incomeItems.get(index));
@@ -84,10 +83,9 @@ public abstract class DetailMonthHistoryLayout extends DetailBaseLayout {
 		for (int index = 0; index < expenseItemSize; index++) {
 			addMonthlyItem(expenseItems.get(index));
 		}
-		
 	}
 	 
-	 protected void addMonthlyItem(FinanceItem item) {
+	protected void addMonthlyItem(FinanceItem item) {
 		int day = item.getCreateDate().get(Calendar.DAY_OF_MONTH);
 		
 		if (mMonthlyItems[day] == null) {
@@ -97,14 +95,15 @@ public abstract class DetailMonthHistoryLayout extends DetailBaseLayout {
 		if (item.getType() == IncomeItem.TYPE) {
 			AccountDailyItem dailyItem = new AccountDailyItem(STATE_INCOME, 
 					item.getCategory().getName(), item.getMemo(), item.getTotalAmount());
+			dailyItem.setTag(item);
 			mMonthlyItems[day].add(dailyItem);
 		}
 		else if (item.getType() == ExpenseItem.TYPE) {
 			AccountDailyItem dailyItem = new AccountDailyItem(STATE_EXPENSE, 
 					item.getCategory().getName(), item.getMemo(), item.getTotalAmount());
+			dailyItem.setTag(item);
 			mMonthlyItems[day].add(dailyItem);
 		}
-		
 	}
 	    
 	protected void clearMonthlyItems() {
@@ -115,7 +114,7 @@ public abstract class DetailMonthHistoryLayout extends DetailBaseLayout {
 		
     protected List<AccountDailyItem> getListItems() {
     	ArrayList<AccountDailyItem> listItems = new ArrayList<AccountDailyItem>();
-    	for (int index = 0; index < LAST_DAY_OF_MONTH; index++) {
+    	for (int index = LAST_DAY_OF_MONTH-1; index >= 0; index--) {
     		if (mMonthlyItems[index] != null) {
     			ArrayList<AccountDailyItem> dailyItems = mMonthlyItems[index].mItems;
     			
@@ -141,7 +140,7 @@ public abstract class DetailMonthHistoryLayout extends DetailBaseLayout {
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-	//			setVisibleDeleteButton((Button)view.findViewById(R.id.BtnCategoryDelete));
+				onClickListItem(view, position, id);
 				
 			}
 		});
@@ -155,6 +154,26 @@ public abstract class DetailMonthHistoryLayout extends DetailBaseLayout {
 		});
 	}
 		
+	protected void onClickListItem(View view, int position, long id) {
+		AccountDailyItem dailyItem = mAccountHistoryAdapter.getItem(position);
+		Object object = dailyItem.getTag();
+		if (object instanceof IncomeItem)  {
+			Intent intent = new Intent(this, InputIncomeLayout.class);
+	    	intent.putExtra("EDIT_ITEM_ID", ((IncomeItem)object).getID());
+	    	startActivityForResult(intent, MsgDef.ActRequest.ACT_EDIT_ITEM);
+		}
+		else if (object instanceof ExpenseItem)  {
+			Intent intent = new Intent(this, InputExpenseLayout.class);
+	    	intent.putExtra("EDIT_ITEM_ID", ((ExpenseItem)object).getID());
+	    	startActivityForResult(intent, MsgDef.ActRequest.ACT_EDIT_ITEM);
+		}
+		else if (object instanceof TransferItem) {
+			Intent intent = new Intent(this, TransferAccountLayout.class);
+	    	intent.putExtra("EDIT_ITEM_ID", ((TransferItem)object).getID());
+	    	startActivityForResult(intent, MsgDef.ActRequest.ACT_EDIT_ITEM);
+		}
+	}
+	
 	public void setMoveViewMotionEvent(MotionEvent event) {
     	if (event.getAction() == MotionEvent.ACTION_DOWN) {
     		mTouchMove = event.getX();
@@ -271,8 +290,11 @@ public abstract class DetailMonthHistoryLayout extends DetailBaseLayout {
 			else if (STATE_INCOME == mState) {
 				msg = "수입";
 			}
-			else if (STATE_TRANSFOR == mState) {
-				msg = "이체";
+			else if (STATE_TRANSFOR_WITHDRAWAL == mState) {
+				msg = "출금";
+			}
+			else if (STATE_TRANSFOR_DEPOSIT == mState) {
+				msg = "입금";
 			}
 			else if (STATE_SETTLEMENT == mState) {
 				msg = "결제";
@@ -329,7 +351,7 @@ public abstract class DetailMonthHistoryLayout extends DetailBaseLayout {
 				viewHolder.getLeftTextView().setText(item.getStateText());
 				viewHolder.getRightTopTextView().setText(item.getComment());
 				viewHolder.getCenterBottomTextView().setText(item.getMemo());
-				if (item.getState() == STATE_EXPENSE) {
+				if (item.getState() == STATE_EXPENSE || item.getState() == STATE_TRANSFOR_WITHDRAWAL) {
 					viewHolder.getRightBottomTextView().setText(String.format("%,d원", -item.getAmount()));
 					viewHolder.getRightBottomTextView().setTextColor(Color.RED);
 				}

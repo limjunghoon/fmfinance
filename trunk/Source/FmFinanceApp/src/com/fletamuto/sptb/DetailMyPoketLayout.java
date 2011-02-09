@@ -10,8 +10,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.fletamuto.common.control.InputAmountDialog;
+import com.fletamuto.sptb.DetailMonthHistoryLayout.AccountDailyItem;
+import com.fletamuto.sptb.DetailMonthHistoryLayout.AccountDailyItems;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.TransferItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.view.FmBaseLayout;
 
@@ -24,14 +27,19 @@ public class DetailMyPoketLayout extends DetailMonthHistoryLayout {
         
         setContentView(R.layout.detail_mypocket, true);
     }
-  
     
+    @Override
+    protected void onResume() {
+    	Button btnBalance = (Button) findViewById(R.id.BtnBalance);
+	  	btnBalance.setText(String.format("%,d¿ø", mMyPocket.getBalance()));
+    	super.onResume();
+    }
+  
     @Override
 	public void initialize() {
 	  	super.initialize();
 	  	
 	  	Button btnBalance = (Button) findViewById(R.id.BtnBalance);
-	  	btnBalance.setText(String.format("%,d¿ø", mMyPocket.getBalance()));
 	  	btnBalance.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
@@ -51,7 +59,6 @@ public class DetailMyPoketLayout extends DetailMonthHistoryLayout {
 		});
     }
     
-    
     @Override
 	protected void setTitleBtn() {
 		super.setTitleBtn();
@@ -64,6 +71,46 @@ public class DetailMyPoketLayout extends DetailMonthHistoryLayout {
 	public void onEditBtnClick() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	protected void updateMonthlyItems() {
+		super.updateMonthlyItems();
+		
+		ArrayList<TransferItem> fromItems = DBMgr.getTranserFromAccount(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1, mMyPocket);
+		
+		int fromItemSize = fromItems.size();
+		for (int index = 0; index < fromItemSize; index++) {
+			TransferItem trans = fromItems.get(index);
+			int day = trans.getOccurrentceDate().get(Calendar.DAY_OF_MONTH);
+			
+			if (mMonthlyItems[day] == null) {
+				mMonthlyItems[day] = new AccountDailyItems(trans.getOccurrentceDate());
+			}
+			
+			AccountDailyItem dailyItem = new AccountDailyItem(STATE_TRANSFOR_WITHDRAWAL, 
+					trans.getToAccount().getCompany().getName(), trans.getMemo(), trans.getAmount());
+			
+			dailyItem.setTag(trans);
+			mMonthlyItems[day].add(dailyItem);
+		}
+		
+		ArrayList<TransferItem> toItems = DBMgr.getTranserToAccount(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1, mMyPocket);
+		int toItemSize = toItems.size();
+		for (int index = 0; index < toItemSize; index++) {
+			TransferItem trans = toItems.get(index);
+			int day = trans.getOccurrentceDate().get(Calendar.DAY_OF_MONTH);
+			
+			if (mMonthlyItems[day] == null) {
+				mMonthlyItems[day] = new AccountDailyItems(trans.getOccurrentceDate());
+			}
+			
+			AccountDailyItem dailyItem = new AccountDailyItem(STATE_TRANSFOR_DEPOSIT, 
+					trans.getFromAccount().getCompany().getName(), trans.getMemo(), trans.getAmount());
+			
+			dailyItem.setTag(trans);
+			mMonthlyItems[day].add(dailyItem);
+		}
 	}
 	
 	@Override

@@ -72,9 +72,9 @@ public class DetailAccountLayout extends DetailMonthHistoryLayout {
 		btnTrans.setOnClickListener(new View.OnClickListener() {
 				
 				public void onClick(View v) {
-		//				Intent intent = new Intent(ReportAccountHistoryLayout.this, TransferAccountLayout.class);
-		//				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, mAccount);
-		//				startActivityForResult(intent, MsgDef.ActRequest.ACT_TRANFER_ACCOUNT);
+					Intent intent = new Intent(DetailAccountLayout.this, TransferAccountLayout.class);
+					intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, mAccount);
+					startActivityForResult(intent, MsgDef.ActRequest.ACT_TRANFER_ACCOUNT);
 				}
 			});
   	}

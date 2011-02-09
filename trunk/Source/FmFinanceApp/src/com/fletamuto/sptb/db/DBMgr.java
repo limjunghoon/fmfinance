@@ -30,6 +30,7 @@ import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.data.LiabilityLoanItem;
 import com.fletamuto.sptb.data.LiabilityPersonLoanItem;
 import com.fletamuto.sptb.data.Repeat;
+import com.fletamuto.sptb.data.TransferItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 import com.fletamuto.sptb.util.LogTag;
 
@@ -792,7 +793,30 @@ public final class DBMgr {
 		return getIncomeDBConnecter().getItemFromMypocket(year, month);
 	}
 
+	public static long addTranser(TransferItem trans) {
+		return mInstance.mDBConnector.getTransferDBConnector().addItem(trans);
+	}
 	
+	public static TransferItem getTranser(int transId) {
+		return mInstance.mDBConnector.getTransferDBConnector().getItem(transId);
+	}
+	
+	public static ArrayList<TransferItem> getTranserFromAccount(int year, int month, AccountItem fromAccount) {
+		return mInstance.mDBConnector.getTransferDBConnector().getTranserFromAccount(year, month, fromAccount);
+	}
+	
+	public static ArrayList<TransferItem> getTranserToAccount(int year, int month, AccountItem toAccount) {
+		return mInstance.mDBConnector.getTransferDBConnector().getTranserToAccount(year, month, toAccount);
+	}
+	
+	public static boolean updateTranser(TransferItem trans) {
+		return mInstance.mDBConnector.getTransferDBConnector().updateItem(trans);
+	}
+	
+	
+	public static int deleteTranser(int id) {
+		return mInstance.mDBConnector.getTransferDBConnector().deleteItem(id);
+	}
 
 	
 

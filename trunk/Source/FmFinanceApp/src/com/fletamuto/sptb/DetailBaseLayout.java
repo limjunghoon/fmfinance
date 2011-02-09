@@ -13,8 +13,9 @@ public abstract class DetailBaseLayout extends FmBaseActivity {
 	public static final int STATE_EDIT = 1;
 	public static final int STATE_EXPENSE = 2;
 	public static final int STATE_INCOME = 3;
-	public static final int STATE_TRANSFOR = 4;
-	public static final int STATE_SETTLEMENT = 5;
+	public static final int STATE_TRANSFOR_WITHDRAWAL = 4;
+	public static final int STATE_TRANSFOR_DEPOSIT = 5;
+	public static final int STATE_SETTLEMENT = 6;
 	
 	public abstract void onEditBtnClick();
 	
