@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.AccountTransfer;
 import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 import com.fletamuto.sptb.util.LogTag;
@@ -101,6 +100,24 @@ public class AccountDBConnector extends BaseDBConnector {
 		if (c.moveToFirst() != false) {
 			account = createAccountItem(c);
 		}
+		
+		if (account == null) {
+			account = getItemWithoutCompany(id);
+		}
+		
+		c.close();
+		closeDatabase();
+		return account;
+	}
+	
+	private AccountItem getItemWithoutCompany(int id) {
+		AccountItem account = null;
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		Cursor c = db.query(TABLE_NAME, null, "account._id=?", new String[]{String.valueOf(id)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			account = createAccountItem(c);
+		}
 		c.close();
 		closeDatabase();
 		return account;
@@ -160,71 +177,5 @@ public class AccountDBConnector extends BaseDBConnector {
 		return DBDef.ValidError.SUCCESS; 
 	}
 	
-	public int addTransfer(AccountTransfer trans) {
-		if (trans.getToAccountId() == trans.getFromAccountId()) {
-			return -1;
-		}
-		
-		SQLiteDatabase db = openDatabase(WRITE_MODE);
-		
-		ContentValues rowItem = new ContentValues();
-		rowItem.put("occurrence_date", trans.getOccurrenceDateString());
-		rowItem.put("to_account", trans.getToAccountId());
-		rowItem.put("from_account", trans.getFromAccountId());
-		rowItem.put("amount", trans.getAmount());
-		
-		int insertID = (int)db.insert("transfer_history", null, rowItem);
-		trans.setID(insertID);
-		closeDatabase();
-		return insertID;
-	}
-	
-	public boolean updateTransfer(AccountTransfer trans) {
-		if (trans.getToAccountId() == trans.getFromAccountId()) {
-			return false;
-		}
-		
-		SQLiteDatabase db = openDatabase(WRITE_MODE);
-		
-		ContentValues rowItem = new ContentValues();
-		rowItem.put("occurrence_date", trans.getOccurrenceDateString());
-		rowItem.put("to_account", trans.getToAccountId());
-		rowItem.put("from_account", trans.getFromAccountId());
-		rowItem.put("amount", trans.getAmount());
-		
-		db.update("transfer_history", rowItem, "_id=?", new String[] {String.valueOf(trans.getID())});
-		closeDatabase();
-		return true;
-	}
-	
-	public AccountTransfer getTransferFromID(int fromAccountID) {
-		AccountTransfer trans = null;
-		SQLiteDatabase db = openDatabase(READ_MODE);
-		Cursor c = db.query("transfer_history", null, "from_account=?", new String[]{String.valueOf(fromAccountID)}, null, null, null);
-		
-		if (c.moveToFirst() != false) {
-			trans = createTransAccount(c);
-		}
-		c.close();
-		closeDatabase();
-		return trans;
-	}
-
-	public AccountTransfer createTransAccount(Cursor c) {
-		AccountTransfer trans = new AccountTransfer();
-		trans.setID(c.getInt(0));
-		
-		try {
-			trans.setOccurrenceDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		trans.setToAccountId(c.getInt(2));
-		trans.setFromAccountId(c.getInt(3));
-		trans.setAmount(c.getLong(4));
-	
-		return trans;
-	}
 
 }

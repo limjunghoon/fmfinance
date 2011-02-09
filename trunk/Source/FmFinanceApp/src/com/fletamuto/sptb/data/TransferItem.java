@@ -1,6 +1,7 @@
 package com.fletamuto.sptb.data;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import com.fletamuto.sptb.util.FinanceDataFormat;
 
@@ -50,6 +51,13 @@ public class TransferItem extends BaseItem {
 	 */
 	public String getOccurrentceDateString() {
 		return FinanceDataFormat.getDateFormat(mOccurrentceDate.getTime());
+	}
+	/**
+	 * 만든시간를 설정
+	 * @param date 만든시간
+	 */
+	public void setOccurrentceDate(Date date) {
+		this.mOccurrentceDate.setTime(date);
 	}
 	
 }
