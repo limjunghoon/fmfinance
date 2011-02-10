@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent">
-	<RadioGroup android:id="@+id/RadioGroup01" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_marginTop="20dp">
-		<RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="주간선택" android:textSize="25sp" android:id="@+id/RBWeekly"></RadioButton>
+ 	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"        
+    android:gravity="bottom"                      
+>
+<LinearLayout
+  android:id="@+id/repeatLL"
+  android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="fill_parent" android:background="#ffffff">
+  	<RelativeLayout
+  	android:id="@+id/repeatTitleRL"
+  	android:layout_height="wrap_content" android:layout_width="fill_parent">
+  		<TextView
+  			android:id="@+id/repeatTitleText" android:text="반복 설정" android:textSize="20sp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_centerInParent="true"/>
+  		<Button
+  			android:id="@+id/repeatTitleBtnRight" android:text="완료" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentRight="true"/>	
+	</RelativeLayout>  	
+
+	<RadioGroup android:id="@+id/RadioGroup01" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_marginTop="10dp">
+		<RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="주간선택" android:textSize="20sp" android:id="@+id/RBWeekly" android:textColor="#000000"></RadioButton>
 		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="right" android:layout_marginRight="20dp" android:id="@+id/LLWeekend">
 			<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="평일" android:id="@+id/BtnRepeatNormal" android:layout_gravity="right"></Button>
 			<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="주말" android:id="@+id/BtnRepeatWeekend" android:layout_gravity="right"></Button>
 		</LinearLayout>
 		<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:id="@+id/LLWeekly">
-		<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent" android:paddingTop="10dp" android:layout_marginLeft="15dp">
+		<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent" android:paddingTop="5dp" android:layout_marginLeft="15dp">
 			<ToggleButton android:text="@+id/ToggleButton03" android:layout_height="wrap_content" android:textOff="월" android:layout_width="wrap_content" android:id="@+id/TBMonDay" android:textOn="월">
 			</ToggleButton>
 			<ToggleButton android:text="@+id/ToggleButton04" android:layout_height="wrap_content" android:textOff="화" android:textOn="화" android:layout_width="wrap_content" android:id="@+id/TBTuesday">
@@ -28,11 +44,13 @@
 			</ToggleButton>
 		</LinearLayout>
 		</LinearLayout>
-			<RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="월간반복" android:textSize="25sp" android:id="@+id/RBMonthly" android:layout_marginTop="15dp"></RadioButton>
-			<LinearLayout android:id="@+id/LinearLayout06" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="10dp" android:layout_marginLeft="15dp" android:layout_gravity="center">
+			<RadioButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="월간반복" android:textSize="20sp" android:id="@+id/RBMonthly" android:layout_marginTop="10dp" android:textColor="#000000"></RadioButton>
+			<LinearLayout android:id="@+id/LinearLayout06" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="5dp" android:layout_marginLeft="15dp" android:layout_gravity="center">
 			<TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="매월" android:textSize="20sp"></TextView>
 			<EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:inputType="date" android:minWidth="40dp" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:id="@+id/ETMonthly"></EditText>
 			<TextView android:id="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="일 반복" android:textSize="20sp"></TextView>
 		</LinearLayout>
 	</RadioGroup>
 </LinearLayout>
+</LinearLayout>
+
