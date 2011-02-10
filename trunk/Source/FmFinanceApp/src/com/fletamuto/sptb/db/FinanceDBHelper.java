@@ -89,6 +89,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 
 		createCardTable(db);
 		createCardCompanyTable(db);
+		createCardPayment(db);
 		
 		createBudgetTable(db);
 		createBudgetMainCategoryTable(db);
@@ -716,7 +717,21 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
 	}
-
+	
+	private void createCardPayment(SQLiteDatabase db) {
+		try{
+			db.execSQL("CREATE TABLE card_payment ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"payment_date DATE NOT NULL," +
+					"card_id INEGER NOT NULL," +
+					"payment_amount INTEGER NOT NULL," +
+					"remain_amount INTEGER NOT NULL," +
+					"state INTEGER NOT NULL);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
 	/**
 	 * 예산  테이블을 만든다.
 	 * @param db Exposes methods to manage a SQLite database.
