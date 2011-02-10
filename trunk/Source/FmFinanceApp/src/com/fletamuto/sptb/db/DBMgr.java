@@ -17,6 +17,7 @@ import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.BudgetItem;
 import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
+import com.fletamuto.sptb.data.CardPayment;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.ExpenseTag;
@@ -579,7 +580,15 @@ public final class DBMgr {
 	public static int deleteCardItem(int id) {
 		return mInstance.mDBConnector.getCardDBConnector().deleteItem(id);
 	}
-
+	 
+	public static int addCardPaymentItem(CardPayment payment) {
+		return mInstance.mDBConnector.getCardDBConnector().addCardPaymentItem(payment);
+	}
+	
+	public static CardPayment getCardPaymentLastItem(int cardId) {
+		return mInstance.mDBConnector.getCardDBConnector().getCardPaymentLastItem(cardId);
+	}
+	
 	public static int addTag(ExpenseTag tag) {
 		return mInstance.mDBConnector.getTagDBConnector().addItem(tag);
 	}
@@ -707,7 +716,7 @@ public final class DBMgr {
 		ExpenseDBConnector expenseDB = (ExpenseDBConnector) mInstance.mDBConnector.getBaseFinanceDBInstance(ExpenseItem.TYPE);
 		return expenseDB.getCardExpenseItems(cardID, start, end);
 	}
-	
+		
 	public static long addStateChangeItem(FinanceItem item) {
 		if (checkFinanceItemType(item.getType()) == false) return -1;
 		long ret = mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).addStateChangeItem(item);

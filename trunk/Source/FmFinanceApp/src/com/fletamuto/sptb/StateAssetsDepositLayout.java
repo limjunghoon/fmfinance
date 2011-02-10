@@ -27,10 +27,8 @@ public class StateAssetsDepositLayout extends StateDefaultLayout {
         setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.INVISIBLE);
         
         updateDeleteBtnText();
-        
         setPorgress();
     }
-
 
 	@Override
 	protected void initialize() {

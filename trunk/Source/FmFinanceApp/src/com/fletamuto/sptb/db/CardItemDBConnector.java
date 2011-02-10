@@ -1,5 +1,6 @@
 package com.fletamuto.sptb.db;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import android.content.ContentValues;
@@ -10,6 +11,9 @@ import android.util.Log;
 
 import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
+import com.fletamuto.sptb.data.CardPayment;
+import com.fletamuto.sptb.data.TransferItem;
+import com.fletamuto.sptb.util.FinanceDataFormat;
 import com.fletamuto.sptb.util.LogTag;
 
 public class CardItemDBConnector extends BaseDBConnector {
@@ -160,4 +164,80 @@ public class CardItemDBConnector extends BaseDBConnector {
 	}
 
 
+	public int addCardPaymentItem(CardPayment payment) {
+		
+		int newID = -1;
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("payment_date", payment.getPaymentDateString());
+		rowItem.put("card_id", payment.getCardId());
+		rowItem.put("payment_amount", payment.getPaymentAmount());
+		rowItem.put("remain_amount", payment.getRemainAmount());
+		rowItem.put("state", payment.getState());
+		
+		newID = (int)db.insert("card_payment", null, rowItem);
+		payment.setID(newID);
+		closeDatabase();
+		return newID;
+	}
+	
+	public boolean updateCardPaymentItem(CardPayment payment) {
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("payment_date", payment.getPaymentDateString());
+		rowItem.put("card_id", payment.getCardId());
+		rowItem.put("payment_amount", payment.getPaymentAmount());
+		rowItem.put("remain_amount", payment.getRemainAmount());
+		rowItem.put("state", payment.getState());
+		
+		db.update("card_payment", rowItem, "_id=?", new String[] {String.valueOf(payment.getID())});
+		closeDatabase();
+		return true;
+	}
+	
+	public CardPayment getCardPaymentLastItem(int cardId) {
+		CardPayment cardPayment = null;
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		Cursor c = db.query("card_payment", null, "card_payment.card_id=?", new String[]{String.valueOf(cardId)}, null, null, "payment_date DESC");
+		
+		if (c.moveToFirst() != false) {
+			cardPayment = createCardPaymentItem(c);
+		}
+		c.close();
+		closeDatabase();
+		return cardPayment;
+	}
+	
+	public CardPayment createCardPaymentItem(Cursor c) {
+		
+		CardPayment cardPayment = new CardPayment();
+		
+		cardPayment.setID(c.getInt(0));
+		
+		try {
+			cardPayment.setPaymentDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		cardPayment.setCardId(c.getInt(2));
+		cardPayment.setPaymentAmount(c.getLong(3));
+		cardPayment.setRemainAmount(c.getLong(4));
+		cardPayment.setState(c.getInt(5));
+		
+		return cardPayment;
+	}
+
+
+
+	public int deleteCardPaymentItem(int id) {
+		int result = 0;
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		result = db.delete("card_payment", "_id=?", new String[] {String.valueOf(id)});
+		closeDatabase();
+		return result;
+	}
 }

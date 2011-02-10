@@ -906,7 +906,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		long amount = 0L;
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {String.valueOf(cardID), FinanceDataFormat.getDateFormat(start.getTime()), FinanceDataFormat.getDateFormat(end.getTime())};
-		String query = "SELECT SUM(expense.amount) FROM expense, payment_method WHERE expense.payment_method=payment_method._id AND payment_method.card=? AND strftime('%Y-%m-%d', expense.create_date) BETWEEN ? AND ?";
+		String query = "SELECT SUM(expense.amount/(payment_method.installment_plan+1)) FROM expense, payment_method WHERE expense.payment_method=payment_method._id AND payment_method.card=? AND strftime('%Y-%m-%d', expense.create_date) BETWEEN ? AND ?";
 		Cursor c = db.rawQuery(query, params);
 		
 		if (c.moveToFirst() != false) {

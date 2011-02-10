@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.CardItem;
+import com.fletamuto.sptb.data.CardPayment;
 import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
@@ -76,17 +78,61 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
     }
 
 	protected void settlementDay() {
-		ArrayList<CardItem> items =DBMgr.getCardItems();
-		int today = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-		int size = items.size();
+		ArrayList<CardItem> cardItems = DBMgr.getCardItems(CardItem.CREDIT_CARD);
+		int cardCount = cardItems.size();
+		Calendar toDay = Calendar.getInstance();
+//		toDay.set(toDay.get(Calendar.YEAR), toDay.get(Calendar.MONTH), toDay.get(Calendar.DAY_OF_MONTH), toDay.get(Calendar.HOUR_OF_DAY), 0, 0);
+		toDay.set(toDay.get(Calendar.YEAR), toDay.get(Calendar.MONTH), 1, toDay.get(Calendar.HOUR_OF_DAY), 0, 0);
+		toDay.add(Calendar.DAY_OF_MONTH, -1);
 		
-		for (int index = 0; index < size; index++) {
-			CardItem card = items.get(index);
+		for (int index = 0; index < cardCount; index++) {
+			CardItem card = cardItems.get(index);
+			CardPayment cardPayment = DBMgr.getCardPaymentLastItem(card.getID());
 			
-			if (card.getSettlementDay() == today) {
-				// 결제
+			if (cardPayment == null) {
+				// 처리할 데이터가 있는가?
+//				cardPayment = new CardPayment();
+//				cardPayment.setCardId(card.getID());
+//				cardPayment.setPaymentAmount(1000);
+//				cardPayment.setPaymentDate(toDay);
+//				cardPayment.setRemainAmount(0);
+//				cardPayment.setState(0);
+//				
+//				DBMgr.addCardPaymentItem(cardPayment);
+				
+			}
+			else {
+				Calendar targetDay = Calendar.getInstance();
+				targetDay.set(targetDay.get(Calendar.YEAR), targetDay.get(Calendar.MONTH), card.getSettlementDay(), 0, 0, 0);
+				
+				// 결제일이 이번달인지 확인
+				if (toDay.before(targetDay)) {
+					targetDay.add(Calendar.MONTH, -1);
+				}
+				
+				if (cardPayment.getPaymentDate().after(targetDay)) {
+					// 치리되었다
+					Log.i("aa", "처리되었다");
+				}
+				else {
+					// 처리되지 않았다.
+					Log.i("aa", "처리되지 않았다.");
+				}
 			}
 		}
+		
+		
+//		ArrayList<CardItem> items =DBMgr.getCardItems();
+//		int today = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+//		int size = items.size();
+//		
+//		for (int index = 0; index < size; index++) {
+//			CardItem card = items.get(index);
+//			
+//			if (card.getSettlementDay() == today) {
+//				// 결제
+//			}
+//		}
 		
 	}
 
