@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.ToggleButton;
 
+import com.fletamuto.common.control.BaseSlidingActivity;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
 
@@ -18,22 +19,120 @@ import com.fletamuto.sptb.util.FinanceCurrentDate;
  * @author yongbban
  * @version  1.0.0.1
  */
-public class RepeatLayout extends FmBaseActivity {  	
+public class RepeatLayout extends BaseSlidingActivity/*FmBaseActivity*/ {  	
 	public static final int STYLE_NORMAL = 0;
 	public static final int STYLE_ONLY_MONTHLY = 1;
 	
 	private int mStyle = STYLE_ONLY_MONTHLY;
 	private int mType = Repeat.WEEKLY;
 	
+	private Button btnNormal;
+	private Button btnWeekend;
+	private ToggleButton tbMonDay;
+	private ToggleButton tbTuesDay;
+	private ToggleButton tbWendesDay;
+	private ToggleButton tbThursDay;
+	private ToggleButton tbFriDay;
+	private ToggleButton tbSaturDay;
+	private ToggleButton tbSunDay;
+	
+	private Button btnRight;
+	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.repeat, true);
+        setContentView(R.layout.repeat);
         
+        //sliding 을 위해 View 설정 하고 animation 시작 함수 호출 하는 부분 start
+        setSlidingView(findViewById(R.id.repeatLL));
+        appearAnimation();
+        //end
         
         updateRepeatView();
+        
+        btnNormal = (Button)findViewById(R.id.BtnRepeatNormal);
+    	btnWeekend = (Button)findViewById(R.id.BtnRepeatWeekend);
+    	tbMonDay = (ToggleButton)findViewById(R.id.TBMonDay);
+    	tbTuesDay = (ToggleButton)findViewById(R.id.TBTuesday);
+    	tbWendesDay = (ToggleButton)findViewById(R.id.TBWndnesDay);
+    	tbThursDay = (ToggleButton)findViewById(R.id.TBThursDay);
+    	tbFriDay = (ToggleButton)findViewById(R.id.TBFriDay);
+    	tbSaturDay = (ToggleButton)findViewById(R.id.TBSaturDay);
+    	tbSunDay = (ToggleButton)findViewById(R.id.TBSunDay);
+    	
+    	btnRight = (Button) findViewById(R.id.repeatTitleBtnRight);
+    	
+        btnNormal.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				boolean checked = true;
+				
+				if (tbMonDay.isChecked() && tbTuesDay.isChecked() && tbWendesDay.isChecked() &&
+					tbThursDay.isChecked() && tbFriDay.isChecked()) {
+					checked = false;
+				}
+						
+				tbMonDay.setChecked(checked);
+				tbTuesDay.setChecked(checked);
+				tbWendesDay.setChecked(checked);
+				tbThursDay.setChecked(checked);
+				tbFriDay.setChecked(checked);
+			}
+		});
+    	
+    	btnWeekend.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				boolean checked = true;
+				
+				if (tbSaturDay.isChecked() && tbSunDay.isChecked()) {
+					checked = false;
+				}
+				
+				tbSaturDay.setChecked(checked);
+				tbSunDay.setChecked(checked);
+			}
+		});
+    	
+    	btnRight.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				RadioButton rbWeekly = (RadioButton)findViewById(R.id.RBWeekly);
+				Intent intent = new Intent();
+				
+				if (rbWeekly.isChecked()) {
+					int weekly = 0;
+					if (tbMonDay.isChecked()) 	weekly |= Repeat.MONDAY;
+					if (tbTuesDay.isChecked()) 	weekly |= Repeat.TUESDAY;
+					if (tbWendesDay.isChecked())weekly |= Repeat.WEDNESDAY;
+					if (tbThursDay.isChecked()) weekly |= Repeat.THURSDAY;
+					if (tbFriDay.isChecked()) 	weekly |= Repeat.FRIDAY;
+					if (tbSaturDay.isChecked()) weekly |= Repeat.SATURDAY;
+					if (tbSunDay.isChecked()) 	weekly |= Repeat.SUNDAY;
+					
+					intent.putExtra(MsgDef.ExtraNames.RPEAT_TYPE, Repeat.WEEKLY);
+					intent.putExtra(MsgDef.ExtraNames.RPEAT_WEEKLY, weekly);
+					
+				} else {
+					EditText etDaily = (EditText)findViewById(R.id.ETMonthly);
+					String daily = etDaily.getText().toString();
+					int dayOfMonth = Integer.parseInt(daily);
+					if (dayOfMonth > 31) dayOfMonth = 31;
+					intent.putExtra(MsgDef.ExtraNames.RPEAT_TYPE, Repeat.MONTHLY);
+					intent.putExtra(MsgDef.ExtraNames.RPEAT_DAILY, dayOfMonth);
+				}
+				
+				setResult(RESULT_OK, intent);
+				finish();
+				
+			}
+		});
+        
+        
+        
     }
     
+    /*
     @Override
     protected void initialize() {
     	super.initialize();
@@ -50,7 +149,8 @@ public class RepeatLayout extends FmBaseActivity {
         	mType = getIntent().getIntExtra(MsgDef.ExtraNames.RPEAT_TYPE, Repeat.WEEKLY) ;
         }
     }
-
+	*/
+    
 	private void updateRepeatView() {
 		RadioButton rbWeekly = (RadioButton)findViewById(R.id.RBWeekly);
 		RadioButton rbMonthly = (RadioButton)findViewById(R.id.RBMonthly);
@@ -100,6 +200,7 @@ public class RepeatLayout extends FmBaseActivity {
 		}
 	}
 
+	/*
 	protected void setButtonListener() {
     	final Button btnNormal = (Button)findViewById(R.id.BtnRepeatNormal);
     	final Button btnWeekend = (Button)findViewById(R.id.BtnRepeatWeekend);
@@ -110,7 +211,7 @@ public class RepeatLayout extends FmBaseActivity {
     	final ToggleButton tbFriDay = (ToggleButton)findViewById(R.id.TBFriDay);
     	final ToggleButton tbSaturDay = (ToggleButton)findViewById(R.id.TBSaturDay);
     	final ToggleButton tbSunDay = (ToggleButton)findViewById(R.id.TBSunDay);
-    	
+
     	btnNormal.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
@@ -143,7 +244,8 @@ public class RepeatLayout extends FmBaseActivity {
 			}
 		});
 	}
-
+	*/
+	/*
 	@Override
 	protected void setTitleBtn() {
         setButtonListener();
@@ -194,4 +296,5 @@ public class RepeatLayout extends FmBaseActivity {
 		
 		super.setTitleBtn();
 	}
+	*/
 }
