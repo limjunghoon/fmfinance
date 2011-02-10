@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,9 +18,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.CardExpenseInfo;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.CardPayment;
 import com.fletamuto.sptb.data.CategoryAmount;
@@ -58,6 +61,9 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 	private boolean mTouchMoveFlag = false;
 	private int mSelectedCategoryId = -1;
 	
+	protected ArrayList<CardExpenseInfo> mCardAlarmItems = new ArrayList<CardExpenseInfo>();
+	protected ReportAlarmItemAdapter mAlarmAdapter = null;
+	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,10 +80,24 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
         setBtnClickListener();
         setTitle(getResources().getString(R.string.app_name));
         
+        initAlarmView();
+        setAlarmView();
     	changeViewMode();
+    }
+    
+    protected void initAlarmView() {
+ //   	mLLAlarm = (LinearLayout) findViewById(R.id.LLAlarm);
+    	findViewById(R.id.contentLayout).setBackgroundColor(Color.YELLOW);
+    }
+    
+    protected void setAlarmView() {
+    	findViewById(R.id.LLAlarmSliding).setVisibility((mCardAlarmItems.size() == 0) ? View.GONE : View.VISIBLE);
+    	
+    	setAlarmAdapterList();
     }
 
 	protected void settlementDay() {
+		mCardAlarmItems.clear();
 		ArrayList<CardItem> cardItems = DBMgr.getCardItems(CardItem.CREDIT_CARD);
 		int cardCount = cardItems.size();
 		Calendar toDay = Calendar.getInstance();
@@ -90,6 +110,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 			CardPayment cardPayment = DBMgr.getCardPaymentLastItem(card.getID());
 			
 			if (cardPayment == null) {
+				mCardAlarmItems.add(makeCardExpenseInfo(card));
 				// 처리할 데이터가 있는가?
 //				cardPayment = new CardPayment();
 //				cardPayment.setCardId(card.getID());
@@ -113,8 +134,12 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 				if (cardPayment.getPaymentDate().after(targetDay)) {
 					// 치리되었다
 					Log.i("aa", "처리되었다");
+					
+	//				mCardAlarmItems.add(makeCardExpenseInfo(card));
+					
 				}
 				else {
+					mCardAlarmItems.add(makeCardExpenseInfo(card));
 					// 처리되지 않았다.
 					Log.i("aa", "처리되지 않았다.");
 				}
@@ -134,6 +159,18 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 //			}
 //		}
 		
+	}
+	
+	private CardExpenseInfo makeCardExpenseInfo(CardItem card) {
+		CardExpenseInfo cardInfo = new CardExpenseInfo(card);
+		long billingExpenseAmout = DBMgr.getCardTotalExpense(card.getID(), card.getStartBillingPeriod(Calendar.getInstance()), card.getEndBillingPeriod(Calendar.getInstance()));
+		cardInfo.setBillingExpenseAmount(billingExpenseAmout);
+		return cardInfo;
+	}
+
+	private void addCardPaymentAlarm(CardItem card) {
+//		mLLAlarm.addView(btnBookmark, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//		btnBookmark.setOnClickListener(mClickListener);
 	}
 
 	/**
@@ -684,7 +721,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 		
 		TextView tvMemo = viewHolder.getCenterBottomTextView();
 		if (income.getMemo().length() != 0) {
-			tvMemo.setText("메모 : " + income.getMemo());
+			tvMemo.setText(income.getMemo());
 		}
 		else {
 			tvMemo.setVisibility(View.GONE);
@@ -1076,5 +1113,63 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
     	
 			return convertView;
 		}
+    }
+	
+	public class ReportAlarmItemAdapter extends ArrayAdapter<CardExpenseInfo> {
+    	int mResource;
+    	private LayoutInflater mInflater;
+
+		public ReportAlarmItemAdapter(Context context, int resource,
+				 List<CardExpenseInfo> objects) {
+			super(context, resource, objects);
+			this.mResource = resource;
+			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			
+		}
+		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			CardExpenseInfo item = (CardExpenseInfo)getItem(position);
+			
+			if (convertView == null) {
+				convertView = mInflater.inflate(mResource, parent, false);
+				
+				ViewHolder viewHolder = new ViewHolder(
+						(TextView)convertView.findViewById(R.id.TVListLeft), 
+						(TextView)convertView.findViewById(R.id.TVListCenterTop), 
+						(TextView)convertView.findViewById(R.id.TVListCenterBottom), 
+						(TextView)convertView.findViewById(R.id.TVListRightTop), 
+						(TextView)convertView.findViewById(R.id.TVListRightBottom));
+				
+				convertView.setTag(viewHolder);
+			}
+			
+			ViewHolder viewHolder = (ViewHolder) convertView.getTag();
+	    	viewHolder.getLeftTextView().setText(item.getCard().getCompenyName().getName());
+			viewHolder.getCenterTopTextView().setText(item.getCard().getNumber());
+			viewHolder.getRightTopTextView().setText(String.format("%,d원", item.getBillingExpenseAmount()));
+			viewHolder.getRightTopTextView().setTextColor(Color.RED);
+			
+			viewHolder.getCenterBottomTextView().setText(item.getCard().getName());
+			
+			return convertView;
+		}
+    }
+	
+	protected void setAlarmAdapterList() {
+    	final ListView listAlarm = (ListView)findViewById(R.id.LVAlarm);
+    	
+    	mAlarmAdapter= new ReportAlarmItemAdapter(this, R.layout.report_list_normal, mCardAlarmItems);
+    	listAlarm.setAdapter(mAlarmAdapter);
+    	
+    	listAlarm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				
+			}
+		});
+    	
     }
 }

@@ -72,18 +72,23 @@ public class CardLayout extends FmBaseActivity {
 			if (card.getAccount().getID() != -1) {
 				card.setAccount(DBMgr.getAccountItem(card.getAccount().getID()));
 			}
-			CardExpenseInfo cardInfo = new CardExpenseInfo(card);
-			long totalExpenseAmount = DBMgr.getCardTotalExpense(mCurrentCalendar.get(Calendar.YEAR), mCurrentCalendar.get(Calendar.MONTH)+1, cardInfo.getCard().getID());
-			long billingExpenseAmout = DBMgr.getCardTotalExpense(card.getID(), card.getStartBillingPeriod(Calendar.getInstance()), card.getEndBillingPeriod(Calendar.getInstance()));
-			long billingNextExpenseAmout = DBMgr.getCardTotalExpense(card.getID(), card.getNextStartBillingPeriod(Calendar.getInstance()), card.getNextEndBillingPeriod(Calendar.getInstance()));
-			cardInfo.setTotalExpenseAmount(totalExpenseAmount);
-			cardInfo.setBillingExpenseAmount(billingExpenseAmout);
-			cardInfo.setNextBillingExpenseAmount(billingNextExpenseAmout);
-			mTatalExpenseAmount += totalExpenseAmount;
-			mArrCardExpenseInfo.add(cardInfo);
+			mArrCardExpenseInfo.add(makeCardExpenseInfo(card));
+			
 		}
     }
 	
+	private CardExpenseInfo makeCardExpenseInfo(CardItem card) {
+		CardExpenseInfo cardInfo = new CardExpenseInfo(card);
+		long totalExpenseAmount = DBMgr.getCardTotalExpense(mCurrentCalendar.get(Calendar.YEAR), mCurrentCalendar.get(Calendar.MONTH)+1, cardInfo.getCard().getID());
+		long billingExpenseAmout = DBMgr.getCardTotalExpense(card.getID(), card.getStartBillingPeriod(Calendar.getInstance()), card.getEndBillingPeriod(Calendar.getInstance()));
+		long billingNextExpenseAmout = DBMgr.getCardTotalExpense(card.getID(), card.getNextStartBillingPeriod(Calendar.getInstance()), card.getNextEndBillingPeriod(Calendar.getInstance()));
+		cardInfo.setTotalExpenseAmount(totalExpenseAmount);
+		cardInfo.setBillingExpenseAmount(billingExpenseAmout);
+		cardInfo.setNextBillingExpenseAmount(billingNextExpenseAmout);
+		mTatalExpenseAmount += totalExpenseAmount;
+		return cardInfo;
+	}
+
 	protected void setAdapterList() {
     	if (mArrCardExpenseInfo == null) return;
         
