@@ -18,10 +18,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fletamuto.common.control.BaseSlidingActivity;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class SelectCardLayout extends Activity {
+public class SelectCardLayout extends BaseSlidingActivity/*Activity*/ {
 	public static final int ACT_ADD_CARD = MsgDef.ActRequest.ACT_ADD_CARD;
 	public static final int ACT_CARD_INPUT_SELECT = MsgDef.ActRequest.ACT_CARD_INPUT_SELECT;
 	
@@ -36,6 +37,12 @@ public class SelectCardLayout extends Activity {
         
  //       requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.select_card);
+        
+        //sliding 을 위해 View 설정 하고 animation 시작 함수 호출 하는 부분 start
+        setSlidingView(findViewById(R.id.selectCardLL));
+        appearAnimation();
+        //end
+        
         setAddButtonListener();
         getCardItems();
         setAdapterList();
