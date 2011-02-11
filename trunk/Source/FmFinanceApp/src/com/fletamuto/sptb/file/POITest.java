@@ -14,6 +14,6 @@ public class POITest extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
-		new POIOutPut().onCreate(this);
+	//	new POIOutPut().onCreate(this);
 	}
 }
