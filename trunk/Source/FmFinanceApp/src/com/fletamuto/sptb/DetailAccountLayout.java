@@ -19,12 +19,17 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.DetailMonthHistoryLayout.AccountDailyItem;
+import com.fletamuto.sptb.DetailMonthHistoryLayout.AccountDailyItems;
 import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ViewHolder;
 import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.CardItem;
+import com.fletamuto.sptb.data.CardPayment;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
+import com.fletamuto.sptb.data.TransferItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class DetailAccountLayout extends DetailMonthHistoryLayout {
@@ -56,6 +61,31 @@ public class DetailAccountLayout extends DetailMonthHistoryLayout {
 	  	TextView tvNumber = (TextView) findViewById(R.id.TVAccountNumber);
 	  	tvNumber.setText(mAccount.getNumber());
 	}
+	
+	@Override
+	protected void updateMonthlyItems() {
+		super.updateMonthlyItems();
+		
+		ArrayList<CardPayment> paymentItems = DBMgr.getCardPaymentItems(mAccount.getID(), mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1);
+		int paymentSize = paymentItems.size();
+		for (int index = 0; index < paymentSize; index++) {
+			updateMonthlyItem(paymentItems.get(index));
+		}
+		
+		ArrayList<TransferItem> fromItems = DBMgr.getTranserFromAccount(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1, mAccount);
+		int fromItemSize = fromItems.size();
+		for (int index = 0; index < fromItemSize; index++) {
+			updateMonthlyItem(fromItems.get(index), STATE_TRANSFOR_WITHDRAWAL);
+		}
+		
+		ArrayList<TransferItem> toItems = DBMgr.getTranserToAccount(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1, mAccount);
+		int toItemSize = toItems.size();
+		for (int index = 0; index < toItemSize; index++) {
+			updateMonthlyItem(fromItems.get(index), STATE_TRANSFOR_DEPOSIT);
+		}
+	}
+	
+	
     
     @Override
   	protected void setTitleBtn() {
@@ -71,12 +101,12 @@ public class DetailAccountLayout extends DetailMonthHistoryLayout {
 		
 		btnTrans.setOnClickListener(new View.OnClickListener() {
 				
-				public void onClick(View v) {
-					Intent intent = new Intent(DetailAccountLayout.this, TransferAccountLayout.class);
-					intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, mAccount);
-					startActivityForResult(intent, MsgDef.ActRequest.ACT_TRANFER_ACCOUNT);
-				}
-			});
+			public void onClick(View v) {
+				Intent intent = new Intent(DetailAccountLayout.this, TransferAccountLayout.class);
+				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, mAccount);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_TRANFER_ACCOUNT);
+			}
+		});
   	}
     
 	@Override

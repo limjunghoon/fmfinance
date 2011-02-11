@@ -19,12 +19,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ViewHolder;
+import com.fletamuto.sptb.data.CardItem;
+import com.fletamuto.sptb.data.CardPayment;
 import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.TransferItem;
+import com.fletamuto.sptb.db.DBMgr;
 
 public abstract class DetailMonthHistoryLayout extends DetailBaseLayout {
 	private static final int MOVE_SENSITIVITY = ItemDef.MOVE_SENSITIVITY;
@@ -351,7 +354,8 @@ public abstract class DetailMonthHistoryLayout extends DetailBaseLayout {
 				viewHolder.getLeftTextView().setText(item.getStateText());
 				viewHolder.getRightTopTextView().setText(item.getComment());
 				viewHolder.getCenterBottomTextView().setText(item.getMemo());
-				if (item.getState() == STATE_EXPENSE || item.getState() == STATE_TRANSFOR_WITHDRAWAL) {
+				if (item.getState() == STATE_EXPENSE || item.getState() == STATE_TRANSFOR_WITHDRAWAL ||
+					item.getState() == STATE_SETTLEMENT) {
 					viewHolder.getRightBottomTextView().setText(String.format("%,d¿ø", -item.getAmount()));
 					viewHolder.getRightBottomTextView().setTextColor(Color.RED);
 				}
@@ -364,6 +368,58 @@ public abstract class DetailMonthHistoryLayout extends DetailBaseLayout {
 			return convertView;
 		}
     }
+	
+	
+	protected void updateMonthlyItem(CardPayment paymentItem) {
+		int day = paymentItem.getPaymentDate().get(Calendar.DAY_OF_MONTH);
+		
+		CardItem card = DBMgr.getCardItem(paymentItem.getCardId());
+		if (card == null) {
+			return;
+		}
+		
+		if (mMonthlyItems[day] == null) {
+			mMonthlyItems[day] = new AccountDailyItems(paymentItem.getPaymentDate());
+		}
+		
+		AccountDailyItem dailyItem = new AccountDailyItem(STATE_SETTLEMENT, 
+				card.getCompenyName().getName(), card.getName(), paymentItem.getPaymentAmount());
+		
+		dailyItem.setTag(paymentItem);
+		mMonthlyItems[day].add(dailyItem);
+	}
+	
+	protected void updateMonthlyItem(TransferItem trans, int state) {
+		int day = trans.getOccurrentceDate().get(Calendar.DAY_OF_MONTH);
+		
+		if (mMonthlyItems[day] == null) {
+			mMonthlyItems[day] = new AccountDailyItems(trans.getOccurrentceDate());
+		}
+		
+		AccountDailyItem dailyItem = new AccountDailyItem(state, 
+				trans.getToAccount().getCompany().getName(), trans.getMemo(), trans.getAmount());
+		
+		dailyItem.setTag(trans);
+		mMonthlyItems[day].add(dailyItem);
+	}
+	
+//	protected void updateMonthlyItems(ArrayList<TransferItem> fromItems) {
+//		int fromItemSize = fromItems.size();
+//		for (int index = 0; index < fromItemSize; index++) {
+//			TransferItem trans = fromItems.get(index);
+//			int day = trans.getOccurrentceDate().get(Calendar.DAY_OF_MONTH);
+//			
+//			if (mMonthlyItems[day] == null) {
+//				mMonthlyItems[day] = new AccountDailyItems(trans.getOccurrentceDate());
+//			}
+//			
+//			AccountDailyItem dailyItem = new AccountDailyItem(STATE_TRANSFOR_WITHDRAWAL, 
+//					trans.getToAccount().getCompany().getName(), trans.getMemo(), trans.getAmount());
+//			
+//			dailyItem.setTag(trans);
+//			mMonthlyItems[day].add(dailyItem);
+//		}
+//	}
 	
 	
 }

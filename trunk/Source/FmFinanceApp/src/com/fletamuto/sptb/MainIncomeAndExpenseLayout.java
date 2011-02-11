@@ -31,6 +31,7 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.db.TagDBConnector;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 
@@ -72,18 +73,32 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
         if (mDBInit == false) {
         	DBMgr.initialize(getApplicationContext());
             DBMgr.addRepeatItems();
+           
             settlementDay();
+            setAlarmView();
+            
             mDBInit = true;
         }
         
+        
+        initAlarmView();
         setRootView(true);
         setBtnClickListener();
         setTitle(getResources().getString(R.string.app_name));
         
-        initAlarmView();
-        setAlarmView();
+        
     	changeViewMode();
     }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if (requestCode == MsgDef.ActRequest.ACT_ALARM_CARD_PAYMENT) {
+    		settlementDay();
+            setAlarmView();
+    	}
+    	super.onActivityResult(requestCode, resultCode, data);
+    }
+
     
     protected void initAlarmView() {
  //   	mLLAlarm = (LinearLayout) findViewById(R.id.LLAlarm);
@@ -101,30 +116,25 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 		ArrayList<CardItem> cardItems = DBMgr.getCardItems(CardItem.CREDIT_CARD);
 		int cardCount = cardItems.size();
 		Calendar toDay = Calendar.getInstance();
-//		toDay.set(toDay.get(Calendar.YEAR), toDay.get(Calendar.MONTH), toDay.get(Calendar.DAY_OF_MONTH), toDay.get(Calendar.HOUR_OF_DAY), 0, 0);
-		toDay.set(toDay.get(Calendar.YEAR), toDay.get(Calendar.MONTH), 1, toDay.get(Calendar.HOUR_OF_DAY), 0, 0);
-		toDay.add(Calendar.DAY_OF_MONTH, -1);
+		toDay.set(toDay.get(Calendar.YEAR), toDay.get(Calendar.MONTH), toDay.get(Calendar.DAY_OF_MONTH), toDay.get(Calendar.HOUR_OF_DAY), 0, 0);
+//		toDay.set(toDay.get(Calendar.YEAR), toDay.get(Calendar.MONTH), 1, toDay.get(Calendar.HOUR_OF_DAY), 0, 0);
 		
 		for (int index = 0; index < cardCount; index++) {
 			CardItem card = cardItems.get(index);
 			CardPayment cardPayment = DBMgr.getCardPaymentLastItem(card.getID());
 			
 			if (cardPayment == null) {
-				mCardAlarmItems.add(makeCardExpenseInfo(card));
-				// 처리할 데이터가 있는가?
-//				cardPayment = new CardPayment();
-//				cardPayment.setCardId(card.getID());
-//				cardPayment.setPaymentAmount(1000);
-//				cardPayment.setPaymentDate(toDay);
-//				cardPayment.setRemainAmount(0);
-//				cardPayment.setState(0);
-//				
-//				DBMgr.addCardPaymentItem(cardPayment);
-				
+				CardExpenseInfo cardInfo = makeCardExpenseInfo(card, Calendar.getInstance());
+				if (cardInfo.getBillingExpenseAmount() != 0L) {
+					mCardAlarmItems.add(cardInfo);
+				}
 			}
 			else {
 				Calendar targetDay = Calendar.getInstance();
 				targetDay.set(targetDay.get(Calendar.YEAR), targetDay.get(Calendar.MONTH), card.getSettlementDay(), 0, 0, 0);
+				targetDay.add(Calendar.SECOND, -1);
+				
+				Log.i("aa", FinanceDataFormat.getFullDateFormat(cardPayment.getPaymentDate().getTime()));
 				
 				// 결제일이 이번달인지 확인
 				if (toDay.before(targetDay)) {
@@ -139,7 +149,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 					
 				}
 				else {
-					mCardAlarmItems.add(makeCardExpenseInfo(card));
+					mCardAlarmItems.add(makeCardExpenseInfo(card, targetDay));
 					// 처리되지 않았다.
 					Log.i("aa", "처리되지 않았다.");
 				}
@@ -161,10 +171,12 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 		
 	}
 	
-	private CardExpenseInfo makeCardExpenseInfo(CardItem card) {
+	private CardExpenseInfo makeCardExpenseInfo(CardItem card, Calendar targetDate) {
 		CardExpenseInfo cardInfo = new CardExpenseInfo(card);
-		long billingExpenseAmout = DBMgr.getCardTotalExpense(card.getID(), card.getStartBillingPeriod(Calendar.getInstance()), card.getEndBillingPeriod(Calendar.getInstance()));
+		targetDate.set(Calendar.DAY_OF_MONTH, card.getSettlementDay());
+		long billingExpenseAmout = DBMgr.getCardTotalExpense(card.getID(), card.getStartBillingPeriod(targetDate), card.getEndBillingPeriod(targetDate));
 		cardInfo.setBillingExpenseAmount(billingExpenseAmout);
+		cardInfo.setSettlementDate(targetDate);
 		return cardInfo;
 	}
 
@@ -743,7 +755,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 		
 		TextView tvMemo = viewHolder.getCenterBottomTextView() ;
 		if (expense.getMemo().length() != 0) {
-			tvMemo.setText("메모 : " + expense.getMemo());
+			tvMemo.setText(expense.getMemo());
 		}
 		else {
 			tvMemo.setVisibility(View.GONE);
@@ -1167,7 +1179,9 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
-				
+				Intent intent = new Intent(MainIncomeAndExpenseLayout.this, CardPaymentLayout.class);
+				intent.putExtra(MsgDef.ExtraNames.CARD_EXPENSE_INFO_ITEM, mAlarmAdapter.getItem(position));
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_ALARM_CARD_PAYMENT);
 			}
 		});
     	

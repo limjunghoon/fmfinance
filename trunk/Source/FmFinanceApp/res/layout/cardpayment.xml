@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent" android:orientation="vertical" android:layout_height="fill_parent">
+  
+
+
+
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+<TextView android:layout_height="wrap_content" android:textSize="18sp" android:layout_weight="1" android:id="@+id/TVCardSettlementDate" android:layout_width="fill_parent"></TextView>
+<TextView android:layout_height="wrap_content" android:id="@+id/TVCardName" android:textSize="18sp" android:gravity="right" android:layout_width="wrap_content" android:layout_weight="0"></TextView></LinearLayout>
+<LinearLayout android:id="@+id/LinearLayout04" android:layout_height="wrap_content" android:layout_width="fill_parent">
+<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVPeriod" android:textSize="18sp" android:gravity="left"></TextView>
+</LinearLayout>
+<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="wrap_content" android:layout_width="fill_parent">
+<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/BtnAmount"></Button>
+
+
+</LinearLayout>
+<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1" android:orientation="vertical">
+<TextView android:id="@+id/TextView01" android:layout_height="wrap_content" android:text="카드내역" android:layout_width="fill_parent" android:textSize="18sp" android:paddingTop="5dp"></TextView><ListView android:id="@+id/LVCardExpense" android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+
+
+</ListView>
+</LinearLayout>
+
+
+
+</LinearLayout>

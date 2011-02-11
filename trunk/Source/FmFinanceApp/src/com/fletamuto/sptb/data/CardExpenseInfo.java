@@ -1,12 +1,14 @@
 package com.fletamuto.sptb.data;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 
 
 public class CardExpenseInfo implements Serializable{
 	private static final long serialVersionUID = -161154125226855497L;
 	private CardItem mCard;
+	private Calendar mSettlementDate = Calendar.getInstance();
 	private long mTotalExpenseAmount = 0L;
 	private long mBillingExpenseAmount = 0L;
 	private long mNextBillingExpenseAmount = 0L;
@@ -45,6 +47,14 @@ public class CardExpenseInfo implements Serializable{
 
 	public long getNextBillingExpenseAmount() {
 		return mNextBillingExpenseAmount;
+	}
+
+	public void setSettlementDate(Calendar settlementDate) {
+		this.mSettlementDate = settlementDate;
+	}
+
+	public Calendar getSettlementDate() {
+		return mSettlementDate;
 	}
 
 }

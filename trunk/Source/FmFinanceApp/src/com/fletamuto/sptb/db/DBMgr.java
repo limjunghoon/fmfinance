@@ -827,7 +827,7 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getTransferDBConnector().deleteItem(id);
 	}
 
-	
-
-	
+	public static ArrayList<CardPayment> getCardPaymentItems(int accountID, int year, int month) {
+		return mInstance.mDBConnector.getCardDBConnector().getCardPaymentItems(accountID, year, month);
+	}
 }

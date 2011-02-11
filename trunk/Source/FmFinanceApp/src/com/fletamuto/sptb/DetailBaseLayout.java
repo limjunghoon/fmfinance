@@ -44,4 +44,6 @@ public abstract class DetailBaseLayout extends FmBaseActivity {
 		setEidtButtonListener();
 	    setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
 	}
+	
+	
 }

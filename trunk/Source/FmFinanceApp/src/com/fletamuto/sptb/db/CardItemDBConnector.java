@@ -2,6 +2,7 @@ package com.fletamuto.sptb.db;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -12,6 +13,7 @@ import android.util.Log;
 import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.CardPayment;
+import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.TransferItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 import com.fletamuto.sptb.util.LogTag;
@@ -239,5 +241,27 @@ public class CardItemDBConnector extends BaseDBConnector {
 		result = db.delete("card_payment", "_id=?", new String[] {String.valueOf(id)});
 		closeDatabase();
 		return result;
+	}
+	
+	
+	public ArrayList<CardPayment> getCardPaymentItems(int accountID, int year, int month) {
+		
+		ArrayList<CardPayment> cardPaymentItems = new ArrayList<CardPayment>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		queryBilder.setTables("card_payment, card, account");
+		queryBilder.appendWhere("card_payment.card_id=card._id AND card.account_id=account._id");
+		Cursor c = queryBilder.query(db, null, "strftime('%Y-%m', card_payment.payment_date)=? AND card.account_id=?", new String [] {String.format("%d-%02d", year, month), String.valueOf(accountID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				cardPaymentItems.add(createCardPaymentItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		closeDatabase();
+		
+		
+		return cardPaymentItems;
 	}
 }
