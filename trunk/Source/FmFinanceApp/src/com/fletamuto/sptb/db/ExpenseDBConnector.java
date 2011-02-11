@@ -966,5 +966,4 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		return expenseItems;
 	}
 
-
 }

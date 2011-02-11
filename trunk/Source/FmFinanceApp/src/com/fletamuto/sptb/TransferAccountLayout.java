@@ -92,7 +92,7 @@ public class TransferAccountLayout extends InputBaseLayout {
 		long toItemBalance = mTrans.getToAccount().getBalance();
 		
 		mTrans.getFromAccount().setBalance(fromItemBalance  - mTrans.getAmount());
-		mTrans.getToAccount().setBalance(toItemBalance - mTrans.getAmount());
+		mTrans.getToAccount().setBalance(toItemBalance + mTrans.getAmount());
 		DBMgr.updateAccount(mTrans.getFromAccount());
 		DBMgr.updateAccount(mTrans.getToAccount());
 		finish();

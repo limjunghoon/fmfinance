@@ -78,39 +78,51 @@ public class DetailMyPoketLayout extends DetailMonthHistoryLayout {
 		super.updateMonthlyItems();
 		
 		ArrayList<TransferItem> fromItems = DBMgr.getTranserFromAccount(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1, mMyPocket);
-		
 		int fromItemSize = fromItems.size();
 		for (int index = 0; index < fromItemSize; index++) {
-			TransferItem trans = fromItems.get(index);
-			int day = trans.getOccurrentceDate().get(Calendar.DAY_OF_MONTH);
-			
-			if (mMonthlyItems[day] == null) {
-				mMonthlyItems[day] = new AccountDailyItems(trans.getOccurrentceDate());
-			}
-			
-			AccountDailyItem dailyItem = new AccountDailyItem(STATE_TRANSFOR_WITHDRAWAL, 
-					trans.getToAccount().getCompany().getName(), trans.getMemo(), trans.getAmount());
-			
-			dailyItem.setTag(trans);
-			mMonthlyItems[day].add(dailyItem);
+			updateMonthlyItem(fromItems.get(index), STATE_TRANSFOR_WITHDRAWAL);
 		}
 		
 		ArrayList<TransferItem> toItems = DBMgr.getTranserToAccount(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1, mMyPocket);
 		int toItemSize = toItems.size();
 		for (int index = 0; index < toItemSize; index++) {
-			TransferItem trans = toItems.get(index);
-			int day = trans.getOccurrentceDate().get(Calendar.DAY_OF_MONTH);
-			
-			if (mMonthlyItems[day] == null) {
-				mMonthlyItems[day] = new AccountDailyItems(trans.getOccurrentceDate());
-			}
-			
-			AccountDailyItem dailyItem = new AccountDailyItem(STATE_TRANSFOR_DEPOSIT, 
-					trans.getFromAccount().getCompany().getName(), trans.getMemo(), trans.getAmount());
-			
-			dailyItem.setTag(trans);
-			mMonthlyItems[day].add(dailyItem);
+			updateMonthlyItem(fromItems.get(index), STATE_TRANSFOR_DEPOSIT);
 		}
+		
+//		ArrayList<TransferItem> fromItems = DBMgr.getTranserFromAccount(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1, mMyPocket);
+//		
+//		int fromItemSize = fromItems.size();
+//		for (int index = 0; index < fromItemSize; index++) {
+//			TransferItem trans = fromItems.get(index);
+//			int day = trans.getOccurrentceDate().get(Calendar.DAY_OF_MONTH);
+//			
+//			if (mMonthlyItems[day] == null) {
+//				mMonthlyItems[day] = new AccountDailyItems(trans.getOccurrentceDate());
+//			}
+//			
+//			AccountDailyItem dailyItem = new AccountDailyItem(STATE_TRANSFOR_WITHDRAWAL, 
+//					trans.getToAccount().getCompany().getName(), trans.getMemo(), trans.getAmount());
+//			
+//			dailyItem.setTag(trans);
+//			mMonthlyItems[day].add(dailyItem);
+//		}
+//		
+//		ArrayList<TransferItem> toItems = DBMgr.getTranserToAccount(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1, mMyPocket);
+//		int toItemSize = toItems.size();
+//		for (int index = 0; index < toItemSize; index++) {
+//			TransferItem trans = toItems.get(index);
+//			int day = trans.getOccurrentceDate().get(Calendar.DAY_OF_MONTH);
+//			
+//			if (mMonthlyItems[day] == null) {
+//				mMonthlyItems[day] = new AccountDailyItems(trans.getOccurrentceDate());
+//			}
+//			
+//			AccountDailyItem dailyItem = new AccountDailyItem(STATE_TRANSFOR_DEPOSIT, 
+//					trans.getFromAccount().getCompany().getName(), trans.getMemo(), trans.getAmount());
+//			
+//			dailyItem.setTag(trans);
+//			mMonthlyItems[day].add(dailyItem);
+//		}
 	}
 	
 	@Override

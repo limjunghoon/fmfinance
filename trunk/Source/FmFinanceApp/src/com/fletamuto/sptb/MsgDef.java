@@ -40,6 +40,7 @@ public final class MsgDef {
 		public final static int ACT_STATE_HISTORY = 34;
 		public final static int ACT_ADD_ITEM = 35;
 		public final static int ACT_CHANGE_MENU = 36;
+		public final static int ACT_ALARM_CARD_PAYMENT = 37;
 	}
 	
 	public static final class ExtraNames {
