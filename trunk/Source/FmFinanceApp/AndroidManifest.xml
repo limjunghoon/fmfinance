@@ -39,7 +39,7 @@
 		<activity android:label="계좌" android:name=".ReportAccountLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".SelectCardCompanyLayout" android:label="카드사선택" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".InputCreditCardLayout" android:label="신용카드 등록" android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:theme="@android:style/Theme.Dialog" android:label="계좌선택" android:name=".SelectAccountLayout"></activity>
+		<activity android:theme="@android:style/Theme.Translucent" android:label="계좌선택" android:name=".SelectAccountLayout"></activity>
 		<activity android:name=".ReportCreditCardLayout" android:label="신용카드 목록"></activity>
 		<activity android:name=".InputCheckCardLayout" android:label="체크카드 입력"></activity>
 		<activity android:name=".InputPrepaidCardLayout" android:label="선불카드 입력"></activity>
@@ -52,7 +52,7 @@
 		<activity android:name=".SelectTagLayout" android:theme="@android:style/Theme.Translucent"></activity>
 		<activity android:name=".RepeatLayout" android:theme="@android:style/Theme.Translucent"></activity>
 		<activity android:name=".PurposeLayout"></activity>
-		<activity android:name=".SelectCardLayout" android:theme="@android:style/Theme.Dialog" android:label="카드선택"></activity>
+		<activity android:name=".SelectCardLayout" android:theme="@android:style/Theme.Translucent" android:label="카드선택"></activity>
 <activity android:label="카드종류선택" android:name=".SelectInputCardLayout" android:theme="@android:style/Theme.Dialog"></activity>
 <activity android:name="EditSelecTagLayout"></activity>
 <activity android:name=".EditSelecCardCompanyNameLayout"></activity>

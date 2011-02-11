@@ -16,10 +16,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fletamuto.common.control.BaseSlidingActivity;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.db.DBMgr;
 
-public class SelectAccountLayout extends Activity {
+public class SelectAccountLayout extends BaseSlidingActivity/*Activity*/ {
 	public static final int ACT_ADD_ACCOUNT = 0;
 	public static final int MODE_NORMAL = 0;
 	public static final int MODE_TRASFER = 1;
@@ -36,6 +37,11 @@ public class SelectAccountLayout extends Activity {
         
   //      requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.select_account);
+        
+        //sliding 을 위해 View 설정 하고 animation 시작 함수 호출 하는 부분 start
+        setSlidingView(findViewById(R.id.selectAccountLL));
+        appearAnimation();
+        //end
         
         initalize();
         setAddButtonListener();
