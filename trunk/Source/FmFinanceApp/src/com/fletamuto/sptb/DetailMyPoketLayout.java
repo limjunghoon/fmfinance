@@ -86,7 +86,7 @@ public class DetailMyPoketLayout extends DetailMonthHistoryLayout {
 		ArrayList<TransferItem> toItems = DBMgr.getTranserToAccount(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1, mMyPocket);
 		int toItemSize = toItems.size();
 		for (int index = 0; index < toItemSize; index++) {
-			updateMonthlyItem(fromItems.get(index), STATE_TRANSFOR_DEPOSIT);
+			updateMonthlyItem(toItems.get(index), STATE_TRANSFOR_DEPOSIT);
 		}
 		
 //		ArrayList<TransferItem> fromItems = DBMgr.getTranserFromAccount(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1, mMyPocket);
