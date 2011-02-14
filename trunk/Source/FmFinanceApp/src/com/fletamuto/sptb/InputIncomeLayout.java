@@ -34,6 +34,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         
         updateChildView();
         
+        setTitle(getResources().getString(R.string.input_income_name));
         //달력을 이용한 날짜 입력을 위해
 /*
         LinearLayout linear = (LinearLayout) findViewById(R.id.inputIncome);
