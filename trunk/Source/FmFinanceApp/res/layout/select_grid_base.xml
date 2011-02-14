@@ -7,11 +7,20 @@
     android:gravity="bottom"                      
 >
 <LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/GridBase"
+  android:orientation="vertical"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   android:background="#ffffff">
+	<RelativeLayout
+  		android:id="@+id/selectGridBaseRL"
+  		android:layout_height="wrap_content" android:layout_width="fill_parent" android:background="#cccccc">
+  		<TextView
+  			android:id="@+id/selectGridBaseTitleText" android:text="" android:textColor="#000000" android:textSize="20sp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_centerInParent="true"/>
+  		<Button
+  			android:id="@+id/BtnGridBaseAdd" android:text="추가" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentRight="true"/>	
+  
+  	</RelativeLayout>
 	<GridView android:verticalSpacing="10dp" android:padding="10dp" android:horizontalSpacing="10dp" android:numColumns="auto_fit" android:columnWidth="60dp" android:gravity="center" android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/GVSelect"></GridView>
 </LinearLayout>
 </LinearLayout>

@@ -49,7 +49,7 @@
 		<activity android:name=".AccountLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".BudgetLayout"></activity>
 		<activity android:name=".SearchLayout"></activity>
-		<activity android:name=".SelectTagLayout" android:theme="@android:style/Theme.Translucent"></activity>
+		<activity android:name=".SelectTagLayout" android:label="태그 선택" android:theme="@android:style/Theme.Translucent"></activity>
 		<activity android:name=".RepeatLayout" android:theme="@android:style/Theme.Translucent"></activity>
 		<activity android:name=".PurposeLayout"></activity>
 		<activity android:name=".SelectCardLayout" android:theme="@android:style/Theme.Translucent" android:label="카드선택"></activity>
