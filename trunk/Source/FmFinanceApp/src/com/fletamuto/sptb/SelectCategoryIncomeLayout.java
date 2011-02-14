@@ -1,15 +1,11 @@
 package com.fletamuto.sptb;
 
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
-import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.IncomeItem;
-import com.fletamuto.sptb.data.ItemDef;
 
-public class SelectCategoryIncomeLayout extends InputAfterSelectCategoryLayout {
+public class SelectCategoryIncomeLayout extends SelectCategoryBaseLayout /*InputAfterSelectCategoryLayout */{
 	public static final int ACT_ADD_INCOME = MsgDef.ActRequest.ACT_ADD_INCOME;
 	
 	public SelectCategoryIncomeLayout() {
@@ -37,6 +33,7 @@ public class SelectCategoryIncomeLayout extends InputAfterSelectCategoryLayout {
     	super.onClickLeft1TitleBtn();
     }
 */
+   /*
 	@Override
 	protected void startInputActivity(Category category) {
     	Intent intent = null;
@@ -65,4 +62,5 @@ public class SelectCategoryIncomeLayout extends InputAfterSelectCategoryLayout {
     	}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+	*/
 }

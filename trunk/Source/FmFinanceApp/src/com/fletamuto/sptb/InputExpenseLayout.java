@@ -108,7 +108,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     
     @Override
     protected void onClickLeft1TitleBtn() {
-    	Intent intent = new Intent(InputExpenseLayout.this, SelectCategoryIncomeLayout.class);
+    	Intent intent = new Intent(InputExpenseLayout.this, InputIncomeLayout.class);
 		startActivity(intent);
 		
     	super.onClickLeft1TitleBtn();

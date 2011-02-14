@@ -4,6 +4,7 @@ package com.fletamuto.sptb;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -49,6 +50,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
     	setDateBtnClickListener(R.id.BtnIncomeDate); 
         setAmountBtnClickListener(R.id.BtnIncomeAmount);
         setRepeatBtnClickListener(R.id.BtnIncomeRepeat);
+        setCategoryClickListener(R.id.BtnIncomeCategory);
         setReceiveToggleBtnClickListener();
 	}
     
@@ -64,6 +66,21 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         	setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);
     	}
     }
+    
+    /**
+     * 분류버튼 클릭시 리슨너 설정
+     * @param btnID 분류버튼 아이디
+     */
+    protected void setCategoryClickListener(int btnID) {
+    	((Button)findViewById(btnID)).setOnClickListener(new Button.OnClickListener() {
+    		
+    		public void onClick(View v) {
+    			Intent intent = new Intent(InputIncomeLayout.this, SelectCategoryIncomeLayout.class);
+    			startActivityForResult(intent, ACT_CATEGORY);
+    		}
+        });    
+    }    
+    
     
     @Override
     protected void onClickLeft1TitleBtn() {
@@ -171,6 +188,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 	@Override
 	protected void updateCategory(int id, String name) {
 		mIncomeItem.setCategory(id, name);
+		updateBtnCategoryText(R.id.BtnIncomeCategory);
 	}
 
 	@Override
@@ -180,6 +198,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 		updateBtnAmountText(R.id.BtnIncomeAmount);
 		updateEditMemoText(R.id.ETIncomeMemo);
 		updateRepeatText(R.id.BtnIncomeRepeat);
+		updateBtnCategoryText(R.id.BtnIncomeCategory);
 		updateReceiveMethod();
 	}
 
@@ -206,7 +225,13 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == ACT_REPEAT) {
+		if (requestCode == ACT_CATEGORY) {
+    		if (resultCode == RESULT_OK) {
+    			updateCategory(data.getIntExtra("CATEGORY_ID", -1), data.getStringExtra("CATEGORY_NAME"));
+//    			mExpensItem.setSubCategory(data.getIntExtra("SUB_CATEGORY_ID", -1), data.getStringExtra("SUB_CATEGORY_NAME"));
+    		}
+    	}
+		else if (requestCode == ACT_REPEAT) {
 			if (resultCode == RESULT_OK) {
 				int repeatType = data.getIntExtra(MsgDef.ExtraNames.RPEAT_TYPE, -1);
 				
@@ -310,5 +335,15 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 //			findViewById(R.id.LLRepeat).setVisibility(View.VISIBLE);
 //		}
 	}
+	
+	
+	protected void updateBtnCategoryText(int btnID) {
+		String categoryText = getResources().getString(R.string.input_select_category);
+		if (mIncomeItem.isVaildCatetory()) {
+			categoryText = String.format("%s", mIncomeItem.getCategory().getName());
+		}
+		 
+    	((Button)findViewById(btnID)).setText(categoryText);
+    }
     
 }
