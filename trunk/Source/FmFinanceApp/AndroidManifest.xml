@@ -53,7 +53,7 @@
 		<activity android:name=".RepeatLayout" android:theme="@android:style/Theme.Translucent"></activity>
 		<activity android:name=".PurposeLayout"></activity>
 		<activity android:name=".SelectCardLayout" android:theme="@android:style/Theme.Translucent" android:label="카드선택"></activity>
-<activity android:label="카드종류선택" android:name=".SelectInputCardLayout" android:theme="@android:style/Theme.Dialog"></activity>
+<activity android:label="카드종류선택" android:name=".SelectInputCardLayout" android:theme="@android:style/Theme.Translucent"></activity>
 <activity android:name="EditSelecTagLayout"></activity>
 <activity android:name=".EditSelecCardCompanyNameLayout"></activity>
 <activity android:name=".EditSelecCompanyLayout"></activity>
@@ -113,6 +113,7 @@
 <activity android:name="com.fletamuto.common.control.InputAmountDialog" android:theme="@android:style/Theme.Translucent"></activity>
 <activity android:name=".DetailMyPoketLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".CardPaymentLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".SelectInputCard" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 

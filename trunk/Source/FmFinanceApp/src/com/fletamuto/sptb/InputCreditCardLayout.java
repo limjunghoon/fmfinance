@@ -30,9 +30,16 @@ public class InputCreditCardLayout extends InputBaseLayout {
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.input_credit_card, true);
         
-        updateChildView();
+        Intent intent = getIntent();
+        if (intent.getBooleanExtra("showTitle", true)) {
+        	setContentView(R.layout.input_credit_card, true);
+        } else {
+        	setContentView(R.layout.input_credit_card);
+        }        
+        
+        updateChildView();       
+
     }
     
     @Override

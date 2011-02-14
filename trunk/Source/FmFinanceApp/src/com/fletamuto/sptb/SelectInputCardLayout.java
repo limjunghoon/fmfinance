@@ -1,15 +1,15 @@
 package com.fletamuto.sptb;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.fletamuto.common.control.BaseSlidingActivity;
 import com.fletamuto.sptb.util.LogTag;
 
-public class SelectInputCardLayout extends Activity {
+public class SelectInputCardLayout extends BaseSlidingActivity/*Activity*/ {
 	public static final int ACT_ADD_CARD = MsgDef.ActRequest.ACT_ADD_CARD;
 	private final ChangeActivity changeActivity = new ChangeActivity();
 	

@@ -27,7 +27,13 @@ public class InputCheckCardLayout extends InputBaseLayout {
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.input_check_card, true);
+        
+        Intent intent = getIntent();
+        if (intent.getBooleanExtra("showTitle", true)) {
+        	setContentView(R.layout.input_check_card, true);
+        } else {
+        	setContentView(R.layout.input_check_card);
+        }          
         
         updateChildView();
         

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+  	xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:orientation="vertical"
+  	android:layout_width="fill_parent"
+  	android:layout_height="fill_parent"
+  	android:id="@+id/inputCardLL">
+  	<RelativeLayout
+  	android:id="@+id/selectCardRL"
+  	android:layout_height="wrap_content" android:layout_width="fill_parent">
+  		<TextView
+  			android:id="@+id/selectAccountTitleText" android:text="카드 등록" android:textSize="20sp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_centerInParent="true"/>
+  		<Button
+  			android:id="@+id/BtnInputCardSave" android:text="완료" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentRight="true"/>	
+  </RelativeLayout>
+  	<RadioGroup
+  		android:orientation="horizontal"
+  		android:layout_width="fill_parent"
+  		android:layout_height="wrap_content"
+  		android:gravity="center_vertical"
+  		android:checkedButton="@+id/inputCard01"
+  		>
+  		<RadioButton
+  			android:id="@+id/inputCard01"
+  			android:layout_width="wrap_content"
+  			android:layout_height="wrap_content"
+  			android:text="신용카드"></RadioButton>
+  		<RadioButton
+  			android:id="@+id/inputCard02"
+  			android:layout_width="wrap_content"
+  			android:layout_height="wrap_content"
+  			android:text="체크카드"></RadioButton>
+  		<RadioButton
+  			android:id="@+id/inputCard03"
+  			android:layout_width="wrap_content"
+  			android:layout_height="wrap_content"
+  			android:text="선불카드"></RadioButton>
+
+  	</RadioGroup>
+  	<FrameLayout
+  		android:id="@+id/inputCardFL"
+  		android:layout_width="fill_parent"
+  		android:layout_height="wrap_content">
+  	</FrameLayout>
+</LinearLayout>
+

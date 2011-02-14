@@ -119,7 +119,7 @@ public class SelectCardLayout extends BaseSlidingActivity/*Activity*/ {
 		btnAdd.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent(SelectCardLayout.this, SelectInputCardLayout.class);		
+				Intent intent = new Intent(SelectCardLayout.this, /*SelectInputCardLayout.class*/SelectInputCard.class);		
 				startActivityForResult(intent, ACT_ADD_CARD);
 			}
 		});
