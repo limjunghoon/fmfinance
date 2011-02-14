@@ -114,6 +114,7 @@
 <activity android:name=".DetailMyPoketLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".CardPaymentLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".SelectInputCard" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".DetailAssetsDepositLayout"></activity>
 </application>
 
 

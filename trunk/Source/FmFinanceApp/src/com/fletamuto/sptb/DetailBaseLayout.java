@@ -1,6 +1,7 @@
 package com.fletamuto.sptb;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -18,6 +19,7 @@ public abstract class DetailBaseLayout extends FmBaseActivity {
 	public static final int STATE_SETTLEMENT = 6;
 	
 	public abstract void onEditBtnClick();
+	public abstract void updateChildView();
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,5 +47,15 @@ public abstract class DetailBaseLayout extends FmBaseActivity {
 	    setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == MsgDef.ActRequest.ACT_EDIT_ITEM) {
+			if (resultCode == RESULT_OK) {
+				updateChildView();
+			}
+			
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 	
 }

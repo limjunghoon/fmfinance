@@ -28,7 +28,7 @@ public class ReportAssetsHistoryLayout extends DetailBaseLayout {
     }
 
     
-	protected void updateChildView() {
+	public void updateChildView() {
 	}
     
     @Override
