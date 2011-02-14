@@ -146,7 +146,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     	Intent intent = null;
     	
     	if (item.getExtendType() == ItemDef.ExtendAssets.DEPOSIT) {
-    		intent = new Intent(this, StateAssetsDepositLayout.class);
+    		intent = new Intent(this, DetailAssetsDepositLayout.class);
     	}
     	else if (item.getExtendType() == ItemDef.ExtendAssets.SAVINGS) {
     		intent = new Intent(this, StateAssetsSavingsLayout.class);

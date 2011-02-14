@@ -402,12 +402,18 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			findViewById(R.id.BtnExpenseAmount).setEnabled(false);
 			findViewById(R.id.TBExpenseMethodCard).setVisibility(View.GONE);
 			findViewById(R.id.LLRepeat).setVisibility(View.GONE);
+			findViewById(R.id.LLBookmarkSliding).setVisibility(View.GONE);
+			findViewById(R.id.BtnExpenseDelete).setVisibility(View.GONE);
+			setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.INVISIBLE);
 		}
 		else {
 			findViewById(R.id.BtnExpenseCategory).setEnabled(true);
 			findViewById(R.id.BtnExpenseAmount).setEnabled(true);
 			findViewById(R.id.TBExpenseMethodCard).setVisibility(View.VISIBLE);
 			findViewById(R.id.LLRepeat).setVisibility(View.VISIBLE);
+			findViewById(R.id.LLBookmarkSliding).setVisibility(View.VISIBLE);
+			findViewById(R.id.BtnExpenseDelete).setVisibility(View.VISIBLE);
+			setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);
 		}
 	}
 

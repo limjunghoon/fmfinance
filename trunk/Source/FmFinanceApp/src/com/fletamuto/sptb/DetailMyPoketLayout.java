@@ -30,8 +30,7 @@ public class DetailMyPoketLayout extends DetailMonthHistoryLayout {
     
     @Override
     protected void onResume() {
-    	Button btnBalance = (Button) findViewById(R.id.BtnBalance);
-	  	btnBalance.setText(String.format("%,d¿ø", mMyPocket.getBalance()));
+    	updateChildView();
     	super.onResume();
     }
   
@@ -156,6 +155,12 @@ public class DetailMyPoketLayout extends DetailMonthHistoryLayout {
 	@Override
 	public ArrayList<FinanceItem> getIncomeItem() {
 		return DBMgr.getIncomeItemFromMypocket(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH)+1);
+	}
+
+	@Override
+	public void updateChildView() {
+		Button btnBalance = (Button) findViewById(R.id.BtnBalance);
+	  	btnBalance.setText(String.format("%,d¿ø", mMyPocket.getBalance()));
 	}
 	 
 }

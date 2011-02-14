@@ -60,6 +60,9 @@ public class DetailAccountLayout extends DetailMonthHistoryLayout {
 	  	
 	  	TextView tvNumber = (TextView) findViewById(R.id.TVAccountNumber);
 	  	tvNumber.setText(mAccount.getNumber());
+	  	
+	  	TextView tvName = (TextView) findViewById(R.id.TVAccountName);
+	  	tvName.setText(mAccount.getName());
 	}
 	
 	@Override
@@ -126,7 +129,7 @@ public class DetailAccountLayout extends DetailMonthHistoryLayout {
     }
     
 
-	protected void updateChildView() {
+	public void updateChildView() {
 //		Button btnBalance = (Button)findViewById(R.id.BtnTitle);
 //    	btnBalance.setText(String.format("ÀÜ¾× %,d¿ø", mAccount.getBalance()));
 //    	btnBalance.setVisibility(View.VISIBLE);

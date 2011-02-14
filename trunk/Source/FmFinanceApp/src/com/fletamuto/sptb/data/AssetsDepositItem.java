@@ -126,4 +126,8 @@ public class AssetsDepositItem extends AssetsExtendItem {
 	public boolean isOverExpirationDate() {
 		return (Calendar.getInstance().before(getExpiryDate()));
 	}
+	
+	public long getExpectAmount() {
+		return (getAmount() * mRate) / 100;
+	}
 }
