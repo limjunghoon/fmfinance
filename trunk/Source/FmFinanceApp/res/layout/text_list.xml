@@ -3,5 +3,5 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent" android:padding="5dp">
 
-<TextView android:layout_height="wrap_content" android:id="@+id/TVListItem" android:layout_width="fill_parent" android:textSize="20dp"></TextView>
+<TextView android:layout_height="wrap_content" android:id="@+id/TVListItem" android:layout_width="fill_parent" android:textSize="20dp" android:textColor="#333333"></TextView>
 </LinearLayout>

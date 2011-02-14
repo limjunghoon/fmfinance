@@ -1,24 +1,29 @@
 package com.fletamuto.sptb;
 
 import android.os.Bundle;
-import android.view.View;
+import android.widget.TextView;
 
 import com.fletamuto.common.control.BaseSlidingActivity;
 
 //public abstract class SelectGridBaseLayout extends FmBaseActivity {
 public abstract class SelectGridBaseLayout extends BaseSlidingActivity {
 	
+	private TextView gridTitle;
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       
+        
 //        setContentView(R.layout.select_grid_base, true);
         setContentView(R.layout.select_grid_base);
-        
+                
         setSlidingView(findViewById(R.id.GridBase));
         appearAnimation();
         
         getData();
-        setAdaper();
+        setAdaper();         
+        
+        gridTitle = (TextView) findViewById(R.id.selectGridBaseTitleText);
+        gridTitle.setText(this.getTitle());
     }
 	
 /*
@@ -38,7 +43,8 @@ public abstract class SelectGridBaseLayout extends BaseSlidingActivity {
 			}
 		});
 	}
-*/	
+*/
+	
 	protected void updateAdapter() {
 		
 		clearAdapter();
@@ -46,6 +52,9 @@ public abstract class SelectGridBaseLayout extends BaseSlidingActivity {
         setAdaper();
 	}
 	
+	public void setTitle(CharSequence title) {
+		gridTitle.setText(title);
+    };
 	
 	/**
 	 * 에디트 버튼 클릭시

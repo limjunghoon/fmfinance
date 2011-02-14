@@ -12,9 +12,9 @@
   android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="wrap_content">
   <RelativeLayout
   	android:id="@+id/selectCardRL"
-  	android:layout_height="wrap_content" android:layout_width="fill_parent">
+  	android:layout_height="wrap_content" android:layout_width="fill_parent" android:background="#cccccc">
   		<TextView
-  			android:id="@+id/selectAccountTitleText" android:text="카드 선택" android:textSize="20sp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_centerInParent="true"/>
+  			android:id="@+id/selectAccountTitleText" android:text="카드 선택" android:textSize="20sp" android:textColor="#000000" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_centerInParent="true"/>
   		<Button
   			android:id="@+id/BtnCardAdd" android:text="추가" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentRight="true"/>	
   </RelativeLayout>
