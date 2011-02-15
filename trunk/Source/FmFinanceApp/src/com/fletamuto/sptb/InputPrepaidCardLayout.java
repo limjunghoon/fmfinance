@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.common.control.InputAmountDialog;
+import com.fletamuto.sptb.SelectInputCard.EventButton;
 import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.db.DBMgr;
@@ -26,14 +27,30 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 	
 	private CardItem mPrepaidCard;
 	
+	private boolean showTitle = true;
+	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         Intent intent = getIntent();
-        if (intent.getBooleanExtra("showTitle", true)) {
+        showTitle = intent.getBooleanExtra("showTitle", true);
+        if (showTitle) {
         	setContentView(R.layout.input_prepaid_card, true);
         } else {
         	setContentView(R.layout.input_prepaid_card);
+        	
+        	/*카드 선택의 추가에서 완료 버튼 누를 시 호출 됨*/
+            EventButton btnEvent = (EventButton) intent.getSerializableExtra("saveCard");
+            btnEvent.getButton().setOnClickListener(new View.OnClickListener() {
+    			
+    			public void onClick(View v) {
+    				updateItem();
+    				
+    				if (checkInputData() == true) {
+    					saveItem();		
+    		    	}
+    			}
+    		});
         }            
         
         updateChildView();
@@ -128,8 +145,13 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 		
 		Intent intent = new Intent();
 		intent.putExtra(MsgDef.ExtraNames.CARD_ID, mPrepaidCard.getID());
-		setResult(RESULT_OK, intent);
-		finish();
+		if (showTitle) {
+			setResult(RESULT_OK, intent);
+			finish();
+		} else {
+			intent.setAction("saveCardData");
+			sendBroadcast(intent);
+		}
 	}
 
 	private void saveNewItem() {
@@ -140,8 +162,13 @@ public class InputPrepaidCardLayout extends InputBaseLayout {
 		
 		Intent intent = new Intent();
 		intent.putExtra(MsgDef.ExtraNames.CARD_ID, mPrepaidCard.getID());
-		setResult(RESULT_OK, intent);
-		finish();
+		if (showTitle) {
+			setResult(RESULT_OK, intent);
+			finish();
+		} else {
+			intent.setAction("saveCardData");
+			sendBroadcast(intent);
+		}
 	}
 
 	@Override

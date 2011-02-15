@@ -29,32 +29,31 @@ public class InputCreditCardLayout extends InputBaseLayout {
 	
 	private CardItem mCreditCard;
 	
+	private boolean showTitle = true;
+	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         Intent intent = getIntent();
-        if (intent.getBooleanExtra("showTitle", true)) {
+        showTitle = intent.getBooleanExtra("showTitle", true);
+        if (showTitle) {
         	setContentView(R.layout.input_credit_card, true);
         } else {
         	setContentView(R.layout.input_credit_card);
-        }        
-        
-        
-        // btn event tset //////////////////////////////////////////
-        EventButton btnEvent = (EventButton) intent.getSerializableExtra("test");
-        btnEvent.getButton().setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				updateItem();
-				
-				if (checkInputData() == true) {
-					saveItem();		
-					finish();
-		    	}
-			}
-		});
-        //////////////////////////////////////////
-        
+        	
+        	/*카드 선택의 추가에서 완료 버튼 누를 시 호출 됨*/
+            EventButton btnEvent = (EventButton) intent.getSerializableExtra("saveCard");
+            btnEvent.getButton().setOnClickListener(new View.OnClickListener() {
+    			
+    			public void onClick(View v) {
+    				updateItem();
+    				
+    				if (checkInputData() == true) {
+    					saveItem();	
+    		    	}
+    			}
+    		});
+        }               
         
         updateChildView();       
 
@@ -188,8 +187,15 @@ public class InputCreditCardLayout extends InputBaseLayout {
 		
 		Intent intent = new Intent();
 		intent.putExtra(MsgDef.ExtraNames.CARD_ID, mCreditCard.getID());
-		setResult(RESULT_OK, intent);
-		finish();
+		
+		
+		if (showTitle) {
+			setResult(RESULT_OK, intent);
+			finish();
+		} else {
+			intent.setAction("saveCardData");
+			sendBroadcast(intent);
+		}
 	}
 
 	private void saveNewItem() {
@@ -200,8 +206,14 @@ public class InputCreditCardLayout extends InputBaseLayout {
 		
 		Intent intent = new Intent();
 		intent.putExtra(MsgDef.ExtraNames.CARD_ID, mCreditCard.getID());
-		setResult(RESULT_OK, intent);
-		finish();
+		
+		if (showTitle) {
+			setResult(RESULT_OK, intent);
+			finish();
+		} else {
+			intent.setAction("saveCardData");
+			sendBroadcast(intent);
+		}
 	}
 
 	@Override
