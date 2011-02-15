@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
+import com.fletamuto.sptb.SelectInputCard.EventButton;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
@@ -37,6 +38,23 @@ public class InputCreditCardLayout extends InputBaseLayout {
         } else {
         	setContentView(R.layout.input_credit_card);
         }        
+        
+        
+        // btn event tset //////////////////////////////////////////
+        EventButton btnEvent = (EventButton) intent.getSerializableExtra("test");
+        btnEvent.getButton().setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				updateItem();
+				
+				if (checkInputData() == true) {
+					saveItem();		
+					finish();
+		    	}
+			}
+		});
+        //////////////////////////////////////////
+        
         
         updateChildView();       
 
