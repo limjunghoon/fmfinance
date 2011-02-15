@@ -4,19 +4,20 @@ import java.io.Serializable;
 
 import android.app.ActivityGroup;
 import android.app.LocalActivityManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.RadioButton;
 
 public class SelectInputCard extends ActivityGroup {
-	
+	public static final int ACT_ADD_CARD = MsgDef.ActRequest.ACT_ADD_CARD;
 	LocalActivityManager mLocalActivityManager;
 	FrameLayout frameLayout;
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +31,8 @@ public class SelectInputCard extends ActivityGroup {
 		
 		((Button) findViewById(R.id.inputCard01)).setOnClickListener(mClickLintener);
 		((Button) findViewById(R.id.inputCard02)).setOnClickListener(mClickLintener);
-		((Button) findViewById(R.id.inputCard03)).setOnClickListener(mClickLintener);
+		((Button) findViewById(R.id.inputCard03)).setOnClickListener(mClickLintener);	
 		
-        Button saveBtn = (Button) findViewById(R.id.BtnInputCardSave);
-
-//        saveBtn.setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				        				
-//			}
-//		});
-
-		
-
 	}
 	
 	Button.OnClickListener mClickLintener = new Button.OnClickListener() {
@@ -66,21 +56,17 @@ public class SelectInputCard extends ActivityGroup {
 		mLocalActivityManager = this.getLocalActivityManager();
 		frameLayout.removeAllViews();
 		
-		// btn event tset //////////////////////////////////////////
-		Button btnTest = (Button) findViewById(R.id.BtnInputCardSave);
-		EventButton event = new EventButton(btnTest);
-		//////////////////////////////////////////
+		Button btnTest = (Button) findViewById(R.id.BtnInputCardSave);		
 		
 		switch (page) {
 		case 1:
 			Intent intentInputCreditCard = new Intent(this, InputCreditCardLayout.class);
 			intentInputCreditCard.putExtra("showTitle", false);
 			
-			// btn event tset //////////////////////////////////////////
-			intentInputCreditCard.putExtra("test", event);
-			//////////////////////////////////////////
+			EventButton event = new EventButton(btnTest);
+			intentInputCreditCard.putExtra("saveCard", event);
 			
-			Window wInputCreditCard = mLocalActivityManager.startActivity("신용카드", intentInputCreditCard);
+			Window wInputCreditCard = mLocalActivityManager.startActivity("CreditCard", intentInputCreditCard);
 			View activityInputCreditCard = wInputCreditCard.getDecorView();
 			frameLayout.addView(activityInputCreditCard);
 			break;
@@ -88,11 +74,10 @@ public class SelectInputCard extends ActivityGroup {
 			Intent intentInputCheckCard = new Intent(this, InputCheckCardLayout.class);
 			intentInputCheckCard.putExtra("showTitle", false);
 			
-			// btn event tset //////////////////////////////////////////
-			intentInputCheckCard.putExtra("test", event);
-			//////////////////////////////////////////
+			EventButton event2 = new EventButton(btnTest);
+			intentInputCheckCard.putExtra("saveCard", event2);
 			
-			Window wInputCheckCard = mLocalActivityManager.startActivity("체크카드", intentInputCheckCard);
+			Window wInputCheckCard = mLocalActivityManager.startActivity("CheckCard", intentInputCheckCard);
 			View activityInputCheckCard = wInputCheckCard.getDecorView();
 			frameLayout.addView(activityInputCheckCard);
 			break;
@@ -100,21 +85,48 @@ public class SelectInputCard extends ActivityGroup {
 			Intent intentInputPrepaidCard = new Intent(this, InputPrepaidCardLayout.class);
 			intentInputPrepaidCard.putExtra("showTitle", false);
 			
-			// btn event tset //////////////////////////////////////////
-			intentInputPrepaidCard.putExtra("test", event);
-			//////////////////////////////////////////
+			EventButton event3 = new EventButton(btnTest);
+			intentInputPrepaidCard.putExtra("saveCard", event3);
 			
-			Window wInputPrepaidCard = mLocalActivityManager.startActivity("선불카드", intentInputPrepaidCard);
+			Window wInputPrepaidCard = mLocalActivityManager.startActivity("PrepaidCard", intentInputPrepaidCard);
 			View activityInputPrepaidCard = wInputPrepaidCard.getDecorView();
 			frameLayout.addView(activityInputPrepaidCard);
 			break;
 		}
 	}
 	
+	public void savedCard (Intent data) {
+		Intent intent = new Intent();
+		intent.putExtra(MsgDef.ExtraNames.CARD_ID, data.getIntExtra(MsgDef.ExtraNames.CARD_ID, -1));
+		setResult(RESULT_OK, intent);
+		finish();
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("saveCardData");
+		registerReceiver(mTestBR, filter);
+		
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		unregisterReceiver(mTestBR);
+		
+	}
+	
+	BroadcastReceiver mTestBR = new BroadcastReceiver() {
+		public void onReceive (Context context, Intent data) {
+			savedCard(data);
+		}
+	};
+	
 	class EventButton implements Serializable {
-		/**
-		 * 
-		 */
+
 		private static final long serialVersionUID = -4738820990944841465L;
 		private Button mButton;
 		
@@ -124,10 +136,7 @@ public class SelectInputCard extends ActivityGroup {
 		
 		Button getButton() {
 			return mButton;
-		}
-		
-		
-		
+		}		
 	}
 
 }

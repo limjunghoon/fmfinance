@@ -56,6 +56,7 @@ public class SelectInputCardLayout extends BaseSlidingActivity/*Activity*/ {
     
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	Log.d("jptest","11111");
 		if (requestCode == ACT_ADD_CARD) {
 			if (resultCode == RESULT_OK) {
 				Intent intent = new Intent();
