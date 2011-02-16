@@ -19,6 +19,8 @@ public class AssetsChangeItem extends BaseItem {
 	private String mMemo;
 	private int mCount = 0;
 	private int mState;
+	private String mStore;
+	private int mPriceType;
 	
 	public AssetsChangeItem() {
 		
@@ -32,6 +34,8 @@ public class AssetsChangeItem extends BaseItem {
 		mMemo = assets.getMemo();
 		mCount = assets.getCount();
 		mState = assets.getState();
+		mStore = assets.getStore();
+		mPriceType = assets.getPriceType();
 	}
 	
 	public void setChangeDate(Calendar changeDate) {
@@ -89,6 +93,22 @@ public class AssetsChangeItem extends BaseItem {
 	}
 	public int getState() {
 		return mState;
+	}
+
+	public void setStore(String store) {
+		this.mStore = store;
+	}
+
+	public String getStore() {
+		return mStore;
+	}
+
+	public void setPriceType(int priceType) {
+		this.mPriceType = priceType;
+	}
+
+	public int getPriceType() {
+		return mPriceType;
 	}
 
 }

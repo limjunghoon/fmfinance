@@ -8,8 +8,7 @@ package com.fletamuto.sptb.data;
  */
 public class AssetsStockItem extends AssetsExtendItem {
 	private static final long serialVersionUID = -6135037386964932339L;
-	public static final int BUY = 0;
-	public static final int SELL = 1;
+	
 	public final static int EXEND_TYPE = ItemDef.ExtendAssets.STOCK;
 	
 	/**
@@ -38,16 +37,7 @@ public class AssetsStockItem extends AssetsExtendItem {
 	 * 평균 구입가격
 	 */
 	private long mMeanPrice = 0;
-	
-	/**
-	 * 구입처
-	 */
-	private String mStore;
-	
-	/**
-	 * 지출타입
-	 */
-	private int mPriceType = BUY;
+
 	
 
 	/**
@@ -113,25 +103,10 @@ public class AssetsStockItem extends AssetsExtendItem {
 	public long getPrice() {
 		return mPrice;
 	}
-
-	public void setStore(String store) {
-		this.mStore = store;
-	}
-
-	public String getStore() {
-		return mStore;
-	}
-
+	
 	public int getExtendType() {
 		return EXEND_TYPE;
 	}
 
-	public void setPriceType(int priceType) {
-		this.mPriceType = priceType;
-	}
-
-	public int getPriceType() {
-		return mPriceType;
-	}
 
 }

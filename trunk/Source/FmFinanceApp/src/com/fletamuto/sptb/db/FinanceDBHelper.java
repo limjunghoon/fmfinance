@@ -66,11 +66,11 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		createAssetsSavingsTable(db);
 		createAssetsDepositTable(db);
 		createFundTable(db);
-		createChangeFundTable(db);
+//		createChangeFundTable(db);
 		createEndowmentMortgageTable(db);
-		createChangeEndowmentMortgageTable(db);
+//		createChangeEndowmentMortgageTable(db);
 		createAssetsStockTable(db);
-		createChangeAssetsStockTable(db);
+//		createChangeAssetsStockTable(db);
 		createAssetsPurposeTable(db);
 		createPurposeTable(db);
 		
@@ -276,6 +276,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"amount INTEGER NOT NULL," +
 					"change_amount INTEGER NOT NULL," +
 					"memo TEXT," +
+					"store TEXT," +
+					"price_type INTEGER," +
 					"count INTEGER NOT NULL," +
 					"state INTEGER);");
 		} catch (SQLException e) {
