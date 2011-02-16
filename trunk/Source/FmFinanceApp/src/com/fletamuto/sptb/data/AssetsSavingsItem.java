@@ -147,5 +147,8 @@ public class AssetsSavingsItem extends AssetsExtendItem {
 		return (Calendar.getInstance().before(getExpiryDate()));
 	}
 	
+	public long getExpectAmount() {
+		return (getAmount() * mRate) / 100;
+	}
 	
 }

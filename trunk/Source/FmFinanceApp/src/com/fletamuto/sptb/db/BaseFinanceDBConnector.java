@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import android.util.Log;
 
+import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.util.LogTag;
@@ -74,10 +75,6 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 		return null;
 	}
 
-	public long addStateChangeItem(FinanceItem item) {
-		// TODO Auto-generated method stub
-		return -1;
-	}
 
 	
 

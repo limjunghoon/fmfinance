@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
 import com.fletamuto.sptb.data.AssetsInsuranceItem;
@@ -193,11 +194,15 @@ public final class DBMgr {
 							addExpenseFromAssets(expense.getID(), saving.getID());
 							saving.setAmount(saving.getAmount() + expense.getAmount());
 							updateAmountFinanceItem(saving);
-							saving.setCreateDate(lastApplyDate);
+							AssetsChangeItem changeItem = new AssetsChangeItem(saving);
+							changeItem.setChangeDate(lastApplyDate);
+							changeItem.setChangeAmount(expense.getAmount());
+//							saving.setCreateDate(lastApplyDate);
 //							saving.setAmount(saving.getPayment());
-							if (DBMgr.addStateChangeItem(saving) == 0) {
+							if (DBMgr.addAssetsChangeStateItem(changeItem) == -1) {
 					    		Log.e(LogTag.LAYOUT, "== UpdateState fail to the save item : " + saving.getID());
 					    	}
+							
 						}
 					}
 					
@@ -717,20 +722,8 @@ public final class DBMgr {
 		return expenseDB.getCardExpenseItems(cardID, start, end);
 	}
 		
-	public static long addStateChangeItem(FinanceItem item) {
-		if (checkFinanceItemType(item.getType()) == false) return -1;
-		long ret = mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).addStateChangeItem(item);
-		if (ret != -1) {
-			if (item.getType() == AssetsItem.TYPE) {
-				item.setAmount(getAssetsDBConnecter().getLatestPrice(item.getID()));
-			}
-			else if (item.getType() == LiabilityItem.TYPE) {
-				item.setAmount(getLiabilityDBConnecter().getLatestPrice(item.getID()));
-			}
-			
-			updateAmountFinanceItem(item);
-		}
-		return ret;
+	public static long addAssetsChangeStateItem(AssetsChangeItem item) {
+		return 	getAssetsDBConnecter().addChangeStateItem(item);
 	}
 	
 	public static ArrayList<Long> getLastAmountMonthInYear(int assetsID, int year) {
@@ -741,7 +734,7 @@ public final class DBMgr {
 		return getAssetsDBConnecter().getPurchasePrice(id);
 	}
 	
-	public static ArrayList<FinanceItem> getAssetsStateItems(int id) {
+	public static ArrayList<AssetsChangeItem> getAssetsChangeStateItems(int id) {
 		return getAssetsDBConnecter().getStateItems(id);
 	}
 	

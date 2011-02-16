@@ -63,10 +63,10 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
     }
 
     protected void saveUpdateStateItem() {
-    	if (DBMgr.addStateChangeItem(mLiabilityItem) == 0) {
-    		Log.e(LogTag.LAYOUT, "== UpdateState fail to the save item : " + mLiabilityItem.getID());
-    		return;
-    	}
+//    	if (DBMgr.addChangeStateItem(mLiabilityItem) == 0) {
+//    		Log.e(LogTag.LAYOUT, "== UpdateState fail to the save item : " + mLiabilityItem.getID());
+//    		return;
+//    	}
 		
 		Intent intent = new Intent();
 		setResult(RESULT_OK, intent);

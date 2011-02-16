@@ -274,6 +274,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"assets_id INTEGER NOT NULL," +
 					"change_date DATE NOT NULL," +
 					"amount INTEGER NOT NULL," +
+					"change_amount INTEGER NOT NULL," +
 					"memo TEXT," +
 					"count INTEGER NOT NULL," +
 					"state INTEGER);");
