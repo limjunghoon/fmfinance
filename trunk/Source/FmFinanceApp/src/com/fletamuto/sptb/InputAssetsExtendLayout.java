@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.fletamuto.sptb.data.AssetsChangeItem;
+import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
@@ -68,7 +70,7 @@ public abstract class InputAssetsExtendLayout extends InputAssetsBaseLayout {
 	}
 	
     protected void saveUpdateStateItem() {
-    	if (DBMgr.addStateChangeItem(getItem()) == 0) {
+    	if (DBMgr.addAssetsChangeStateItem(new AssetsChangeItem((AssetsItem)getItem())) == -1) {
     		Log.e(LogTag.LAYOUT, "== UpdateState fail to the save item : " + getItem().getID());
     		return;
     	}

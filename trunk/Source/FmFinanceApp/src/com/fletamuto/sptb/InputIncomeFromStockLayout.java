@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.FinanceItem;
@@ -91,7 +92,7 @@ public class InputIncomeFromStockLayout extends InputIncomeLayout {
     
     public int getStockCount() {
     	int count = 0;
-    	ArrayList<FinanceItem> items = DBMgr.getAssetsStateItems(mStock.getID());
+    	ArrayList<AssetsChangeItem> items = DBMgr.getAssetsChangeStateItems(mStock.getID());
     	int size = items.size();
     	Calendar createDate = mStock.getCreateDate();
     	createDate.add(Calendar.DAY_OF_MONTH, 1);
@@ -99,8 +100,8 @@ public class InputIncomeFromStockLayout extends InputIncomeLayout {
     	targetDate.set(createDate.get(Calendar.YEAR), createDate.get(Calendar.MONTH), createDate.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
     	
     	for (int index = 0; index < size; index++) {
-    		AssetsItem assets = (AssetsItem) items.get(index);
-			if (targetDate.before(assets.getCreateDate())) {
+    		AssetsChangeItem assets = (AssetsChangeItem) items.get(index);
+			if (targetDate.before(assets.getChangeDate())) {
 				continue;
 			}
 			

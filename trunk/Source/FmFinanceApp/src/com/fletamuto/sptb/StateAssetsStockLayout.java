@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.Category;
@@ -72,7 +73,7 @@ public class StateAssetsStockLayout extends StateDefaultLayout {
 		mStock = (AssetsStockItem)getItem();
 		mAmountMonthInYear = new ArrayList<Long>();
 		
-		ArrayList<FinanceItem> items = DBMgr.getAssetsStateItems(mItem.getID());
+		ArrayList<AssetsChangeItem> items = DBMgr.getAssetsChangeStateItems(mItem.getID());
 		
 		int size = items.size();
 		long count = 0L;
@@ -84,8 +85,8 @@ public class StateAssetsStockLayout extends StateDefaultLayout {
 		for (int month = 0; month < 12; month++) {
 			calendar.add(Calendar.MONTH, 1);
 			for (int index = targetIndex; index < size; index++) {
-				AssetsItem assets = (AssetsItem) items.get(index);
-				if (calendar.before(assets.getCreateDate())) {
+				AssetsChangeItem assets = (AssetsChangeItem) items.get(index);
+				if (calendar.before(assets.getChangeDate())) {
 					continue;
 				}
 				

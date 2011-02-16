@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
 import com.fletamuto.sptb.data.AssetsInsuranceItem;
@@ -56,7 +57,8 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		closeDatabase();
 		
 		if (ret != -1) {
-			return addStateChangeItem(item);
+			AssetsChangeItem changeItem = new AssetsChangeItem((AssetsItem)financeItem);
+			return addChangeStateItem(changeItem);
 		}
 			
 		return ret;
@@ -957,15 +959,16 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return updateItem(insurance);
 	}
 
-	private long addDefaultStateChangeItem(AssetsItem item) {
+	private long addDefaultStateChangeItem(AssetsChangeItem item) {
 		long ret = -1;
-		AssetsItem todayItem = (AssetsItem) getStateChangeItem(item.getID(), item.getCreateDate());
+		AssetsChangeItem todayItem = getStateChangeItem(item.getID(), item.getChangeDate());
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
-		rowItem.put("assets_id", item.getID());
-		rowItem.put("change_date", item.getCreateDateString());
+		rowItem.put("assets_id", item.getAssetsID());
+		rowItem.put("change_date", item.getChangeDateString());
 		rowItem.put("amount", item.getAmount());
+		rowItem.put("change_amount", item.getChangeAmount());
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("count", item.getCount());
 		rowItem.put("state", item.getState());
@@ -981,15 +984,16 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return ret;
 	}
 	
-	private long updateDefaultStateChangeItem(AssetsItem item) {
+	private long updateDefaultStateChangeItem(AssetsChangeItem item) {
 		long ret = -1;
-		AssetsItem todayItem = (AssetsItem) getFirstStateChangeItem(item.getID());
+		AssetsChangeItem todayItem = getFirstStateChangeItem(item.getID());
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
-		rowItem.put("assets_id", item.getID());
-		rowItem.put("change_date", item.getCreateDateString());
+		rowItem.put("assets_id", item.getAssetsID());
+		rowItem.put("change_date", item.getChangeDateString());
 		rowItem.put("amount", item.getAmount());
+		rowItem.put("change_amount", item.getChangeAmount());
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("count", item.getCount());
 		rowItem.put("state", item.getState());
@@ -1005,21 +1009,21 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return ret;
 	}
 	
-	public long addStateChangeItem(FinanceItem item) {
-		if (item.getID() == -1) {
+	public long addChangeStateItem(AssetsChangeItem item) {
+		if (item.getAssetsID() == -1) {
 			Log.e(LogTag.DB, ":: INVAILD ASSETS ITEM ID");
 			return -1;
 		}
 		
 //		int extendID = item.getExtendID();
 //		if (extendID == -1) {
-			return addDefaultStateChangeItem((AssetsItem)item);
+			return addDefaultStateChangeItem(item);
 //		}
 //	
 //		return -1;
 	}
 	
-	public long updateStateChangeItem(AssetsItem item) {
+	public long updateChangeStateItem(AssetsChangeItem item) {
 		if (item.getID() == -1) {
 			Log.e(LogTag.DB, ":: INVAILD ASSETS ITEM ID");
 			return -1;
@@ -1033,24 +1037,25 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 //		return -1;
 	}
 	
-	public ArrayList<FinanceItem> getStateItems(int id) {
-		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>(); 
+	public ArrayList<AssetsChangeItem> getStateItems(int id) {
+		ArrayList<AssetsChangeItem> assetsItems = new ArrayList<AssetsChangeItem>(); 
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query("assets_change_amount", null, "assets_id=?", new String[] {String.valueOf(id)}, null, null, "change_date ASC");
 		
 		if (c.moveToFirst() != false) {
 			do {
-				AssetsItem assets = new AssetsItem();
+				AssetsChangeItem assets = new AssetsChangeItem();
 				assets.setID(c.getInt(0));
 				try {
-					assets.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
+					assets.setChangeDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 				assets.setAmount(c.getLong(3));
-				assets.setMemo(c.getString(4));
-				assets.setCount(c.getInt(5));
-				assets.setState(c.getInt(6));
+				assets.setChangeAmount(c.getLong(4));
+				assets.setMemo(c.getString(5));
+				assets.setCount(c.getInt(6));
+				assets.setState(c.getInt(7));
 				assetsItems.add(assets);
 			} while (c.moveToNext());
 		}
@@ -1060,48 +1065,50 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		
 	}
 	
-	public FinanceItem getStateChangeItem(int id, Calendar calendar) {
-		AssetsItem assets = null;
+	public AssetsChangeItem getStateChangeItem(int id, Calendar calendar) {
+		AssetsChangeItem assets = null;
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {String.valueOf(id), FinanceDataFormat.getDateFormat(calendar.getTime())}; 
 		Cursor c = db.query("assets_change_amount", null, "assets_id=? AND strftime('%Y-%m-%d', change_date)=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
-			assets = new AssetsItem();
+			assets = new AssetsChangeItem();
 			assets.setID(c.getInt(0));
 			try {
-				assets.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
+				assets.setChangeDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 			assets.setAmount(c.getLong(3));
-			assets.setMemo(c.getString(4));
-			assets.setCount(c.getInt(5));
-			assets.setState(c.getInt(6));
+			assets.setAmount(c.getLong(4));
+			assets.setMemo(c.getString(5));
+			assets.setCount(c.getInt(6));
+			assets.setState(c.getInt(7));
 		}
 		c.close();
 		closeDatabase();
 		return assets;
 	}
 	
-	public AssetsItem getFirstStateChangeItem(int id) {
-		AssetsItem assets = null;
+	public AssetsChangeItem getFirstStateChangeItem(int id) {
+		AssetsChangeItem assets = null;
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {String.valueOf(id)}; 
 		Cursor c = db.query("assets_change_amount", null, "assets_id=?", params, null, null, "change_date DESC");
 		
 		if (c.moveToFirst() != false) {
-			assets = new AssetsItem();
+			assets = new AssetsChangeItem();
 			assets.setID(c.getInt(0));
 			try {
-				assets.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
+				assets.setChangeDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 			assets.setAmount(c.getLong(3));
-			assets.setMemo(c.getString(4));
-			assets.setCount(c.getInt(5));
-			assets.setState(c.getInt(6));
+			assets.setAmount(c.getLong(4));
+			assets.setMemo(c.getString(5));
+			assets.setCount(c.getInt(6));
+			assets.setState(c.getInt(7));
 		}
 		c.close();
 		closeDatabase();
@@ -1138,11 +1145,11 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		ArrayList<Long> amountArr = new ArrayList<Long>();
 		long lastAmount = 0L;
 		
-		AssetsItem item = getFirstStateChangeItem(assetsID);
+		AssetsChangeItem item = getFirstStateChangeItem(assetsID);
 		if (item != null) {
 			Calendar cal = Calendar.getInstance();
 			cal.set(year, 0, 1);
-			if (item.getCreateDate().before(cal)) {
+			if (item.getChangeDate().before(cal)) {
 				lastAmount = item.getAmount() * item.getCount();
 			}
 		}
