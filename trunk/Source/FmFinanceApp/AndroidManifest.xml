@@ -115,7 +115,8 @@
 <activity android:name=".CardPaymentLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".SelectInputCard" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".DetailAssetsDepositLayout"></activity>
-<activity android:name="DetailAssetsSavingsLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".DetailAssetsSavingsLayout"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".DetailAssetsStockLayout"></activity>
 </application>
 
 
