@@ -190,6 +190,8 @@ public class DetailAssetsSavingsLayout extends DetailBaseLayout {
 	
 	protected void addSavingsPaymentList() {
 		LinearLayout llPayment = (LinearLayout) findViewById(R.id.LLSavingsPayment);
+		llPayment.removeAllViewsInLayout();
+		
 		int size = mListItems.size();
 		for (int index = 0; index < size; index++) {
 			AssetsChangeItem item = mListItems.get(index);

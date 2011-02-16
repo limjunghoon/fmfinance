@@ -71,6 +71,9 @@ public abstract class InputAssetsBaseLayout extends InputFinanceItemBaseLayout {
 				saveItem();	
 				DBMgr.addExpenseFromAssets(data.getIntExtra(MsgDef.ExtraNames.ADD_ITEM_ID, -1), getItem().getID());
 				
+				Intent intent = new Intent();
+				intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, getItem().getID());
+				setResult(RESULT_OK, intent);
 				finish();
 			}
 		}

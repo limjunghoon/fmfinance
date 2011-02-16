@@ -864,17 +864,17 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 			return -1;
 		}
 		
-		rowItem.clear();
-		rowItem.put("stock_id", extend);
-		rowItem.put("change_date", stock.getCreateDateString());
-		rowItem.put("count", stock.getCount());
-		rowItem.put("stock_price", stock.getPrice());
-		rowItem.put("price_type", AssetsStockItem.BUY);
-		rowItem.put("store", stock.getStore());
-		if (db.insert("assets_chage_stock", null, rowItem) == -1) {
-			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND STOCK");
-			return -1;
-		}
+//		rowItem.clear();
+//		rowItem.put("stock_id", extend);
+//		rowItem.put("change_date", stock.getCreateDateString());
+//		rowItem.put("count", stock.getCount());
+//		rowItem.put("stock_price", stock.getPrice());
+//		rowItem.put("price_type", AssetsStockItem.BUY);
+//		rowItem.put("store", stock.getStore());
+//		if (db.insert("assets_chage_stock", null, rowItem) == -1) {
+//			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND STOCK");
+//			return -1;
+//		}
 		closeDatabase();
 		
 		stock.setExtendID((int)extend);
@@ -970,6 +970,8 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("change_amount", item.getChangeAmount());
 		rowItem.put("memo", item.getMemo());
+		rowItem.put("store", item.getStore());
+		rowItem.put("price_type", item.getPriceType());
 		rowItem.put("count", item.getCount());
 		rowItem.put("state", item.getState());
 		
@@ -995,6 +997,8 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("change_amount", item.getChangeAmount());
 		rowItem.put("memo", item.getMemo());
+		rowItem.put("store", item.getStore());
+		rowItem.put("price_type", item.getPriceType());
 		rowItem.put("count", item.getCount());
 		rowItem.put("state", item.getState());
 		
@@ -1054,8 +1058,10 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 				assets.setAmount(c.getLong(3));
 				assets.setChangeAmount(c.getLong(4));
 				assets.setMemo(c.getString(5));
-				assets.setCount(c.getInt(6));
-				assets.setState(c.getInt(7));
+				assets.setStore(c.getString(6));
+				assets.setPriceType(c.getInt(7));
+				assets.setCount(c.getInt(8));
+				assets.setState(c.getInt(9));
 				assetsItems.add(assets);
 			} while (c.moveToNext());
 		}
@@ -1082,8 +1088,10 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 			assets.setAmount(c.getLong(3));
 			assets.setAmount(c.getLong(4));
 			assets.setMemo(c.getString(5));
-			assets.setCount(c.getInt(6));
-			assets.setState(c.getInt(7));
+			assets.setStore(c.getString(6));
+			assets.setPriceType(c.getInt(7));
+			assets.setCount(c.getInt(8));
+			assets.setState(c.getInt(9));
 		}
 		c.close();
 		closeDatabase();
@@ -1109,6 +1117,8 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 			assets.setMemo(c.getString(5));
 			assets.setCount(c.getInt(6));
 			assets.setState(c.getInt(7));
+			assets.setStore(c.getString(8));
+			assets.setPriceType(c.getInt(9));
 		}
 		c.close();
 		closeDatabase();
@@ -1275,9 +1285,12 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("assets_id", stock.getID());
 		rowItem.put("change_date", stock.getCreateDateString());
 		rowItem.put("amount", stock.getAmount());
+		rowItem.put("change_amount", stock.getAmount());
 		rowItem.put("memo", stock.getMemo());
+		rowItem.put("store", stock.getStore());
+		rowItem.put("price_type", stock.getPriceType());
 		rowItem.put("count", stock.getCount());
-		rowItem.put("state", stock.getPriceType());
+		rowItem.put("state", stock.getState());
 		
 		ret = db.insert("assets_change_amount", null, rowItem);
 		
