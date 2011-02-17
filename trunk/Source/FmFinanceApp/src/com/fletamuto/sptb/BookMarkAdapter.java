@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class BookMarkAdapter extends ArrayAdapter<BookMarkItemData> {
@@ -49,7 +50,12 @@ public class BookMarkAdapter extends ArrayAdapter<BookMarkItemData> {
 		viewHolder.title.setText(bookMarkItemDatas.get(position).memo);
 		viewHolder.category.setText(bookMarkItemDatas.get(position).category);
 		viewHolder.method.setText(bookMarkItemDatas.get(position).method);
-		viewHolder.deleteImage.setVisibility(View.VISIBLE);
+		if(InputExpenseLayout.editableList) {
+			viewHolder.deleteImage.setVisibility(View.VISIBLE);
+		} else {
+			viewHolder.deleteImage.setVisibility(View.INVISIBLE);
+			//viewHolder.deleteImage.setVisibility(View.GONE);
+		}
 		viewHolder.amount.setText(bookMarkItemDatas.get(position).amount);
 
 		return convertView;

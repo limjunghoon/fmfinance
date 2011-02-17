@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -525,6 +526,20 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	
 	protected void initBookmark() {
 		//if (mLLBookark == null) return;
+		((ImageButton)findViewById(R.id.BTBookmarkAdd)).setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				if(!editableList) {
+					editableList = true;	//수정 가능 상태
+				}
+				else { 
+					editableList = false;	//수정 불가능 상태
+				}
+				bookMarkAdapter = new BookMarkAdapter(InputExpenseLayout.this, R.layout.input_bookmark_item, bookMarkItemDatas);
+				bookmarkList.setAdapter(bookMarkAdapter);
+			}
+		});
+		
+		
 		expenseAllItems = DBMgr.getAllItems(ExpenseItem.TYPE);
 		
 		ArrayList<CategoryTemp> categorysTemp = new ArrayList<CategoryTemp>();
@@ -640,7 +655,8 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	BookMarkAdapter bookMarkAdapter;
 	float mPositionX, mPositionY;
 	int mPosition;
-	boolean longTouch;
+	boolean longTouch = false;
+	public static boolean editableList = false;
 	
 	AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> items, View v, int position, long id) {
