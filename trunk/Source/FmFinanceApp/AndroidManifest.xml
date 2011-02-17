@@ -117,6 +117,7 @@
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".DetailAssetsDepositLayout"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".DetailAssetsSavingsLayout"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".DetailAssetsStockLayout"></activity>
+<activity android:name=".DetailAssetsFundLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 
