@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -10,9 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsChangeItem;
-import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.AssetsStockItem;
-import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 

@@ -3,32 +3,16 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.fletamuto.sptb.DetailMonthHistoryLayout.AccountDailyItem;
-import com.fletamuto.sptb.DetailMonthHistoryLayout.AccountDailyItems;
-import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ViewHolder;
 import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.CardPayment;
-import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.IncomeItem;
-import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.TransferItem;
 import com.fletamuto.sptb.db.DBMgr;
 
