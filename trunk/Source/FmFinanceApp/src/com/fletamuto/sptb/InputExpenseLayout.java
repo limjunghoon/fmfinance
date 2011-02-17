@@ -6,15 +6,22 @@ import java.util.ArrayList;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.BookMarkItemData;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
@@ -91,7 +98,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     
     @Override
     protected void initialize() {
-    	mLLBookark = (LinearLayout) findViewById(R.id.LLBookmark);
+    	//mLLBookark = (LinearLayout) findViewById(R.id.LLBookmark); TODO 기존 북마크가 들어갔던 뷰
     	mSlidingDrawer =  (SlidingDrawer) findViewById(R.id.SlidingDrawer);
     	super.initialize();
     }
@@ -517,7 +524,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	}
 	
 	protected void initBookmark() {
-		if (mLLBookark == null) return;
+		//if (mLLBookark == null) return;
 		expenseAllItems = DBMgr.getAllItems(ExpenseItem.TYPE);
 		
 		ArrayList<CategoryTemp> categorysTemp = new ArrayList<CategoryTemp>();
@@ -571,7 +578,8 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			itemsTemp.set(idx, categorysTemp.get(i).item);			
 		}
 
-		for (int i=0; i < 5; i++) {
+		// TODO 즐겨찾기에 들어가는 데이터를 만드는 부분 - 데이터 가져오는 방법은 동일 하므로 일부 그대로 응용
+		/*for (int i=0; i < 5; i++) {
 			if (itemsTemp.size() - 1 - i < 0) break;
 			Button btnBookmark = new Button(getApplicationContext());
 			btnBookmark.setText(itemsTemp.get(i).getCategory().getName() + " - " + itemsTemp.get(i).getSubCategory().getName()
@@ -579,8 +587,161 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			btnBookmark.setId(itemsTemp.get(i).getID());
 			mLLBookark.addView(btnBookmark, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 			btnBookmark.setOnClickListener(mClickListener);
+		}*/
+		for (int i=0; i < 5; i++) {
+			if (itemsTemp.size() - 1 - i < 0) break;
+			BookMarkItemData bookMarkItemData = new BookMarkItemData();
+			bookMarkItemData.iconResource = R.drawable.icon;
+			bookMarkItemData.memo = itemsTemp.get(i).getMemo();
+			bookMarkItemData.category = itemsTemp.get(i).getCategory().getName() + " - " + itemsTemp.get(i).getSubCategory().getName();
+			
+			switch(((ExpenseItem)itemsTemp.get(i)).getType()) {	// FIXME 수정 필요
+			case PaymentMethod.CASH:
+				bookMarkItemData.method = "현금";
+				break;
+			case PaymentMethod.CARD:
+				bookMarkItemData.method = "카드";
+				break;
+			case PaymentMethod.ACCOUNT:
+				bookMarkItemData.method = "계좌";
+				break;
+			}
+			
+			bookMarkItemData.amount = String.format("%,d원", itemsTemp.get(i).getAmount());
+			//btnBookmark.setOnClickListener(mClickListener);
+			bookMarkItemDatas.add(bookMarkItemData);
 		}
+		bookmarkList = (ListView)findViewById(R.id.LLBookmark);
+		//Toast.makeText(this, ""+bookMarkItemDatas.size(), Toast.LENGTH_LONG).show();	//아이템을 제대로 가지고 오는지 확인
+		
+		bookmarkDrag = (RelativeLayout)findViewById(R.id.BookMarkDragItem);
+		icon = (ImageView)findViewById(R.id.BookMarkItemIcon);
+		title = (TextView)findViewById(R.id.BookMarkItemTitle);
+		category = (TextView)findViewById(R.id.BookMarkItemCategory);
+		method = (TextView)findViewById(R.id.BookMarkItemMethod);
+		amount = (TextView)findViewById(R.id.BookMarkItemAmount);
+		
+		bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, bookMarkItemDatas);
+		bookmarkList.setAdapter(bookMarkAdapter);
+		bookmarkList.setOnItemClickListener(mItemClickListener);
+		bookmarkList.setOnItemLongClickListener(mItemLongClickListener);
+		bookmarkList.setOnTouchListener(mItemTouchListener);
 	}
+	//드래그 앤 드롭에서 사용할 뷰들 정의
+	ListView bookmarkList;
+	RelativeLayout bookmarkDrag;
+	ImageView icon;
+	TextView title;
+	TextView category;
+	TextView method;
+	TextView amount;
+	//드래그 앤 드롭에서 사용할 데이터
+	ArrayList<BookMarkItemData> bookMarkItemDatas = new ArrayList<BookMarkItemData>();
+	BookMarkAdapter bookMarkAdapter;
+	float mPositionX, mPositionY;
+	int mPosition;
+	boolean longTouch;
+	
+	AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
+		public void onItemClick(AdapterView<?> items, View v, int position, long id) {
+			if(!longTouch) {
+				((Button)findViewById(R.id.BtnExpenseCategory)).setText(((TextView)v.findViewById(R.id.BookMarkItemCategory)).getText());
+				((Button)findViewById(R.id.BtnExpenseAmount)).setText(((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText());
+				((EditText)findViewById(R.id.ETExpenseMemo)).setText(itemsTemp.get(position).getMemo());
+				
+//				((ToggleButton)findViewById(R.id.TBExpenseMethodCash)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("현금"))?true:false);
+//				((ToggleButton)findViewById(R.id.TBExpenseMethodCard)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("카드"))?true:false);
+//				((ToggleButton)findViewById(R.id.TBExpenseMethodAccount)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("계좌"))?true:false);
+				
+				mExpensItem = (ExpenseItem)itemsTemp.get(position);
+				//setItem(mExpensItem);
+				updatePaymentMethod();
+
+				if (popupBookmark != null) {
+					popupBookmark.dismiss();
+				}
+				
+				if (mSlidingDrawer != null) {
+					mSlidingDrawer.toggle();
+				}
+			}
+		}
+	};
+	AdapterView.OnItemLongClickListener mItemLongClickListener = new AdapterView.OnItemLongClickListener() {
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(320, 50);
+		public boolean onItemLongClick(AdapterView<?> item, View v, int position, long id) {
+			icon.setImageDrawable(((ImageView)v.findViewById(R.id.BookMarkItemIcon)).getDrawable());
+			title.setText(((TextView)v.findViewById(R.id.BookMarkItemTitle)).getText());
+			category.setText(((TextView)v.findViewById(R.id.BookMarkItemCategory)).getText());
+			method.setText(((TextView)v.findViewById(R.id.BookMarkItemMethod)).getText());
+			amount.setText(((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText());
+			
+			//layoutParams.leftMargin = (int) mPositionX - (layoutParams.width / 2);
+			layoutParams.topMargin = (int) mPositionY - (layoutParams.height / 2) - 70;
+			bookmarkDrag.setLayoutParams(layoutParams);
+			
+			bookmarkDrag.setVisibility(View.VISIBLE);
+			
+			longTouch = true;
+			
+			//하나의 아이템을 저장해둘 데이터 객체
+			mPosition = position;	//드롭 이벤트를 발생 시킬 경우에 데이터 객체에서 해당 내용을 삭제하기 위한 포지션
+			
+			return false;
+		}
+	};
+	View.OnTouchListener mItemTouchListener = new View.OnTouchListener() {
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(320, 50);
+		public boolean onTouch(View v, MotionEvent event) {
+			if(event.getAction() == MotionEvent.ACTION_DOWN) {
+				// 전달 되는 View 객체가 이벤트가 일어난 위치가 아니라 항상 아이템의 0번을 가져오므로(현재 보여지는 리스트 뷰의 최상단 아이템을 가져오는 것으로 생각 됨)
+				// 직접 사용할 수 없으므로 다른 이벤트 리스너에서 사용할 수 있도록 이벤트가 발생된 위치 값만 세팅
+				mPositionX = event.getRawX();
+				mPositionY = event.getRawY();
+				
+			} else if(event.getAction() == MotionEvent.ACTION_MOVE) {
+				// 이벤트가 발생되면 항상 실행되지만 화면에 보여지지 않기 때문에 별도의 처리 안함.
+				// 이벤트가 빠르게 발생되기 때문에 자주 사용되는 변수들은 전역으로 설정하는 것이 좋음.
+				if(longTouch) {
+					//layoutParams.leftMargin = (int) event.getRawX() - (layoutParams.width / 2);	//터치가 이루어진 위치에 이미지의 중심이 오도록 함
+					layoutParams.topMargin = (int) event.getRawY() - (layoutParams.height / 2) - 70;
+					bookmarkDrag.setLayoutParams(layoutParams);
+					
+					return true;
+				}
+			} else if(event.getAction() == MotionEvent.ACTION_UP) {
+				// 드래그가 끝 났을 경우에 처리해야할 부분을 정의
+				// 별다른 처리가 없었으므로 이미지만 GONE 시킴
+				if(longTouch) {
+					bookmarkDrag.setVisibility(View.GONE);
+
+					//Toast.makeText(ListViewItemTest.this, ""+((ListView)v).getFirstVisiblePosition(), Toast.LENGTH_LONG).show();
+					int topChildView = ((ListView)v).getFirstVisiblePosition();	//보여지는 최상단의 아이템의 인덱스를 얻어옴
+					int chk = (int) (event.getY() / ((ListView)v).getChildAt(0).getHeight());
+					
+					if((topChildView + chk) >= 0) {
+						BookMarkItemData markItemData = bookMarkItemDatas.get(mPosition);
+						FinanceItem financeItem = itemsTemp.get(mPosition);
+						
+						bookMarkItemDatas.remove(mPosition);
+						bookMarkItemDatas.add(topChildView + chk, markItemData);
+						itemsTemp.remove(mPosition);
+						itemsTemp.add(topChildView + chk, financeItem);
+						
+						bookMarkAdapter = new BookMarkAdapter(InputExpenseLayout.this, R.layout.input_bookmark_item, bookMarkItemDatas);
+						bookmarkList.setAdapter(bookMarkAdapter);	//바로 리스트에 반영하기 위해서 어댑터를 다시 세팅
+						bookmarkList.setSelectionFromTop(topChildView, 0);	//어댑터가 다시 세팅되면 0번 아이템이 선택되기 때문에 기억시켜둔 마지막 위치로 이동
+					}
+					longTouch = false;
+					return true;
+				}
+			}
+			return false;
+		}
+	};
+	
+	
+	
 	
 	protected void setBookmark () {
 		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_popup, null);
@@ -640,7 +801,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				}
 			}
 
-			itemsTemp.set(idx, categorysTemp.get(i).item);			
+			itemsTemp.set(idx, categorysTemp.get(i).item);
 		}
 
 		for (int i=0; i < 5; i++) {
@@ -734,7 +895,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				}				
 			}
 		}
-	};			
+	};
 	//자주 사용 되는 지출 구현 end	
 	
 }
