@@ -52,9 +52,16 @@ public class BookMarkAdapter extends ArrayAdapter<OpenUsedItem> {
 		if (usedItem.getType() == ExpenseItem.TYPE) {
 			ExpenseItem expenseItem = (ExpenseItem) usedItem.getItem();
 			
-			viewHolder.title.setText(expenseItem.getTitle());
+			viewHolder.icon.setImageResource(R.drawable.icon);	// FIXME 나중에 받아와서 처리
+			viewHolder.title.setText(expenseItem.getMemo());
 			viewHolder.category.setText(String.format("%s - %s", expenseItem.getCategory().getName(), expenseItem.getSubCategory().getName()));
 			viewHolder.method.setText(expenseItem.getPaymentMethod().getName());
+			if(InputExpenseLayout.editableList) {
+				viewHolder.deleteImage.setVisibility(View.VISIBLE);
+			} else {
+				viewHolder.deleteImage.setVisibility(View.INVISIBLE);
+				//viewHolder.deleteImage.setVisibility(View.GONE);
+			}
 			viewHolder.amount.setText(String.format("%,d원",expenseItem.getAmount()));
 		}
 		else if (usedItem.getItem().getType() == IncomeItem.TYPE) {
