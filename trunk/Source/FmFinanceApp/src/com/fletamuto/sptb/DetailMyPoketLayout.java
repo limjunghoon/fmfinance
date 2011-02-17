@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.fletamuto.common.control.InputAmountDialog;
-import com.fletamuto.sptb.DetailMonthHistoryLayout.AccountDailyItem;
-import com.fletamuto.sptb.DetailMonthHistoryLayout.AccountDailyItems;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.TransferItem;

@@ -2,12 +2,10 @@ package com.fletamuto.sptb;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
-import com.fletamuto.sptb.util.LogTag;
 
 public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
 	private LiabilityItem mLiabilityItem;
