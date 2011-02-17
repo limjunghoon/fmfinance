@@ -87,7 +87,7 @@ public class InputAssetsFundLayout extends InputAssetsExtendLayout {
 	protected void updateChildView() {
 		updateDate();
 		updateExpiryDate();
-	//	updateBtnAmountText(R.id.BtnFundAmount);
+		updateBtnAmountText(R.id.BtnFundPrice);
 		updateEditMemoText(R.id.ETFundMemo);
 		updateKindSpinner();
 		updateRepeatText(R.id.BtnFundRepeat);
@@ -213,5 +213,7 @@ public class InputAssetsFundLayout extends InputAssetsExtendLayout {
     			updateDate();
     		}
     	}
+    	
+    	super.onActivityResult(requestCode, resultCode, data);
     }
 }

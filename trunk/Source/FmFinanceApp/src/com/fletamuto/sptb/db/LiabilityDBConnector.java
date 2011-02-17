@@ -804,9 +804,27 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	}
 
 	@Override
-	public int addOpneUsedItem(int id) {
+	public int addOpenUsedItem(int id, int prioritize) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public int deleteOpenUsedItem(int id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ArrayList<FinanceItem> getOpenUsedItems() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateOpenUsedItem(int id, int itemID, int prioritize) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

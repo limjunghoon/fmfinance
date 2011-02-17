@@ -202,9 +202,9 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		try {
 			db.execSQL("CREATE TABLE expense_open_used ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-					"income_id INTEGER NOT NULL," +
+					"expense_id INTEGER NOT NULL," +
 					"prioritize INTEGER NOT NULL," +
-					"image_index INTEGER NOT NULL);");
+					"image_index INTEGER);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}

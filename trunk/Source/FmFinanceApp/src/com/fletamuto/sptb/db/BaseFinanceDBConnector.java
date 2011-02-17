@@ -38,7 +38,10 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	public abstract int deleteCategory(int id);
 	public abstract int updateCategory(int id, String name);
 	public abstract long updateRepeat(int itemID, int repeatID);
-	public abstract int addOpneUsedItem(int id);
+	public abstract int addOpenUsedItem(int id, int prioritize);
+	public abstract ArrayList<FinanceItem> getOpenUsedItems();
+	public abstract void updateOpenUsedItem(int id, int itemID, int prioritize);
+	public abstract int deleteOpenUsedItem(int id);
 	
 	public int checkVaildItem(FinanceItem item) {
 		if (item == null) {
@@ -74,19 +77,5 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-	
-
-	
-
-	
-
-
-
-
-
-	
-
 	
 }

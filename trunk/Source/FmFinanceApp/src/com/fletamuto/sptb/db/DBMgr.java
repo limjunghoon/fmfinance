@@ -754,11 +754,6 @@ public final class DBMgr {
 		return getLiabilityDBConnecter().getStateItems(id);
 	}
 	
-	public static int addOpneUsedItem(int type, int id) {
-		return mInstance.mDBConnector.getBaseFinanceDBInstance(type).addOpneUsedItem(id);
-	}
-	
-	
 	public static int addExpenseFromAssets(int expenseID, int assetsID) {
 		return getAssetsDBConnecter().addExpenseFromAssets(expenseID, assetsID);
 	}
@@ -824,15 +819,24 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getCardDBConnector().getCardPaymentItems(accountID, year, month);
 	}
 	
-	public static ArrayList<FinanceItem> getOpenUsedItems(int type) {
-		return null;
+	public static int addOpenUsedItem(int itemType, int itemID, int prioritize) {
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).addOpenUsedItem(itemID, prioritize);
+	}
+	/**
+	 * 
+	 * @param type 수입, 지출, 자산, 부채 타입
+	 * @return 등록된 즐겨찾기 아이템 배열 실패시 NULL
+	 */
+	public static ArrayList<FinanceItem> getOpenUsedItems(int itemType) {
+		if (checkFinanceItemType(itemType) == false) return null;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getOpenUsedItems();
 	}
 	
-	public static void updateOpenUsedItem(FinanceItem item) {
-		
+	public static void updateOpenUsedItem(int type, int id, int itemID, int prioritize ) {
+		mInstance.mDBConnector.getBaseFinanceDBInstance(type).updateOpenUsedItem(id, itemID, prioritize);
 	}
 	
 	public static int deleteOpenUsedItem(int type, int id) {
-		return 1;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(type).deleteOpenUsedItem(id);
 	}
 }
