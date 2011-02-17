@@ -832,7 +832,7 @@ public final class DBMgr {
 		
 	}
 	
-	public static int deleteOnpenUsedItem(int type, int id) {
+	public static int deleteOpenUsedItem(int type, int id) {
 		return 1;
 	}
 }
