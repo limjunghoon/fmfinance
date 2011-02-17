@@ -1209,11 +1209,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return amount;
 	}
 
-	@Override
-	public int addOpneUsedItem(int id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 
 	public int addExpenseFromAssets(int expenseID, int assetsID) {
 		if (expenseID == -1 || assetsID == -1) {
@@ -1313,7 +1309,29 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		return ret;
 	}
 
+	@Override
+	public int addOpenUsedItem(int id, int prioritize) {
+		// TODO Auto-generated method stub
+		return -1;
+	}
 
+	@Override
+	public int deleteOpenUsedItem(int id) {
+		// TODO Auto-generated method stub
+		return -1;
+	}
+
+	@Override
+	public ArrayList<FinanceItem> getOpenUsedItems() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateOpenUsedItem(int id, int itemID, int prioritize) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

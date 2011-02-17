@@ -570,12 +570,6 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		return ret;
 	}
 
-	@Override
-	public int addOpneUsedItem(int id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public ArrayList<FinanceItem> getItemFromAccount(int accountId, int year,
 			int month) {
 		ArrayList<FinanceItem> incomeItems = new ArrayList<FinanceItem>();
@@ -616,6 +610,67 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		closeDatabase();
 		return incomeItems;
 	}
+
+	@Override
+	public int addOpenUsedItem(int id, int prioritize) {
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("income_id", id);
+		rowItem.put("prioritize", prioritize);
+		rowItem.put("image_index", -1);
+		
+		int insertID = (int)db.insert("income_open_used", null, rowItem);
+		closeDatabase();
+		return insertID;
+	}
+	
+	@Override
+	public void updateOpenUsedItem(int id, int itemID, int prioritize) {
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("income_id", id);
+		rowItem.put("prioritize", prioritize);
+		rowItem.put("image_index", -1);
+		
+		db.update("income_open_used", rowItem, "_id=?", new String[] {String.valueOf(id)});
+		closeDatabase();
+	}
+
+
+	@Override
+	public int deleteOpenUsedItem(int id) {
+		int result = 0;
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		result = db.delete("income_open_used", "income_id=?", new String[] {String.valueOf(id)});
+		closeDatabase();
+		return result;
+	}
+
+
+	@Override
+	public ArrayList<FinanceItem> getOpenUsedItems() {
+		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		LOCK();
+		
+		Cursor c = db.query("income_open_used", null, null, null, null, null, "prioritize DESC");
+		
+		if (c.moveToFirst() != false) {
+			do {
+				expenseItems.add(getItem(c.getInt(1)));
+			} while (c.moveToNext());
+		}
+		
+		UNLOCK();
+		c.close();
+		closeDatabase();
+		return expenseItems;
+	}
+
+
+	
 
 
 }
