@@ -74,8 +74,11 @@ public abstract class InputAssetsExtendLayout extends InputAssetsBaseLayout {
     		Log.e(LogTag.LAYOUT, "== UpdateState fail to the save item : " + getItem().getID());
     		return;
     	}
+    
 		
 		Intent intent = new Intent();
+		intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, getItem().getID());
+		intent.putExtra(MsgDef.ExtraNames.CHANGE_AMOUNT, getItem().getAmount());
 		setResult(RESULT_OK, intent);
 		finish();
 	}

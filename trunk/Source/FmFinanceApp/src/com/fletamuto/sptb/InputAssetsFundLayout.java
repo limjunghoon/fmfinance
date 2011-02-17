@@ -10,7 +10,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.InputBaseLayout.InputMode;
 import com.fletamuto.sptb.data.AssetsFundItem;
+import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
@@ -28,6 +31,7 @@ public class InputAssetsFundLayout extends InputAssetsExtendLayout {
     	
     	setContentView(R.layout.input_assets_fund, true);
     	
+    	initChildView();
     	updateChildView();
     	
     	//달력을 이용한 날짜 입력을 위해
@@ -37,11 +41,32 @@ public class InputAssetsFundLayout extends InputAssetsExtendLayout {
         final Intent intent = getIntent();        
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
 */
-        
+    	
+    	
        
     }
     
-    @Override
+    
+    
+    private void initChildView() {
+    	if (mInputMode == InputMode.STATE_CHANGE_MODE) {
+    		findViewById(R.id.ETFundTitle).setEnabled(false);
+    		findViewById(R.id.LLFundExpiryDate).setVisibility(View.GONE);
+    		findViewById(R.id.LLFundKind).setVisibility(View.GONE);
+    		findViewById(R.id.LLFundRepeat).setVisibility(View.GONE);
+    		findViewById(R.id.LLFundStore).setVisibility(View.GONE);
+    		((TextView)findViewById(R.id.TVFundDate)).setText("매입 날짜");
+    	}
+    	else {
+    		findViewById(R.id.ETFundTitle).setEnabled(true);
+    		findViewById(R.id.LLFundExpiryDate).setVisibility(View.VISIBLE);
+    		findViewById(R.id.LLFundKind).setVisibility(View.VISIBLE);
+    		findViewById(R.id.LLFundRepeat).setVisibility(View.VISIBLE);
+    		findViewById(R.id.LLFundStore).setVisibility(View.VISIBLE);
+    	}
+	}
+
+	@Override
 	protected void setBtnClickListener() {
     	 setDateBtnClickListener(R.id.BtnFundDate); 
          setAmountBtnClickListener(R.id.BtnFundPrice);
@@ -77,7 +102,13 @@ public class InputAssetsFundLayout extends InputAssetsExtendLayout {
 
 	@Override
 	protected boolean getItemInstance(int id) {
-//		mSalary = (IncomeSalaryItem) DBMgr.getItem(IncomeItem.TYPE, id);
+		mFund = (AssetsFundItem) DBMgr.getItem(AssetsItem.TYPE, id);
+		if (mInputMode == InputMode.STATE_CHANGE_MODE) {
+			mFund.setCount(1);
+			mFund.setCreateDate(Calendar.getInstance());
+			mFund.setMemo("");
+			mFund.setAmount(0L);
+		}
 		if (mFund == null) return false;
 		setItem(mFund);
 		return true;
@@ -85,6 +116,10 @@ public class InputAssetsFundLayout extends InputAssetsExtendLayout {
 
 	@Override
 	protected void updateChildView() {
+		TextView tvName = (TextView)findViewById(R.id.ETFundTitle);
+		tvName.setText(mFund.getTitle());
+		TextView tvStore = (TextView)findViewById(R.id.ETFundStore);
+		tvStore.setText(mFund.getStore());
 		updateDate();
 		updateExpiryDate();
 		updateBtnAmountText(R.id.BtnFundPrice);
@@ -216,4 +251,5 @@ public class InputAssetsFundLayout extends InputAssetsExtendLayout {
     	
     	super.onActivityResult(requestCode, resultCode, data);
     }
+	
 }

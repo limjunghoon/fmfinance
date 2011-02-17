@@ -11,6 +11,8 @@ import android.widget.ToggleButton;
 
 import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
+import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class DetailAssetsFundLayout extends DetailBaseLayout {  	
@@ -252,5 +254,37 @@ public class DetailAssetsFundLayout extends DetailBaseLayout {
 //			return !mListItems.get(position).isSeparator();
 //		}
 //    }
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == MsgDef.ActRequest.ACT_EDIT_ITEM) {
+    		if (resultCode == RESULT_OK) {
+    			long changeAmount = data.getLongExtra(MsgDef.ExtraNames.CHANGE_AMOUNT, 0L);
+    			int id = data.getIntExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, -1);
+    			if (id != -1) {
+    				mFund = (AssetsFundItem) DBMgr.getItem(AssetsItem.TYPE, id);
+    				mFund.setAmount(mFund.getAmount() + changeAmount);
+    				DBMgr.updateAmountFinanceItem(mFund);
+    				mListItems = DBMgr.getAssetsChangeStateItems(mFund.getID());
+    				updateChildView();
+    			}
+    		}
+    	}
+		else if (requestCode == MsgDef.ActRequest.ACT_ADD_ITEM) {
+			if (resultCode == RESULT_OK) {
+
+//				mFund = (AssetsStockItem) DBMgr.getItem(mFund.getType(), mFund.getID());
+//				mListItems = DBMgr.getAssetsChangeStateItems(mFund.getID());
+//				updateChildView();
+//				
+//				if (mFund.getTotalCount() <= 0L) {
+//					completionAssets(data.getIntExtra(MsgDef.ExtraNames.ADD_ITEM_ID, -1));
+//				}
+//				
+			}
+		}
+
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 
 }
