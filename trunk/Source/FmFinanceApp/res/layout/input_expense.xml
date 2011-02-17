@@ -133,17 +133,18 @@
 							android:layout_centerInParent="true" android:textColor="#000"
 							android:textStyle="bold" android:textSize="24dip" />
 
-						<Button android:id="@+id/BTBookmarkAdd"
+						<ImageButton android:id="@+id/BTBookmarkAdd"
 							android:layout_centerVertical="true"
-							android:layout_alignParentRight="true"
+							android:layout_alignParentRight="true" android:src="@drawable/editable"
+							android:scaleType="fitXY"
 							android:layout_marginRight="20dip" android:layout_width="32dip"
 							android:layout_height="32dip" />
 
-						<Button android:id="@+id/BTBookmarkIncome"
-							android:layout_centerVertical="true"
+						<ImageButton android:id="@+id/BTBookmarkIncome"
+							android:layout_centerVertical="true" android:src="@drawable/icon"
 							android:layout_alignParentLeft="true" android:layout_marginLeft="20dip"
 							android:layout_width="24dip" android:layout_height="18dip" />
-						<Button android:id="@+id/BTBookmarkExpense"
+						<ImageButton android:id="@+id/BTBookmarkExpense" android:src="@drawable/icon"
 							android:layout_centerVertical="true" android:layout_toRightOf="@+id/BTBookmarkIncome"
 							android:layout_width="24dip" android:layout_height="18dip" />
 
