@@ -1,33 +1,23 @@
 package com.fletamuto.sptb;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
-import com.fletamuto.sptb.data.AssetsSavingsItem;
-import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.IncomeItem;
-import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class DetailAssetsFundLayout extends DetailBaseLayout {  	
 	private AssetsFundItem mFund;
-//	protected ArrayList<AssetsChangeItem> mListItems = new ArrayList<AssetsChangeItem>();
-//	protected ReportSavingsPaymentItemAdapter mSavingsPaymentItemAdapter = null;
+	private long mPaymentAmount = 0L;
+	protected ArrayList<AssetsChangeItem> mListItems = new ArrayList<AssetsChangeItem>();
+//	protected ReportFundPaymentItemAdapter mFundPaymentItemAdapter = null;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,51 +30,63 @@ public class DetailAssetsFundLayout extends DetailBaseLayout {
         updateChildView();
     }
 
-	public void setButtonListener() {
-//		findViewById(R.id.BtnStateDelete).setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				onDeleteBtnClick();
-//			}
-//		});
-//		
-//		final ToggleButton tbPayment = (ToggleButton) findViewById(R.id.TBSavingPeruse);
-//		tbPayment.setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				findViewById(R.id.LLSavingsPayment).setVisibility((tbPayment.isChecked()) ? View.VISIBLE : View.GONE);
-//			}
-//		});
+	public void setButtonListener() {		
+		final ToggleButton tbPayment = (ToggleButton) findViewById(R.id.TBFundPeruse);
+		tbPayment.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				findViewById(R.id.LLFundPayment).setVisibility((tbPayment.isChecked()) ? View.VISIBLE : View.GONE);
+			}
+		});
+		
+		findViewById(R.id.BtnFundBuy).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				addBuyStateActivtiy();
+			}
+		});
+		
+		findViewById(R.id.BtnFundSell).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				addSellStateActivtiy();
+			}
+		});
+	}
+	
+	protected void addBuyStateActivtiy() {
+		Intent intent = new Intent(this, InputAssetsFundLayout.class);
+		intent.putExtra(MsgDef.ExtraNames.INPUT_CHANGE_MODE, true);
+		intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, mFund.getID());
+		startActivityForResult(intent, MsgDef.ActRequest.ACT_EDIT_ITEM);
+	}
+	
+	private void addSellStateActivtiy() {
+//		Intent intent = new Intent(this, InputIncomeFromStockLayout.class);
+//		intent.putExtra(MsgDef.ExtraNames.ITEM, createIncomeItem());
+//		intent.putExtra(MsgDef.ExtraNames.STOCK_ID, mFund.getID());
+//		startActivityForResult(intent, MsgDef.ActRequest.ACT_ADD_ITEM);
 	}
 
 	public void updateChildView() {
-//		TextView tvName = (TextView)findViewById(R.id.TVSavingsName);
-//		tvName.setText(mSavings.getTitle());
-//		TextView tvAmount = (TextView)findViewById(R.id.TVSavingsAmount);
-//		tvAmount.setText(String.format("%,d원", mSavings.getAmount()));
-//		if (mSavings.getAccount() != null) {
-//			TextView tvNumber = (TextView)findViewById(R.id.TVSavingsNumber);
-//			tvNumber.setText(mSavings.getAccount().getNumber());
-//			TextView tvInstitution = (TextView)findViewById(R.id.TVSavingsInstitution);
-//			tvInstitution.setText(mSavings.getAccount().getCompany().getName());
-//		}
-//		
-//		TextView tvCreateDate = (TextView)findViewById(R.id.TVSavingsCreateDate);
-//		tvCreateDate.setText(mSavings.getCreateDateString());
-//		TextView tvEndDate = (TextView)findViewById(R.id.TVSavingsEndDate);
-//		tvEndDate.setText(mSavings.getExpriyDateString());
-//		TextView tvRate = (TextView)findViewById(R.id.TVSavingsRateDate);
-//		tvRate.setText(String.format("%d%%", mSavings.getRate()));
-//		TextView tvPaymentAmount = (TextView)findViewById(R.id.TVSavingsPaymentAmount);
-//		tvPaymentAmount.setText(String.format("%,d원", mSavings.getPayment()));
-//		TextView tvExpect = (TextView)findViewById(R.id.TVSavingsExpectAmount);
-//		tvExpect.setText(String.format("%,d원", mSavings.getExpectAmount()));
-//		TextView tvMemo = (TextView)findViewById(R.id.TVSavingsMemo);
-//		tvMemo.setText(mSavings.getMemo());
-//		setPorgress();
-//		updateDeleteBtnText();
-//		
-//		addSavingsPaymentList();
+		addFundPaymentList();
+		
+		TextView tvName = (TextView)findViewById(R.id.TVFundName);
+		tvName.setText(mFund.getTitle());
+		TextView tvAmount = (TextView)findViewById(R.id.TVFundAmount);
+		tvAmount.setText(String.format("%,d원", mFund.getAmount()));
+		TextView tvCreateDate = (TextView)findViewById(R.id.TVFundCreateDate);
+		tvCreateDate.setText(mFund.getCreateDateString());
+		TextView tvEndDate = (TextView)findViewById(R.id.TVFundEndDate);
+		tvEndDate.setText(mFund.getExpriyDateString());
+		TextView tvKind = (TextView)findViewById(R.id.TVFundKind);
+		tvKind.setText(mFund.getKindString());
+		TextView tvPaymentAmount = (TextView)findViewById(R.id.TVFundPaymentAmount);
+		tvPaymentAmount.setText(String.format("%,d원", mPaymentAmount));
+		TextView tvStore = (TextView)findViewById(R.id.TVFundStore);
+		tvStore.setText(mFund.getStore());
+		TextView tvMemo = (TextView)findViewById(R.id.TVFundMemo);
+		tvMemo.setText(mFund.getMemo());
 	}
 	
 	@Override
@@ -99,24 +101,24 @@ public class DetailAssetsFundLayout extends DetailBaseLayout {
 		super.initialize();
 		
 		mFund = (AssetsFundItem) getIntent().getSerializableExtra(MsgDef.ExtraNames.ITEM);
-//		mListItems = DBMgr.getAssetsChangeStateItems(mSavings.getID());
+		mListItems = DBMgr.getAssetsChangeStateItems(mFund.getID());
 	}
 	
 //	private void setPorgress() {
 //		ProgressBar progress = (ProgressBar)findViewById(R.id.PBState);
-//		int monthPeriodTerm = mSavings.getMonthPeriodTerm();
-//		int monthProgressCount = mSavings.getMonthProcessCount() ;
+//		int monthPeriodTerm = mFund.getMonthPeriodTerm();
+//		int monthProgressCount = mFund.getMonthProcessCount() ;
 //		
 //		progress.setMax(monthPeriodTerm);
 //		progress.setProgress(monthProgressCount);
 //		
 //		TextView tvProgrss = (TextView) findViewById(R.id.TVStatePrograss);
-//		tvProgrss.setText(String.format("진행(%d/%d)", mSavings.getMonthProcessCount(), mSavings.getMonthPeriodTerm()));
+//		tvProgrss.setText(String.format("진행(%d/%d)", mFund.getMonthProcessCount(), mFund.getMonthPeriodTerm()));
 //		tvProgrss.invalidate();
 //	}
 
 //	protected void updateDeleteBtnText() {
-//		if (mSavings.isOverExpirationDate()) {
+//		if (mFund.isOverExpirationDate()) {
 //			((Button)findViewById(R.id.BtnStateDelete)).setText("해약");
 //		}
 //		else {
@@ -146,14 +148,14 @@ public class DetailAssetsFundLayout extends DetailBaseLayout {
 //		
 //		for (int index = 0; index < categorySize; index++) {
 //			Category category = categories.get(index); 
-//			if (category.getName().compareTo(mSavings.getCategory().getName()) == 0) {
-//				category.setExtndType(ItemDef.ExtendAssets.SAVINGS);
+//			if (category.getName().compareTo(mFund.getCategory().getName()) == 0) {
+//				category.setExtndType(ItemDef.ExtendAssets.Fund);
 //				income.setCategory(category);
 //				break;
 //			}
 //		}
 //		
-//		income.setAmount(mSavings.getTotalAmount());
+//		income.setAmount(mFund.getTotalAmount());
 ////		income.setCount(getItem().getCount());
 ////		income.setCreateDate(getItem().getCreateDate());
 //		
@@ -172,27 +174,29 @@ public class DetailAssetsFundLayout extends DetailBaseLayout {
 //	}
 //
 //	protected void completionAssets(int incomeID) {
-//		mSavings.setState(FinanceItem.STATE_COMPLEATE);
-//		DBMgr.updateFinanceItem(mSavings);
-//		DBMgr.addIncomeFromAssets(incomeID, mSavings.getID());
+//		mFund.setState(FinanceItem.STATE_COMPLEATE);
+//		DBMgr.updateFinanceItem(mFund);
+//		DBMgr.addIncomeFromAssets(incomeID, mFund.getID());
 //		finish();
 //	}
 //	
-//	protected void addSavingsPaymentList() {
-//		LinearLayout llPayment = (LinearLayout) findViewById(R.id.LLSavingsPayment);
-//		llPayment.removeAllViewsInLayout();
-//		
-//		int size = mListItems.size();
-//		for (int index = 0; index < size; index++) {
-//			AssetsChangeItem item = mListItems.get(index);
-//			LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.report_detail_savings_payment, null);
-//			((TextView)llMember.findViewById(R.id.TVPaymentDate)).setText(item.getChangeDateString());
-//			((TextView)llMember.findViewById(R.id.TVPaymentAmount)).setText(String.format("%,d원", item.getChangeAmount()));
-//			
-//			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
-//			llPayment.addView(llMember, params);
-//		}
-//	}
+	protected void addFundPaymentList() {
+		LinearLayout llPayment = (LinearLayout) findViewById(R.id.LLFundPayment);
+		llPayment.removeAllViewsInLayout();
+		mPaymentAmount = 0;
+		
+		int size = mListItems.size();
+		for (int index = 0; index < size; index++) {
+			AssetsChangeItem item = mListItems.get(index);
+			LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.report_detail_savings_payment, null);
+			((TextView)llMember.findViewById(R.id.TVPaymentDate)).setText(item.getChangeDateString());
+			((TextView)llMember.findViewById(R.id.TVPaymentAmount)).setText(String.format("%,d원", item.getChangeAmount()));
+			
+			mPaymentAmount += item.getChangeAmount();
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
+			llPayment.addView(llMember, params);
+		}
+	}
 //	
 //	
 //	protected void setListViewText(FinanceItem financeItem, View convertView) {
@@ -202,11 +206,11 @@ public class DetailAssetsFundLayout extends DetailBaseLayout {
 //	
 //	}
 //	
-//	public class ReportSavingsPaymentItemAdapter extends ArrayAdapter<FinanceItem> {
+//	public class ReportFundPaymentItemAdapter extends ArrayAdapter<FinanceItem> {
 //		private int mResource;
 //    	private LayoutInflater mInflater;
 //
-//		public ReportSavingsPaymentItemAdapter(Context context, int resource,
+//		public ReportFundPaymentItemAdapter(Context context, int resource,
 //				 List<FinanceItem> objects) {
 //			super(context, resource, objects);
 //			this.mResource = resource;
@@ -216,7 +220,7 @@ public class DetailAssetsFundLayout extends DetailBaseLayout {
 //		@Override
 //		public View getView(int position, View convertView, ViewGroup parent) {
 //			
-//			AssetsSavingsItem item = (AssetsSavingsItem)getItem(position);
+//			AssetsFundItem item = (AssetsFundItem)getItem(position);
 //			
 ////				if (item.isSeparator()) {
 ////					return createSeparator(mInflater, parent, item);

@@ -36,15 +36,15 @@
 				</TextView>
 				<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVFundPaymentAmount" android:textSize="18sp" android:layout_weight="1">
 				</TextView>
-				<ToggleButton android:layout_width="wrap_content" android:layout_weight="0" android:layout_height="wrap_content" android:textOff="내역보기" android:textOn="내역닫기" android:id="@+id/TBSavingPeruse"></ToggleButton>
+				<ToggleButton android:layout_width="wrap_content" android:layout_weight="0" android:layout_height="wrap_content" android:textOff="내역보기" android:textOn="내역닫기" android:id="@+id/TBFundPeruse"></ToggleButton>
 			</LinearLayout>
 			<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLFundPayment" android:orientation="vertical" android:visibility="gone">
 			</LinearLayout>
 		</LinearLayout>
 		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
-			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:id="@+id/TVFundTypeT" android:text="유형" android:layout_width="95dp">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:id="@+id/TVFundKindT" android:text="유형" android:layout_width="95dp">
 			</TextView>
-			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:numeric="integer" android:id="@+id/TVFundType" android:textSize="18sp">
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:numeric="integer" android:id="@+id/TVFundKind" android:textSize="18sp">
 			</TextView>
 		</LinearLayout>
 		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
@@ -64,8 +64,9 @@
 			<ProgressBar style="?android:attr/progressBarStyleHorizontal" android:layout_height="wrap_content" android:id="@+id/PBState" android:layout_width="fill_parent" android:layout_marginRight="20dp"></ProgressBar>
 		</LinearLayout>
 	  
-		<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginTop="5dp">
-			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="환매" android:id="@+id/BtnStateDelete"></Button>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="0">
+			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="매도" android:layout_weight="1" android:id="@+id/BtnFundSell"></Button>
+			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="매수" android:id="@+id/BtnFundBuy"></Button>
 		</LinearLayout>
   			
   		</LinearLayout>

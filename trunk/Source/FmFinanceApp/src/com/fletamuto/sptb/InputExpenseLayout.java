@@ -22,13 +22,13 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.BookMarkItemData;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.ExpenseTag;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.ItemDef;
+import com.fletamuto.sptb.data.OpenUsedItem;
 import com.fletamuto.sptb.data.PaymentAccountMethod;
 import com.fletamuto.sptb.data.PaymentCardMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
@@ -528,119 +528,121 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		//if (mLLBookark == null) return;
 		((ImageButton)findViewById(R.id.BTBookmarkAdd)).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if(!editableList) {
-					editableList = true;	//수정 가능 상태
-				}
-				else { 
-					editableList = false;	//수정 불가능 상태
-				}
-				bookMarkAdapter = new BookMarkAdapter(InputExpenseLayout.this, R.layout.input_bookmark_item, bookMarkItemDatas);
-				bookmarkList.setAdapter(bookMarkAdapter);
+				inputOpenUsedItem();
+//				if(!editableList) {
+//					editableList = true;	//수정 가능 상태
+//				}
+//				else { 
+//					editableList = false;	//수정 불가능 상태
+//				}
+//				bookMarkAdapter = new BookMarkAdapter(InputExpenseLayout.this, R.layout.input_bookmark_item, bookMarkItemDatas);
+//				bookmarkList.setAdapter(bookMarkAdapter);
 			}
 		});
 		
 		
-		expenseAllItems = DBMgr.getAllItems(ExpenseItem.TYPE);
-		
-		ArrayList<CategoryTemp> categorysTemp = new ArrayList<CategoryTemp>();
-		
-		for (int i = expenseAllItems.size()-1 ; i >= 0 ; i--) {
-			Boolean duplicationCheck = false;
-			CategoryTemp categoryTemp = new CategoryTemp();
-			if (categorysTemp.isEmpty() == true) {				
-				categoryTemp.item = expenseAllItems.get(i);
-				categoryTemp.count++;
-				categorysTemp.add(categoryTemp);
-			} else {
-				for (int j=0; j < categorysTemp.size(); j++) {
-
-					if (categorysTemp.get(j).item.getCategory().getName().equals(expenseAllItems.get(i).getCategory().getName()) && 
-							categorysTemp.get(j).item.getSubCategory().getName().equals(expenseAllItems.get(i).getSubCategory().getName())  &&
-							categorysTemp.get(j).item.getAmount() == expenseAllItems.get(i).getAmount()) {
-						categorysTemp.get(j).count++;
-						duplicationCheck = true;
-						break;
-					} 
-				}
-				if (duplicationCheck == false) {
-					categoryTemp.item = expenseAllItems.get(i);
-					categoryTemp.count++;
-					categorysTemp.add(categoryTemp);
-				}
-			}			
-		}
-		
-		itemsTemp = new ArrayList<FinanceItem>();
-		
-		for (int i=0; i < categorysTemp.size(); i++) {
-			itemsTemp.add(null);
-		}
-
-		for (int i=0; i < categorysTemp.size(); i++) {
-			int idx=0;
-			for (int j=0; j < categorysTemp.size(); j++) {
-				if (i==j) {
-					
-				}else {
-					if (categorysTemp.get(i).count < categorysTemp.get(j).count) {
-						idx++;
-					} else if (categorysTemp.get(i).count == categorysTemp.get(j).count && i>j) {
-						idx++;
-					}
-				}
-			}
-
-			itemsTemp.set(idx, categorysTemp.get(i).item);			
-		}
-
-		// TODO 즐겨찾기에 들어가는 데이터를 만드는 부분 - 데이터 가져오는 방법은 동일 하므로 일부 그대로 응용
-		/*for (int i=0; i < 5; i++) {
-			if (itemsTemp.size() - 1 - i < 0) break;
-			Button btnBookmark = new Button(getApplicationContext());
-			btnBookmark.setText(itemsTemp.get(i).getCategory().getName() + " - " + itemsTemp.get(i).getSubCategory().getName()
-					+ "\t\t" + String.format("%,d원", itemsTemp.get(i).getAmount()));
-			btnBookmark.setId(itemsTemp.get(i).getID());
-			mLLBookark.addView(btnBookmark, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			btnBookmark.setOnClickListener(mClickListener);
-		}*/
-		for (int i=0; i < 5; i++) {
-			if (itemsTemp.size() - 1 - i < 0) break;
-			BookMarkItemData bookMarkItemData = new BookMarkItemData();
-			bookMarkItemData.iconResource = R.drawable.icon;
-			bookMarkItemData.memo = itemsTemp.get(i).getMemo();
-			bookMarkItemData.category = itemsTemp.get(i).getCategory().getName() + " - " + itemsTemp.get(i).getSubCategory().getName();
-			
-			switch(((ExpenseItem)itemsTemp.get(i)).getType()) {	// FIXME 수정 필요
-			case PaymentMethod.CASH:
-				bookMarkItemData.method = "현금";
-				break;
-			case PaymentMethod.CARD:
-				bookMarkItemData.method = "카드";
-				break;
-			case PaymentMethod.ACCOUNT:
-				bookMarkItemData.method = "계좌";
-				break;
-			}
-			
-			bookMarkItemData.amount = String.format("%,d원", itemsTemp.get(i).getAmount());
-			//btnBookmark.setOnClickListener(mClickListener);
-			bookMarkItemDatas.add(bookMarkItemData);
-		}
+//		expenseAllItems = DBMgr.getAllItems(ExpenseItem.TYPE);
+//		
+//		ArrayList<CategoryTemp> categorysTemp = new ArrayList<CategoryTemp>();
+//		
+//		for (int i = expenseAllItems.size()-1 ; i >= 0 ; i--) {
+//			Boolean duplicationCheck = false;
+//			CategoryTemp categoryTemp = new CategoryTemp();
+//			if (categorysTemp.isEmpty() == true) {				
+//				categoryTemp.item = expenseAllItems.get(i);
+//				categoryTemp.count++;
+//				categorysTemp.add(categoryTemp);
+//			} else {
+//				for (int j=0; j < categorysTemp.size(); j++) {
+//
+//					if (categorysTemp.get(j).item.getCategory().getName().equals(expenseAllItems.get(i).getCategory().getName()) && 
+//							categorysTemp.get(j).item.getSubCategory().getName().equals(expenseAllItems.get(i).getSubCategory().getName())  &&
+//							categorysTemp.get(j).item.getAmount() == expenseAllItems.get(i).getAmount()) {
+//						categorysTemp.get(j).count++;
+//						duplicationCheck = true;
+//						break;
+//					} 
+//				}
+//				if (duplicationCheck == false) {
+//					categoryTemp.item = expenseAllItems.get(i);
+//					categoryTemp.count++;
+//					categorysTemp.add(categoryTemp);
+//				}
+//			}			
+//		}
+//		
+//		itemsTemp = new ArrayList<FinanceItem>();
+//		
+//		for (int i=0; i < categorysTemp.size(); i++) {
+//			itemsTemp.add(null);
+//		}
+//
+//		for (int i=0; i < categorysTemp.size(); i++) {
+//			int idx=0;
+//			for (int j=0; j < categorysTemp.size(); j++) {
+//				if (i==j) {
+//					
+//				}else {
+//					if (categorysTemp.get(i).count < categorysTemp.get(j).count) {
+//						idx++;
+//					} else if (categorysTemp.get(i).count == categorysTemp.get(j).count && i>j) {
+//						idx++;
+//					}
+//				}
+//			}
+//
+//			itemsTemp.set(idx, categorysTemp.get(i).item);			
+//		}
+//
+//		// TODO 즐겨찾기에 들어가는 데이터를 만드는 부분 - 데이터 가져오는 방법은 동일 하므로 일부 그대로 응용
+//		/*for (int i=0; i < 5; i++) {
+//			if (itemsTemp.size() - 1 - i < 0) break;
+//			Button btnBookmark = new Button(getApplicationContext());
+//			btnBookmark.setText(itemsTemp.get(i).getCategory().getName() + " - " + itemsTemp.get(i).getSubCategory().getName()
+//					+ "\t\t" + String.format("%,d원", itemsTemp.get(i).getAmount()));
+//			btnBookmark.setId(itemsTemp.get(i).getID());
+//			mLLBookark.addView(btnBookmark, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//			btnBookmark.setOnClickListener(mClickListener);
+//		}*/
+//		for (int i=0; i < 5; i++) {
+//			if (itemsTemp.size() - 1 - i < 0) break;
+//			BookMarkItemData bookMarkItemData = new BookMarkItemData();
+//			bookMarkItemData.iconResource = R.drawable.icon;
+//			bookMarkItemData.memo = itemsTemp.get(i).getMemo();
+//			bookMarkItemData.category = itemsTemp.get(i).getCategory().getName() + " - " + itemsTemp.get(i).getSubCategory().getName();
+//			
+//			switch(((ExpenseItem)itemsTemp.get(i)).getType()) {	// FIXME 수정 필요
+//			case PaymentMethod.CASH:
+//				bookMarkItemData.method = "현금";
+//				break;
+//			case PaymentMethod.CARD:
+//				bookMarkItemData.method = "카드";
+//				break;
+//			case PaymentMethod.ACCOUNT:
+//				bookMarkItemData.method = "계좌";
+//				break;
+//			}
+//			
+//			bookMarkItemData.amount = String.format("%,d원", itemsTemp.get(i).getAmount());
+//			//btnBookmark.setOnClickListener(mClickListener);
+//			bookMarkItemDatas.add(bookMarkItemData);
+//		}
 		bookmarkList = (ListView)findViewById(R.id.LLBookmark);
-		//Toast.makeText(this, ""+bookMarkItemDatas.size(), Toast.LENGTH_LONG).show();	//아이템을 제대로 가지고 오는지 확인
-		
-		bookmarkDrag = (RelativeLayout)findViewById(R.id.BookMarkDragItem);
-		icon = (ImageView)findViewById(R.id.BookMarkItemIcon);
-		title = (TextView)findViewById(R.id.BookMarkItemTitle);
-		category = (TextView)findViewById(R.id.BookMarkItemCategory);
-		method = (TextView)findViewById(R.id.BookMarkItemMethod);
-		amount = (TextView)findViewById(R.id.BookMarkItemAmount);
-		
-		bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, bookMarkItemDatas);
-		bookmarkList.setAdapter(bookMarkAdapter);
-		bookmarkList.setOnItemClickListener(mItemClickListener);
-		bookmarkList.setOnItemLongClickListener(mItemLongClickListener);
-		bookmarkList.setOnTouchListener(mItemTouchListener);
+//		//Toast.makeText(this, ""+bookMarkItemDatas.size(), Toast.LENGTH_LONG).show();	//아이템을 제대로 가지고 오는지 확인
+//		
+//		bookmarkDrag = (RelativeLayout)findViewById(R.id.BookMarkDragItem);
+//		icon = (ImageView)findViewById(R.id.BookMarkItemIcon);
+//		title = (TextView)findViewById(R.id.BookMarkItemTitle);
+//		category = (TextView)findViewById(R.id.BookMarkItemCategory);
+//		method = (TextView)findViewById(R.id.BookMarkItemMethod);
+//		amount = (TextView)findViewById(R.id.BookMarkItemAmount);
+//		
+		updateOpenUsedItem();
+//		bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(ExpenseItem.TYPE));
+//		bookmarkList.setAdapter(bookMarkAdapter);
+//		bookmarkList.setOnItemClickListener(mItemClickListener);
+//		bookmarkList.setOnItemLongClickListener(mItemLongClickListener);
+//		bookmarkList.setOnTouchListener(mItemTouchListener);
 	}
 	//드래그 앤 드롭에서 사용할 뷰들 정의
 	ListView bookmarkList;
@@ -651,7 +653,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	TextView method;
 	TextView amount;
 	//드래그 앤 드롭에서 사용할 데이터
-	ArrayList<BookMarkItemData> bookMarkItemDatas = new ArrayList<BookMarkItemData>();
+	ArrayList<OpenUsedItem> bookMarkItemDatas = new ArrayList<OpenUsedItem>();
 	BookMarkAdapter bookMarkAdapter;
 	float mPositionX, mPositionY;
 	int mPosition;
@@ -736,17 +738,17 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 					int chk = (int) (event.getY() / ((ListView)v).getChildAt(0).getHeight());
 					
 					if((topChildView + chk) >= 0) {
-						BookMarkItemData markItemData = bookMarkItemDatas.get(mPosition);
-						FinanceItem financeItem = itemsTemp.get(mPosition);
-						
-						bookMarkItemDatas.remove(mPosition);
-						bookMarkItemDatas.add(topChildView + chk, markItemData);
-						itemsTemp.remove(mPosition);
-						itemsTemp.add(topChildView + chk, financeItem);
-						
-						bookMarkAdapter = new BookMarkAdapter(InputExpenseLayout.this, R.layout.input_bookmark_item, bookMarkItemDatas);
-						bookmarkList.setAdapter(bookMarkAdapter);	//바로 리스트에 반영하기 위해서 어댑터를 다시 세팅
-						bookmarkList.setSelectionFromTop(topChildView, 0);	//어댑터가 다시 세팅되면 0번 아이템이 선택되기 때문에 기억시켜둔 마지막 위치로 이동
+//						BookMarkItemData markItemData = bookMarkItemDatas.get(mPosition);
+//						FinanceItem financeItem = itemsTemp.get(mPosition);
+//						
+//						bookMarkItemDatas.remove(mPosition);
+//						bookMarkItemDatas.add(topChildView + chk, markItemData);
+//						itemsTemp.remove(mPosition);
+//						itemsTemp.add(topChildView + chk, financeItem);
+//						
+//						bookMarkAdapter = new BookMarkAdapter(InputExpenseLayout.this, R.layout.input_bookmark_item, bookMarkItemDatas);
+//						bookmarkList.setAdapter(bookMarkAdapter);	//바로 리스트에 반영하기 위해서 어댑터를 다시 세팅
+//						bookmarkList.setSelectionFromTop(topChildView, 0);	//어댑터가 다시 세팅되면 0번 아이템이 선택되기 때문에 기억시켜둔 마지막 위치로 이동
 					}
 					longTouch = false;
 					return true;
@@ -760,83 +762,83 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	
 	
 	protected void setBookmark () {
-		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_popup, null);
-		popupBookmark = new PopupWindow(popupviewBookmark, 320, 300, true);
-		
-		
-		LinearLayout btnlist = (LinearLayout) popupviewBookmark.findViewById(R.id.bookmarkexpensepopupsub2);
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-		
-		expenseAllItems = DBMgr.getAllItems(ExpenseItem.TYPE);
-				
-		ArrayList<CategoryTemp> categorysTemp = new ArrayList<CategoryTemp>();
-		
-		for (int i = expenseAllItems.size()-1 ; i >= 0 ; i--) {
-			Boolean duplicationCheck = false;
-			CategoryTemp categoryTemp = new CategoryTemp();
-			if (categorysTemp.isEmpty() == true) {				
-				categoryTemp.item = expenseAllItems.get(i);
-				categoryTemp.count++;
-				categorysTemp.add(categoryTemp);
-			} else {
-				for (int j=0; j < categorysTemp.size(); j++) {
-
-					if (categorysTemp.get(j).item.getCategory().getName().equals(expenseAllItems.get(i).getCategory().getName()) && 
-							categorysTemp.get(j).item.getSubCategory().getName().equals(expenseAllItems.get(i).getSubCategory().getName())  &&
-							categorysTemp.get(j).item.getAmount() == expenseAllItems.get(i).getAmount()) {
-						categorysTemp.get(j).count++;
-						duplicationCheck = true;
-						break;
-					} 
-				}
-				if (duplicationCheck == false) {
-					categoryTemp.item = expenseAllItems.get(i);
-					categoryTemp.count++;
-					categorysTemp.add(categoryTemp);
-				}
-			}			
-		}
-		
-		itemsTemp = new ArrayList<FinanceItem>();
-		
-		for (int i=0; i < categorysTemp.size(); i++) {
-			itemsTemp.add(null);
-		}
-
-		for (int i=0; i < categorysTemp.size(); i++) {
-			int idx=0;
-			for (int j=0; j < categorysTemp.size(); j++) {
-				if (i==j) {
-					
-				}else {
-					if (categorysTemp.get(i).count < categorysTemp.get(j).count) {
-						idx++;
-					} else if (categorysTemp.get(i).count == categorysTemp.get(j).count && i>j) {
-						idx++;
-					}
-				}
-			}
-
-			itemsTemp.set(idx, categorysTemp.get(i).item);
-		}
-
-		for (int i=0; i < 5; i++) {
-			if (itemsTemp.size() - 1 - i < 0) break;
-			Button btnBookmark = new Button(getApplicationContext());
-			btnBookmark.setText(itemsTemp.get(i).getCategory().getName() + " - " + itemsTemp.get(i).getSubCategory().getName()
-					+ "\t\t" + String.format("%,d원", itemsTemp.get(i).getAmount()));
-			btnBookmark.setId(itemsTemp.get(i).getID());
-			btnlist.addView(btnBookmark, params);
-			btnBookmark.setOnClickListener(mClickListener);
-		}
-				
-		Button btnBack = (Button) popupviewBookmark.findViewById (R.id.bookmarkBack);
-		btnBack.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				popupBookmark.dismiss();
-			}
-		});
+//		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_popup, null);
+//		popupBookmark = new PopupWindow(popupviewBookmark, 320, 300, true);
+//		
+//		
+//		LinearLayout btnlist = (LinearLayout) popupviewBookmark.findViewById(R.id.bookmarkexpensepopupsub2);
+//		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//		
+//		expenseAllItems = DBMgr.getAllItems(ExpenseItem.TYPE);
+//				
+//		ArrayList<CategoryTemp> categorysTemp = new ArrayList<CategoryTemp>();
+//		
+//		for (int i = expenseAllItems.size()-1 ; i >= 0 ; i--) {
+//			Boolean duplicationCheck = false;
+//			CategoryTemp categoryTemp = new CategoryTemp();
+//			if (categorysTemp.isEmpty() == true) {				
+//				categoryTemp.item = expenseAllItems.get(i);
+//				categoryTemp.count++;
+//				categorysTemp.add(categoryTemp);
+//			} else {
+//				for (int j=0; j < categorysTemp.size(); j++) {
+//
+//					if (categorysTemp.get(j).item.getCategory().getName().equals(expenseAllItems.get(i).getCategory().getName()) && 
+//							categorysTemp.get(j).item.getSubCategory().getName().equals(expenseAllItems.get(i).getSubCategory().getName())  &&
+//							categorysTemp.get(j).item.getAmount() == expenseAllItems.get(i).getAmount()) {
+//						categorysTemp.get(j).count++;
+//						duplicationCheck = true;
+//						break;
+//					} 
+//				}
+//				if (duplicationCheck == false) {
+//					categoryTemp.item = expenseAllItems.get(i);
+//					categoryTemp.count++;
+//					categorysTemp.add(categoryTemp);
+//				}
+//			}			
+//		}
+//		
+//		itemsTemp = new ArrayList<FinanceItem>();
+//		
+//		for (int i=0; i < categorysTemp.size(); i++) {
+//			itemsTemp.add(null);
+//		}
+//
+//		for (int i=0; i < categorysTemp.size(); i++) {
+//			int idx=0;
+//			for (int j=0; j < categorysTemp.size(); j++) {
+//				if (i==j) {
+//					
+//				}else {
+//					if (categorysTemp.get(i).count < categorysTemp.get(j).count) {
+//						idx++;
+//					} else if (categorysTemp.get(i).count == categorysTemp.get(j).count && i>j) {
+//						idx++;
+//					}
+//				}
+//			}
+//
+//			itemsTemp.set(idx, categorysTemp.get(i).item);
+//		}
+//
+//		for (int i=0; i < 5; i++) {
+//			if (itemsTemp.size() - 1 - i < 0) break;
+//			Button btnBookmark = new Button(getApplicationContext());
+//			btnBookmark.setText(itemsTemp.get(i).getCategory().getName() + " - " + itemsTemp.get(i).getSubCategory().getName()
+//					+ "\t\t" + String.format("%,d원", itemsTemp.get(i).getAmount()));
+//			btnBookmark.setId(itemsTemp.get(i).getID());
+//			btnlist.addView(btnBookmark, params);
+//			btnBookmark.setOnClickListener(mClickListener);
+//		}
+//				
+//		Button btnBack = (Button) popupviewBookmark.findViewById (R.id.bookmarkBack);
+//		btnBack.setOnClickListener(new View.OnClickListener() {
+//			
+//			public void onClick(View v) {
+//				popupBookmark.dismiss();
+//			}
+//		});
 		
 
 		//popupBookmark.showAtLocation(linear, Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 0);
@@ -913,5 +915,17 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		}
 	};
 	//자주 사용 되는 지출 구현 end	
+	
+	protected void inputOpenUsedItem() {
+		Intent intent = new Intent(this, InputExpenseLayout.class);
+		intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
+		startActivityForResult(intent, MsgDef.ActRequest.ACT_OPEN_USED_ITEM);
+	}
+	
+	@Override
+	protected void updateOpenUsedItem() {
+		bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(ExpenseItem.TYPE));
+		bookmarkList.setAdapter(bookMarkAdapter);
+	}
 	
 }
