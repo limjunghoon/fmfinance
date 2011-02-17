@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
@@ -26,6 +28,10 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 	protected ArrayList<Category> mArrCategory = null;
 	CategoryButtonAdpter mAdapterCategory;
 	private int mType = -1;
+	
+	//Adapter 내의 Sub Category 시작점과 갯수 저장을 위한 변수
+	private int subCategoryStartPosition = -1;
+	private int subCategoryCount = -1;
 	
 	public final static int ACT_SUB_CATEGORY = MsgDef.ActRequest.ACT_SUB_CATEGORY;
 	public final static int ACT_EDIT_CATEGORY = MsgDef.ActRequest.ACT_EDIT_CATEGORY;
@@ -47,7 +53,21 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 		startActivityForResult(intent, ACT_EDIT_CATEGORY);
 	}
 	
+	//Adapter 내의 Sub Category 시작점과 갯수를 set/get 하는 부분 Start
+	public void setSubCategoryStartPosition (int startPosition) {
+		subCategoryStartPosition = startPosition;
+	}
+	public int getSubCategoryStartPosition () {
+		return subCategoryStartPosition;
+	}
 	
+	public void setSubCategoryCount (int categoryCount) {
+		subCategoryCount = categoryCount;
+	}
+	public int getSubCategoryCount () {
+		return subCategoryCount;
+	}
+	//End
 	
 	@Override
 	public void getData() {
@@ -129,7 +149,19 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 				convertView = mInflater.inflate(mResource, parent, false);
 			}
 			
+			//Sub Category 영역을 구분 하기 위한 부분
+			if (position > getSubCategoryStartPosition()-1 && position < getSubCategoryStartPosition() + getSubCategoryCount()) {
+				LinearLayout lLayout = (LinearLayout) convertView.findViewById (R.id.BtnGridItemLL);
+				lLayout.setBackgroundColor(Color.BLACK);
+			}
+			
 			Button button = (Button)convertView.findViewById(R.id.BtnGridItem);
+			//Sub Category 빈공간 넣는 부분
+			if (category == null) {
+				button.setVisibility(Button.INVISIBLE);
+				return convertView;
+			}
+
 			button.setText(category.getName());
 			button.setOnClickListener(categoryListener);
 			button.setTag(category);
