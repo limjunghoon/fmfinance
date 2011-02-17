@@ -21,6 +21,7 @@ import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.ItemDef;
+import com.fletamuto.sptb.data.OpenUsedItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 import com.fletamuto.sptb.util.LogTag;
 
@@ -419,12 +420,18 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		AssetsFundItem fund = new AssetsFundItem();
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		
-		Cursor c = db.query("assets_stock", null, "_id=?", new String[]{String.valueOf(fundID)}, null, null, null);
+		Cursor c = db.query("assets_fund", null, "_id=?", new String[]{String.valueOf(fundID)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			fund.setFundID(c.getInt(0));
-			fund.setMeanPrice(c.getLong(1));
-			fund.setStore(c.getString(2));
+			try {
+				fund.setExpiryDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			fund.setKind(c.getInt(2));
+			fund.setMeanPrice(c.getLong(3));
+			fund.setStore(c.getString(4));
 		}
 		c.close();
 		closeDatabase();
@@ -895,6 +902,8 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
+		rowItem.put("expiry_date", fund.getExpriyDateString());
+		rowItem.put("kind", fund.getKind());
 		rowItem.put("mean_price", fund.getAmount());
 		rowItem.put("store", fund.getStore());
 		long extend = db.insert("assets_fund", null, rowItem);
@@ -904,16 +913,16 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 			return -1;
 		}
 		
-		rowItem.clear();
-		rowItem.put("fund_id", extend);
-		rowItem.put("change_date", fund.getCreateDateString());
-		rowItem.put("price", fund.getAmount());
-		rowItem.put("price_type", AssetsStockItem.BUY);
-		
-		if (db.insert("assets_change_fund", null, rowItem) == -1) {
-			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND FUND");
-			return -1;
-		}
+//		rowItem.clear();
+//		rowItem.put("fund_id", extend);
+//		rowItem.put("change_date", fund.getCreateDateString());
+//		rowItem.put("price", fund.getAmount());
+//		rowItem.put("price_type", AssetsStockItem.BUY);
+//		
+//		if (db.insert("assets_change_fund", null, rowItem) == -1) {
+//			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND FUND");
+//			return -1;
+//		}
 		closeDatabase();
 		
 		fund.setExtendID((int)extend);
@@ -923,6 +932,8 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	public long updateExtendFund(AssetsFundItem fund) {
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
+		rowItem.put("expiry_date", fund.getExpriyDateString());
+		rowItem.put("kind", fund.getKind());
 		rowItem.put("mean_price", fund.getAmount());
 		rowItem.put("store", fund.getStore());
 		db.update("assets_fund", rowItem, "_id=?", new String[] {String.valueOf(fund.getID())});
@@ -1310,7 +1321,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	}
 
 	@Override
-	public int addOpenUsedItem(int id, int prioritize) {
+	public int addOpenUsedItem(OpenUsedItem item) {
 		// TODO Auto-generated method stub
 		return -1;
 	}
@@ -1322,7 +1333,7 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	}
 
 	@Override
-	public ArrayList<FinanceItem> getOpenUsedItems() {
+	public ArrayList<OpenUsedItem> getOpenUsedItems() {
 		// TODO Auto-generated method stub
 		return null;
 	}

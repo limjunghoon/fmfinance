@@ -17,6 +17,7 @@ import com.fletamuto.sptb.data.LiabilityCashServiceItem;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.data.LiabilityLoanItem;
 import com.fletamuto.sptb.data.LiabilityPersonLoanItem;
+import com.fletamuto.sptb.data.OpenUsedItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 import com.fletamuto.sptb.util.LogTag;
 
@@ -804,7 +805,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	}
 
 	@Override
-	public int addOpenUsedItem(int id, int prioritize) {
+	public int addOpenUsedItem(OpenUsedItem item) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -816,7 +817,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	}
 
 	@Override
-	public ArrayList<FinanceItem> getOpenUsedItems() {
+	public ArrayList<OpenUsedItem> getOpenUsedItems() {
 		// TODO Auto-generated method stub
 		return null;
 	}

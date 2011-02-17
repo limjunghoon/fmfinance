@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.OpenUsedItem;
 import com.fletamuto.sptb.data.UISelectItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 
@@ -612,13 +613,13 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	}
 
 	@Override
-	public int addOpenUsedItem(int id, int prioritize) {
+	public int addOpenUsedItem(OpenUsedItem item) {
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
-		rowItem.put("income_id", id);
-		rowItem.put("prioritize", prioritize);
-		rowItem.put("image_index", -1);
+		rowItem.put("income_id", item.getItem().getID());
+		rowItem.put("prioritize", item.getPriority());
+		rowItem.put("image_index", item.getImageIndex());
 		
 		int insertID = (int)db.insert("income_open_used", null, rowItem);
 		closeDatabase();
@@ -650,8 +651,8 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 
 
 	@Override
-	public ArrayList<FinanceItem> getOpenUsedItems() {
-		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
+	public ArrayList<OpenUsedItem> getOpenUsedItems() {
+		ArrayList<OpenUsedItem> incomeItems = new ArrayList<OpenUsedItem>();
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		LOCK();
 		
@@ -659,14 +660,19 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		
 		if (c.moveToFirst() != false) {
 			do {
-				expenseItems.add(getItem(c.getInt(1)));
+				OpenUsedItem item = new OpenUsedItem(getItem(c.getInt(1)));
+				item.setID(c.getInt(0));
+				item.setPriority(c.getInt(2));
+				item.setImageIndex(c.getInt(3));
+				incomeItems.add(item);
+				
 			} while (c.moveToNext());
 		}
 		
 		UNLOCK();
 		c.close();
 		closeDatabase();
-		return expenseItems;
+		return incomeItems;
 	}
 
 

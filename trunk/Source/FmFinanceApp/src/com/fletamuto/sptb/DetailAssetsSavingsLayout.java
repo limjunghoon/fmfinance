@@ -185,7 +185,7 @@ public class DetailAssetsSavingsLayout extends DetailBaseLayout {
 		int size = mListItems.size();
 		for (int index = 0; index < size; index++) {
 			AssetsChangeItem item = mListItems.get(index);
-			LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.report_savings_payment, null);
+			LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.report_detail_savings_payment, null);
 			((TextView)llMember.findViewById(R.id.TVPaymentDate)).setText(item.getChangeDateString());
 			((TextView)llMember.findViewById(R.id.TVPaymentAmount)).setText(String.format("%,d¿ø", item.getChangeAmount()));
 			

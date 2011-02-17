@@ -177,7 +177,7 @@ public class DetailAssetsStockLayout extends DetailBaseLayout {
 		int size = mListItems.size();
 		for (int index = 0; index < size; index++) {
 			AssetsChangeItem item = mListItems.get(index);
-			LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.report_stock_payment, null);
+			LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.report_detail_stock_payment, null);
 			((TextView)llMember.findViewById(R.id.TVPaymentDate)).setText(item.getChangeDateString());
 			((TextView)llMember.findViewById(R.id.TVPaymentStore)).setText(item.getStore());
 			

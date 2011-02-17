@@ -21,6 +21,7 @@ import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.CardPayment;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.OpenUsedItem;
 import com.fletamuto.sptb.data.ExpenseTag;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.FinancialCompany;
@@ -819,15 +820,16 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getCardDBConnector().getCardPaymentItems(accountID, year, month);
 	}
 	
-	public static int addOpenUsedItem(int itemType, int itemID, int prioritize) {
-		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).addOpenUsedItem(itemID, prioritize);
+	public static int addOpenUsedItem(OpenUsedItem item) {
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(item.getType()).addOpenUsedItem(item);
 	}
+	
 	/**
 	 * 
 	 * @param type 수입, 지출, 자산, 부채 타입
 	 * @return 등록된 즐겨찾기 아이템 배열 실패시 NULL
 	 */
-	public static ArrayList<FinanceItem> getOpenUsedItems(int itemType) {
+	public static ArrayList<OpenUsedItem> getOpenUsedItems(int itemType) {
 		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getOpenUsedItems();
 	}
