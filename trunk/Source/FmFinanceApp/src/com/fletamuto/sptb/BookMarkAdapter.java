@@ -2,24 +2,26 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 
-import com.fletamuto.sptb.data.BookMarkItemData;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class BookMarkAdapter extends ArrayAdapter<BookMarkItemData> {
+import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.OpenUsedItem;
+
+public class BookMarkAdapter extends ArrayAdapter<OpenUsedItem> {
 	Context context;
 	int layoutResouceId;
-	ArrayList<BookMarkItemData> bookMarkItemDatas;
+	ArrayList<OpenUsedItem> bookMarkItemDatas;
 	
 	public BookMarkAdapter(Context context, int textViewResourceId,
-			ArrayList<BookMarkItemData> bookMarkItemDatas) {
+			ArrayList<OpenUsedItem> bookMarkItemDatas) {
 		super(context, textViewResourceId, bookMarkItemDatas);
 		this.context = context;
 		this.layoutResouceId = textViewResourceId;
@@ -46,17 +48,30 @@ public class BookMarkAdapter extends ArrayAdapter<BookMarkItemData> {
 			viewHolder = (BookMarkViewHolder)convertView.getTag();
 		}
 		
-		viewHolder.icon.setImageResource(bookMarkItemDatas.get(position).iconResource);
-		viewHolder.title.setText(bookMarkItemDatas.get(position).memo);
-		viewHolder.category.setText(bookMarkItemDatas.get(position).category);
-		viewHolder.method.setText(bookMarkItemDatas.get(position).method);
-		if(InputExpenseLayout.editableList) {
-			viewHolder.deleteImage.setVisibility(View.VISIBLE);
-		} else {
-			viewHolder.deleteImage.setVisibility(View.INVISIBLE);
-			//viewHolder.deleteImage.setVisibility(View.GONE);
+		OpenUsedItem usedItem = bookMarkItemDatas.get(position);
+		if (usedItem.getType() == ExpenseItem.TYPE) {
+			ExpenseItem expenseItem = (ExpenseItem) usedItem.getItem();
+			
+			viewHolder.title.setText(expenseItem.getTitle());
+			viewHolder.category.setText(String.format("%s - %s", expenseItem.getCategory().getName(), expenseItem.getSubCategory().getName()));
+			viewHolder.method.setText(expenseItem.getPaymentMethod().getName());
+			viewHolder.amount.setText(String.format("%,d¿ø",expenseItem.getAmount()));
 		}
-		viewHolder.amount.setText(bookMarkItemDatas.get(position).amount);
+		else if (usedItem.getItem().getType() == IncomeItem.TYPE) {
+			IncomeItem incomeItem = (IncomeItem) usedItem.getItem();
+		}
+		
+//		viewHolder.icon.setImageResource(bookMarkItemDatas.get(position).iconResource);
+//		viewHolder.title.setText(bookMarkItemDatas.get(position).memo);
+//		viewHolder.category.setText(bookMarkItemDatas.get(position).category);
+//		viewHolder.method.setText(bookMarkItemDatas.get(position).method);
+//		if(InputExpenseLayout.editableList) {
+//			viewHolder.deleteImage.setVisibility(View.VISIBLE);
+//		} else {
+//			viewHolder.deleteImage.setVisibility(View.INVISIBLE);
+//			//viewHolder.deleteImage.setVisibility(View.GONE);
+//		}
+//		viewHolder.amount.setText(bookMarkItemDatas.get(position).amount);
 
 		return convertView;
 	}

@@ -20,6 +20,8 @@ public class AssetsFundItem extends AssetsExtendItem {
 	public static final int KIND_INTERNAL_DEFERRED = 1;
 	public static final int KIND_EXTERNAL_SAVING = 2;
 	public static final int KIND_EXTERNAL_DEFERRED = 3;
+	
+	private static String mKindNames[] = {"국내 정립식", "국내 거취식", "해외 정립식", "해외 거취식"};
 
 	/**
 	 * 펀드 DB테이블 아이디
@@ -138,5 +140,10 @@ public class AssetsFundItem extends AssetsExtendItem {
 	
 	public String getExpriyDateString() {
 		return FinanceDataFormat.getDateFormat(mExpiryDate.getTime());
+	}
+	
+	public String getKindString() {
+		if (mKind < 0 || mKind > KIND_EXTERNAL_DEFERRED) return "";
+		return mKindNames[mKind];
 	}
 }

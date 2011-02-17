@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.OpenUsedItem;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
@@ -27,6 +28,7 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 	protected final static int ACT_REPEAT = MsgDef.ActRequest.ACT_REPEAT;
 	
 	private FinanceItem mItem;
+	private boolean mOpenUsedItem = false;
 	
 //	protected InputAmountLayout mAmountLayout;
 	
@@ -61,6 +63,8 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 //		mAmountLayout = (InputAmountLayout) View.inflate(this, R.layout.input_amount, null);
 //		LayoutInflater inflater = LayoutInflater.from(this);
 //		mAmountLayout = (InputAmountLayout) inflater.inflate(R.layout.input_amount, null);
+		
+		mOpenUsedItem = getIntent().getBooleanExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, false);
 		
 		super.initialize();
 	}
@@ -177,11 +181,13 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     	if (cls != null) {
     		Intent intent = new Intent(InputFinanceItemBaseLayout.this, cls);
     		intent.putExtra(MsgDef.ExtraNames.ADD_ITEM_ID, mItem.getID());
+    		intent.putExtra(MsgDef.ExtraNames.ADD_ITEM, mItem);
     		startActivity(intent);
     	}
     	else {
     		Intent intent = new Intent();
     		intent.putExtra(MsgDef.ExtraNames.ADD_ITEM_ID, mItem.getID());
+    		intent.putExtra(MsgDef.ExtraNames.ADD_ITEM, mItem);
 			setResult(RESULT_OK, intent);
 			finish();
     	}
@@ -260,12 +266,33 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     			updateDate();
     		}
     	}
+    	else if (requestCode == MsgDef.ActRequest.ACT_OPEN_USED_ITEM) {
+    		if (resultCode == RESULT_OK) {
+    			if (addOpenUsedItem((FinanceItem)data.getSerializableExtra(MsgDef.ExtraNames.ADD_ITEM)) == -1) {
+    				Log.e(LogTag.LAYOUT, "::: Fail create open used item");
+    				return;
+    			}
+    			
+    			updateOpenUsedItem();
+    		}
+    	}
 
     	
     	super.onActivityResult(requestCode, resultCode, data);
     }
     
-    protected void loadRepeat() {
+    protected void updateOpenUsedItem() {
+		// TODO Auto-generated method stub
+		
+	}
+    
+	protected int addOpenUsedItem(FinanceItem item) {
+    	OpenUsedItem usedItem = new OpenUsedItem(item);
+		return DBMgr.addOpenUsedItem(usedItem);
+		
+	}
+    
+	protected void loadRepeat() {
     	if (mItem == null) return;
     	
     	Repeat repeat = mItem.getRepeat();
@@ -342,6 +369,12 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 //		}
 		
     	super.onClickBottomSlideComplate(v);
+	}
+	public void setOpenUsedItem(boolean openUsedItem) {
+		this.mOpenUsedItem = openUsedItem;
+	}
+	public boolean isOpenUsedItem() {
+		return mOpenUsedItem;
 	}
 
 }

@@ -41,11 +41,13 @@ public final class MsgDef {
 		public final static int ACT_ADD_ITEM = 35;
 		public final static int ACT_CHANGE_MENU = 36;
 		public final static int ACT_ALARM_CARD_PAYMENT = 37;
+		public final static int ACT_OPEN_USED_ITEM = 38;
 	}
 	
 	public static final class ExtraNames {
 		public static final String EDIT_ITEM_ID = "EDIT_ITEM_ID";
 		public static final String ADD_ITEM_ID = "ADD_ITEM_ID";
+		public static final String ADD_ITEM = "ADD_ITEM";
 		public static final String ITEM_TYPE = "ITEM_TYPE";
 		public static final String CATEGORY_ID = "CATEGORY_ID";
 		public static final String CATEGORY_SUB_ID = "CATEGORY_SUB_ID";
@@ -87,6 +89,7 @@ public final class MsgDef {
 		public static final String CHANGE_MENU = "CHANGE_MENU";
 		public static final String AMOUNT = "AMOUNT";
 		public static final String MY_POCKET = "MY_POCKET";
+		public static final String OPEN_USED_ITEM = "OPEN_USED_ITEM";
 		
 	}
 }
