@@ -823,4 +823,16 @@ public final class DBMgr {
 	public static ArrayList<CardPayment> getCardPaymentItems(int accountID, int year, int month) {
 		return mInstance.mDBConnector.getCardDBConnector().getCardPaymentItems(accountID, year, month);
 	}
+	
+	public static ArrayList<FinanceItem> getOpenUsedItems(int type) {
+		return null;
+	}
+	
+	public static void updateOpenUsedItem(int type, int id) {
+		
+	}
+	
+	public static int deleteOnpenUsedItem(int type, int id) {
+		return 1;
+	}
 }
