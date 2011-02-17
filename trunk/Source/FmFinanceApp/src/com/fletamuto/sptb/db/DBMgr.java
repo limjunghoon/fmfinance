@@ -828,7 +828,7 @@ public final class DBMgr {
 		return null;
 	}
 	
-	public static void updateOpenUsedItem(int type, int id) {
+	public static void updateOpenUsedItem(FinanceItem item) {
 		
 	}
 	
