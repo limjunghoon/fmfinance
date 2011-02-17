@@ -326,6 +326,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		try {
 			db.execSQL("CREATE TABLE assets_fund ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"expiry_date DATE," +
+					"kind INTEGER," +
 					"mean_price INTEGER," +
 					"store TEXT);");
 		} catch (SQLException e) {

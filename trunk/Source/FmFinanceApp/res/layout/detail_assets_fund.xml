@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+  
+  	<ScrollView android:id="@+id/ScrollView01" android:layout_height="fill_parent" android:layout_width="fill_parent">
+  		<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical">
+  			<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="상품명" android:id="@+id/TVFundNameT" android:layout_width="95dp">
+			</TextView>
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVFundName" android:textSize="18sp">
+			</TextView>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="개설일" android:id="@+id/TVFundCreateDateT" android:layout_width="95dp">
+			</TextView>
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVFundCreateDate" android:textSize="18sp">
+			</TextView>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="만기일" android:id="@+id/TVFundEndDateT" android:layout_width="95dp">
+			</TextView>
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVFundEndDate" android:textSize="18sp">
+			</TextView>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:id="@+id/TVFundAmountT" android:text="금액" android:layout_width="95dp">
+			</TextView>
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:numeric="integer" android:id="@+id/TVFundAmount" android:textSize="18sp">
+			</TextView>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp" android:orientation="vertical">
+			<LinearLayout android:id="@+id/LinearLayout04" android:layout_height="wrap_content" android:layout_width="fill_parent">
+				<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="매입가격" android:id="@+id/TVFundPaymentAmountT" android:layout_width="95dp">
+				</TextView>
+				<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVFundPaymentAmount" android:textSize="18sp" android:layout_weight="1">
+				</TextView>
+				<ToggleButton android:layout_width="wrap_content" android:layout_weight="0" android:layout_height="wrap_content" android:textOff="내역보기" android:textOn="내역닫기" android:id="@+id/TBSavingPeruse"></ToggleButton>
+			</LinearLayout>
+			<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLFundPayment" android:orientation="vertical" android:visibility="gone">
+			</LinearLayout>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:id="@+id/TVFundTypeT" android:text="유형" android:layout_width="95dp">
+			</TextView>
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:numeric="integer" android:id="@+id/TVFundType" android:textSize="18sp">
+			</TextView>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="판매처" android:id="@+id/TVFundStoreT" android:layout_width="95dp">
+			</TextView>
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVFundStore" android:textSize="18sp">
+			</TextView>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="메모" android:id="@+id/TVFundMemoT" android:layout_width="95dp">
+			</TextView>
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVFundMemo" android:textSize="18sp">
+			</TextView>
+		</LinearLayout>
+		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLPrograss" android:visibility="gone" android:layout_marginTop="5dp" android:orientation="horizontal">
+			<TextView android:layout_height="wrap_content" android:id="@+id/TVStatePrograss" android:layout_width="95dp" android:textSize="18sp"></TextView>
+			<ProgressBar style="?android:attr/progressBarStyleHorizontal" android:layout_height="wrap_content" android:id="@+id/PBState" android:layout_width="fill_parent" android:layout_marginRight="20dp"></ProgressBar>
+		</LinearLayout>
+	  
+		<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="환매" android:id="@+id/BtnStateDelete"></Button>
+		</LinearLayout>
+  			
+  		</LinearLayout>
+  	</ScrollView>
+  	
+</LinearLayout>

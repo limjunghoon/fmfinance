@@ -8,6 +8,7 @@ import android.util.Log;
 import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.OpenUsedItem;
 import com.fletamuto.sptb.util.LogTag;
 
 public abstract class BaseFinanceDBConnector extends BaseDBConnector{
@@ -38,8 +39,8 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	public abstract int deleteCategory(int id);
 	public abstract int updateCategory(int id, String name);
 	public abstract long updateRepeat(int itemID, int repeatID);
-	public abstract int addOpenUsedItem(int id, int prioritize);
-	public abstract ArrayList<FinanceItem> getOpenUsedItems();
+	public abstract int addOpenUsedItem(OpenUsedItem item);
+	public abstract ArrayList<OpenUsedItem> getOpenUsedItems();
 	public abstract void updateOpenUsedItem(int id, int itemID, int prioritize);
 	public abstract int deleteOpenUsedItem(int id);
 	
