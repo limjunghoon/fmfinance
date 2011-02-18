@@ -38,6 +38,9 @@ public class SelectCategoryAssetsLayout extends InputAfterSelectCategoryLayout {
 		else if (category.getExtndType() == ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE) {
 			intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsInsuranceLayout.class);
 		}
+		else if (category.getExtndType() == ItemDef.ExtendAssets.REAL_ESTATE) {
+			intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsRealEstateLayout.class);
+		}
 		else {
 			intent = new Intent(SelectCategoryAssetsLayout.this, InputAssetsLayout.class);
 		}

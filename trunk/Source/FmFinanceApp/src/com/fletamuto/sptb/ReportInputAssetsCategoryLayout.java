@@ -228,6 +228,9 @@ public class ReportInputAssetsCategoryLayout extends FmBaseActivity {
 		else if (category.getExtndType() == ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE) {
 			intent = new Intent(this, InputAssetsInsuranceLayout.class);
 		}
+		else if (category.getExtndType() == ItemDef.ExtendAssets.REAL_ESTATE) {
+			intent = new Intent(this, InputAssetsRealEstateLayout.class);
+		}
 		else {
 			intent = new Intent(this, InputAssetsLayout.class);
 		}

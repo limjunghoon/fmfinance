@@ -38,6 +38,7 @@ public final class ItemDef {
 		public static final int STOCK = 203;
 		public static final int FUND = 204;
 		public static final int ENDOWMENT_MORTGAGE = 205;
+		public static final int REAL_ESTATE = 206;
 	}
 	
 	/**	 학장된 부채 리스트*/

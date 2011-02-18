@@ -69,6 +69,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 //		createChangeFundTable(db);
 		createEndowmentMortgageTable(db);
 //		createChangeEndowmentMortgageTable(db);
+		createRealEstateTable(db);
 		createAssetsStockTable(db);
 //		createChangeAssetsStockTable(db);
 		createAssetsPurposeTable(db);
@@ -363,6 +364,20 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"expiry_date DATE NOT NULL," +
 					"payment INTEGER NOT NULL," +
 					"company TEXT);");
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * 저축성 보험 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createRealEstateTable(SQLiteDatabase db) {
+		try {
+			db.execSQL("CREATE TABLE assets_real_estate ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"scale TEXT);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}
@@ -1027,6 +1042,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			else if (index == 2) rowItem.put("extend_type", ItemDef.ExtendAssets.STOCK);
 			else if (index == 3) rowItem.put("extend_type", ItemDef.ExtendAssets.FUND);
 			else if (index == 4) rowItem.put("extend_type", ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE);
+			else if (index == 5) rowItem.put("extend_type", ItemDef.ExtendAssets.REAL_ESTATE);
 			else rowItem.put("extend_type", ItemDef.ExtendAssets.NONE);
 			//////////////////////////////////////////////////////////////////
 			if (db.insert("assets_main_category", null, rowItem) == -1) {
@@ -1120,6 +1136,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					else if (j == 2) rowItem.put("extend_type", ItemDef.ExtendAssets.STOCK);
 					else if (j == 3) rowItem.put("extend_type", ItemDef.ExtendAssets.FUND);
 					else if (j == 4) rowItem.put("extend_type", ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE);
+					else if (j == 5) rowItem.put("extend_type", ItemDef.ExtendAssets.REAL_ESTATE);
 					else rowItem.put("extend_type",ItemDef.ExtendAssets.NONE);
 				}
 				

@@ -160,6 +160,9 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     	else if (item.getExtendType() == ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE) {
     		intent = new Intent(this, DetailAssetsInsuranceLayout.class);
     	}
+    	else if (item.getExtendType() == ItemDef.ExtendAssets.REAL_ESTATE) {
+    		intent = new Intent(this, DetailAssetsRealEstateLayout.class);
+    	}
     	else {
     		intent = new Intent(this, StateAssetsDefaultLayout.class);
     	}
@@ -319,6 +322,9 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
 		}
 		else if (category.getExtndType() == ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE) {
 			intent = new Intent(this, InputAssetsInsuranceLayout.class);
+		}
+		else if (category.getExtndType() == ItemDef.ExtendAssets.REAL_ESTATE) {
+			intent = new Intent(this, InputAssetsRealEstateLayout.class);
 		}
 		else {
 			intent = new Intent(this, InputAssetsLayout.class);

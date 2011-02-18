@@ -129,4 +129,18 @@ public class AssetsInsuranceItem extends AssetsExtendItem {
 		return  monthTerm  + (mExpiryDate.get(Calendar.MONTH) - getCreateDate().get(Calendar.MONTH));
 	}
 	
+	public int getMonthProcessCount() {
+		int monthTerm = 0;
+		int yearTerm = Calendar.getInstance().get(Calendar.YEAR) - getCreateDate().get(Calendar.YEAR);
+		if (yearTerm > 0) {
+			monthTerm = yearTerm * 12;
+		}
+		
+		return  monthTerm  + (mExpiryDate.get(Calendar.MONTH) - getCreateDate().get(Calendar.MONTH)) + 1;
+	}
+	
+	public boolean isOverExpirationDate() {
+		return (Calendar.getInstance().before(getExpiryDate()));
+	}
+	
 }

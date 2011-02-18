@@ -13,9 +13,11 @@ import android.util.Log;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.AssetsDepositItem;
+import com.fletamuto.sptb.data.AssetsExtendItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
 import com.fletamuto.sptb.data.AssetsInsuranceItem;
 import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.AssetsRealEstateItem;
 import com.fletamuto.sptb.data.AssetsSavingsItem;
 import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.Category;
@@ -314,8 +316,11 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		else if (ItemDef.ExtendAssets.FUND == extendType) {
 			return getFundItem(extendID);
 		}
-		else if (ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE== extendType) {
+		else if (ItemDef.ExtendAssets.ENDOWMENT_MORTGAGE == extendType) {
 			return getInsuranceItem(extendID);
+		}
+		else if (ItemDef.ExtendAssets.REAL_ESTATE == extendType) {
+			return getRealEstateItem(extendID);
 		}
 		else {
 			return new AssetsItem();
@@ -414,6 +419,22 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		closeDatabase();
 		
 		return insurance;
+	}
+	
+	public AssetsRealEstateItem getRealEstateItem(int realEstateID) {
+		AssetsRealEstateItem realEstate = new AssetsRealEstateItem();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		Cursor c = db.query("assets_real_estate", null, "_id=?", new String[]{String.valueOf(realEstateID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			realEstate.setRealEstateID(c.getInt(0));
+			realEstate.setScale(c.getString(1));
+		}
+		c.close();
+		closeDatabase();
+		
+		return realEstate;
 	}
 	
 	public AssetsFundItem getFundItem(int fundID) {
@@ -968,6 +989,32 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		db.update("assets_endowment_mortgage", rowItem, "_id=?", new String[] {String.valueOf(insurance.getID())});
 		closeDatabase();
 		return updateItem(insurance);
+	}
+	
+	public long addExtendRealEstate(AssetsRealEstateItem realEstate) {
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		ContentValues rowItem = new ContentValues();
+		
+		rowItem.put("scale", realEstate.getScale());
+		long extend = db.insert("assets_real_estate", null, rowItem);
+		closeDatabase();
+		
+		if (extend == -1){
+			Log.e(LogTag.DB, ":: FAIL TO CREATE EXTEND REAL ESTATE");
+			return -1;
+		}
+		
+		realEstate.setExtendID((int)extend);
+		return addItem(realEstate);
+	}
+	
+	public long updateExtendRealEstate(AssetsRealEstateItem realEstate) {
+		SQLiteDatabase db = openDatabase(WRITE_MODE);
+		ContentValues rowItem = new ContentValues();
+		rowItem.put("scale", realEstate.getScale());
+		db.update("assets_real_estate", rowItem, "_id=?", new String[] {String.valueOf(realEstate.getID())});
+		closeDatabase();
+		return updateItem(realEstate);
 	}
 
 	private long addDefaultStateChangeItem(AssetsChangeItem item) {
