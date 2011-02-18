@@ -3,6 +3,7 @@ package com.fletamuto.sptb;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,18 @@ public class BookMarkAdapter extends ArrayAdapter<OpenUsedItem> {
 		}
 		else if (usedItem.getItem().getType() == IncomeItem.TYPE) {
 			IncomeItem incomeItem = (IncomeItem) usedItem.getItem();
+			
+			viewHolder.icon.setImageResource(R.drawable.icon);	// FIXME 나중에 받아와서 처리
+			viewHolder.title.setText(incomeItem.getMemo() + " " + bookMarkItemDatas.get(position).getPriority());
+			viewHolder.category.setText(String.format("%s - %s", incomeItem.getCategory().getName(), incomeItem.getSubCategory().getName()));
+			viewHolder.method.setText(incomeItem.getAccountText());
+			if(InputExpenseLayout.editableList) {
+				viewHolder.deleteImage.setVisibility(View.VISIBLE);
+			} else {
+				viewHolder.deleteImage.setVisibility(View.INVISIBLE);
+				//viewHolder.deleteImage.setVisibility(View.GONE);
+			}
+			viewHolder.amount.setText(String.format("%,d원",incomeItem.getAmount()));
 		}
 		
 //		viewHolder.icon.setImageResource(bookMarkItemDatas.get(position).iconResource);
