@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsInsuranceItem;
+import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 
@@ -115,7 +116,7 @@ public class InputAssetsInsuranceLayout extends InputAssetsExtendLayout {
 
 	@Override
 	protected boolean getItemInstance(int id) {
-//		mSalary = (IncomeSalaryItem) DBMgr.getItem(IncomeItem.TYPE, id);
+		mInsurance = (AssetsInsuranceItem) DBMgr.getItem(AssetsItem.TYPE, id);
 		if (mInsurance == null) return false;
 		setItem(mInsurance);
 		return true;
@@ -123,6 +124,11 @@ public class InputAssetsInsuranceLayout extends InputAssetsExtendLayout {
 
 	@Override
 	protected void updateChildView() {
+		TextView tvName = (TextView)findViewById(R.id.ETInsuranceTitle);
+		tvName.setText(mInsurance.getTitle());
+		TextView tvCompany = (TextView)findViewById(R.id.ETInsuranceCompany);
+		tvCompany.setText(mInsurance.getCompany());
+		
 		updateDate();
 		updateExpiryDate();
 		updateBtnAmountText(R.id.BtnInsuranceAmount);

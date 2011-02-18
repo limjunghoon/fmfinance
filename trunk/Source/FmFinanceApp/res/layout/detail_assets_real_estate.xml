@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+  
+  	<ScrollView android:id="@+id/ScrollView01" android:layout_height="fill_parent" android:layout_width="fill_parent">
+  		<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical">
+  		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="제목" android:id="@+id/TVRealEstateNameT" android:layout_width="95dp">
+			</TextView>
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVRealEstateName" android:textSize="18sp">
+			</TextView>
+		</LinearLayout>
+  		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="구입날짜" android:id="@+id/TVRealEstateCreateDateT" android:layout_width="95dp">
+			</TextView>
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVRealEstateCreateDate" android:textSize="18sp">
+			</TextView>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="금액" android:id="@+id/TVRealEstateAmountT" android:layout_width="95dp">
+			</TextView>
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVRealEstateAmount" android:textSize="18sp">
+			</TextView>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="규모" android:id="@+id/TVRealEstateScaleT" android:layout_width="95dp">
+			</TextView>
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:textSize="18sp" android:id="@+id/TVRealEstateScale">
+			</TextView>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="메모" android:id="@+id/TVRealEstateMemoT" android:layout_width="95dp">
+			</TextView>
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVRealEstateMemo" android:textSize="18sp">
+			</TextView>
+		</LinearLayout>
+	  
+		<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="매매" android:id="@+id/BtnStateDelete"></Button>
+		</LinearLayout>
+  			
+  		</LinearLayout>
+  	</ScrollView>
+
+</LinearLayout>

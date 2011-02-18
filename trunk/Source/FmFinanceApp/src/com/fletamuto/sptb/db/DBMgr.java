@@ -13,6 +13,7 @@ import com.fletamuto.sptb.data.AssetsDepositItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
 import com.fletamuto.sptb.data.AssetsInsuranceItem;
 import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.AssetsRealEstateItem;
 import com.fletamuto.sptb.data.AssetsSavingsItem;
 import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.data.BudgetItem;
@@ -673,6 +674,10 @@ public final class DBMgr {
 
 	public static long addExtendAssetsInsurance(AssetsInsuranceItem insurance) {
 		return getAssetsDBConnecter().addExtendInsurance(insurance);
+	}
+	
+	public static long addExtendAssetsRealEstate(AssetsRealEstateItem realEstate) {
+		return getAssetsDBConnecter().addExtendRealEstate(realEstate);
 	}
 
 	public static long addExtendLiabilityLoan(LiabilityLoanItem loan) {
