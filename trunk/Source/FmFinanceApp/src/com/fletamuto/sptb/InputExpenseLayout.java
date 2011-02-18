@@ -144,6 +144,9 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     		((View)findViewById(R.id.LLBookmarkSliding)).setVisibility(View.GONE);
     	}
     }
+    /**
+     * 편집으로 넘길 때 내용을 미리 채우기 위한 메소드
+     */
     private void fill() {
     	String fillText[] = getIntent().getStringArrayExtra("FillText");
     	((Button)findViewById(R.id.BtnExpenseCategory)).setText(fillText[0]);
