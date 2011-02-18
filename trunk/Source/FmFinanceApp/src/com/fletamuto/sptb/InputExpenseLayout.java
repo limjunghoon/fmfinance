@@ -2,7 +2,6 @@ package com.fletamuto.sptb;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import android.content.Intent;
 import android.graphics.Color;
