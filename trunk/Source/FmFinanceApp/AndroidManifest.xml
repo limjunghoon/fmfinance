@@ -118,7 +118,8 @@
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".DetailAssetsSavingsLayout"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".DetailAssetsStockLayout"></activity>
 <activity android:name=".DetailAssetsFundLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
-<activity android:name="DetailAssetsInsuranceLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".DetailAssetsInsuranceLayout"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".InputAssetsRealEstateLayout"></activity>
 </application>
 
 
