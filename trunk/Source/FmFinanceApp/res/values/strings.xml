@@ -141,6 +141,7 @@
     <string name="input_prepaid_card_memo">메모</string>
     <string name="input_prepaid_card_save">저장</string>
     <string name="input_prepaid_card_balance">잔액</string>
+    <string name="input_bookmark_name">즐겨찾기 추가/편집</string>
     <string name="main_memu_home">홈</string>
     <string name="main_memu_assets_liability">자산</string>
     <string name="main_memu_report">목록 </string>

@@ -36,7 +36,7 @@ import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
 /**
- * ìƒˆë¡œìš´ ì§€ì¶œì„ ì…ë ¥í•˜ê±°ë‚˜ ê¸°ì¡´ì˜ ì§€ì¶œì •ë³´ë¥¼ ìˆ˜ì •í• ë•Œ ë³´ì—¬ì£¼ëŠ” ë ˆì´ì•„ì›ƒ ì°½
+ * »õ·Î¿î ÁöÃâÀ» ÀÔ·ÂÇÏ°Å³ª ±âÁ¸ÀÇ ÁöÃâÁ¤º¸¸¦ ¼öÁ¤ÇÒ¶§ º¸¿©ÁÖ´Â ·¹ÀÌ¾Æ¿ô Ã¢
  * @author yongbban
  * @version 1.0.0.0
  */
@@ -48,7 +48,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	
 	private ExpenseItem mExpensItem;
 	
-	//ë‹¬ë ¥ ì…ë ¥ê³¼ ìì£¼ ì‚¬ìš© ë˜ëŠ” ì§€ì¶œì„ ìœ„í•´ start
+	//´Ş·Â ÀÔ·Â°ú ÀÚÁÖ »ç¿ë µÇ´Â ÁöÃâÀ» À§ÇØ start
 /*	
 	private View popupview;
 */
@@ -58,7 +58,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	private TextView tv;
 	private ArrayList<FinanceItem> expenseAllItems;
 	private ArrayList<FinanceItem> itemsTemp;
-	//ë‹¬ë ¥ ì…ë ¥ê³¼ ìì£¼ ì‚¬ìš© ë˜ëŠ” ì§€ì¶œì„ ìœ„í•´ end
+	//´Ş·Â ÀÔ·Â°ú ÀÚÁÖ »ç¿ë µÇ´Â ÁöÃâÀ» À§ÇØ end
 	
 //	private AccountItem fromItem;
 	private long beforeAmount;
@@ -73,7 +73,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         
         updateChildView();
         
-        //ë‹¬ë ¥ì„ ì´ìš©í•œ ë‚ ì§œ ì…ë ¥ì„ ìœ„í•´
+        //´Ş·ÂÀ» ÀÌ¿ëÇÑ ³¯Â¥ ÀÔ·ÂÀ» À§ÇØ
 /*
         final Intent intent = getIntent();
         linear = (LinearLayout) findViewById(R.id.inputAssetsExpense);
@@ -82,33 +82,45 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 */
         
         switch(getIntent().getIntExtra("Action", 0)) {
-        case 0:	//ì¼ë°˜ í˜¸ì¶œ
+        case ACTION_DEFAULT:	//ÀÏ¹İ È£Ãâ
         	setTitle(getResources().getString(R.string.input_expense_name));
             initBookmark();
         	break;
-        case 1:	//ì¦ê²¨ì°¾ê¸° ì¶”ê°€ í˜¸ì¶œ
+        case ACTION_BOOMARK_EXPENSE:	//ÁöÃâ Áñ°ÜÃ£±â Ãß°¡/ÆíÁı È£Ãâ
         	setTitle(getResources().getString(R.string.input_bookmark_name));
-        	intentAction = 1;
+        	intentAction = ACTION_BOOMARK_EXPENSE;
         	break;
-        case 2:	//ì¦ê²¨ì°¾ê¸° í¸ì§‘ í˜¸ì¶œ
-        	setTitle(getResources().getString(R.string.input_bookmark_name));
-        	intentAction = 2;
+        case ACTION_BOOMARK_INCOME:	//¼öÀÔ Áñ°ÜÃ£±â Ãß°¡/ÆíÁı È£Ãâ
+//        	setTitle(getResources().getString(R.string.input_bookmark_name));
+//        	intentAction = 2;
+        	inputIncomeOpenUsedItem();
         	break;
         }
         initWidget();
         
     }
-    
     /**
-     * ì¦ê²¨ì°¾ê¸° ì¶”ê°€, í¸ì§‘ í˜¸ì¶œ êµ¬ë¶„
+     * ACTION_DEFAULT = 0, ÁöÃâ Ãß°¡/ÆíÁı È­¸é
      */
-    int intentAction = 0;
+    private final static int ACTION_DEFAULT = 0;
+    /**
+     * ACTION_BOOMARK_EXPENSE = 1, ÁöÃâ Áñ°ÜÃ£±â Ãß°¡/ÆíÁı È­¸é
+     */
+    private final static int ACTION_BOOMARK_EXPENSE = 1;
+    /**
+     * ACTION_BOOMARK_INCOME = 2, ¼öÀÔ Áñ°ÜÃ£±â Ãß°¡/ÆíÁı È­¸é
+     */
+    private final static int ACTION_BOOMARK_INCOME = 2;
+    /**
+     * È£ÃâÇÑ IntentÀÇ »óÅÂ °ª ÀúÀå
+     */
+    private int intentAction = ACTION_DEFAULT;
     
     /**
-     * ì¸í…íŠ¸ì— ë‹´ê¸´ ì•¡ì…˜ì— ë”°ë¼ì„œ í™”ë©´ì— ë³´ì´ëŠ” ìœ„ì ¯ ê°œìˆ˜ë¥¼ ë³€ê²½í•˜ëŠ” ë©”ì†Œë“œ 
+     * ÀÎÅÙÆ®¿¡ ´ã±ä ¾×¼Ç¿¡ µû¶ó¼­ È­¸é¿¡ º¸ÀÌ´Â À§Á¬ °³¼ö¸¦ º¯°æÇÏ´Â ¸Ş¼Òµå 
      */
     private void initWidget() {
-    	if(intentAction > 0) {	//ì¼ë°˜ í˜¸ì¶œì´ ì•„ë‹Œ ê²½ìš°(ì¶”ê°€/í¸ì§‘)
+    	if(intentAction > 0) {	//ÀÏ¹İ È£ÃâÀÌ ¾Æ´Ñ °æ¿ì(Ãß°¡/ÆíÁı)
     		((View)findViewById(R.id.TVExpenseDate)).setVisibility(View.GONE);
     		((View)findViewById(R.id.BtnExpenseDate)).setVisibility(View.GONE);
     		
@@ -136,7 +148,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     
     @Override
     protected void initialize() {
-    	//mLLBookark = (LinearLayout) findViewById(R.id.LLBookmark); TODO ê¸°ì¡´ ë¶ë§ˆí¬ê°€ ë“¤ì–´ê°”ë˜ ë·°
+    	//mLLBookark = (LinearLayout) findViewById(R.id.LLBookmark); TODO ±âÁ¸ ºÏ¸¶Å©°¡ µé¾î°¬´ø ºä
     	mSlidingDrawer =  (SlidingDrawer) findViewById(R.id.SlidingDrawer);
     	super.initialize();
     }
@@ -146,7 +158,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     	super.setTitleBtn();
     	
     	if (mInputMode == InputMode.ADD_MODE) {
-    		setTitleBtnText(FmTitleLayout.BTN_LEFT_01, "ìˆ˜ì…");
+    		setTitleBtnText(FmTitleLayout.BTN_LEFT_01, "¼öÀÔ");
             setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);
     	}
     }
@@ -160,7 +172,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     }
 
 	/**
-     * ë‚ ì§œ ê°±ì‹ 
+     * ³¯Â¥ °»½Å
      */
 	protected void updateDate() {
     	updateBtnDateText(R.id.BtnExpenseDate);
@@ -210,7 +222,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	}
 
 	/**
-     * ê¸ˆì•¡ì„ ê°±ì‹ 
+     * ±İ¾×À» °»½Å
      */
 	protected void updateAmount(Long amount) {
 		super.updateAmount(amount);
@@ -243,7 +255,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	}
 
 	/**
-	 * ì§€ë¶ˆë°©ë²•ì„ DBë¡œë¶€í„° ê°€ì ¸ì˜¨ë‹¤.
+	 * ÁöºÒ¹æ¹ıÀ» DB·ÎºÎÅÍ °¡Á®¿Â´Ù.
 	 */
 	private boolean loadPaymnetMethod() {
 		if (mExpensItem == null) return false;
@@ -394,7 +406,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	}
 
 	/**
-	 * ì§€ë¶ˆë°©ë²• í† ê¸€ë²„íŠ¼ í´ë¦­ ì‹œ 
+	 * ÁöºÒ¹æ¹ı Åä±Û¹öÆ° Å¬¸¯ ½Ã 
 	 */
 	protected void setPaymentToggleBtnClickListener() {
 		
@@ -470,7 +482,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	}
 
 	/**
-	 * ì§€ë¶ˆì •ë³´ ìƒíƒœë¥¼ ê°±ì‹ í•œë‹¤.
+	 * ÁöºÒÁ¤º¸ »óÅÂ¸¦ °»½ÅÇÑ´Ù.
 	 */
 	protected void updatePaymentMethod() {
 		PaymentMethod paymentMethod = mExpensItem.getPaymentMethod();
@@ -513,7 +525,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	}
 	
     /**
-     * íƒœê·¸ë²„íŠ¼ í´ë¦­ ì‹œ
+     * ÅÂ±×¹öÆ° Å¬¸¯ ½Ã
      */
 	protected void setTagButtonListener() {
 
@@ -546,7 +558,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	}
 	
 	
-	//ìì£¼ ì‚¬ìš© ë˜ëŠ” ì§€ì¶œ êµ¬í˜„ start
+	//ÀÚÁÖ »ç¿ë µÇ´Â ÁöÃâ ±¸Çö start
 	protected void setBookmarkTvClickListener(int tvID) {
 		tv = (TextView) findViewById (tvID);
         tv.setOnClickListener(new View.OnClickListener() {
@@ -620,12 +632,12 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 //			itemsTemp.set(idx, categorysTemp.get(i).item);			
 //		}
 //
-//		// TODO ì¦ê²¨ì°¾ê¸°ì— ë“¤ì–´ê°€ëŠ” ë°ì´í„°ë¥¼ ë§Œë“œëŠ” ë¶€ë¶„ - ë°ì´í„° ê°€ì ¸ì˜¤ëŠ” ë°©ë²•ì€ ë™ì¼ í•˜ë¯€ë¡œ ì¼ë¶€ ê·¸ëŒ€ë¡œ ì‘ìš©
+//		// TODO Áñ°ÜÃ£±â¿¡ µé¾î°¡´Â µ¥ÀÌÅÍ¸¦ ¸¸µå´Â ºÎºĞ - µ¥ÀÌÅÍ °¡Á®¿À´Â ¹æ¹ıÀº µ¿ÀÏ ÇÏ¹Ç·Î ÀÏºÎ ±×´ë·Î ÀÀ¿ë
 //		/*for (int i=0; i < 5; i++) {
 //			if (itemsTemp.size() - 1 - i < 0) break;
 //			Button btnBookmark = new Button(getApplicationContext());
 //			btnBookmark.setText(itemsTemp.get(i).getCategory().getName() + " - " + itemsTemp.get(i).getSubCategory().getName()
-//					+ "\t\t" + String.format("%,dì›", itemsTemp.get(i).getAmount()));
+//					+ "\t\t" + String.format("%,d¿ø", itemsTemp.get(i).getAmount()));
 //			btnBookmark.setId(itemsTemp.get(i).getID());
 //			mLLBookark.addView(btnBookmark, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 //			btnBookmark.setOnClickListener(mClickListener);
@@ -637,24 +649,24 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 //			bookMarkItemData.memo = itemsTemp.get(i).getMemo();
 //			bookMarkItemData.category = itemsTemp.get(i).getCategory().getName() + " - " + itemsTemp.get(i).getSubCategory().getName();
 //			
-//			switch(((ExpenseItem)itemsTemp.get(i)).getType()) {	// FIXME ìˆ˜ì • í•„ìš”
+//			switch(((ExpenseItem)itemsTemp.get(i)).getType()) {	// FIXME ¼öÁ¤ ÇÊ¿ä
 //			case PaymentMethod.CASH:
-//				bookMarkItemData.method = "í˜„ê¸ˆ";
+//				bookMarkItemData.method = "Çö±İ";
 //				break;
 //			case PaymentMethod.CARD:
-//				bookMarkItemData.method = "ì¹´ë“œ";
+//				bookMarkItemData.method = "Ä«µå";
 //				break;
 //			case PaymentMethod.ACCOUNT:
-//				bookMarkItemData.method = "ê³„ì¢Œ";
+//				bookMarkItemData.method = "°èÁÂ";
 //				break;
 //			}
 //			
-//			bookMarkItemData.amount = String.format("%,dì›", itemsTemp.get(i).getAmount());
+//			bookMarkItemData.amount = String.format("%,d¿ø", itemsTemp.get(i).getAmount());
 //			//btnBookmark.setOnClickListener(mClickListener);
 //			bookMarkItemDatas.add(bookMarkItemData);
 //		}
 		bookmarkList = (ListView)findViewById(R.id.LLBookmark);
-//		//Toast.makeText(this, ""+bookMarkItemDatas.size(), Toast.LENGTH_LONG).show();	//ì•„ì´í…œì„ ì œëŒ€ë¡œ ê°€ì§€ê³  ì˜¤ëŠ”ì§€ í™•ì¸
+//		//Toast.makeText(this, ""+bookMarkItemDatas.size(), Toast.LENGTH_LONG).show();	//¾ÆÀÌÅÛÀ» Á¦´ë·Î °¡Áö°í ¿À´ÂÁö È®ÀÎ
 //		
 		bookmarkDrag = (RelativeLayout)findViewById(R.id.BookMarkDragItem);
 		icon = (ImageView)findViewById(R.id.BookMarkItemIcon);
@@ -670,7 +682,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		bookmarkList.setOnItemLongClickListener(mItemLongClickListener);
 		bookmarkList.setOnTouchListener(mItemTouchListener);
 	}
-	//ë“œë˜ê·¸ ì•¤ ë“œë¡­ì—ì„œ ì‚¬ìš©í•  ë·°ë“¤ ì •ì˜
+	//µå·¡±× ¾Ø µå·Ó¿¡¼­ »ç¿ëÇÒ ºäµé Á¤ÀÇ
 	ListView bookmarkList;
 	RelativeLayout bookmarkDrag;
 	ImageView icon;
@@ -678,13 +690,13 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	TextView category;
 	TextView method;
 	TextView amount;
-	//ë“œë˜ê·¸ ì•¤ ë“œë¡­ì—ì„œ ì‚¬ìš©í•  ë°ì´í„°
+	//µå·¡±× ¾Ø µå·Ó¿¡¼­ »ç¿ëÇÒ µ¥ÀÌÅÍ
 	ArrayList<OpenUsedItem> bookMarkItemDatas = new ArrayList<OpenUsedItem>();
 	BookMarkAdapter bookMarkAdapter;
 	float mPositionX, mPositionY;
 	int mPosition;
 	boolean longTouch = false;
-	boolean isIncome = false;	//falseë©´ Expense
+	boolean isIncome = false;	//false¸é Expense
 	public static boolean editableList = false;
 	
 	AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
@@ -694,9 +706,9 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				((Button)findViewById(R.id.BtnExpenseAmount)).setText(((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText());
 				((EditText)findViewById(R.id.ETExpenseMemo)).setText(((TextView)v.findViewById(R.id.BookMarkItemTitle)).getText());
 				
-//				((ToggleButton)findViewById(R.id.TBExpenseMethodCash)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("í˜„ê¸ˆ"))?true:false);
-//				((ToggleButton)findViewById(R.id.TBExpenseMethodCard)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("ì¹´ë“œ"))?true:false);
-//				((ToggleButton)findViewById(R.id.TBExpenseMethodAccount)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("ê³„ì¢Œ"))?true:false);
+//				((ToggleButton)findViewById(R.id.TBExpenseMethodCash)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("Çö±İ"))?true:false);
+//				((ToggleButton)findViewById(R.id.TBExpenseMethodCard)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("Ä«µå"))?true:false);
+//				((ToggleButton)findViewById(R.id.TBExpenseMethodAccount)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("°èÁÂ"))?true:false);
 				
 				
 				//mExpensItem = (ExpenseItem)itemsTemp.get(position);
@@ -729,10 +741,10 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			case R.id.BTBookmarkAdd:
 				inputOpenUsedItem();
 //				if(!editableList) {
-//					editableList = true;	//ìˆ˜ì • ê°€ëŠ¥ ìƒíƒœ
+//					editableList = true;	//¼öÁ¤ °¡´É »óÅÂ
 //				}
 //				else { 
-//					editableList = false;	//ìˆ˜ì • ë¶ˆê°€ëŠ¥ ìƒíƒœ
+//					editableList = false;	//¼öÁ¤ ºÒ°¡´É »óÅÂ
 //				}
 				break;
 			case R.id.BTBookmarkIncome:
@@ -773,8 +785,8 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			
 			longTouch = true;
 			
-			//í•˜ë‚˜ì˜ ì•„ì´í…œì„ ì €ì¥í•´ë‘˜ ë°ì´í„° ê°ì²´
-			mPosition = position;	//ë“œë¡­ ì´ë²¤íŠ¸ë¥¼ ë°œìƒ ì‹œí‚¬ ê²½ìš°ì— ë°ì´í„° ê°ì²´ì—ì„œ í•´ë‹¹ ë‚´ìš©ì„ ì‚­ì œí•˜ê¸° ìœ„í•œ í¬ì§€ì…˜
+			//ÇÏ³ªÀÇ ¾ÆÀÌÅÛÀ» ÀúÀåÇØµÑ µ¥ÀÌÅÍ °´Ã¼
+			mPosition = position;	//µå·Ó ÀÌº¥Æ®¸¦ ¹ß»ı ½ÃÅ³ °æ¿ì¿¡ µ¥ÀÌÅÍ °´Ã¼¿¡¼­ ÇØ´ç ³»¿ëÀ» »èÁ¦ÇÏ±â À§ÇÑ Æ÷Áö¼Ç
 			
 			return false;
 		}
@@ -783,29 +795,29 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(320, 50);
 		public boolean onTouch(View v, MotionEvent event) {
 			if(event.getAction() == MotionEvent.ACTION_DOWN) {
-				// ì „ë‹¬ ë˜ëŠ” View ê°ì²´ê°€ ì´ë²¤íŠ¸ê°€ ì¼ì–´ë‚œ ìœ„ì¹˜ê°€ ì•„ë‹ˆë¼ í•­ìƒ ì•„ì´í…œì˜ 0ë²ˆì„ ê°€ì ¸ì˜¤ë¯€ë¡œ(í˜„ì¬ ë³´ì—¬ì§€ëŠ” ë¦¬ìŠ¤íŠ¸ ë·°ì˜ ìµœìƒë‹¨ ì•„ì´í…œì„ ê°€ì ¸ì˜¤ëŠ” ê²ƒìœ¼ë¡œ ìƒê° ë¨)
-				// ì§ì ‘ ì‚¬ìš©í•  ìˆ˜ ì—†ìœ¼ë¯€ë¡œ ë‹¤ë¥¸ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆì—ì„œ ì‚¬ìš©í•  ìˆ˜ ìˆë„ë¡ ì´ë²¤íŠ¸ê°€ ë°œìƒëœ ìœ„ì¹˜ ê°’ë§Œ ì„¸íŒ…
+				// Àü´Ş µÇ´Â View °´Ã¼°¡ ÀÌº¥Æ®°¡ ÀÏ¾î³­ À§Ä¡°¡ ¾Æ´Ï¶ó Ç×»ó ¾ÆÀÌÅÛÀÇ 0¹øÀ» °¡Á®¿À¹Ç·Î(ÇöÀç º¸¿©Áö´Â ¸®½ºÆ® ºäÀÇ ÃÖ»ó´Ü ¾ÆÀÌÅÛÀ» °¡Á®¿À´Â °ÍÀ¸·Î »ı°¢ µÊ)
+				// Á÷Á¢ »ç¿ëÇÒ ¼ö ¾øÀ¸¹Ç·Î ´Ù¸¥ ÀÌº¥Æ® ¸®½º³Ê¿¡¼­ »ç¿ëÇÒ ¼ö ÀÖµµ·Ï ÀÌº¥Æ®°¡ ¹ß»ıµÈ À§Ä¡ °ª¸¸ ¼¼ÆÃ
 				mPositionX = event.getRawX();
 				mPositionY = event.getRawY();
 				
 			} else if(event.getAction() == MotionEvent.ACTION_MOVE) {
-				// ì´ë²¤íŠ¸ê°€ ë°œìƒë˜ë©´ í•­ìƒ ì‹¤í–‰ë˜ì§€ë§Œ í™”ë©´ì— ë³´ì—¬ì§€ì§€ ì•Šê¸° ë•Œë¬¸ì— ë³„ë„ì˜ ì²˜ë¦¬ ì•ˆí•¨.
-				// ì´ë²¤íŠ¸ê°€ ë¹ ë¥´ê²Œ ë°œìƒë˜ê¸° ë•Œë¬¸ì— ìì£¼ ì‚¬ìš©ë˜ëŠ” ë³€ìˆ˜ë“¤ì€ ì „ì—­ìœ¼ë¡œ ì„¤ì •í•˜ëŠ” ê²ƒì´ ì¢‹ìŒ.
+				// ÀÌº¥Æ®°¡ ¹ß»ıµÇ¸é Ç×»ó ½ÇÇàµÇÁö¸¸ È­¸é¿¡ º¸¿©ÁöÁö ¾Ê±â ¶§¹®¿¡ º°µµÀÇ Ã³¸® ¾ÈÇÔ.
+				// ÀÌº¥Æ®°¡ ºü¸£°Ô ¹ß»ıµÇ±â ¶§¹®¿¡ ÀÚÁÖ »ç¿ëµÇ´Â º¯¼öµéÀº Àü¿ªÀ¸·Î ¼³Á¤ÇÏ´Â °ÍÀÌ ÁÁÀ½.
 				if(longTouch) {
-					//layoutParams.leftMargin = (int) event.getRawX() - (layoutParams.width / 2);	//í„°ì¹˜ê°€ ì´ë£¨ì–´ì§„ ìœ„ì¹˜ì— ì´ë¯¸ì§€ì˜ ì¤‘ì‹¬ì´ ì˜¤ë„ë¡ í•¨
+					//layoutParams.leftMargin = (int) event.getRawX() - (layoutParams.width / 2);	//ÅÍÄ¡°¡ ÀÌ·ç¾îÁø À§Ä¡¿¡ ÀÌ¹ÌÁöÀÇ Áß½ÉÀÌ ¿Àµµ·Ï ÇÔ
 					layoutParams.topMargin = (int) event.getRawY() - (layoutParams.height / 2) - 70;
 					bookmarkDrag.setLayoutParams(layoutParams);
 					
 					return true;
 				}
 			} else if(event.getAction() == MotionEvent.ACTION_UP) {
-				// ë“œë˜ê·¸ê°€ ë ë‚¬ì„ ê²½ìš°ì— ì²˜ë¦¬í•´ì•¼í•  ë¶€ë¶„ì„ ì •ì˜
-				// ë³„ë‹¤ë¥¸ ì²˜ë¦¬ê°€ ì—†ì—ˆìœ¼ë¯€ë¡œ ì´ë¯¸ì§€ë§Œ GONE ì‹œí‚´
+				// µå·¡±×°¡ ³¡ ³µÀ» °æ¿ì¿¡ Ã³¸®ÇØ¾ßÇÒ ºÎºĞÀ» Á¤ÀÇ
+				// º°´Ù¸¥ Ã³¸®°¡ ¾ø¾úÀ¸¹Ç·Î ÀÌ¹ÌÁö¸¸ GONE ½ÃÅ´
 				if(longTouch) {
 					bookmarkDrag.setVisibility(View.GONE);
 
 					//Toast.makeText(ListViewItemTest.this, ""+((ListView)v).getFirstVisiblePosition(), Toast.LENGTH_LONG).show();
-					int topChildView = ((ListView)v).getFirstVisiblePosition();	//ë³´ì—¬ì§€ëŠ” ìµœìƒë‹¨ì˜ ì•„ì´í…œì˜ ì¸ë±ìŠ¤ë¥¼ ì–»ì–´ì˜´
+					int topChildView = ((ListView)v).getFirstVisiblePosition();	//º¸¿©Áö´Â ÃÖ»ó´ÜÀÇ ¾ÆÀÌÅÛÀÇ ÀÎµ¦½º¸¦ ¾ò¾î¿È
 					int chk = (int) (event.getY() / ((ListView)v).getChildAt(0).getHeight());
 					
 					if((topChildView + chk) >= 0) {
@@ -814,8 +826,8 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 						markItemDatas.remove(mPosition);
 						markItemDatas.add(topChildView + chk, markItemData);
 						
-						updateOpenUsedItem();	//ê°’ì´ ìœ ì§€ë˜ì§€ ì•Šê³  DBì—ì„œ ìƒˆë¡œ ì–»ì–´ì™€ì„œ ì´ë™ ê°±ì‹  ë¶ˆê°€ìƒíƒœ
-						bookmarkList.setSelectionFromTop(topChildView, 0);	//ì–´ëŒ‘í„°ê°€ ë‹¤ì‹œ ì„¸íŒ…ë˜ë©´ 0ë²ˆ ì•„ì´í…œì´ ì„ íƒë˜ê¸° ë•Œë¬¸ì— ê¸°ì–µì‹œì¼œë‘” ë§ˆì§€ë§‰ ìœ„ì¹˜ë¡œ ì´ë™
+						updateOpenUsedItem();	//°ªÀÌ À¯ÁöµÇÁö ¾Ê°í DB¿¡¼­ »õ·Î ¾ò¾î¿Í¼­ ÀÌµ¿ °»½Å ºÒ°¡»óÅÂ
+						bookmarkList.setSelectionFromTop(topChildView, 0);	//¾î´ğÅÍ°¡ ´Ù½Ã ¼¼ÆÃµÇ¸é 0¹ø ¾ÆÀÌÅÛÀÌ ¼±ÅÃµÇ±â ¶§¹®¿¡ ±â¾ï½ÃÄÑµĞ ¸¶Áö¸· À§Ä¡·Î ÀÌµ¿
 					}
 					longTouch = false;
 					return true;
@@ -893,7 +905,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 //			if (itemsTemp.size() - 1 - i < 0) break;
 //			Button btnBookmark = new Button(getApplicationContext());
 //			btnBookmark.setText(itemsTemp.get(i).getCategory().getName() + " - " + itemsTemp.get(i).getSubCategory().getName()
-//					+ "\t\t" + String.format("%,dì›", itemsTemp.get(i).getAmount()));
+//					+ "\t\t" + String.format("%,d¿ø", itemsTemp.get(i).getAmount()));
 //			btnBookmark.setId(itemsTemp.get(i).getID());
 //			btnlist.addView(btnBookmark, params);
 //			btnBookmark.setOnClickListener(mClickListener);
@@ -981,12 +993,19 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			}
 		}
 	};
-	//ìì£¼ ì‚¬ìš© ë˜ëŠ” ì§€ì¶œ êµ¬í˜„ end	
+	//ÀÚÁÖ »ç¿ë µÇ´Â ÁöÃâ ±¸Çö end	
 	
 	protected void inputOpenUsedItem() {
 		Intent intent = new Intent(this, InputExpenseLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
-		intent.putExtra("Action", 1);	//ì¶”ê°€ í™”ë©´ í˜¸ì¶œ
+		intent.putExtra("Action", ACTION_BOOMARK_EXPENSE);	//Ãß°¡ È­¸é È£Ãâ
+		startActivityForResult(intent, MsgDef.ActRequest.ACT_OPEN_USED_ITEM);
+	}
+	
+	protected void inputIncomeOpenUsedItem() {
+		Intent intent = new Intent(this, InputIncomeLayout.class);
+		intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
+		intent.putExtra("Action", ACTION_BOOMARK_INCOME);	//Ãß°¡ È­¸é È£Ãâ
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_OPEN_USED_ITEM);
 	}
 	
