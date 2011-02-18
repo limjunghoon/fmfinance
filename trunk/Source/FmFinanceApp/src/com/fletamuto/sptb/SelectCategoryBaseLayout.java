@@ -14,8 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
@@ -32,6 +33,12 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 	//Adapter 내의 Sub Category 시작점과 갯수 저장을 위한 변수
 	private int subCategoryStartPosition = -1;
 	private int subCategoryCount = -1;
+	
+	//sub category 선택 모드 인지 알기 위한 변수
+	private boolean subCategoryMode = false;
+	
+	//편집 mode 인지 알기 위한 변수
+	private boolean editCategoryMode = false;
 	
 	public final static int ACT_SUB_CATEGORY = MsgDef.ActRequest.ACT_SUB_CATEGORY;
 	public final static int ACT_EDIT_CATEGORY = MsgDef.ActRequest.ACT_EDIT_CATEGORY;
@@ -68,6 +75,20 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 		return subCategoryCount;
 	}
 	//End
+	
+	public void setSubCategoryMode (boolean mode) {
+		subCategoryMode = mode;
+	}
+	public boolean getSubCategoryMode () {
+		return subCategoryMode;
+	}
+	
+	public void setEditCategoryMode (boolean mode) {
+		editCategoryMode = mode;
+	}
+	public boolean getEditCategoryMode () {
+		return editCategoryMode;
+	}
 	
 	@Override
 	public void getData() {
@@ -111,11 +132,24 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 		setResult(RESULT_OK, intent);
 		finish();
 	}
+	
+	protected void onClickDeleteCategoryButton(Category category) {
+		
+	}
 
     View.OnClickListener categoryListener = new View.OnClickListener() {
 		public void onClick(View v) {
 			Category category = (Category)v.getTag();
 			onClickCategoryButton(category);
+		}
+	};
+	
+	View.OnClickListener deleteCategoryListener = new View.OnClickListener() {
+		
+		public void onClick(View v) {
+			Category category = (Category)v.getTag();
+			onClickDeleteCategoryButton(category);
+			
 		}
 	};
 	
@@ -149,22 +183,44 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 				convertView = mInflater.inflate(mResource, parent, false);
 			}
 			
+			FrameLayout fLayout = (FrameLayout) convertView.findViewById (R.id.BtnGridItemFL);
+			Button button = (Button)convertView.findViewById(R.id.BtnGridItem);
+			ImageButton imgBtn = (ImageButton) convertView.findViewById(R.id.deleteCategory);
+			imgBtn.setOnClickListener(deleteCategoryListener);
+			imgBtn.setTag(category);
+			
 			//Sub Category 영역을 구분 하기 위한 부분
 			if (position > getSubCategoryStartPosition()-1 && position < getSubCategoryStartPosition() + getSubCategoryCount()) {
-				LinearLayout lLayout = (LinearLayout) convertView.findViewById (R.id.BtnGridItemLL);
-				lLayout.setBackgroundColor(Color.BLACK);
+				fLayout.setBackgroundColor(Color.BLACK);
+				
+			} else {
+				if (getEditCategoryMode() && getSubCategoryMode()) {
+					imgBtn.setVisibility(ImageButton.INVISIBLE);
+					button.setText(category.getName());
+					button.setTag(category);
+					button.setClickable(false);					
+					return convertView;
+				}
 			}
-			
-			Button button = (Button)convertView.findViewById(R.id.BtnGridItem);
+						
 			//Sub Category 빈공간 넣는 부분
 			if (category == null) {
 				button.setVisibility(Button.INVISIBLE);
+				imgBtn.setVisibility(ImageButton.INVISIBLE);
 				return convertView;
+			}
+			
+			if (category.getID() < -1) {
+				imgBtn.setVisibility(ImageButton.INVISIBLE);
 			}
 
 			button.setText(category.getName());
 			button.setOnClickListener(categoryListener);
 			button.setTag(category);
+			
+			if (getEditCategoryMode() == false) {
+				imgBtn.setVisibility(ImageButton.INVISIBLE);
+			} 				
 			
 			return convertView;
 		}
@@ -173,8 +229,9 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ACT_EDIT_CATEGORY) {
 			if (resultCode == RESULT_OK) {
-			
-				updateAdapterCategory();
+				
+				//Category 편집 된 내용 update 시키는 부분임
+//				updateAdapterCategory();
 
     		}
     	}
