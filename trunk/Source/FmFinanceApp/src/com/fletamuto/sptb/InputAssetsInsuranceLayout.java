@@ -26,6 +26,7 @@ public class InputAssetsInsuranceLayout extends InputAssetsExtendLayout {
     	
     	setContentView(R.layout.input_assets_insurance, true);
     	
+    	setBtnClickListener();
     	updateChildView();
     	
     	//달력을 이용한 날짜 입력을 위해
@@ -184,6 +185,8 @@ public class InputAssetsInsuranceLayout extends InputAssetsExtendLayout {
     			updateDate();
     		}
     	}
+    	
+    	super.onActivityResult(requestCode, resultCode, data);
     }
   
 }
