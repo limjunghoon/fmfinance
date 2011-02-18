@@ -1,6 +1,7 @@
 package com.fletamuto.sptb;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.common.control.BaseSlidingActivity;
@@ -8,7 +9,12 @@ import com.fletamuto.common.control.BaseSlidingActivity;
 //public abstract class SelectGridBaseLayout extends FmBaseActivity {
 public abstract class SelectGridBaseLayout extends BaseSlidingActivity {
 	
+	//GridView Title Text
 	private TextView gridTitle;
+	
+	//GridView Right Edit Button
+	private  Button gridRightBtn;
+	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       
@@ -24,7 +30,16 @@ public abstract class SelectGridBaseLayout extends BaseSlidingActivity {
         
         gridTitle = (TextView) findViewById(R.id.selectGridBaseTitleText);
         gridTitle.setText(this.getTitle());
+        
+        gridRightBtn = (Button) findViewById (R.id.BtnGridBaseEdit);
     }
+	
+	public void setGridRightBtn (Button btn) {
+		gridRightBtn = btn;
+	}
+	public Button getGridRightBtn() {
+		return gridRightBtn;
+	}
 	
 /*
 	protected void setTitleBtn() {
