@@ -2,6 +2,7 @@ package com.fletamuto.sptb;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -820,23 +821,29 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 					//Toast.makeText(ListViewItemTest.this, ""+((ListView)v).getFirstVisiblePosition(), Toast.LENGTH_LONG).show();
 					int topChildView = ((ListView)v).getFirstVisiblePosition();	//보여지는 최상단의 아이템의 인덱스를 얻어옴
 					int chk = (int) (event.getY() / ((ListView)v).getChildAt(0).getHeight());
+					int newPosition = topChildView + chk;
 					
 					if((topChildView + chk) >= 0) {
 						ArrayList<OpenUsedItem> markItemDatas = null;
 						if(!isIncome) {
 							markItemDatas = DBMgr.getOpenUsedItems(ExpenseItem.TYPE);
 						} else {
-							markItemDatas = DBMgr.getOpenUsedItems(ExpenseItem.TYPE);
+							markItemDatas = DBMgr.getOpenUsedItems(IncomeItem.TYPE);
 						}
 						
 						// FIXME 우선순위 갱신용 코드로 변경 필요
 						OpenUsedItem markItemData = markItemDatas.get(mPosition);
-						markItemDatas.remove(mPosition);
 						markItemDatas.add(topChildView + chk, markItemData);
+						if(newPosition >= mPosition)
+							markItemDatas.remove(mPosition);
+						else
+							markItemDatas.remove(mPosition+1);
+						
+						Toast.makeText(InputExpenseLayout.this, "mPosition : " + mPosition + "\nnewPosition : " + newPosition, Toast.LENGTH_LONG).show();
 
 						//아이템 한개 순위만 변경 - 반복문 작성 해야 함 - 작성중
 						for(int i = 0, size = markItemDatas.size(); i < size; i++) {
-							DBMgr.updateOpenUsedItem(markItemDatas.get(mPosition).getType(), markItemDatas.get(mPosition).getID(), markItemDatas.get(mPosition).getItem().getID(), i);
+							DBMgr.updateOpenUsedItem(markItemDatas.get(i).getType(), markItemDatas.get(i).getID(), markItemDatas.get(i).getItem().getID(), i);
 						}
 						
 						//동작 테스트 용

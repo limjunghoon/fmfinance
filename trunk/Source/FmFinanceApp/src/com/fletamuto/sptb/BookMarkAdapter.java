@@ -53,7 +53,7 @@ public class BookMarkAdapter extends ArrayAdapter<OpenUsedItem> {
 			ExpenseItem expenseItem = (ExpenseItem) usedItem.getItem();
 			
 			viewHolder.icon.setImageResource(R.drawable.icon);	// FIXME 나중에 받아와서 처리
-			viewHolder.title.setText(expenseItem.getMemo());
+			viewHolder.title.setText(expenseItem.getMemo() + " " + bookMarkItemDatas.get(position).getPriority());
 			viewHolder.category.setText(String.format("%s - %s", expenseItem.getCategory().getName(), expenseItem.getSubCategory().getName()));
 			viewHolder.method.setText(expenseItem.getPaymentMethod().getName());
 			if(InputExpenseLayout.editableList) {
