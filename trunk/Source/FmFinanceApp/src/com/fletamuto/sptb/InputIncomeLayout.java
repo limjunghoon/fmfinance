@@ -34,7 +34,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         
         updateChildView();
         
-        setTitle(getResources().getString(R.string.input_income_name));
+        //setTitle(getResources().getString(R.string.input_income_name));
         //달력을 이용한 날짜 입력을 위해
 /*
         LinearLayout linear = (LinearLayout) findViewById(R.id.inputIncome);
@@ -43,7 +43,53 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
 */
         
-        
+        switch(getIntent().getIntExtra("Action", 0)) {
+        case ACTION_DEFAULT:	//일반 호출
+        	setTitle(getResources().getString(R.string.input_income_name));
+            //initBookmark();
+        	break;
+        case ACTION_BOOMARK_EDIT:	//즐겨찾기 추가/편집 호출
+        	setTitle(getResources().getString(R.string.input_bookmark_name));
+        	intentAction = ACTION_BOOMARK_EDIT;
+        	break;
+        case ACTION_BOOMARK_EDIT_ACTIVITY:	//다른 타입 즐겨찾기 추가/편집 호출
+//        	setTitle(getResources().getString(R.string.input_bookmark_name));
+//        	intentAction = 2;
+        	//inputExpenseOpenUsedItem();
+        	break;
+        }
+        initWidget();
+    }
+    /**
+     * ACTION_DEFAULT = 0, 지출 추가/편집 화면
+     */
+    private final static int ACTION_DEFAULT = 0;
+    /**
+     * ACTION_BOOMARK_EDIT = 1, 즐겨찾기 추가/편집 상태에서 호출 됨
+     */
+    private final static int ACTION_BOOMARK_EDIT = 1;
+    /**
+     * ACTION_BOOMARK_INCOME = 2, 다른 타입의 즐겨찾기 추가/편집 호출을 요청
+     */
+    private final static int ACTION_BOOMARK_EDIT_ACTIVITY = 2;
+    /**
+     * 호출한 Intent의 상태 값 저장
+     */
+    private int intentAction = ACTION_DEFAULT;
+    
+    /**
+     * 인텐트에 담긴 액션에 따라서 화면에 보이는 위젯 개수를 변경하는 메소드 
+     */
+    private void initWidget() {
+    	if(intentAction > 0) {	//일반 호출이 아닌 경우(추가/편집)
+    		((View)findViewById(R.id.TVIncomeDate)).setVisibility(View.GONE);
+    		((View)findViewById(R.id.BtnIncomeDate)).setVisibility(View.GONE);
+    		
+    		((View)findViewById(R.id.TVIncomeRepeat)).setVisibility(View.GONE);
+    		((View)findViewById(R.id.BtnIncomeRepeat)).setVisibility(View.GONE);
+    		
+    		//((View)findViewById(R.id.LLBookmarkSliding)).setVisibility(View.GONE);
+    	}
     }
     
     @Override
@@ -86,6 +132,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
     @Override
     protected void onClickLeft1TitleBtn() {
     	Intent intent = new Intent(InputIncomeLayout.this, InputExpenseLayout.class);
+    	intent.putExtra("Action", intentAction);	//현재 호출된 상태의 Intent를 전달 - 지출 즐겨찾기 추가/편집 상태인 경우에 수입 즐겨찾기 추가/편집으로 가기 위한 값
 		startActivity(intent);
 		
     	super.onClickLeft1TitleBtn();

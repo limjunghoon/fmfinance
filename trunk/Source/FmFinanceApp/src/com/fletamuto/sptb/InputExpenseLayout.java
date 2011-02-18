@@ -20,6 +20,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.fletamuto.sptb.data.AccountItem;
@@ -28,6 +29,7 @@ import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.ExpenseTag;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.OpenUsedItem;
 import com.fletamuto.sptb.data.PaymentAccountMethod;
@@ -86,11 +88,11 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         	setTitle(getResources().getString(R.string.input_expense_name));
             initBookmark();
         	break;
-        case ACTION_BOOMARK_EXPENSE:	//지출 즐겨찾기 추가/편집 호출
+        case ACTION_BOOMARK_EDIT:	//즐겨찾기 추가/편집 호출
         	setTitle(getResources().getString(R.string.input_bookmark_name));
-        	intentAction = ACTION_BOOMARK_EXPENSE;
+        	intentAction = ACTION_BOOMARK_EDIT;
         	break;
-        case ACTION_BOOMARK_INCOME:	//수입 즐겨찾기 추가/편집 호출
+        case ACTION_BOOMARK_EDIT_ACTIVITY:	//다른 타입 즐겨찾기 추가/편집 호출
 //        	setTitle(getResources().getString(R.string.input_bookmark_name));
 //        	intentAction = 2;
         	inputIncomeOpenUsedItem();
@@ -104,13 +106,13 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
      */
     private final static int ACTION_DEFAULT = 0;
     /**
-     * ACTION_BOOMARK_EXPENSE = 1, 지출 즐겨찾기 추가/편집 화면
+     * ACTION_BOOMARK_EDIT = 1, 즐겨찾기 추가/편집 상태에서 호출 됨
      */
-    private final static int ACTION_BOOMARK_EXPENSE = 1;
+    private final static int ACTION_BOOMARK_EDIT = 1;
     /**
-     * ACTION_BOOMARK_INCOME = 2, 수입 즐겨찾기 추가/편집 화면
+     * ACTION_BOOMARK_INCOME = 2, 다른 타입의 즐겨찾기 추가/편집 호출을 요청
      */
-    private final static int ACTION_BOOMARK_INCOME = 2;
+    private final static int ACTION_BOOMARK_EDIT_ACTIVITY = 2;
     /**
      * 호출한 Intent의 상태 값 저장
      */
@@ -166,6 +168,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     @Override
     protected void onClickLeft1TitleBtn() {
     	Intent intent = new Intent(InputExpenseLayout.this, InputIncomeLayout.class);
+    	intent.putExtra("Action", intentAction);	//현재 호출된 상태의 Intent를 전달 - 지출 즐겨찾기 추가/편집 상태인 경우에 수입 즐겨찾기 추가/편집으로 가기 위한 값  
 		startActivity(intent);
 		
     	super.onClickLeft1TitleBtn();
@@ -299,6 +302,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     }
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Toast.makeText(this, "requestCode : " + requestCode + "\nresultCode : " + resultCode, Toast.LENGTH_LONG).show();
 		if (requestCode == ACT_CATEGORY) {
     		if (resultCode == RESULT_OK) {
     			mExpensItem.setSubCategory(data.getIntExtra("SUB_CATEGORY_ID", -1), data.getStringExtra("SUB_CATEGORY_NAME"));
@@ -363,7 +367,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				}
 			}
 		}
-		
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
@@ -701,7 +704,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	
 	AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> items, View v, int position, long id) {
-			if(!longTouch) {
+			if(!editableList) {
 				((Button)findViewById(R.id.BtnExpenseCategory)).setText(((TextView)v.findViewById(R.id.BookMarkItemCategory)).getText());
 				((Button)findViewById(R.id.BtnExpenseAmount)).setText(((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText());
 				((EditText)findViewById(R.id.ETExpenseMemo)).setText(((TextView)v.findViewById(R.id.BookMarkItemTitle)).getText());
@@ -740,12 +743,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			switch(v.getId()) {
 			case R.id.BTBookmarkAdd:
 				inputOpenUsedItem();
-//				if(!editableList) {
-//					editableList = true;	//수정 가능 상태
-//				}
-//				else { 
-//					editableList = false;	//수정 불가능 상태
-//				}
 				break;
 			case R.id.BTBookmarkIncome:
 			case R.id.BTBookmarkExpense:
@@ -771,23 +768,27 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	AdapterView.OnItemLongClickListener mItemLongClickListener = new AdapterView.OnItemLongClickListener() {
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(320, 50);
 		public boolean onItemLongClick(AdapterView<?> item, View v, int position, long id) {
-			icon.setImageDrawable(((ImageView)v.findViewById(R.id.BookMarkItemIcon)).getDrawable());
-			title.setText(((TextView)v.findViewById(R.id.BookMarkItemTitle)).getText());
-			category.setText(((TextView)v.findViewById(R.id.BookMarkItemCategory)).getText());
-			method.setText(((TextView)v.findViewById(R.id.BookMarkItemMethod)).getText());
-			amount.setText(((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText());
-			
-			//layoutParams.leftMargin = (int) mPositionX - (layoutParams.width / 2);
-			layoutParams.topMargin = (int) mPositionY - (layoutParams.height / 2) - 70;
-			bookmarkDrag.setLayoutParams(layoutParams);
-			
-			bookmarkDrag.setVisibility(View.VISIBLE);
-			
-			longTouch = true;
-			
-			//하나의 아이템을 저장해둘 데이터 객체
-			mPosition = position;	//드롭 이벤트를 발생 시킬 경우에 데이터 객체에서 해당 내용을 삭제하기 위한 포지션
-			
+
+			if(!editableList) {
+				editableList = true;	//수정 가능 상태
+				updateOpenUsedItem();
+			} else {
+				icon.setImageDrawable(((ImageView)v.findViewById(R.id.BookMarkItemIcon)).getDrawable());
+				title.setText(((TextView)v.findViewById(R.id.BookMarkItemTitle)).getText());
+				category.setText(((TextView)v.findViewById(R.id.BookMarkItemCategory)).getText());
+				method.setText(((TextView)v.findViewById(R.id.BookMarkItemMethod)).getText());
+				amount.setText(((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText());
+				
+				//layoutParams.leftMargin = (int) mPositionX - (layoutParams.width / 2);
+				layoutParams.topMargin = (int) mPositionY - (layoutParams.height / 2) - 70;
+				bookmarkDrag.setLayoutParams(layoutParams);
+				
+				bookmarkDrag.setVisibility(View.VISIBLE);
+				
+				longTouch = true;
+				
+				mPosition = position;	//드롭 이벤트를 발생 시킬 경우에 데이터 객체에서 해당 내용을 삭제하기 위한 포지션
+			}
 			return false;
 		}
 	};
@@ -821,11 +822,25 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 					int chk = (int) (event.getY() / ((ListView)v).getChildAt(0).getHeight());
 					
 					if((topChildView + chk) >= 0) {
-						ArrayList<OpenUsedItem> markItemDatas = DBMgr.getOpenUsedItems(ExpenseItem.TYPE);
+						ArrayList<OpenUsedItem> markItemDatas = null;
+						if(!isIncome) {
+							markItemDatas = DBMgr.getOpenUsedItems(ExpenseItem.TYPE);
+						} else {
+							markItemDatas = DBMgr.getOpenUsedItems(ExpenseItem.TYPE);
+						}
+						
+						// FIXME 우선순위 갱신용 코드로 변경 필요
 						OpenUsedItem markItemData = markItemDatas.get(mPosition);
 						markItemDatas.remove(mPosition);
 						markItemDatas.add(topChildView + chk, markItemData);
+
+						//아이템 한개 순위만 변경 - 반복문 작성 해야 함 - 작성중
+						for(int i = 0, size = markItemDatas.size(); i < size; i++) {
+							DBMgr.updateOpenUsedItem(markItemDatas.get(mPosition).getType(), markItemDatas.get(mPosition).getID(), markItemDatas.get(mPosition).getItem().getID(), i);
+						}
 						
+						//동작 테스트 용
+						//bookmarkList.setAdapter(new BookMarkAdapter(InputExpenseLayout.this, R.layout.input_bookmark_item, markItemDatas));
 						updateOpenUsedItem();	//값이 유지되지 않고 DB에서 새로 얻어와서 이동 갱신 불가상태
 						bookmarkList.setSelectionFromTop(topChildView, 0);	//어댑터가 다시 세팅되면 0번 아이템이 선택되기 때문에 기억시켜둔 마지막 위치로 이동
 					}
@@ -837,9 +852,18 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		}
 	};
 	
+	@Override
+	public void onBackPressed() {
+		if(editableList) {
+			editableList = false;	//수정 불가능 상태
+			updateOpenUsedItem();
+		} else {
+			super.onBackPressed();
+		}
+	}
 	
 	
-	
+
 	protected void setBookmark () {
 //		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_popup, null);
 //		popupBookmark = new PopupWindow(popupviewBookmark, 320, 300, true);
@@ -998,20 +1022,25 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	protected void inputOpenUsedItem() {
 		Intent intent = new Intent(this, InputExpenseLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
-		intent.putExtra("Action", ACTION_BOOMARK_EXPENSE);	//추가 화면 호출
+		intent.putExtra("Action", ACTION_BOOMARK_EDIT);	//추가 화면 호출
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_OPEN_USED_ITEM);
 	}
 	
 	protected void inputIncomeOpenUsedItem() {
 		Intent intent = new Intent(this, InputIncomeLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
-		intent.putExtra("Action", ACTION_BOOMARK_INCOME);	//추가 화면 호출
+		intent.putExtra("Action", ACTION_BOOMARK_EDIT_ACTIVITY);	//추가 화면 호출
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_OPEN_USED_ITEM);
 	}
 	
 	@Override
 	protected void updateOpenUsedItem() {
-		bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(ExpenseItem.TYPE));
+		if(!isIncome) {
+			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(ExpenseItem.TYPE));
+		} else {
+			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(IncomeItem.TYPE));
+		}
+		
 		bookmarkList.setAdapter(bookMarkAdapter);
 	}
 	
