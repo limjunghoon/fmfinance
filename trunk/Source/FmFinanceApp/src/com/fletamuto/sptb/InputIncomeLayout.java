@@ -102,11 +102,11 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
      */
     private final static int ACTION_BOOMARK_EDIT = 1;
     /**
-     * ACTION_BOOMARK_OTHER_ACTIVITY = 2, 다른 타입의 즐겨찾기 추가/편집 호출을 요청
+     * ACTION_BOOMARK_OTHER_ACTIVITY = 2, 다른 타입의 즐겨찾기를 호출하여 내용을 자동으로 채움
      */
     private final static int ACTION_BOOMARK_OTHER_ACTIVITY = 2;
     /**
-     * ACTION_BOOMARK_EDIT_ACTIVITY = 2, 다른 타입의 즐겨찾기 추가/편집 호출을 요청
+     * ACTION_BOOMARK_EDIT_ACTIVITY = 3, 다른 타입의 즐겨찾기 추가/편집 호출을 요청
      */
     private final static int ACTION_BOOMARK_EDIT_ACTIVITY = 3;
     /**
@@ -561,51 +561,90 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 	float mPositionX, mPositionY;
 	int mPosition;
 	boolean longTouch = false;
-	boolean isIncome = false;	//false면 Expense
+	boolean isIncome = true;	//false면 Expense
+	boolean editable = false;
 	//public static boolean editableList = false;
 	
 	AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> items, View v, int position, long id) {
-			if(!InputExpenseLayout.editableList) {
-				((Button)findViewById(R.id.BtnExpenseCategory)).setText(((TextView)v.findViewById(R.id.BookMarkItemCategory)).getText());
-				((Button)findViewById(R.id.BtnExpenseAmount)).setText(((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText());
-				((EditText)findViewById(R.id.ETExpenseMemo)).setText(((TextView)v.findViewById(R.id.BookMarkItemTitle)).getText());
-				
-//				((ToggleButton)findViewById(R.id.TBExpenseMethodCash)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("현금"))?true:false);
-//				((ToggleButton)findViewById(R.id.TBExpenseMethodCard)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("카드"))?true:false);
-//				((ToggleButton)findViewById(R.id.TBExpenseMethodAccount)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("계좌"))?true:false);
-				
-				
-				//mExpensItem = (ExpenseItem)itemsTemp.get(position);
-				mIncomeItem = new IncomeItem();
-				
-				Category category = DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getCategory();
-				Category subCategory = DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getSubCategory();
-				mIncomeItem.setCategory(category.getID(), category.getName());
-				mIncomeItem.setSubCategory(subCategory.getID(), subCategory.getName());
-				mIncomeItem.setAmount(DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getAmount());
-//				mIncomeItem.setCard(((ExpenseItem)(DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem())).getCard());
-//				mIncomeItem.setPaymentMethod((((ExpenseItem)(DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem())).getPaymentMethod()));
+				if(!InputExpenseLayout.editableList) {
+					if(isIncome) {
+						((Button)findViewById(R.id.BtnExpenseCategory)).setText(((TextView)v.findViewById(R.id.BookMarkItemCategory)).getText());
+						((Button)findViewById(R.id.BtnExpenseAmount)).setText(((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText());
+						((EditText)findViewById(R.id.ETExpenseMemo)).setText(((TextView)v.findViewById(R.id.BookMarkItemTitle)).getText());
+						
+//						((ToggleButton)findViewById(R.id.TBExpenseMethodCash)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("현금"))?true:false);
+//						((ToggleButton)findViewById(R.id.TBExpenseMethodCard)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("카드"))?true:false);
+//						((ToggleButton)findViewById(R.id.TBExpenseMethodAccount)).setSelected((((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText().equals("계좌"))?true:false);
+						
+						
+						//mExpensItem = (ExpenseItem)itemsTemp.get(position);
+						mIncomeItem = new IncomeItem();
+						
+						Category category = DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getCategory();
+						Category subCategory = DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getSubCategory();
+						mIncomeItem.setCategory(category.getID(), category.getName());
+						mIncomeItem.setSubCategory(subCategory.getID(), subCategory.getName());
+						mIncomeItem.setAmount(DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getAmount());
+						//mIncomeItem.setCard(((ExpenseItem)(DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem())).getCard());
+						//mIncomeItem.setPaymentMethod((((ExpenseItem)(DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem())).getPaymentMethod()));
 
-				setItem(mIncomeItem);
-				updateReceiveMethod();
+						setItem(mIncomeItem);
+						updateReceiveMethod();
 
-				if (popupBookmark != null) {
-					popupBookmark.dismiss();
-				}
-				
-				if (mSlidingDrawer != null) {
-					mSlidingDrawer.toggle();
+						if (popupBookmark != null) {
+							popupBookmark.dismiss();
+						}
+						
+						if (mSlidingDrawer != null) {
+							mSlidingDrawer.toggle();
+						}
+					} else {
+						String[] fillText = new String[3];
+						fillText[0] = DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getCategory().getName() + " - " + DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getSubCategory().getName();
+						fillText[1] = String.valueOf(DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getAmount());
+						fillText[2] = DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getMemo();
+						
+						Intent intent = new Intent(InputIncomeLayout.this, InputExpenseLayout.class);
+						intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
+						intent.putExtra("Action", ACTION_BOOMARK_OTHER_ACTIVITY);	//상대 액티비티 요청 처리 - FIXME 추가 필요
+						intent.putExtra("Fill", true);
+						intent.putExtra("FillText", fillText);
+						intent.putExtra("FillPosition", position);
+						startActivityForResult(intent, MsgDef.ActRequest.ACT_OPEN_USED_ITEM);
+					}
+				} else {
+					if(!editable) {
+						InputExpenseLayout.editableList = true;
+						return;
+					} else {
+						if(isIncome) {
+							String[] fillText = new String[3];
+							fillText[0] = DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getCategory().getName() + " - " + DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getSubCategory().getName();
+							fillText[1] = String.valueOf(DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getAmount());
+							fillText[2] = DBMgr.getOpenUsedItems(ExpenseItem.TYPE).get(position).getItem().getMemo();
+							
+							Intent intent = new Intent(InputIncomeLayout.this, InputIncomeLayout.class);
+							intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
+							intent.putExtra("Action", ACTION_BOOMARK_EDIT);	//추가 화면 호출
+							intent.putExtra("Fill", true);
+							intent.putExtra("FillPosition", position);
+							intent.putExtra("FillText", fillText);
+							startActivityForResult(intent, MsgDef.ActRequest.ACT_OPEN_USED_ITEM);
+						} else {
+							Intent intent = new Intent(InputIncomeLayout.this, InputExpenseLayout.class);
+							intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
+							intent.putExtra("Action", ACTION_BOOMARK_EDIT_ACTIVITY);	//상대 추가/편집 액티비티 요청 처리 - FIXME 필요한 처리를 위해서 수정 필요
+							startActivityForResult(intent, MsgDef.ActRequest.ACT_OPEN_USED_ITEM);
+						}
+					}
 				}
 			}
-		}
 	};
 	View.OnClickListener mSlidingTitleBarBtn = new View.OnClickListener() {
 		public void onClick(View v) {
 			switch(v.getId()) {
 			case R.id.BTBookmarkAdd:
-				InputExpenseLayout.editableList = false;
-				updateOpenUsedItem();
 				inputOpenUsedItem();
 				break;
 			case R.id.BTBookmarkIncome:

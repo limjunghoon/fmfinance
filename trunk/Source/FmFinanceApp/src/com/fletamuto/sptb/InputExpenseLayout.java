@@ -96,8 +96,16 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         	}
         	break;
         case ACTION_BOOMARK_OTHER_ACTIVITY :	//서로 다른 타입의 즐겨찾기를 선택시 상대 액티비티에 요청 처리
+        	setTitle(getResources().getString(R.string.input_expense_name));
+        	intentAction = ACTION_BOOMARK_OTHER_ACTIVITY;
+        	initBookmark();
+        	if(getIntent().getBooleanExtra("Fill", false)) {
+        		fill();
+        	}
         	break;
         case ACTION_BOOMARK_EDIT_ACTIVITY:	//다른 타입 즐겨찾기 추가/편집 호출
+        	setTitle(getResources().getString(R.string.input_bookmark_name));
+        	intentAction = ACTION_BOOMARK_EDIT_ACTIVITY;
 //        	setTitle(getResources().getString(R.string.input_bookmark_name));
 //        	intentAction = 2;
         	inputIncomeOpenUsedItem();
@@ -119,7 +127,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
      */
     private final static int ACTION_BOOMARK_OTHER_ACTIVITY = 2;
     /**
-     * ACTION_BOOMARK_EDIT_ACTIVITY = 2, 다른 타입의 즐겨찾기 추가/편집 호출을 요청
+     * ACTION_BOOMARK_EDIT_ACTIVITY = 3, 다른 타입의 즐겨찾기 추가/편집 호출을 요청
      */
     private final static int ACTION_BOOMARK_EDIT_ACTIVITY = 3;
     /**
@@ -131,7 +139,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
      * 인텐트에 담긴 액션에 따라서 화면에 보이는 위젯 개수를 변경하는 메소드 
      */
     private void initWidget() {
-    	if(intentAction > 0) {	//일반 호출이 아닌 경우(추가/편집)
+    	if(intentAction == ACTION_BOOMARK_EDIT || intentAction == ACTION_BOOMARK_EDIT_ACTIVITY) {	//추가/편집인 경우에 처리
     		((View)findViewById(R.id.TVExpenseDate)).setVisibility(View.GONE);
     		((View)findViewById(R.id.BtnExpenseDate)).setVisibility(View.GONE);
     		
@@ -788,8 +796,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				if(!editable) {
 					editable = true;
 					return;
-				}
-				if(editable) {
+				} else {
 					if(!isIncome) {
 						Intent intent = new Intent(InputExpenseLayout.this, InputExpenseLayout.class);
 						intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
@@ -801,7 +808,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 					} else {
 						Intent intent = new Intent(InputExpenseLayout.this, InputIncomeLayout.class);
 						intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
-						intent.putExtra("Action", ACTION_BOOMARK_OTHER_ACTIVITY);	//상대 추가/편집 액티비티 요청 처리 - FIXME 필요한 처리를 위해서 수정 필요
+						intent.putExtra("Action", ACTION_BOOMARK_EDIT_ACTIVITY);	//상대 추가/편집 액티비티 요청 처리 - FIXME 필요한 처리를 위해서 수정 필요
 						startActivityForResult(intent, MsgDef.ActRequest.ACT_OPEN_USED_ITEM);
 					}
 				}
