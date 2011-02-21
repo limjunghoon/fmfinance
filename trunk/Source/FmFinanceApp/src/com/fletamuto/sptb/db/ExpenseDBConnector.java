@@ -46,8 +46,11 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
-		rowItem.put("create_date", item.getCreateDateString());
-		rowItem.put("create_time", "21:20:00"); // 임시값
+		if (item.isOpenUsedItem() == false) {
+			rowItem.put("create_date", item.getCreateDateString());
+			rowItem.put("create_time", "21:20:00"); // 임시값
+		}
+		
 		rowItem.put("amount", item.getAmount());
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
@@ -288,11 +291,20 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		ExpenseItem item = new ExpenseItem();
 		item.setID(c.getInt(0));
 		
-		try {
-			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
-		} catch (ParseException e) {
-			e.printStackTrace();
+		String createDate = c.getString(1);
+		
+		if (createDate != null)
+		{
+			try {
+				item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(createDate));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
+		else {
+			item.setOpenUsedItem(true);
+		}
+		
 		item.setAmount(c.getLong(3));
 		item.setTitle(c.getString(4));
 		item.setMemo(c.getString(5));

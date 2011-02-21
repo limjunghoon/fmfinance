@@ -91,6 +91,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         case ACTION_BOOMARK_EDIT:	//즐겨찾기 추가/편집 호출
         	setTitle(getResources().getString(R.string.input_bookmark_name));
         	intentAction = ACTION_BOOMARK_EDIT;
+        	mExpensItem.setOpenUsedItem(true);
         	if(getIntent().getBooleanExtra("Fill", false)) {
         		fill();
         	}
@@ -231,6 +232,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     } 
     
     protected void saveItem() {
+    	
     	if (mInputMode == InputMode.ADD_MODE) {
     		
     		if (saveNewItem(null) == true) {
