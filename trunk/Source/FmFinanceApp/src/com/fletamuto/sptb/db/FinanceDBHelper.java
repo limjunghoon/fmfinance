@@ -182,8 +182,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 	private void createExpenseTable(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE expense ( " +
 				"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-				"create_date DATE NOT NULL," +
-				"create_time TIME ," +
+				"create_date DATE," +
+				"create_time TIME," +
 				"amount INTEGER NOT NULL," +
 				"title TEXT," +
 				"memo TEXT," +

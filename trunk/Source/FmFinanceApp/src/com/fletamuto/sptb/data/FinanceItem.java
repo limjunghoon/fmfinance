@@ -51,6 +51,9 @@ public abstract class FinanceItem extends BaseItem {
 	/** 상태*/
 	private int mState = STATE_NONE;
 	
+	/** 자주사용하는 아이템 구별 */
+	private boolean mOpenUsedItem = false;
+	
 	/**
 	 * 수입, 지출, 자산, 부채 타입을 얻는다.
 	 * @return int 수입, 지출, 자산, 부채
@@ -277,5 +280,15 @@ public abstract class FinanceItem extends BaseItem {
 
 	public int getState() {
 		return mState;
+	}
+
+
+	public void setOpenUsedItem(boolean mOpenUsedItem) {
+		this.mOpenUsedItem = mOpenUsedItem;
+	}
+
+
+	public boolean isOpenUsedItem() {
+		return mOpenUsedItem;
 	}
 }
