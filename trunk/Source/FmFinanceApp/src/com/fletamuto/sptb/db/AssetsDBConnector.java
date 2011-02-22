@@ -1390,6 +1390,28 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public ArrayList<FinanceItem> getCompletionAll() {
+		ArrayList<FinanceItem> assetsItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.valueOf(FinanceItem.STATE_COMPLEATE)};
+		
+		queryBilder.setTables("assets, assets_main_category");
+		queryBilder.appendWhere("assets.main_category=assets_main_category._id");
+		Cursor c = queryBilder.query(db, null, "assets.state=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				assetsItems.add(createAssetsItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		closeDatabase();
+		return assetsItems;
+	}
+
+	
 	
 	
 }
