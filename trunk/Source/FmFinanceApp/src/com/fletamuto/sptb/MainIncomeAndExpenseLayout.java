@@ -77,12 +77,10 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
             mDBInit = true;
         }
         
-        
         initAlarmView();
         setRootView(true);
         setBtnClickListener();
         setTitle(getResources().getString(R.string.app_name));
-        
         
     	changeViewMode();
     }

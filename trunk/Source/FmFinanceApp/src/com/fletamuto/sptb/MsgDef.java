@@ -42,6 +42,9 @@ public final class MsgDef {
 		public final static int ACT_CHANGE_MENU = 36;
 		public final static int ACT_ALARM_CARD_PAYMENT = 37;
 		public final static int ACT_OPEN_USED_ITEM = 38;
+		public final static int ACT_SELECT_DATE_EXPIRY = 39;
+		public final static int ACT_SELECT_DATE_PAYMENT = 40;
+		public final static int ACT_INPUT_PEPAY = 41;
 	}
 	
 	public static final class ExtraNames {

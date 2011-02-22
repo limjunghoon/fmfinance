@@ -39,8 +39,15 @@ public class ReportLiabilityLayout extends ReportSeparationLayout {
 	protected void onClickListItem(AdapterView<?> parent, View view,
 			int position, long id) {
     	FinanceItem item = (FinanceItem)mItemAdapter.getItem(position);
+    	Intent intent = null;
     	
-    	Intent intent = new Intent(this, StateLiabilityDefaultLayout.class);
+    	if (item.getExtendType() == ItemDef.ExtendLiablility.LOAN) {
+    		intent = new Intent(this, DetailLiabilityLoanLayout.class);
+    	}
+    	else {
+    		intent = new Intent(this, StateLiabilityDefaultLayout.class);
+    	}
+    	
     	intent.putExtra(MsgDef.ExtraNames.ITEM, item);
     	startActivityForResult(intent, MsgDef.ActRequest.ACT_STATE_VIEW);
 	}
