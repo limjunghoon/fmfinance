@@ -827,5 +827,25 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public ArrayList<FinanceItem> getCompletionAll() {
+		ArrayList<FinanceItem> liabilityItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.valueOf(FinanceItem.STATE_COMPLEATE)};
+		
+		queryBilder.setTables("liability, liability_main_category");
+		queryBilder.appendWhere("liability.main_category=liability_main_category._id");
+		Cursor c = queryBilder.query(db, null, "liability.state=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				liabilityItems.add(createLiabilityItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		closeDatabase();
+		return liabilityItems;
+	}
 	
 }

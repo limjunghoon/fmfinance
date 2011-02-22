@@ -846,4 +846,17 @@ public final class DBMgr {
 	public static int deleteOpenUsedItem(int type, int id) {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(type).deleteOpenUsedItem(id);
 	}
+	
+	public static ArrayList<FinanceItem> getCompletionItems() {
+		ArrayList<FinanceItem> completionItems = new ArrayList<FinanceItem>();
+		ArrayList<FinanceItem> completionAssetsItems = getAssetsDBConnecter().getCompletionAll();
+		if (completionAssetsItems != null) {
+			completionItems.addAll(completionAssetsItems);
+		}
+		ArrayList<FinanceItem> completionLiabilityItems = getLiabilityDBConnecter().getCompletionAll();
+		if (completionLiabilityItems != null) {
+			completionItems.addAll(completionLiabilityItems);
+		}
+		return completionItems;
+	}
 }
