@@ -103,13 +103,28 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         	if(getIntent().getBooleanExtra("Fill", false)) {
         		fill();
         	}
+			if (popupBookmark != null) {
+				popupBookmark.dismiss();
+			}
+			
+			if (mSlidingDrawer != null) {
+				mSlidingDrawer.toggle();
+			}
         	break;
         case ACTION_BOOMARK_EDIT_ACTIVITY:	//다른 타입 즐겨찾기 추가/편집 호출
         	setTitle(getResources().getString(R.string.input_bookmark_name));
         	intentAction = ACTION_BOOMARK_EDIT_ACTIVITY;
-//        	setTitle(getResources().getString(R.string.input_bookmark_name));
-//        	intentAction = 2;
-        	inputIncomeOpenUsedItem();
+        	if(getIntent().getBooleanExtra("Fill", false)) {
+        		fill();
+        	}
+			if (popupBookmark != null) {
+				popupBookmark.dismiss();
+			}
+			
+			if (mSlidingDrawer != null) {
+				mSlidingDrawer.toggle();
+			}
+        	//inputIncomeOpenUsedItem();
         	break;
         }
         initWidget();
@@ -629,6 +644,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	
 	protected void initBookmark() {
 		//if (mLLBookark == null) return;
+		((LinearLayout)findViewById(R.id.LLBookmarkSliding)).setVisibility(View.VISIBLE);
 		((ImageButton)findViewById(R.id.BTBookmarkAdd)).setOnClickListener(mSlidingTitleBarBtn);
 		((Button)findViewById(R.id.BTBookmarkIncome)).setOnClickListener(mSlidingTitleBarBtn);
 		((Button)findViewById(R.id.BTBookmarkExpense)).setOnClickListener(mSlidingTitleBarBtn);
@@ -752,7 +768,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	boolean longTouch = false;
 	boolean isIncome = false;	//false면 Expense
 	boolean editable = false;
-	public static boolean editableList = false;
+	boolean editableList = false;
 	
 	AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> items, View v, int position, long id) {
@@ -789,10 +805,19 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 						mSlidingDrawer.toggle();
 					}
 				} else {
+					String[] fillText = new String[3];
+					fillText[0] = DBMgr.getOpenUsedItems(IncomeItem.TYPE).get(position).getItem().getCategory().getName() + " - " + DBMgr.getOpenUsedItems(IncomeItem.TYPE).get(position).getItem().getSubCategory().getName();
+					fillText[1] = String.valueOf(DBMgr.getOpenUsedItems(IncomeItem.TYPE).get(position).getItem().getAmount());
+					fillText[2] = DBMgr.getOpenUsedItems(IncomeItem.TYPE).get(position).getItem().getMemo();
+					
 					Intent intent = new Intent(InputExpenseLayout.this, InputIncomeLayout.class);
 					intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
 					intent.putExtra("Action", ACTION_BOOMARK_OTHER_ACTIVITY);	//상대 액티비티 요청 처리 - FIXME 추가 필요
+					intent.putExtra("Fill", true);
+					intent.putExtra("FillText", fillText);
+					intent.putExtra("FillPosition", position);
 					startActivityForResult(intent, MsgDef.ActRequest.ACT_OPEN_USED_ITEM);
+					finish();
 				}
 			} else {
 				if(!editable) {
@@ -800,17 +825,30 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 					return;
 				} else {
 					if(!isIncome) {
+						String[] fillText = new String[3];
+						fillText[0] = DBMgr.getOpenUsedItems(IncomeItem.TYPE).get(position).getItem().getCategory().getName() + " - " + DBMgr.getOpenUsedItems(IncomeItem.TYPE).get(position).getItem().getSubCategory().getName();
+						fillText[1] = String.valueOf(DBMgr.getOpenUsedItems(IncomeItem.TYPE).get(position).getItem().getAmount());
+						fillText[2] = DBMgr.getOpenUsedItems(IncomeItem.TYPE).get(position).getItem().getMemo();
+						
 						Intent intent = new Intent(InputExpenseLayout.this, InputExpenseLayout.class);
 						intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
 						intent.putExtra("Action", ACTION_BOOMARK_EDIT);	//추가 화면 호출
 						intent.putExtra("Fill", true);
-						intent.putExtra("FillPosition", mPosition);
-						intent.putExtra("FillText", new String[]{(String)((TextView)v.findViewById(R.id.BookMarkItemCategory)).getText(), (String)((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText(), (String)((TextView)v.findViewById(R.id.BookMarkItemTitle)).getText()});
+						intent.putExtra("FillPosition", position);
+						intent.putExtra("FillText", fillText);
 						startActivityForResult(intent, MsgDef.ActRequest.ACT_OPEN_USED_ITEM);
 					} else {
+						String[] fillText = new String[3];
+						fillText[0] = DBMgr.getOpenUsedItems(IncomeItem.TYPE).get(position).getItem().getCategory().getName() + " - " + DBMgr.getOpenUsedItems(IncomeItem.TYPE).get(position).getItem().getSubCategory().getName();
+						fillText[1] = String.valueOf(DBMgr.getOpenUsedItems(IncomeItem.TYPE).get(position).getItem().getAmount());
+						fillText[2] = DBMgr.getOpenUsedItems(IncomeItem.TYPE).get(position).getItem().getMemo();
+						
 						Intent intent = new Intent(InputExpenseLayout.this, InputIncomeLayout.class);
 						intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
-						intent.putExtra("Action", ACTION_BOOMARK_EDIT_ACTIVITY);	//상대 추가/편집 액티비티 요청 처리 - FIXME 필요한 처리를 위해서 수정 필요
+						intent.putExtra("Action", ACTION_BOOMARK_EDIT_ACTIVITY);	//상대 액티비티 요청 처리 - FIXME 추가 필요
+						intent.putExtra("Fill", true);
+						intent.putExtra("FillText", fillText);
+						intent.putExtra("FillPosition", position);
 						startActivityForResult(intent, MsgDef.ActRequest.ACT_OPEN_USED_ITEM);
 					}
 				}
@@ -1108,7 +1146,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	//자주 사용 되는 지출 구현 end	
 	
 	protected void inputOpenUsedItem() {
-		Intent intent = new Intent(this, InputExpenseLayout.class);
+		Intent intent = new Intent(this, (isIncome)?InputIncomeLayout.class:InputExpenseLayout.class);
 		intent.putExtra(MsgDef.ExtraNames.OPEN_USED_ITEM, true);
 		intent.putExtra("Action", ACTION_BOOMARK_EDIT);	//추가 화면 호출
 		startActivityForResult(intent, MsgDef.ActRequest.ACT_OPEN_USED_ITEM);
@@ -1124,9 +1162,9 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	@Override
 	protected void updateOpenUsedItem() {
 		if(!isIncome) {
-			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(ExpenseItem.TYPE));
+			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(ExpenseItem.TYPE), editableList);
 		} else {
-			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(IncomeItem.TYPE));
+			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(IncomeItem.TYPE), editableList);
 		}
 		
 		bookmarkList.setAdapter(bookMarkAdapter);

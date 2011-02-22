@@ -110,7 +110,7 @@
 
 		<LinearLayout android:id="@+id/LLBookmarkSliding"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
-			android:gravity="bottom" android:visibility="visible">
+			android:gravity="bottom" android:visibility="gone">
 			<SlidingDrawer android:id="@+id/SlidingDrawer"
 				android:handle="@+id/slideBar" android:content="@+id/contentLayout"
 				android:layout_height="272dip" android:layout_width="fill_parent">
