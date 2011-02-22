@@ -72,20 +72,6 @@ public class InputAssetsDepositLayout extends InputAssetsExtendLayout {
 		((Button)findViewById(resource)).setOnClickListener(new Button.OnClickListener() {
 			
 			public void onClick(View v) {
-/*
-				monthlyCalendar.showMonthlyCalendarPopup();
-				monthlyCalendar.getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
-					
-					public void onDismiss() {
-						if (monthlyCalendar.getSelectCalendar() == null) return;
-						mDeposit.getExpiryDate().set(Calendar.YEAR, monthlyCalendar.getSelectCalendar().get(Calendar.YEAR));
-						mDeposit.getExpiryDate().set(Calendar.MONTH, monthlyCalendar.getSelectCalendar().get(Calendar.MONTH));
-						mDeposit.getExpiryDate().set(Calendar.DAY_OF_MONTH, monthlyCalendar.getSelectCalendar().get(Calendar.DAY_OF_MONTH));
-						updateExpiryDate();
-					}
-
-				});		
-*/
 				Intent intent = new Intent(InputAssetsDepositLayout.this, MonthlyCalendar.class);
 				startActivityForResult(intent,37);
 			}

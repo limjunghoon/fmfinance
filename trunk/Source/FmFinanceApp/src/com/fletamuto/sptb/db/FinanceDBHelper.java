@@ -486,7 +486,10 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE liability ( " +
 				"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 				"create_date DATE NOT NULL," +
+				"expiry_date DATE NOT NULL," +
+				"payment_date DATE," +
 				"amount INTEGER NOT NULL," +
+				"orign_amount INTEGER," +
 				"title TEXT," +
 				"memo TEXT," +
 				"main_category INTEGER NOT NULL," +
@@ -549,7 +552,8 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		try {
 			db.execSQL("CREATE TABLE liability_loan ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-					"finance_company INTEGER);");
+					"finance_company INTEGER," +
+					"account_id INTEGER);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
 		}

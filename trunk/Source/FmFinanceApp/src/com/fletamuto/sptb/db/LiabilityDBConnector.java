@@ -40,11 +40,15 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("create_date", item.getCreateDateString());
+		rowItem.put("expiry_date", item.getExpiryDateString());
+		rowItem.put("payment_date", item.getPaymentDateString());
 		rowItem.put("amount", item.getAmount());
+		rowItem.put("orign_amount", item.getOrignAmount());
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getID());
 		rowItem.put("extend", item.getExtendID());
+		
 		
 		long ret = db.insert("liability", null, rowItem);
 		item.setID((int)ret);
@@ -68,7 +72,10 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("create_date", item.getCreateDateString());
+		rowItem.put("expiry_date", item.getExpiryDateString());
+		rowItem.put("payment_date", item.getPaymentDateString());
 		rowItem.put("amount", item.getAmount());
+		rowItem.put("orign_amount", item.getOrignAmount());
 		rowItem.put("title", item.getTitle());
 		rowItem.put("memo", item.getMemo());
 		rowItem.put("main_category", item.getCategory().getID());
@@ -267,19 +274,38 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 * @return 부채 아이템
 	 */
 	public LiabilityItem createLiabilityItem(Cursor c) {
-		LiabilityItem item = createLiabilityItem(c.getInt(13), c.getInt(8));
+		LiabilityItem item = createLiabilityItem(c.getInt(17), c.getInt(13));
 		item.setID(c.getInt(0));
 		try {
 			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		item.setAmount(c.getLong(2));
-		item.setTitle(c.getString(3));
-		item.setMemo(c.getString(4));
-		item.setCategory(c.getInt(5), c.getString(11));
-		item.setExtendID(c.getInt(8));
-		item.setState(c.getInt(9));
+		
+		try {
+			item.setExpiryDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		
+		String paymentDate = c.getString(3);
+		
+		if (paymentDate != null) {
+			try {
+				item.setPaymentDate(FinanceDataFormat.DATE_FORMAT.parse(paymentDate));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		item.setAmount(c.getLong(4));
+		item.setOrignAmount(c.getLong(5));
+		item.setTitle(c.getString(6));
+		item.setMemo(c.getString(7));
+		item.setCategory(c.getInt(8), c.getString(14));
+		item.setExtendID(c.getInt(11));
+		item.setState(c.getInt(12));
 		
 		return item;
 	}

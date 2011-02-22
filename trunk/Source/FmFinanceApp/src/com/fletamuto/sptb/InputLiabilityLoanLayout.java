@@ -1,6 +1,8 @@
 package com.fletamuto.sptb;
 
 
+import java.util.Calendar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.FinancialCompany;
+import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.data.LiabilityLoanItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
@@ -27,25 +30,36 @@ public class InputLiabilityLoanLayout extends InputLiabilityExtendLayout {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.input_liability_loan, true);
-        
         updateChildView();
-        
-      //달력을 이용한 날짜 입력을 위해
-/*
-        LinearLayout linear = (LinearLayout) findViewById(R.id.inputLiabilityLoan);
-        View popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
-        final Intent intent = getIntent();        
-        monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
-*/
-        
-        
     }
     
     @Override
 	protected void setBtnClickListener() {
     	setDateBtnClickListener(R.id.BtnLoanDate); 
         setAmountBtnClickListener(R.id.BtnLoanAmount);
+        setExpiryBtnClickListener(R.id.BtnLoanExpiryDate);
+        setPaymentBtnClickListener(R.id.BtnLoanPaymentDate);
         setSelectCompanyBtnClickListener();
+	}
+    
+    private void setExpiryBtnClickListener(int resource) {
+		((Button)findViewById(resource)).setOnClickListener(new Button.OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent intent = new Intent(InputLiabilityLoanLayout.this, MonthlyCalendar.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_SELECT_DATE_EXPIRY);
+			}
+		 });
+	}
+    
+    private void setPaymentBtnClickListener(int resource) {
+		((Button)findViewById(resource)).setOnClickListener(new Button.OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent intent = new Intent(InputLiabilityLoanLayout.this, MonthlyCalendar.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_SELECT_DATE_PAYMENT);
+			}
+		 });
 	}
     
 	protected void setSelectCompanyBtnClickListener() {
@@ -68,7 +82,7 @@ public class InputLiabilityLoanLayout extends InputLiabilityExtendLayout {
 
 	@Override
 	protected boolean getItemInstance(int id) {
-//		mSalary = (IncomeSalaryItem) DBMgr.getItem(IncomeItem.TYPE, id);
+		mLoan = (LiabilityLoanItem) DBMgr.getItem(LiabilityItem.TYPE, id);
 		if (mLoan == null) return false;
 		setItem(mLoan);
 		return true;
@@ -79,6 +93,8 @@ public class InputLiabilityLoanLayout extends InputLiabilityExtendLayout {
 	@Override
 	protected void updateChildView() {
 		updateDate();
+		updateExpiryDate();
+		updatePaymentDate();
 		updateCompanyNameText();
 		updateBtnAmountText(R.id.BtnLoanAmount);
 	}
@@ -92,8 +108,54 @@ public class InputLiabilityLoanLayout extends InputLiabilityExtendLayout {
     	getItem().setTitle(title);
 	}
 	
+    protected void updateExpiryDate() {
+    	updateBtnExpiryDateText(R.id.BtnLoanExpiryDate);
+    }
+    
+    protected void updateBtnExpiryDateText(int btnID) {	
+    	((Button)findViewById(btnID)).setText(mLoan.getExpiryDateString());
+    }
+    
+    protected void updatePaymentDate() {
+    	updateBtnPaymentDateText(R.id.BtnLoanPaymentDate);
+    }
+    
+    protected void updateBtnPaymentDateText(int btnID) {
+    	if (mLoan.getPaymentDate() == null) {
+    		((Button)findViewById(btnID)).setText("납입일을 선택해 주세요");
+    	}
+    	else {
+    		((Button)findViewById(btnID)).setText(mLoan.getPaymentDateString());
+    	}
+    }
+    
     protected void updateDate() {
     	updateBtnDateText(R.id.BtnLoanDate);
+    }
+    
+    @Override
+    public boolean checkInputData() {
+    	if (mLoan.getPaymentDate() == null) {
+    		displayAlertMessage("납입일이 설정되지 않았습니다.");
+    		return false;
+    	}
+    	
+    	if (mLoan.getCompany().getID() == -1) {
+    		displayAlertMessage("회사가 설정되지 않았습니다.");
+    		return false;
+    	}
+    	
+    	if (mLoan.getCreateDate().after(mLoan.getExpiryDate())) {
+    		displayAlertMessage("만기일을 다시 지정해 주세요");
+    		return false;
+    	}
+    	
+    	if (mLoan.getCreateDate().after(mLoan.getPaymentDate())) {
+    		displayAlertMessage("납입일을 다시 지정해 주세요");
+    		return false;
+    	}
+    	
+    	return super.checkInputData();
     }
     
     @Override
@@ -107,6 +169,33 @@ public class InputLiabilityLoanLayout extends InputLiabilityExtendLayout {
 		if (requestCode == ACT_COMPANY_SELECT) {
     		if (resultCode == RESULT_OK) {
     			updateCompany( getCompany(data.getIntExtra(MsgDef.ExtraNames.COMPANY_ID, -1)));
+    		}
+    	}
+		else if (requestCode == MsgDef.ActRequest.ACT_SELECT_DATE_EXPIRY) {
+    		if (resultCode == RESULT_OK) {
+    			
+    			int[] values = data.getIntArrayExtra("SELECTED_DATE");
+
+    			mLoan.getExpiryDate().set(Calendar.YEAR, values[0]);
+    			mLoan.getExpiryDate().set(Calendar.MONTH, values[1]);
+    			mLoan.getExpiryDate().set(Calendar.DAY_OF_MONTH, values[2]);
+				
+    			updateExpiryDate();
+    		}
+    	}
+		else if (requestCode == MsgDef.ActRequest.ACT_SELECT_DATE_PAYMENT) {
+    		if (resultCode == RESULT_OK) {
+    			
+    			int[] values = data.getIntArrayExtra("SELECTED_DATE");
+
+    			if (mLoan.getPaymentDate() == null) {
+    				mLoan.setPaymentDate(Calendar.getInstance());
+    			}
+    			mLoan.getPaymentDate().set(Calendar.YEAR, values[0]);
+    			mLoan.getPaymentDate().set(Calendar.MONTH, values[1]);
+    			mLoan.getPaymentDate().set(Calendar.DAY_OF_MONTH, values[2]);
+				
+    			updatePaymentDate();
     		}
     	}
 
