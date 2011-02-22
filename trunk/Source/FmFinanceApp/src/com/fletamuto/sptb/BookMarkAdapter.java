@@ -19,14 +19,16 @@ import com.fletamuto.sptb.data.OpenUsedItem;
 public class BookMarkAdapter extends ArrayAdapter<OpenUsedItem> {
 	Context context;
 	int layoutResouceId;
+	Boolean editableList;
 	ArrayList<OpenUsedItem> bookMarkItemDatas;
 	
 	public BookMarkAdapter(Context context, int textViewResourceId,
-			ArrayList<OpenUsedItem> bookMarkItemDatas) {
+			ArrayList<OpenUsedItem> bookMarkItemDatas, Boolean editableList) {
 		super(context, textViewResourceId, bookMarkItemDatas);
 		this.context = context;
 		this.layoutResouceId = textViewResourceId;
 		this.bookMarkItemDatas = bookMarkItemDatas;
+		this.editableList = editableList;
 	}
 
 	@Override
@@ -57,7 +59,7 @@ public class BookMarkAdapter extends ArrayAdapter<OpenUsedItem> {
 			viewHolder.title.setText(expenseItem.getMemo() + " " + bookMarkItemDatas.get(position).getPriority());
 			viewHolder.category.setText(String.format("%s - %s", expenseItem.getCategory().getName(), expenseItem.getSubCategory().getName()));
 			viewHolder.method.setText(expenseItem.getPaymentMethod().getName());
-			if(InputExpenseLayout.editableList) {
+			if(editableList) {
 				viewHolder.deleteImage.setVisibility(View.VISIBLE);
 			} else {
 				viewHolder.deleteImage.setVisibility(View.INVISIBLE);
@@ -72,7 +74,7 @@ public class BookMarkAdapter extends ArrayAdapter<OpenUsedItem> {
 			viewHolder.title.setText(incomeItem.getMemo() + " " + bookMarkItemDatas.get(position).getPriority());
 			viewHolder.category.setText(String.format("%s - %s", incomeItem.getCategory().getName(), incomeItem.getSubCategory().getName()));
 			viewHolder.method.setText(incomeItem.getAccountText());
-			if(InputExpenseLayout.editableList) {
+			if(editableList) {
 				viewHolder.deleteImage.setVisibility(View.VISIBLE);
 			} else {
 				viewHolder.deleteImage.setVisibility(View.INVISIBLE);
