@@ -45,6 +45,9 @@ public final class MsgDef {
 		public final static int ACT_SELECT_DATE_EXPIRY = 39;
 		public final static int ACT_SELECT_DATE_PAYMENT = 40;
 		public final static int ACT_INPUT_PEPAY = 41;
+		public final static int ACT_SELECT_DATE = 42;
+		public final static int ACT_AMOUNT_PRINCIPAL = 43;
+		public final static int ACT_AMOUNT_INTEREST = 44;
 	}
 	
 	public static final class ExtraNames {

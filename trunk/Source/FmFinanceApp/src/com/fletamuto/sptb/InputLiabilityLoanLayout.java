@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.data.LiabilityLoanItem;
@@ -39,8 +40,20 @@ public class InputLiabilityLoanLayout extends InputLiabilityExtendLayout {
         setAmountBtnClickListener(R.id.BtnLoanAmount);
         setExpiryBtnClickListener(R.id.BtnLoanExpiryDate);
         setPaymentBtnClickListener(R.id.BtnLoanPaymentDate);
+        setAccountBtnClickListener(R.id.BtnLoanAccount);
         setSelectCompanyBtnClickListener();
 	}
+    
+    protected void setAccountBtnClickListener(int btnID) {
+    	Button btnAccount = (Button)findViewById(btnID);
+    	btnAccount.setOnClickListener(new Button.OnClickListener() {
+		
+			public void onClick(View v) {
+				Intent intent = new Intent(InputLiabilityLoanLayout.this, SelectAccountLayout.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_ACCOUNT_SELECT);
+			}
+		 });
+    }
     
     private void setExpiryBtnClickListener(int resource) {
 		((Button)findViewById(resource)).setOnClickListener(new Button.OnClickListener() {
@@ -96,6 +109,7 @@ public class InputLiabilityLoanLayout extends InputLiabilityExtendLayout {
 		updateExpiryDate();
 		updatePaymentDate();
 		updateCompanyNameText();
+		updateAccountText();
 		updateBtnAmountText(R.id.BtnLoanAmount);
 	}
 
@@ -155,6 +169,11 @@ public class InputLiabilityLoanLayout extends InputLiabilityExtendLayout {
     		return false;
     	}
     	
+    	if (mLoan.getAccount().getID() == -1) {
+    		displayAlertMessage("계좌가 설정되지 않았습니다.");
+    		return false;
+    	}
+    	
     	return super.checkInputData();
     }
     
@@ -196,6 +215,11 @@ public class InputLiabilityLoanLayout extends InputLiabilityExtendLayout {
     			mLoan.getPaymentDate().set(Calendar.DAY_OF_MONTH, values[2]);
 				
     			updatePaymentDate();
+    		}
+    	}
+		else if (requestCode == MsgDef.ActRequest.ACT_ACCOUNT_SELECT) {
+    		if (resultCode == RESULT_OK) {
+    			updateAccount( DBMgr.getAccountItem(data.getIntExtra(MsgDef.ExtraNames.ACCOUNT_ID, -1)));
     		}
     	}
 
@@ -255,5 +279,24 @@ public class InputLiabilityLoanLayout extends InputLiabilityExtendLayout {
 		else {
 			((Button)findViewById(R.id.BtnLoanCompany)).setText(String.format("%s", mLoan.getCompany().getName()));
 		}
+	}
+	
+	private void updateAccount(AccountItem account) {
+		if (account == null){
+			return;
+		}
+		
+		mLoan.setAccount(account);
+		updateAccountText();
+	}
+	
+	private void updateAccountText() {
+		if (mLoan.getAccount().getID() == -1) {
+			((Button)findViewById(R.id.BtnLoanAccount)).setText("계좌를 선택해 주세요");
+		}
+		else {
+			((Button)findViewById(R.id.BtnLoanAccount)).setText(String.format("%s : %s", mLoan.getAccount().getCompany().getName(), mLoan.getAccount().getNumber()));
+		}
+		
 	}
 }

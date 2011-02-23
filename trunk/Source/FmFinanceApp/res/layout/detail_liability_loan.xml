@@ -43,7 +43,12 @@
 			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVLoanRemainderAmount" android:textSize="18sp">
 			</TextView>
 		</LinearLayout>
-		
+		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="상환계좌" android:id="@+id/TVLoanAccountT" android:layout_width="95dp">
+			</TextView>
+			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVLoanAccount" android:textSize="18sp">
+			</TextView>
+		</LinearLayout>
 		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
 			<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="납입일" android:id="@+id/TVLoanPaymentDateT" android:layout_width="95dp">
 			</TextView>
@@ -56,7 +61,7 @@
 				</TextView>
 				<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVLoanPaymentAmount" android:textSize="18sp" android:layout_weight="1">
 				</TextView>
-				<ToggleButton android:layout_width="wrap_content" android:layout_weight="0" android:layout_height="wrap_content" android:textOff="내역보기" android:textOn="내역닫기" android:id="@+id/TBSavingPeruse"></ToggleButton>
+				<ToggleButton android:layout_width="wrap_content" android:layout_weight="0" android:layout_height="wrap_content" android:textOff="내역보기" android:textOn="내역닫기" android:id="@+id/TBLoanPeruse"></ToggleButton>
 			
 			</LinearLayout>
 			<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLLoanPayment" android:orientation="vertical" android:visibility="gone">
