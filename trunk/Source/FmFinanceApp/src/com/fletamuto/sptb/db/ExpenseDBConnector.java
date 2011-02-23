@@ -352,7 +352,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("name", category.getName());
 		//임시코드
 		rowItem.put("prioritize", 0);
-		rowItem.put("image_index", 0);
+		rowItem.put("image_index", category.getImageIndex());
 		rowItem.put("extend_type", category.getExtndType());
 		rowItem.put("type", category.getUIType());
 		
@@ -367,7 +367,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	 * @param name 분류 이름
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred 
 	 */
-	public long addSubCategory(long mainCategoryID, String name) {
+	public long addSubCategory(long mainCategoryID, String name, int imgIndex) {
 		long ret = -1;
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
@@ -376,7 +376,7 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("main_id", mainCategoryID);
 		//임시코드
 		rowItem.put("prioritize", 0);
-		rowItem.put("image_index", 0);
+		rowItem.put("image_index", imgIndex);
 		rowItem.put("extend_type", 0);
 		rowItem.put("type", 0);
 		
@@ -451,13 +451,14 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		ArrayList<Category> subCategory = new ArrayList<Category>();
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query("expense_sub_category", null, "main_id=?", new String[]{String.valueOf(mainCategoryId)}, null, null, null);
-		
+
 		if (c.moveToFirst() != false) {
 			do {
-				Category item = new Category(c.getInt(0), c.getString(1));
+				Category item = new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
 				subCategory.add(item);
 			} while (c.moveToNext());
 		}
+
 		c.close();
 		closeDatabase();
 		return subCategory;
@@ -663,14 +664,14 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	 * @param name 변경할 이름
 	 * @return int the number of rows affected 
 	 */
-	public int updateCategory(int id, String name) {
+	public int updateCategory(int id, String name, int imgIndex) {
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
 		//임시코드
 		rowItem.put("prioritize", 0);
-		rowItem.put("image_index", 0);
+		rowItem.put("image_index", imgIndex);
 		
 		int result = db.update("expense_main_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
 		closeDatabase();
@@ -683,14 +684,14 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 	 * @param name 변경할 이름
 	 * @return int the number of rows affected 
 	 */
-	public int updateSubCategory(int id, String name) {
+	public int updateSubCategory(int id, String name, int imgIndex) {
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
 		//임시코드
 		rowItem.put("prioritize", 0);
-		rowItem.put("image_index", 0);
+		rowItem.put("image_index", imgIndex);
 		
 		int result = db.update("expense_sub_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
 		closeDatabase();

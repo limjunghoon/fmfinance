@@ -17,7 +17,7 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	public abstract long updateAmountFinanceItem(int id, long amount);
 	public abstract ArrayList<FinanceItem> getAllItems();
 	public abstract FinanceItem getItem(int id);
-	public abstract long addSubCategory(long mainCategoryID, String name);
+	public abstract long addSubCategory(long mainCategoryID, String name, int imgIndex);
 	public abstract long addCategory(Category category);
 	public abstract ArrayList<Category> getCategory();
 	public abstract ArrayList<Category> getCategory(int extendItem);
@@ -37,7 +37,7 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	public abstract ArrayList<FinanceItem> getItemsFromSubCategoryID(int subCategoryID, int year, int month);
 	public abstract int deleteItem(int id);
 	public abstract int deleteCategory(int id);
-	public abstract int updateCategory(int id, String name);
+	public abstract int updateCategory(int id, String name, int imgIndex);
 	public abstract long updateRepeat(int itemID, int repeatID);
 	public abstract int addOpenUsedItem(OpenUsedItem item);
 	public abstract ArrayList<OpenUsedItem> getOpenUsedItems();
@@ -70,9 +70,7 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 		return 0;
 	}
 	
-	public int updateSubCategory(int id, String name) {
-		return 0;
-	}
+	public abstract int updateSubCategory(int id, String name, int imgIndex);
 
 	public ArrayList<Long> getTotalTagAmountMonthInYear(int tagID, int year) {
 		// TODO Auto-generated method stub
