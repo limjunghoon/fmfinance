@@ -277,9 +277,9 @@ public final class DBMgr {
 	 * @param name 변경되는 분류 이름
 	 * @return 성공여부
 	 */
-	public static int updateCategory(int itemType, int id, String name) {
+	public static int updateCategory(int itemType, int id, String name, int imgIndex) {
 		if (checkFinanceItemType(itemType) == false) return 0;
-		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).updateCategory(id, name);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).updateCategory(id, name, imgIndex);
 	}
 	
 	/**
@@ -289,9 +289,9 @@ public final class DBMgr {
 	 * @param name 변경되는 하위 분류 이름
 	 * @return 성공여부
 	 */
-	public static int updateSubCategory(int itemType, int id, String name) {
+	public static int updateSubCategory(int itemType, int id, String name, int imgIndex) {
 		if (checkFinanceItemType(itemType) == false) return 0;
-		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).updateSubCategory(id, name);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).updateSubCategory(id, name, imgIndex);
 	}
 	
 	/**
@@ -443,9 +443,9 @@ public final class DBMgr {
 	 * @param name 하위 분류 이름
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred
 	 */
-	public static int addSubCategory(int itemType, long mainCategoryID, String name) {
+	public static int addSubCategory(int itemType, long mainCategoryID, String name, int imgIndex) {
 		if (checkFinanceItemType(itemType) == false) return -1;
-		return (int)mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).addSubCategory(mainCategoryID, name);
+		return (int)mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).addSubCategory(mainCategoryID, name, imgIndex);
 	}
 	
 	/**

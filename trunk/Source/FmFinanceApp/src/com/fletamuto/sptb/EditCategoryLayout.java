@@ -161,7 +161,7 @@ public class EditCategoryLayout  extends FmBaseActivity {
 			return null;
 		}
 		
-		int subCategoryID = DBMgr.addSubCategory(mType, mMainCategoryID, subCategoryName);
+		int subCategoryID = DBMgr.addSubCategory(mType, mMainCategoryID, subCategoryName, 0);
 		if (subCategoryID == -1) {
 			return null;
 		}
@@ -461,11 +461,11 @@ public class EditCategoryLayout  extends FmBaseActivity {
 	}
 
 	private int updateMainCategory(int id, String name) {
-		return (DBMgr.updateCategory(mType, id, name));
+		return (DBMgr.updateCategory(mType, id, name, 0));
 	}
     
     private int updateSubCategory(int id, String name) {
-    	return (DBMgr.updateSubCategory(mType, id, name));
+    	return (DBMgr.updateSubCategory(mType, id, name, 0));
 	}
     
     public class CategoryItemAdapter extends ArrayAdapter<Category> {

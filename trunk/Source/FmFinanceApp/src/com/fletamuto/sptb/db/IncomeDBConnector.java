@@ -303,7 +303,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 * @param name 분류 이름
 	 * @return the row ID of the newly inserted row, or -1 if an error occurred 
 	 */
-	public long addSubCategory(long mainCategoryID, String name) {
+	public long addSubCategory(long mainCategoryID, String name, int imgIndex) {
 		long ret = -1;
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
@@ -312,7 +312,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("main_id", mainCategoryID);
 		//임시코드
 		rowItem.put("prioritize", 0);
-		rowItem.put("image_index", 0);
+		rowItem.put("image_index", imgIndex);
 		rowItem.put("extend_type", 0);
 		rowItem.put("type", 0);
 		
@@ -527,14 +527,14 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 	 * @param name 변경할 이름
 	 * @return int the number of rows affected 
 	 */
-	public int updateCategory(int id, String name) {
+	public int updateCategory(int id, String name, int imgIndex) {
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
 		rowItem.put("name", name);
 		//임시코드
 		rowItem.put("prioritize", 0);
-		rowItem.put("image_index", 0);
+		rowItem.put("image_index", imgIndex);
 		
 		int result = db.update("income_main_category", rowItem, "_id=?", new String[] {String.valueOf(id)});
 		closeDatabase();
@@ -673,6 +673,11 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		c.close();
 		closeDatabase();
 		return incomeItems;
+	}
+	
+	
+	public int updateSubCategory(int id, String name, int imgIndex) {
+		return 0;
 	}
 
 

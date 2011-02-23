@@ -1114,6 +1114,9 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		int liabilityCategory = salaryCategory-1;
 		int assetsCategory = liabilityCategory-1;
 		
+		String [] baseMainCategory = context.getResources().getStringArray(R.array.expense_base_main_category);
+		int categoryLenth = baseMainCategory.length;
+				
 		for (int i = 0; i < subCategoryArrLenth; i++) {
 			String [] subCategory = baseSubCategorys.get(i);
 			int subCategoryLenth = subCategory.length;
@@ -1121,7 +1124,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			for (int j = 0; j < subCategoryLenth; j++) {
 				rowItem.put("name", subCategory[j]);
 				rowItem.put("prioritize", i+1);
-				rowItem.put("image_index", i+1);
+				rowItem.put("image_index", ++categoryLenth);
 				rowItem.put("main_id", i+1);
 				
 				// 임시 코드 /////////////////

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+ xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"        
+>
+<LinearLayout
+  android:id="@+id/EditCategoryLL"
+  android:orientation="vertical"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+	<RelativeLayout
+  		android:id="@+id/EditCategoryRL"
+  		android:layout_height="wrap_content" android:layout_width="fill_parent">
+  		<TextView
+  			android:id="@+id/EditCategoryTitle" android:text="" android:textSize="20sp" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_centerInParent="true"/>
+  		<Button
+  			android:id="@+id/BtnEditCategorySave" android:text="완료" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentRight="true"/>	
+  
+  	</RelativeLayout>
+  	<EditText
+  	android:id="@+id/EditCategoryEditor" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="20dp"/>
+	<GridView android:numColumns="4" android:gravity="center" android:layout_width="fill_parent" android:layout_height="fill_parent" android:id="@+id/EditCategoryGrid"></GridView>
+</LinearLayout>
+</LinearLayout>
