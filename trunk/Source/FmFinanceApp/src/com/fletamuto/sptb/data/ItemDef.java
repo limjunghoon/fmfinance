@@ -47,5 +47,6 @@ public final class ItemDef {
 		public static final int LOAN = 301;
 		public static final int CASH_SERVICE = 302;
 		public static final int PERSON_LOAN = 303;
+		public static final int CREDIT_LINE = 304;
 	}
 }

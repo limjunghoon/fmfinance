@@ -171,8 +171,8 @@
 		<item>대출</item>
 		<item>현금 서비스</item>
 		<item>빌린 돈</item>
-		<item>카드</item>
 		<item>마이너스 통장</item>
+		<item>기타</item>
 	</string-array>
 	
 	<string-array name="financial_institution_banking">

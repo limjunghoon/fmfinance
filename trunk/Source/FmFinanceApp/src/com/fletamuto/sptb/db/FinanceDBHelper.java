@@ -1074,6 +1074,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			if (index == 0) rowItem.put("extend_type", ItemDef.ExtendLiablility.LOAN);
 			else if (index == 1) rowItem.put("extend_type", ItemDef.ExtendLiablility.CASH_SERVICE);
 			else if (index == 2) rowItem.put("extend_type", ItemDef.ExtendLiablility.PERSON_LOAN);
+			else if (index == 3) rowItem.put("extend_type", ItemDef.ExtendLiablility.CREDIT_LINE);
 			else rowItem.put("extend_type", ItemDef.ExtendLiablility.NONE);
 			//////////////////////////////////////////////////////////////////
 			

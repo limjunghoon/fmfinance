@@ -493,6 +493,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				createPaymentMethod(PaymentMethod.CARD);
 				
 				Intent intent = new Intent(InputExpenseLayout.this, SelectCardLayout.class);
+				intent.putExtra(MsgDef.ExtraNames.INSTALLMENT_PLAN_MODE, true);
 				startActivityForResult(intent, ACT_CARD_SELECT);
 			}
 		});

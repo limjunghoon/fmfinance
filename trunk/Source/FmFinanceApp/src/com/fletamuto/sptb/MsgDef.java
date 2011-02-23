@@ -97,6 +97,7 @@ public final class MsgDef {
 		public static final String MY_POCKET = "MY_POCKET";
 		public static final String OPEN_USED_ITEM = "OPEN_USED_ITEM";
 		public static final String CHANGE_AMOUNT = "CHANGE_AMOUNT";
+		public static final String INSTALLMENT_PLAN_MODE = "INSTALLMENT_PLAN_MODE";
 		
 	}
 }
