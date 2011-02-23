@@ -28,6 +28,7 @@ public class SelectCardLayout extends BaseSlidingActivity/*Activity*/ {
 	private ArrayList<CardItem> mArrCard;
 	protected CategoryItemAdapter mAdapterCard;
 	private int mSelectedInstallmentPlan = -1;
+	private boolean mInstallmentPlanMode = false;
 
     /** Called when the activity is first created. */
     @Override
@@ -42,9 +43,15 @@ public class SelectCardLayout extends BaseSlidingActivity/*Activity*/ {
         appearAnimation();
         //end
         
+        initialize();
         setAddButtonListener();
         getCardItems();
         setAdapterList();
+    }
+    
+    
+    protected void initialize() {
+    	mInstallmentPlanMode = getIntent().getBooleanExtra(MsgDef.ExtraNames.INSTALLMENT_PLAN_MODE, false);
     }
 	
 	protected void getCardItems() {
@@ -86,6 +93,13 @@ public class SelectCardLayout extends BaseSlidingActivity/*Activity*/ {
 	 */
 	private void SelectedInstallmentPlan(final CardItem card) {
 		
+		if (mInstallmentPlanMode == false) {
+			Intent intent = new Intent();
+			intent.putExtra(MsgDef.ExtraNames.CARD_ID, card.getID());
+			setResult(RESULT_OK, intent);
+			finish();
+			return;
+		}
 		
 		new AlertDialog.Builder(SelectCardLayout.this)
 	    .setTitle("할부선택")

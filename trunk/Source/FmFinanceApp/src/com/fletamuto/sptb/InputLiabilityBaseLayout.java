@@ -41,13 +41,16 @@ public abstract class InputLiabilityBaseLayout extends InputFinanceItemBaseLayou
 	 
 	 protected IncomeItem createIncomeItem() {
 		IncomeItem income = new IncomeItem();
-			
 		ArrayList<Category> categories = DBMgr.getCategory(IncomeItem.TYPE, ItemDef.ExtendLiablility.NONE);
-		if (categories.size() == 0) return null;
-		Category mainCategory = categories.get(0);
-		if (mainCategory == null) return null;
 		
-		income.setCategory(mainCategory);
+		int size = categories.size();
+		for (int index = 0; index < size; index++) {
+			Category incomeCategory = categories.get(index);
+			if (incomeCategory.getName().compareTo(getItem().getCategory().getName()) == 0) {
+				income.setCategory(incomeCategory);
+				break;
+			}
+		}
 		income.setAmount(getItem().getTotalAmount());
 		income.setCreateDate(getItem().getCreateDate());
 		
