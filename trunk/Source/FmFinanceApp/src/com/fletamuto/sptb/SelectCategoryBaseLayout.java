@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 import com.fletamuto.sptb.ConstantImagesArray;
@@ -197,54 +198,77 @@ public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 			imgBtn.setTag(category);
 			TextView tv = (TextView) convertView.findViewById (R.id.GridItemText);
 			
-			//Sub Category 영역을 구분 하기 위한 부분
-			if (position > getSubCategoryStartPosition()-1 && position < getSubCategoryStartPosition() + getSubCategoryCount()) {
-				fLayout.setBackgroundColor(Color.BLACK);
-				tv.setTextColor(Color.WHITE);
+			if (mType == ExpenseItem.TYPE) {
+				//Sub Category 영역을 구분 하기 위한 부분
+				if (position > getSubCategoryStartPosition()-1 && position < getSubCategoryStartPosition() + getSubCategoryCount()) {
+					fLayout.setBackgroundColor(Color.BLACK);
+					tv.setTextColor(Color.WHITE);
+					if (getEditCategoryMode()) {
+						imgBtn.setVisibility(ImageButton.VISIBLE);
+					}
+				
+				} else {
+					if (getEditCategoryMode() && getSubCategoryMode()) {
+
+						if (category.getID() < -1) {
+							button.setImageResource(ConstantImagesArray.CATEGORY_IMAGES[149]);
+						} else {
+							button.setImageResource(ConstantImagesArray.CATEGORY_IMAGES[category.getImageIndex()-1]);
+						}
+						tv.setText(category.getName());
+						button.setTag(category);
+						button.setClickable(false);					
+						return convertView;
+					} else if (getEditCategoryMode() && getSubCategoryMode() == false) {
+						imgBtn.setVisibility(ImageButton.VISIBLE);
+					}
+				}
+						
+				//Sub Category 빈공간 넣는 부분
+				if (category == null) {
+					button.setVisibility(Button.INVISIBLE);
+					imgBtn.setVisibility(ImageButton.INVISIBLE);
+					return convertView;
+				}
+			
+				if (category.getID() < -1) {
+					button.setImageResource(ConstantImagesArray.CATEGORY_IMAGES[149]);
+				} else {
+					button.setImageResource(ConstantImagesArray.CATEGORY_IMAGES[category.getImageIndex()-1]);
+				}
+			
+				tv.setText(category.getName());
+				button.setOnClickListener(categoryListener);
+				button.setTag(category);
+				
+				//추가 버튼에는 Check 버튼 안 나타나게 방어 코드
+				if (category.getID() < -1) {
+					imgBtn.setVisibility(ImageButton.INVISIBLE);
+				}
+			} else if (mType == IncomeItem.TYPE) {
+				
 				if (getEditCategoryMode()) {
 					imgBtn.setVisibility(ImageButton.VISIBLE);
 				}
 				
-			} else {
-				if (getEditCategoryMode() && getSubCategoryMode()) {
-//					button.setText(category.getName());
-					if (category.getID() < -1) {
-						button.setImageResource(ConstantImagesArray.CATEGORY_IMAGES[149]);
-					} else {
-						button.setImageResource(ConstantImagesArray.CATEGORY_IMAGES[category.getImageIndex()-1]);
-					}
-					tv.setText(category.getName());
-					button.setTag(category);
-					button.setClickable(false);					
-					return convertView;
-				} else if (getEditCategoryMode() && getSubCategoryMode() == false) {
-					imgBtn.setVisibility(ImageButton.VISIBLE);
+				if (category.getID() < -1) {
+					button.setImageResource(ConstantImagesArray.INCOME_CATEGORY_IMAGES[49]);
+				} else {
+					button.setImageResource(ConstantImagesArray.INCOME_CATEGORY_IMAGES[category.getImageIndex()-1]);
 				}
-			}
-						
-			//Sub Category 빈공간 넣는 부분
-			if (category == null) {
-				button.setVisibility(Button.INVISIBLE);
-				imgBtn.setVisibility(ImageButton.INVISIBLE);
-				return convertView;
-			}
-			
-//			button.setText(category.getName());
-
-			if (category.getID() < -1) {
-				button.setImageResource(ConstantImagesArray.CATEGORY_IMAGES[149]);
+				
+				tv.setText(category.getName());
+				button.setOnClickListener(categoryListener);
+				button.setTag(category);
+				
+				//추가 버튼에는 Check 버튼 안 나타나게 방어 코드
+				if (category.getID() < -1) {
+					imgBtn.setVisibility(ImageButton.INVISIBLE);
+				}
 			} else {
-				button.setImageResource(ConstantImagesArray.CATEGORY_IMAGES[category.getImageIndex()-1]);
+				
 			}
 			
-			tv.setText(category.getName());
-			button.setOnClickListener(categoryListener);
-			button.setTag(category);
-			
-			if (category.getID() < -1) {
-				imgBtn.setVisibility(ImageButton.INVISIBLE);
-			}
-
 			return convertView;
 		}
 	}
