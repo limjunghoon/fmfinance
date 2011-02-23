@@ -521,8 +521,9 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					"liability_id INTEGER NOT NULL," +
 					"change_date DATE NOT NULL," +
 					"amount INTEGER NOT NULL," +
+					"principal INTEGER," +
+					"interest INTEGER," +
 					"memo TEXT," +
-					"count INTEGER NOT NULL," +
 					"state INTEGER);");
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());

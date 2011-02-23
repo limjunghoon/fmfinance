@@ -11,9 +11,11 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.LiabilityCashServiceItem;
+import com.fletamuto.sptb.data.LiabilityChangeItem;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.data.LiabilityLoanItem;
 import com.fletamuto.sptb.data.LiabilityPersonLoanItem;
@@ -54,9 +56,9 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		item.setID((int)ret);
 		closeDatabase();
 		
-		if (ret != -1) {
-			return addStateChangeItem(item);
-		}
+//		if (ret != -1) {
+//			return addChangeStateItem(item);
+//		}
 		return ret;
 	}
 	
@@ -325,15 +327,16 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		}
 	}
 	
-	private LiabilityItem getLoanItem(int stockID) {
+	private LiabilityItem getLoanItem(int loanID) {
 		LiabilityLoanItem loan = new LiabilityLoanItem();
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		
-		Cursor c = db.query("liability_loan", null, "_id=?", new String[]{String.valueOf(stockID)}, null, null, null);
+		Cursor c = db.query("liability_loan", null, "_id=?", new String[]{String.valueOf(loanID)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			loan.setLoanID(c.getInt(0));
 			loan.setCompany(DBMgr.getCompany(c.getInt(1)));
+			loan.setAccount(DBMgr.getAccountItem(c.getInt(2)));
 		}
 		c.close();
 		closeDatabase();
@@ -344,7 +347,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		LiabilityPersonLoanItem personLoan = new LiabilityPersonLoanItem();
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		
-		Cursor c = db.query("liability_loan", null, "_id=?", new String[]{String.valueOf(personID)}, null, null, null);
+		Cursor c = db.query("liability_person_loan", null, "_id=?", new String[]{String.valueOf(personID)}, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			personLoan.setPersonLoanID(c.getInt(0));
@@ -655,6 +658,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("finance_company", loan.getCompany().getID());
+		rowItem.put("account_id", loan.getAccount().getID());
 		long extend = db.insert("liability_loan", null, rowItem);
 		closeDatabase();
 		if (extend == -1){
@@ -695,16 +699,19 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return addItem(personLoan);
 	}
 	
-	private long addDefaultStateChangeItem(LiabilityItem item) {
+	private long addDefaultStateChangeItem(LiabilityChangeItem item) {
 		long ret = -1;
-		LiabilityItem todayItem = (LiabilityItem) getStateChangeItem(item.getCreateDate());
+		LiabilityChangeItem todayItem = (LiabilityChangeItem) getStateChangeItem(item.getChangeDate());
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
-		rowItem.put("liability_id", item.getID());
-		rowItem.put("change_date", item.getCreateDateString());
+		rowItem.put("liability_id", item.getLiabilityID());
+		rowItem.put("change_date", item.getChangeDateString());
 		rowItem.put("amount", item.getAmount());
+		rowItem.put("principal", item.getPrincipal().getID());
+		rowItem.put("interest", item.getInterest().getID());
 		rowItem.put("memo", item.getMemo());
+	//	rowItem.put("state", item.getMemo());
 		
 		if (todayItem == null) {
 			ret = db.insert("liability_change_amount", null, rowItem);
@@ -717,9 +724,8 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return ret;
 	}
 	
-	public long addStateChangeItem(FinanceItem fItem) {
-		LiabilityItem item = (LiabilityItem) fItem;
-		if (item.getID() == -1) {
+	public long addChangeStateItem(LiabilityChangeItem item) {
+		if (item.getLiabilityID() == -1) {
 			Log.e(LogTag.DB, ":: INVAILD liability ITEM ID");
 			return -1;
 		}
@@ -733,22 +739,40 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 //		return -1;
 	}
 	
-	public ArrayList<FinanceItem> getStateItems(int id) {
-		ArrayList<FinanceItem> LiabilityItems = new ArrayList<FinanceItem>(); 
+	public ArrayList<LiabilityChangeItem> getStateItems(int id) {
+		ArrayList<LiabilityChangeItem> LiabilityItems = new ArrayList<LiabilityChangeItem>(); 
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		Cursor c = db.query("liability_change_amount", null, "liability_id=?", new String[] {String.valueOf(id)}, null, null, "change_date DESC");
 		
 		if (c.moveToFirst() != false) {
 			do {
-				LiabilityItem liability = new LiabilityItem();
+				LiabilityChangeItem liability = new LiabilityChangeItem();
 				liability.setID(c.getInt(0));
+				liability.setLiabilityID(c.getInt(1));
 				try {
-					liability.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
+					liability.setChangeDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 				liability.setAmount(c.getLong(3));
-				liability.setMemo(c.getString(5));
+				
+				int principalID = c.getInt(4);
+				if (principalID != -1) {
+					ExpenseItem principal = (ExpenseItem) DBMgr.getItem(ExpenseItem.TYPE, principalID);
+					if (principal != null) {
+						liability.setPrincipal(principal);
+					}
+				}
+				
+				int interestID = c.getInt(5);
+				if (interestID != -1) {
+					ExpenseItem interest = (ExpenseItem) DBMgr.getItem(ExpenseItem.TYPE, interestID);
+					if (interest != null) {
+						liability.setInterest(interest);
+					}
+				}
+				
+				liability.setMemo(c.getString(6));
 				LiabilityItems.add(liability);
 			} while (c.moveToNext());
 		}
@@ -757,22 +781,40 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return LiabilityItems;
 	}
 	
-	public FinanceItem getStateChangeItem(Calendar calendar) {
-		LiabilityItem liability = null;
+	public LiabilityChangeItem getStateChangeItem(Calendar calendar) {
+		LiabilityChangeItem liability = null;
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())}; 
 		Cursor c = db.query("liability_change_amount", null, "strftime('%Y-%m-%d', change_date)=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
-			liability = new LiabilityItem();
+			liability = new LiabilityChangeItem();
 			liability.setID(c.getInt(0));
+			liability.setLiabilityID(c.getInt(1));
 			try {
-				liability.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
+				liability.setChangeDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 			liability.setAmount(c.getLong(3));
-			liability.setMemo(c.getString(5));
+			
+			int principalID = c.getInt(4);
+			if (principalID != -1) {
+				ExpenseItem principal = (ExpenseItem) DBMgr.getItem(ExpenseItem.TYPE, principalID);
+				if (principal != null) {
+					liability.setPrincipal(principal);
+				}
+			}
+			
+			int interestID = c.getInt(5);
+			if (interestID != -1) {
+				ExpenseItem interest = (ExpenseItem) DBMgr.getItem(ExpenseItem.TYPE, interestID);
+				if (interest != null) {
+					liability.setInterest(interest);
+				}
+			}
+			
+			liability.setMemo(c.getString(6));
 		}
 		c.close();
 		closeDatabase();

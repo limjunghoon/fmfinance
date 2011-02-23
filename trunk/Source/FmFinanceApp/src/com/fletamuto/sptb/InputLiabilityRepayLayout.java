@@ -1,5 +1,8 @@
 package com.fletamuto.sptb;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +13,14 @@ import android.widget.TextView;
 
 import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.ItemDef;
+import com.fletamuto.sptb.data.LiabilityChangeItem;
 import com.fletamuto.sptb.data.LiabilityLoanItem;
+import com.fletamuto.sptb.data.PaymentAccountMethod;
+import com.fletamuto.sptb.data.PaymentCashMethod;
+import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.data.TransferItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
@@ -20,8 +30,12 @@ import com.fletamuto.sptb.util.LogTag;
  * @author yongbban
  * @version  1.0.0.1
  */
-public class InputLiabilityRepayLayout extends InputBaseLayout {  	
+public class InputLiabilityRepayLayout extends InputBaseLayout {
+	/** 대출 정보*/
 	private LiabilityLoanItem mLoan;
+	
+	/** 변경정보*/
+	private LiabilityChangeItem mChangeItem;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,21 +51,17 @@ public class InputLiabilityRepayLayout extends InputBaseLayout {
 		setTitle("대출 상환");
 		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "완료");
 		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
-//		setCompleateButtonListener();
+		
 		super.setTitleBtn();
 	}
 
 	@Override
 	public boolean checkInputData() {
-//		if (mTrans.getToAccount().getID() == -1) {
-//			displayAlertMessage("입금 계좌가 선택되지 않았습니다.");
-//			return false;
-//		}
-//		
-//		if (mTrans.getAmount() > mTrans.getFromAccount().getBalance()) {
-//			displayAlertMessage("출금계좌 잔액을 초과하는 금액입니다.");
-//			return false;
-//		}
+		if (mChangeItem.getPrincipal().getAmount() == 0L && mChangeItem.getInterest().getAmount() == 0L) {
+			displayAlertMessage("원금과 이자 중 하나이상 입력이 되어야 합니다.");
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -59,6 +69,8 @@ public class InputLiabilityRepayLayout extends InputBaseLayout {
 	protected void createItemInstance() {
 		mLoan = (LiabilityLoanItem) getIntent().getSerializableExtra(MsgDef.ExtraNames.ITEM);
 		if (mLoan == null) finish();
+		mChangeItem = new LiabilityChangeItem(mLoan);
+		mChangeItem.setChangeDate(Calendar.getInstance());
 	}
 
 	@Override
@@ -80,17 +92,70 @@ public class InputLiabilityRepayLayout extends InputBaseLayout {
 	}
 	
 	private void saveNewItem() {
-//		if (DBMgr.addTranser(mTrans) == -1) {
-//			Log.e(LogTag.LAYOUT, ":: Fail to create tranfer item");
-//		}
-//		long fromItemBalance = mTrans.getFromAccount().getBalance();
-//		long toItemBalance = mTrans.getToAccount().getBalance();
-//		
-//		mTrans.getFromAccount().setBalance(fromItemBalance  - mTrans.getAmount());
-//		mTrans.getToAccount().setBalance(toItemBalance + mTrans.getAmount());
-//		DBMgr.updateAccount(mTrans.getFromAccount());
-//		DBMgr.updateAccount(mTrans.getToAccount());
+		if (DBMgr.addFinanceItem(createExpensePrincipalItem()) == -1) {
+			Log.e(LogTag.LAYOUT, ":: Fail to create ExpensePrincipalItem item");
+		}
+		
+		if (DBMgr.addFinanceItem(createExpenseInterestItem()) == -1) {
+			Log.e(LogTag.LAYOUT, ":: Fail to create ExpensePrincipalItem item");
+		}
+		
+		if (mLoan.getAmount() <= mChangeItem.getPrincipal().getAmount()) {
+			mLoan.setAmount(0L);
+		}
+		else {
+			mLoan.setAmount(mLoan.getAmount() - mChangeItem.getPrincipal().getAmount());
+		}
+		DBMgr.updateFinanceItem(mLoan);
+		
+		mChangeItem.setAmount(mLoan.getAmount());
+		if (DBMgr.addLiabilityChangeStateItem(mChangeItem) == -1) {
+			Log.e(LogTag.LAYOUT, ":: Fail to addLiabilityChangeStateItem");
+		}
+
 		finish();
+	}
+	
+	public ExpenseItem createExpensePrincipalItem() {
+		createExpenseItem(mChangeItem.getPrincipal());
+		mChangeItem.getPrincipal().setMemo(String.format("%s(원금)", mLoan.getTitle()));
+		return mChangeItem.getPrincipal();
+	}
+	
+	public ExpenseItem createExpenseInterestItem() {
+		createExpenseItem(mChangeItem.getInterest());
+		mChangeItem.getInterest().setMemo(String.format("%s(이자)", mLoan.getTitle()));
+		return mChangeItem.getInterest();
+	}
+	
+	private ExpenseItem createExpenseItem(ExpenseItem expense) {
+		ArrayList<Category> categories = DBMgr.getCategory(ExpenseItem.TYPE, ItemDef.ExtendLiablility.NONE);
+		if (categories.size() != 1) return null;
+		Category mainCategory = categories.get(0);
+		if (mainCategory == null) return null;
+		
+		expense.setCategory(mainCategory);
+		ArrayList<Category> subCategories = DBMgr.getSubCategory(ExpenseItem.TYPE, mainCategory.getID());
+		int subCategorySize = subCategories.size();
+		
+		for (int index = 0; index < subCategorySize; index++) {
+			Category subCategory = subCategories.get(index); 
+			if (subCategory.getName().compareTo(mLoan.getCategory().getName()) == 0) {
+				expense.setSubCategory(subCategory);
+				break;
+			}
+		}
+		
+		expense.setCreateDate(mChangeItem.getChangeDate());
+		if (mLoan.getAccount().getID() == -1) {
+			expense.createPaymentMethod(PaymentMethod.CASH);
+		}
+		else {
+			expense.createPaymentMethod(PaymentMethod.ACCOUNT);
+			((PaymentAccountMethod) expense.getPaymentMethod()).setAccount(mLoan.getAccount());
+		}
+	
+		return expense;
 	}
 	
 	private void saveUpdateItem() {
@@ -109,25 +174,31 @@ public class InputLiabilityRepayLayout extends InputBaseLayout {
 
 	@Override
 	protected void setBtnClickListener() {
-//		setSaveBtnClickListener(R.id.BtnTitleRigth01);
-//		
-//		findViewById(R.id.BtnTransferToSelect).setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				Intent intent = new Intent(InputLiabilityRepayLayout.this, SelectAccountLayout.class);
-//				intent.putExtra(MsgDef.ExtraNames.SELECT_ACCOUNT_MODE, SelectAccountLayout.MODE_TRASFER);
-//				intent.putExtra(MsgDef.ExtraNames.SELECT_ACCOUNT_EXCEPTION, mTrans.getFromAccount().getID());
-//				startActivityForResult(intent, MsgDef.ActRequest.ACT_ACCOUNT_SELECT);
-//			}
-//		});
-//		
-//		findViewById(R.id.BtnTransferAmount).setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				Intent intent = new Intent(InputLiabilityRepayLayout.this, InputAmountDialog.class);
-//				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT);
-//			}
-//		});
+		setSaveBtnClickListener(R.id.BtnTitleRigth01);
+		
+		findViewById(R.id.BtnRepayDate).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent intent = new Intent(InputLiabilityRepayLayout.this, MonthlyCalendar.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_SELECT_DATE);
+			}
+		});
+		
+		findViewById(R.id.BtnRepayPrincipal).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent intent = new Intent(InputLiabilityRepayLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT_PRINCIPAL);
+			}
+		});
+		
+		findViewById(R.id.BtnRepayInterest).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent intent = new Intent(InputLiabilityRepayLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT_INTEREST);
+			}
+		});
 	}
 
 	@Override
@@ -137,8 +208,8 @@ public class InputLiabilityRepayLayout extends InputBaseLayout {
 		((TextView)findViewById(R.id.TVRepayRemainderAmount)).setText(String.format("%,d원", mLoan.getAmount()));
 		
 		updateBtnDateText();
-		updateAccountText();
-		updateAmountText();
+		updatePrincipalAmountText();
+		updateInterestAmountText();
 		updateEditMemoText();
 	}
 	
@@ -147,7 +218,7 @@ public class InputLiabilityRepayLayout extends InputBaseLayout {
 	}
 
 	protected void updateBtnDateText() {	
-//		((Button)findViewById(R.id.BtnTransferDate)).setText(mTrans.getOccurrentceDateString());
+		((Button)findViewById(R.id.BtnRepayDate)).setText(mChangeItem.getChangeDateString());
 	}
 
 	@Override
@@ -158,50 +229,53 @@ public class InputLiabilityRepayLayout extends InputBaseLayout {
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
-//		if (requestCode == MsgDef.ActRequest.ACT_ACCOUNT_SELECT) {
-//			if (resultCode == RESULT_OK) {
-//				updateAccount((AccountItem)data.getSerializableExtra(MsgDef.ExtraNames.ACCOUNT_ITEM));
-//			}
-//		}
-//		else if (requestCode == MsgDef.ActRequest.ACT_AMOUNT) {
-//			if (resultCode == RESULT_OK) {
-//				updateAmount(data.getLongExtra("AMOUNT", 0L));
-//			}
-//		}
-//		
+		if (requestCode == MsgDef.ActRequest.ACT_SELECT_DATE_EXPIRY) {
+    		if (resultCode == RESULT_OK) {
+    			
+    			int[] values = data.getIntArrayExtra("SELECTED_DATE");
+
+    			mChangeItem.getChangeDate().set(Calendar.YEAR, values[0]);
+    			mChangeItem.getChangeDate().set(Calendar.MONTH, values[1]);
+    			mChangeItem.getChangeDate().set(Calendar.DAY_OF_MONTH, values[2]);
+				
+    			updateChangeDate();
+    		}
+    	}	
+		else if (requestCode == MsgDef.ActRequest.ACT_AMOUNT_PRINCIPAL) {
+			if (resultCode == RESULT_OK) {
+				updatePrincipalAmount(data.getLongExtra("AMOUNT", 0L));
+			}
+		}
+		else if (requestCode == MsgDef.ActRequest.ACT_AMOUNT_INTEREST) {
+			if (resultCode == RESULT_OK) {
+				updateInterestAmount(data.getLongExtra("AMOUNT", 0L));
+			}
+		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void updateAmount(long trasferAmount) {
-//		mTrans.setAmount(trasferAmount);
-//		updateAmountText();
+	protected void updateChangeDate() {
+		updateBtnDateText();
 	}
 
-	private void updateAccount(AccountItem selectedAccount) {
-//		if (selectedAccount == null) return;
-//		mTrans.setToAccount(selectedAccount);
-//		updateAccountText();
+
+	private void updatePrincipalAmount(long principalAmount) {
+		mChangeItem.getPrincipal().setAmount(principalAmount);
+		updatePrincipalAmountText();
 	}
 	
-	protected void updateAccountText() {
-//		Button btnTrasferAccount = (Button) findViewById(R.id.BtnTransferToSelect);
-//		
-//		if (mTrans.getToAccount().getID() == -1) {
-//			btnTrasferAccount.setText("계좌를 선택하세요");
-//		}
-//		else {
-//			if (mTrans.getToAccount().getType() != AccountItem.MY_POCKET) {
-//				btnTrasferAccount.setText(mTrans.getToAccount().getCompany().getName());
-//			}
-//			else {
-//				btnTrasferAccount.setText("내 주머니");
-//			}
-//		}
+	private void updatePrincipalAmountText() {
+		Button btnPrincipalAmout = (Button) findViewById(R.id.BtnRepayPrincipal);
+		btnPrincipalAmout.setText(String.format("%,d원", mChangeItem.getPrincipal().getAmount()));
 	}
 	
-	private void updateAmountText() {
-//		Button btnTrasferAmout = (Button) findViewById(R.id.BtnTransferAmount);
-//		btnTrasferAmout.setText(String.format("%,d원", mTrans.getAmount()));
-//	
+	private void updateInterestAmount(long interestAmount) {
+		mChangeItem.getInterest().setAmount(interestAmount);
+		updateInterestAmountText();
+	}
+	
+	private void updateInterestAmountText() {
+		Button btnInterestAmout = (Button) findViewById(R.id.BtnRepayInterest);
+		btnInterestAmout.setText(String.format("%,d원", mChangeItem.getInterest().getAmount()));
 	}
 }

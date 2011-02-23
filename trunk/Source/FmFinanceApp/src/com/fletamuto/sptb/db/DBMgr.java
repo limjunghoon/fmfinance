@@ -756,7 +756,11 @@ public final class DBMgr {
 		return getLiabilityDBConnecter().getPurchasePrice(id);
 	}
 	
-	public static ArrayList<FinanceItem> getLiabilityStateItems(int id) {
+	public static long addLiabilityChangeStateItem(LiabilityChangeItem item) {
+		return 	getLiabilityDBConnecter().addChangeStateItem(item);
+	}
+	
+	public static ArrayList<LiabilityChangeItem> getLiabilityChangeStateItems(int id) {
 		return getLiabilityDBConnecter().getStateItems(id);
 	}
 	

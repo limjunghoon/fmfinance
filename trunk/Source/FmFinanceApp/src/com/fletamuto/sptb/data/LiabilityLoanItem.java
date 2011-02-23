@@ -20,6 +20,9 @@ public class LiabilityLoanItem extends LiabilityExtendItem {
 	 * 대출받은 기관
 	 */
 	private FinancialCompany mCompany = new FinancialCompany();
+	
+	/** 대출 상환 계좌*/
+	private AccountItem mAccountItem = new AccountItem();
 
 	/**
 	 * 대출 아이디 설정
@@ -56,5 +59,15 @@ public class LiabilityLoanItem extends LiabilityExtendItem {
 	public int getExtendType() {
 		return EXEND_TYPE;
 	}
+
+	public void setAccount(AccountItem accountItem) {
+		this.mAccountItem = accountItem;
+	}
+
+	public AccountItem getAccount() {
+		return mAccountItem;
+	}
+	
+	
 	
 }

@@ -77,7 +77,7 @@ public class ReportLiabilityHistoryLayout extends ReportBaseLayout {
     }
     
     protected void getData() {
-    	mItems = DBMgr.getLiabilityStateItems(mItem.getID());
+    	//mItems = DBMgr.getLiabilityChangeStateItems(mItem.getID());
 		
 		mListItems.clear();
 		updateListItem();

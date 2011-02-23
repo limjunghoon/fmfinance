@@ -14,13 +14,23 @@ public class LiabilityChangeItem extends BaseItem {
 	
 	private Calendar mChangeDate = Calendar.getInstance();
 	private int mLiabilityID = -1;
+	
+	/** 현재 금액 */
 	private long mAmount = 0L;
-	private long mChangeAmount = 0L;
+	
+	/** 원금*/
+	private ExpenseItem mPrincipal = new ExpenseItem();
+	
+	/** 이자*/
+	private ExpenseItem mInterest = new ExpenseItem();
+	
+	/** 메모*/
 	private String mMemo;
-	private int mCount = 0;
-	private int mState;
-	private String mStore;
-	private int mPriceType;
+	
+//	private int mCount = 1;
+//	private int mState;
+//	private String mStore;
+//	private int mPriceType;
 	
 	public LiabilityChangeItem() {
 		
@@ -30,10 +40,10 @@ public class LiabilityChangeItem extends BaseItem {
 		mLiabilityID = liability.getID();
 		mChangeDate = liability.getCreateDate();
 		mAmount = liability.getAmount();
-		mChangeAmount = liability.getAmount();
+//		mChangeAmount = liability.getAmount();
 		mMemo = liability.getMemo();
-		mCount = liability.getCount();
-		mState = liability.getState();
+//		mCount = liability.getCount();
+//		mState = liability.getState();
 //		mStore = liability.getStore();
 //		mPriceType = liability.getPriceType();
 	}
@@ -64,12 +74,12 @@ public class LiabilityChangeItem extends BaseItem {
 	public int getLiabilityID() {
 		return mLiabilityID;
 	}
-	public void setChangeAmount(long changeAmount) {
-		this.mChangeAmount = changeAmount;
-	}
-	public long getChangeAmount() {
-		return mChangeAmount;
-	}
+//	public void setChangeAmount(long changeAmount) {
+//		this.mChangeAmount = changeAmount;
+//	}
+//	public long getChangeAmount() {
+//		return mChangeAmount;
+//	}
 	public void setAmount(long amount) {
 		this.mAmount = amount;
 	}
@@ -82,33 +92,49 @@ public class LiabilityChangeItem extends BaseItem {
 	public String getMemo() {
 		return mMemo;
 	}
-	public void setCount(int count) {
-		this.mCount = count;
-	}
-	public int getCount() {
-		return mCount;
-	}
-	public void setState(int state) {
-		this.mState = state;
-	}
-	public int getState() {
-		return mState;
+//	public void setCount(int count) {
+//		this.mCount = count;
+//	}
+//	public int getCount() {
+//		return mCount;
+//	}
+//	public void setState(int state) {
+//		this.mState = state;
+//	}
+//	public int getState() {
+//		return mState;
+//	}
+
+	public void setPrincipal(ExpenseItem principal) {
+		this.mPrincipal = principal;
 	}
 
-	public void setStore(String store) {
-		this.mStore = store;
+	public ExpenseItem getPrincipal() {
+		return mPrincipal;
 	}
 
-	public String getStore() {
-		return mStore;
+	public void setInterest(ExpenseItem interest) {
+		this.mInterest = interest;
 	}
 
-	public void setPriceType(int priceType) {
-		this.mPriceType = priceType;
+	public ExpenseItem getInterest() {
+		return mInterest;
 	}
 
-	public int getPriceType() {
-		return mPriceType;
-	}
+//	public void setStore(String store) {
+//		this.mStore = store;
+//	}
+//
+//	public String getStore() {
+//		return mStore;
+//	}
+//
+//	public void setPriceType(int priceType) {
+//		this.mPriceType = priceType;
+//	}
+//
+//	public int getPriceType() {
+//		return mPriceType;
+//	}
 
 }

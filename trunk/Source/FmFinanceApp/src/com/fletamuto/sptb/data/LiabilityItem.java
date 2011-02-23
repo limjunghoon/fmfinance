@@ -10,20 +10,15 @@ public class LiabilityItem extends FinanceItem {
 	private static final long serialVersionUID = 504474056076380394L;
 	public final static int TYPE = ItemDef.FinanceDef.LIABILITY;
 	
-	/**
-	 * 잔금
-	 */
+	/** 대출받은 금액 */
 	private long mOrignAmount = 0L;
 	
-	/**
-	 * 대출 만기 날짜
-	 */
+	/** 대출 만기 날짜 */
 	private Calendar mExpiryDate = Calendar.getInstance();
 	
-	/**
-	 * 대출 납입 시작일
-	 */
+	/** 대출 납입 시작일 */
 	private Calendar mPaymentDate = null;
+	
 	
 	public LiabilityItem() {
 		mExpiryDate.add(Calendar.YEAR, 1);
@@ -101,6 +96,27 @@ public class LiabilityItem extends FinanceItem {
 
 	public long getOrignAmount() {
 		return mOrignAmount;
+	}
+	
+	public int getMonthPeriodTerm() {
+		int monthTerm = 0;
+		int yearTerm = mExpiryDate.get(Calendar.YEAR) - getCreateDate().get(Calendar.YEAR);
+		if (yearTerm > 0) {
+			monthTerm = yearTerm * 12;
+		}
+		
+		return  monthTerm  + (mExpiryDate.get(Calendar.MONTH) - getCreateDate().get(Calendar.MONTH));
+	}
+	
+	
+	public int getMonthProcessCount() {
+		int monthTerm = 0;
+		int yearTerm = Calendar.getInstance().get(Calendar.YEAR) - getCreateDate().get(Calendar.YEAR);
+		if (yearTerm > 0) {
+			monthTerm = yearTerm * 12;
+		}
+		
+		return  monthTerm  + (mExpiryDate.get(Calendar.MONTH) - getCreateDate().get(Calendar.MONTH)) + 1;
 	}
 
 }
