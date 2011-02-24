@@ -1,6 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 레이아웃 편집 임시용 파일 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_margin="5dp">
+    android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="5dp">
+    
+    <TextView android:id="@+id/TVDetailCreditCardNameLable" android:layout_width="120dp" android:layout_height="wrap_content" android:layout_marginTop="5dp"
+    android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:text="카드명" android:textSize="18sp" android:gravity="right" />
+    <TextView android:id="@+id/TVDetailCreditCardName" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp"
+    android:layout_marginLeft="5dp" android:layout_toRightOf="@+id/TVDetailCreditCardNameLable" android:layout_alignParentTop="true" android:text="내 카드 이름" android:textSize="18sp" />
+    
+    <TextView android:id="@+id/TVDetailCreditCardNumberLable" android:layout_width="120dp" android:layout_height="wrap_content" android:layout_marginTop="5dp"
+    android:layout_alignParentLeft="true" android:layout_below="@+id/TVDetailCreditCardNameLable" android:text="카드사/카드번호" android:textSize="10sp" android:gravity="right" />
+    <TextView android:id="@+id/TVDetailCreditCardNumber" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp"
+    android:layout_marginLeft="5dp" android:layout_toRightOf="@+id/TVDetailCreditCardNumberLable" android:layout_below="@+id/TVDetailCreditCardName" android:text="내 카드 번호" android:textSize="10sp" />
+    
+    <TextView android:id="@+id/TVDetailCreditCardTypeLable" android:layout_width="120dp" android:layout_height="wrap_content" android:layout_marginTop="5dp"
+    android:layout_alignParentLeft="true" android:layout_below="@+id/TVDetailCreditCardNumberLable" android:text="종류" android:textSize="18sp" android:gravity="right" />
+    <TextView android:id="@+id/TVDetailCreditCardType" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp"
+    android:layout_marginLeft="5dp" android:layout_toRightOf="@+id/TVDetailCreditCardTypeLable" android:layout_below="@+id/TVDetailCreditCardNumber" android:text="내 카드 종류" android:textSize="18sp" />
+    
+    <TextView android:id="@+id/TVDetailCreditExpenseAccountLable" android:layout_width="120dp" android:layout_height="wrap_content" android:layout_marginTop="5dp"
+    android:layout_alignParentLeft="true" android:layout_below="@+id/TVDetailCreditCardTypeLable" android:text="지불계좌" android:textSize="18sp" android:gravity="right" />
+    <Button android:id="@+id/BTDetailCreditExpenseAccount" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp"
+    android:layout_marginLeft="5dp" android:layout_toRightOf="@+id/TVDetailCreditExpenseAccountLable" android:layout_below="@+id/TVDetailCreditCardType" android:text="내 카드 지불계좌" android:textSize="18sp" />
+    
+    
+    <Button android:id="@+id/BTDetailCreditCardBilingBasicDateButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_marginTop="10dp" android:layout_alignParentLeft="true" android:layout_below="@+id/BTDetailCreditExpenseAccount"
+    android:text="기준일별내역" android:textSize="8sp" />
+    <Button android:id="@+id/BTDetailCreditCardBilingMonthButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:layout_marginTop="10dp" android:layout_toRightOf="@+id/BTDetailCreditCardBilingBasicDateButton" android:layout_below="@+id/BTDetailCreditExpenseAccount"
+    android:text="기준일별내역" android:textSize="8sp" />
+    <TextView android:id="@+id/TVDetailCreditCardBilingDate" android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:layout_marginTop="10dp" android:layout_toRightOf="@+id/BTDetailCreditCardBilingMonthButton" android:layout_below="@+id/BTDetailCreditExpenseAccount"
+    android:text="2011년 00월 00일" android:textSize="18sp" android:gravity="right"/>
+    
+    <Button android:id="@+id/BTDetailCreditCardBilingDatePreButton" android:layout_width="16dp" android:layout_height="16dp"
+    android:layout_marginTop="5dp" android:layout_marginLeft="10dp" android:layout_alignParentLeft="true" android:layout_below="@+id/BTDetailCreditCardBilingBasicDateButton" />
+    <TextView android:id="@+id/TVDetailCreditCardBilingTerm" android:layout_width="fill_parent" android:layout_height="16dp"
+    android:layout_marginTop="5dp" android:layout_toRightOf="@+id/BTDetailCreditCardBilingDatePreButton" android:layout_toLeftOf="@+id/BTDetailCreditCardBilingDateNextButton"
+    android:layout_below="@+id/BTDetailCreditCardBilingBasicDateButton" android:text="2011년 00월 00일 ~ 2011년 00월 00일" android:textSize="10sp"
+    android:gravity="center"/>
+    <Button android:id="@+id/BTDetailCreditCardBilingDateNextButton" android:layout_width="16dp" android:layout_height="16dp"
+    android:layout_marginTop="5dp" android:layout_marginRight="10dp" android:layout_alignParentRight="true" android:layout_below="@+id/BTDetailCreditCardBilingBasicDateButton" />
+    
+    
+    <TextView android:id="@+id/TVDetailCreditCardBilingItemCount" android:layout_width="wrap_content" android:layout_height="16dp"
+    android:layout_marginTop="5dp" android:layout_toLeftOf="@+id/TVDetailCreditCardBilingItemCountLable"
+    android:layout_below="@+id/TVDetailCreditCardBilingTerm" android:text="00" android:textSize="10sp" />
+    <TextView android:id="@+id/TVDetailCreditCardBilingItemCountLable" android:layout_width="wrap_content" android:layout_height="16dp"
+    android:layout_marginTop="5dp" android:layout_toLeftOf="@+id/TVDetailCreditCardBilingItemAmountLable"
+    android:layout_below="@+id/TVDetailCreditCardBilingTerm" android:text="개" android:textSize="10sp" />
+    <TextView android:id="@+id/TVDetailCreditCardBilingItemAmountLable" android:layout_width="wrap_content" android:layout_height="16dp"
+    android:layout_marginTop="5dp" android:layout_marginLeft="10dp" android:layout_toLeftOf="@+id/TVDetailCreditCardBilingItemAmount"
+    android:layout_below="@+id/TVDetailCreditCardBilingTerm" android:text="금액" android:textSize="10sp" />
+    <TextView android:id="@+id/TVDetailCreditCardBilingItemAmount" android:layout_width="wrap_content" android:layout_height="16dp"
+    android:layout_marginTop="5dp" android:layout_marginLeft="5dp" android:layout_toLeftOf="@+id/TVDetailCreditCardBilingItemAmountUnit"
+    android:layout_below="@+id/TVDetailCreditCardBilingTerm" android:text="000" android:textSize="10sp" />
+    <TextView android:id="@+id/TVDetailCreditCardBilingItemAmountUnit" android:layout_width="wrap_content" android:layout_height="16dp"
+    android:layout_marginTop="5dp" android:layout_alignParentRight="true"
+    android:layout_below="@+id/TVDetailCreditCardBilingTerm" android:text="원" android:textSize="10sp" />
+    
+    <ListView android:id="@+id/LVDetailCreditCardBilingItems" android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:layout_marginTop="5dp" android:layout_below="@+id/TVDetailCreditCardBilingItemCount"/>
+    
     
 </RelativeLayout>
