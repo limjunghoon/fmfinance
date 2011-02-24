@@ -90,7 +90,7 @@ public class SelectCardCompanyLayout extends SelectGridBaseLayout {
     	if (cardCompenyName.getID() == -2) {
 			Intent intent = new Intent(SelectCardCompanyLayout.this, NewEditCategoryLayout.class);
 			intent.putExtra("EDIT_TITLE", "카드사 추가");
-			intent.putExtra("EDIT_MODE", "COMPANY_ADD");
+			intent.putExtra("EDIT_MODE", "CARD_COMPANY_ADD");
 
 			startActivityForResult(intent, ACT_ADD_CARDCOMPANY);
 			return;
@@ -99,11 +99,11 @@ public class SelectCardCompanyLayout extends SelectGridBaseLayout {
 		if (getEditCardCompanyMode()) {
 			//편집으로 넘어 가는 화면
 			Intent intent = new Intent(SelectCardCompanyLayout.this, NewEditCategoryLayout.class);
-			intent.putExtra("CARD_CAOMPANY_ID", cardCompenyName.getID());
+			intent.putExtra("CARD_COMPANY_ID", cardCompenyName.getID());
 			intent.putExtra("CARD_COMPANY_NAME", cardCompenyName.getName());
 			intent.putExtra("CARD_COMPANY_IMAGE_INDEX", cardCompenyName.getImageIndex());
 			intent.putExtra("EDIT_TITLE", "카드사 편집");
-			intent.putExtra("EDIT_MODE", "COMPANY_EDIT");
+			intent.putExtra("EDIT_MODE", "CARD_COMPANY_EDIT");
 
 			startActivityForResult(intent, ACT_EDIT_CARDCOMPANY);
 			return;
