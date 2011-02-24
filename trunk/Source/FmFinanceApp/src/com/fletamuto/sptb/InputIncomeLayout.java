@@ -62,15 +62,6 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         
         updateChildView();
         
-        //setTitle(getResources().getString(R.string.input_income_name));
-        //달력을 이용한 날짜 입력을 위해
-/*
-        LinearLayout linear = (LinearLayout) findViewById(R.id.inputIncome);
-        View popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
-        final Intent intent = getIntent();        
-        monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
-*/
-        
         switch(getIntent().getIntExtra("Action", 0)) {
         case ACTION_DEFAULT:	//일반 호출
         	setTitle(getResources().getString(R.string.input_income_name));

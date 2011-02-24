@@ -44,8 +44,14 @@ public class ReportLiabilityLayout extends ReportSeparationLayout {
     	if (item.getExtendType() == ItemDef.ExtendLiablility.LOAN) {
     		intent = new Intent(this, DetailLiabilityLoanLayout.class);
     	}
+    	else if (item.getExtendType() == ItemDef.ExtendLiablility.CASH_SERVICE) {
+    		intent = new Intent(this, DetailLiabilityCashServiceLayout.class);
+    	}
+    	else if (item.getExtendType() == ItemDef.ExtendLiablility.PERSON_LOAN) {
+    		intent = new Intent(this, DetailLiabilityPersonLoanLayout.class);
+    	}
     	else {
-    		intent = new Intent(this, StateLiabilityDefaultLayout.class);
+    		intent = new Intent(this, DetailLiabilityDefaultLayout.class);
     	}
     	
     	intent.putExtra(MsgDef.ExtraNames.ITEM, item);

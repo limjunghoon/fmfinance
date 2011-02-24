@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+  	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="20dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="카드" android:id="@+id/TVRepayNameT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVRepayName" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="15dp">
+		<TextView android:text="금액" android:layout_height="wrap_content" android:textSize="18dp" android:layout_width="95dp" android:id="@+id/TVRepayAmountT"></TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVRepayAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="15dp">
+		<TextView android:id="@+id/TVRepayDate" android:text="상환일" android:layout_height="wrap_content" android:textSize="18dp" android:layout_width="95dp">
+		</TextView>
+		<Button android:layout_height="wrap_content" android:id="@+id/BtnRepayDate" android:textSize="18dp" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="15dp">
+		<TextView android:id="@+id/TVRepayAccount" android:layout_height="wrap_content" android:textSize="18dp" android:layout_width="95dp" android:text="계좌"></TextView>
+		<Button android:layout_height="wrap_content" android:id="@+id/BtnRepayAccount" android:textSize="18sp" android:layout_width="fill_parent"> </Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="15dp">
+		<TextView android:id="@+id/TVRepayInterest" android:layout_height="wrap_content" android:textSize="18dp" android:layout_width="95dp" android:text="이자"></TextView>
+		<Button android:layout_height="wrap_content" android:id="@+id/BtnRepayInterest" android:textSize="18sp" android:layout_width="fill_parent"> </Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="15dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="메모" android:id="@+id/TVRepayMemoT" android:layout_width="95dp">
+		</TextView>
+		<EditText android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVRepayMemo" android:textSize="18sp">
+		</EditText>
+	</LinearLayout>
+	
+  	
+</LinearLayout>

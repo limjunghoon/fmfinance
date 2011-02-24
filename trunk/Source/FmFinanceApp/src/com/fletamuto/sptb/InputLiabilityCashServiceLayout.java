@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.LiabilityCashServiceItem;
+import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 
@@ -29,16 +30,6 @@ public class InputLiabilityCashServiceLayout extends InputLiabilityExtendLayout 
         setContentView(R.layout.input_liability_cash_service, true);
         
         updateChildView();
-        
-        //달력을 이용한 날짜 입력을 위해
-/*
-        LinearLayout linear = (LinearLayout) findViewById(R.id.inputLiabilityCashService);
-        View popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
-        final Intent intent = getIntent();        
-        monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
-*/
-        
-        
     }
     
     @Override
@@ -68,7 +59,7 @@ public class InputLiabilityCashServiceLayout extends InputLiabilityExtendLayout 
 
 	@Override
 	protected boolean getItemInstance(int id) {
-//		mSalary = (IncomeSalaryItem) DBMgr.getItem(IncomeItem.TYPE, id);
+		mCashService = (LiabilityCashServiceItem) DBMgr.getItem(LiabilityItem.TYPE, id);
 		if (mCashService == null) return false;
 		setItem(mCashService);
 		return true;

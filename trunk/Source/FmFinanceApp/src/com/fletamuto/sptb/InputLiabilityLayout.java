@@ -2,6 +2,8 @@ package com.fletamuto.sptb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.LiabilityItem;
@@ -15,23 +17,20 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
         setContentView(R.layout.input_liability, true);
         
         updateChildView();
-        
-        //달력을 이용한 날짜 입력을 위해
-/*
-        LinearLayout linear = (LinearLayout) findViewById(R.id.inputLiability);
-        View popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
-        final Intent intent = getIntent();        
-        monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
-*/
-        
-        
     }
     
     @Override
 	protected void setBtnClickListener() {
     	setDateBtnClickListener(R.id.BtnLiabilityDate); 
+    	setExpiryBtnClickListener(R.id.BtnLiabilityExpiryDate);
         setAmountBtnClickListener(R.id.BtnLiabilityAmount);
         setTitle(mLiabilityItem.getCategory().getName());
+	}
+    
+    @Override
+	protected void setTitleBtn() {
+		setTitle("부채 등록");
+		super.setTitleBtn();
 	}
     
     @Override
@@ -99,13 +98,13 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
 
 	@Override
 	protected void updateCategory(int id, String name) {
-		// TODO Auto-generated method stub
 		mLiabilityItem.setCategory(id, name);
 	}
 
 	@Override
 	protected void updateChildView() {
 		updateDate();
+		updateExpiryDate();
 		updateBtnAmountText(R.id.BtnLiabilityAmount);
 		updateEditTitleText(R.id.ETLiabilityTitle);
 	}
@@ -115,4 +114,22 @@ public class InputLiabilityLayout extends InputFinanceItemBaseLayout {
 		String title = ((TextView)findViewById(R.id.ETLiabilityTitle)).getText().toString();
     	getItem().setTitle(title);
 	}
+	
+	private void setExpiryBtnClickListener(int resource) {
+		((Button)findViewById(resource)).setOnClickListener(new Button.OnClickListener() {
+			
+			public void onClick(View v) {
+				Intent intent = new Intent(InputLiabilityLayout.this, MonthlyCalendar.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_SELECT_DATE_EXPIRY);
+			}
+		 });
+	}
+	 
+	protected void updateExpiryDate() {
+    	updateBtnExpiryDateText(R.id.BtnLiabilityExpiryDate);
+    }
+	 
+	 protected void updateBtnExpiryDateText(int btnID) {	
+    	((Button)findViewById(btnID)).setText(mLiabilityItem.getExpiryDateString());
+    }
 }

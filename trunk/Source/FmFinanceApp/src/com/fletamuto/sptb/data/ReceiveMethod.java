@@ -21,6 +21,10 @@ public class ReceiveMethod extends BaseItem {
 		mAccount = account;
 	}
 	
+	public AccountItem getAccount() {
+		return mAccount;
+	}
+	
 	public int getType() {
 		return mType;
 	}

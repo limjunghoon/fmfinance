@@ -6,9 +6,15 @@
 
 	
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="40dp">
-		<TextView android:id="@+id/TVLiabilityDate" android:text="@string/input_liability_date_name" android:layout_height="wrap_content" android:textSize="18dp" android:gravity="center" android:layout_width="70dp">
+		<TextView android:id="@+id/TVLiabilityDate" android:text="신규일" android:layout_height="wrap_content" android:textSize="18dp" android:gravity="center" android:layout_width="70dp">
 		</TextView>
 		<Button android:layout_height="wrap_content" android:id="@+id/BtnLiabilityDate" android:textSize="18dp" android:layout_width="fill_parent">
+		</Button>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="15dp">
+		<TextView android:id="@+id/TVLiabilityExpiryDate" android:text="만기일" android:layout_height="wrap_content" android:textSize="18dp" android:gravity="center" android:layout_width="70dp">
+		</TextView>
+		<Button android:layout_height="wrap_content" android:id="@+id/BtnLiabilityExpiryDate" android:textSize="18dp" android:layout_width="fill_parent">
 		</Button>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="15dp">
