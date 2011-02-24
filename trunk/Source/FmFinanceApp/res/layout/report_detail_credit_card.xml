@@ -102,7 +102,7 @@
     android:layout_below="@+id/TVDetailCreditCardBillingTerm" android:text="원" android:textSize="10sp" />
     
     <ListView android:id="@+id/LVDetailCreditCardBillingItems" android:layout_width="fill_parent" android:layout_height="fill_parent"
-    android:layout_marginTop="5dp" android:layout_below="@+id/TVDetailCreditCardBillingItemCount"/>
+    android:layout_marginTop="5dp" android:layout_below="@+id/TVDetailCreditCardBillingItemCount" android:background="#1fff"/>
     
     
 </RelativeLayout>
