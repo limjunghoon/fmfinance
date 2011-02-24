@@ -123,7 +123,12 @@
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".InputAssetsRealEstateLayout"></activity>
 <activity android:name=".DetailAssetsRealEstateLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".DetailLiabilityLoanLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
-<activity android:name=".InputLiabilityRepayLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".InputLiabilityRepayLoanLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".DetailLiabilityCashServiceLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".InputLiabilityRepayCashServiceLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".DetailLiabilityPersonLoanLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".InputLiabilityRepayPersonLoanLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:name=".DetailLiabilityDefaultLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 </application>
 
 
