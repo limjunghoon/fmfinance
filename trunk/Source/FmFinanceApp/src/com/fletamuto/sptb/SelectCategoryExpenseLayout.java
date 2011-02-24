@@ -99,11 +99,11 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
     				if (category.getID() == -3) {
     					//Sub Category Add 버튼 눌렸을 때 처리
     	    			Intent intent = new Intent(SelectCategoryExpenseLayout.this, NewEditCategoryLayout.class);
-    	    			intent.putExtra("CATEGORY_EDIT_TYPE", type);
+    	    			intent.putExtra("EDIT_TYPE", type);
     	    			intent.putExtra("MAIN_CATEGORY_ID", mMainCategory.getID());
 						intent.putExtra("MAIN_CATEGORY_NAME", mMainCategory.getName());
-    					intent.putExtra("CATEGORY_EDIT_TITLE", "분류 추가");
-    					intent.putExtra("CATEGORY_EDIT_MODE", "SUB_ADD");
+    					intent.putExtra("EDIT_TITLE", "분류 추가");
+    					intent.putExtra("EDIT_MODE", "SUB_CATEGORY_ADD");
 
     					startActivityForResult(intent, ACT_ADD_CATEGORY);
     					return;
@@ -111,14 +111,14 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
     					if (getEditCategoryMode()) {
     						//============여기에 편집 화면으로 넘어가는 것 구현 해야 함 (Sub 항목 부분)
     						Intent intent = new Intent(SelectCategoryExpenseLayout.this, NewEditCategoryLayout.class);
-    						intent.putExtra("CATEGORY_EDIT_TYPE", type);
+    						intent.putExtra("EDIT_TYPE", type);
     						intent.putExtra("CATEGORY_ID", category.getID());
     						intent.putExtra("CATEGORY_NAME", category.getName());
     						intent.putExtra("MAIN_CATEGORY_ID", mMainCategory.getID());
     						intent.putExtra("MAIN_CATEGORY_NAME", mMainCategory.getName());
     						intent.putExtra("CATEGORY_IMAGE_INDEX", category.getImageIndex());
-    						intent.putExtra("CATEGORY_EDIT_TITLE", "분류 편집");
-    						intent.putExtra("CATEGORY_EDIT_MODE", "SUB_EDIT");
+    						intent.putExtra("EDIT_TITLE", "분류 편집");
+    						intent.putExtra("EDIT_MODE", "SUB_CATEGORY_EDIT");
 
     						startActivityForResult(intent, ACT_EDIT_CATEGORY);
     						
@@ -144,9 +144,9 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
     		//Main Category Add 버튼 눌렸을 때 처리
     		if (category.getID() == -2) {
     			Intent intent = new Intent(SelectCategoryExpenseLayout.this, NewEditCategoryLayout.class);
-    			intent.putExtra("CATEGORY_EDIT_TYPE", type);
-				intent.putExtra("CATEGORY_EDIT_TITLE", "분류 추가");
-				intent.putExtra("CATEGORY_EDIT_MODE", "MAIN_ADD");
+    			intent.putExtra("EDIT_TYPE", type);
+				intent.putExtra("EDIT_TITLE", "분류 추가");
+				intent.putExtra("EDIT_MODE", "MAIN_CATEGORY_ADD");
 
 				startActivityForResult(intent, ACT_ADD_CATEGORY);
 				return;
@@ -156,12 +156,12 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
     		if (getEditCategoryMode() && getSubCategoryMode() == false) {
     			//============여기에 편집 화면으로 넘어가는 것 구현 해야 함 (Main 항목 부분)
     			Intent intent = new Intent(SelectCategoryExpenseLayout.this, NewEditCategoryLayout.class);
-    			intent.putExtra("CATEGORY_EDIT_TYPE", type);
+    			intent.putExtra("EDIT_TYPE", type);
 				intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, category.getID());
 				intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, category.getName());
 				intent.putExtra("CATEGORY_IMAGE_INDEX", category.getImageIndex());
-				intent.putExtra("CATEGORY_EDIT_TITLE", "분류 편집");
-				intent.putExtra("CATEGORY_EDIT_MODE", "MAIN_EDIT");
+				intent.putExtra("EDIT_TITLE", "분류 편집");
+				intent.putExtra("EDIT_MODE", "MAIN_CATEGORY_EDIT");
 
 				startActivityForResult(intent, ACT_EDIT_CATEGORY);
 				return;
