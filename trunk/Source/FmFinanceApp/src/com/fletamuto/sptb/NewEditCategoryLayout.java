@@ -19,9 +19,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.ExpenseTag;
+import com.fletamuto.sptb.data.FinancialCompany;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
@@ -42,6 +44,10 @@ public class NewEditCategoryLayout  extends Activity {
 	final static int INCOME_CATEGORY_EDIT_MODE = 5;
 	final static int TAG_ADD_MODE = 6;
 	final static int TAG_EDIT_MODE = 7;
+	final static int COMPANY_ADD_MODE = 8;
+	final static int COMPANY_EDIT_MODE = 9;
+	final static int CARD_COMPANY_ADD_MODE = 10;
+	final static int CARD_COMPANY_EDIT_MODE = 11;
 	
 	//선택된 이미지 위치
 	private int beforeImagePosition = -1;
@@ -86,6 +92,14 @@ public class NewEditCategoryLayout  extends Activity {
         	editMode = TAG_ADD_MODE;
         } else if (intent.getStringExtra("EDIT_MODE").contentEquals("TAG_EDIT")) {
         	editMode = TAG_EDIT_MODE;
+        } else if (intent.getStringExtra("EDIT_MODE").contentEquals("COMPANY_ADD")) {
+        	editMode = COMPANY_ADD_MODE;
+        } else if (intent.getStringExtra("EDIT_MODE").contentEquals("COMPANY_EDIT")) {
+        	editMode = COMPANY_EDIT_MODE;
+        } else if (intent.getStringExtra("EDIT_MODE").contentEquals("CARD_COMPANY_ADD")) {
+        	editMode = CARD_COMPANY_ADD_MODE;
+        } else if (intent.getStringExtra("EDIT_MODE").contentEquals("CARD_COMPANY_EDIT")) {
+        	editMode = CARD_COMPANY_EDIT_MODE;
         } else {
         	editMode = -1;
         }
@@ -108,6 +122,16 @@ public class NewEditCategoryLayout  extends Activity {
         	eName.setText(intent.getStringExtra("TAG_NAME"));   
         	mName = intent.getStringExtra("TAG_NAME");
             mID = intent.getIntExtra("TAG_ID", -1);
+        } else if (editMode == COMPANY_EDIT_MODE) {
+        	beforeImagePosition = intent.getIntExtra("COMPANY_IMAGE_INDEX", -1);
+        	eName.setText(intent.getStringExtra("COMPANY_NAME"));   
+        	mName = intent.getStringExtra("COMPANY_NAME");
+            mID = intent.getIntExtra("COMPANY_ID", -1);
+        } else if (editMode == CARD_COMPANY_EDIT_MODE) {
+        	beforeImagePosition = intent.getIntExtra("CARD_COMPANY_IMAGE_INDEX", -1);
+        	eName.setText(intent.getStringExtra("CARD_COMPANY_NAME"));   
+        	mName = intent.getStringExtra("CARD_COMPANY_NAME");
+            mID = intent.getIntExtra("CARD_COMPANY_ID", -1);
         } else {
         	beforeImagePosition = -1;
         	eName.setHint("분류명을 입력하세요");
@@ -146,6 +170,8 @@ public class NewEditCategoryLayout  extends Activity {
     			return 150;
     		} else if (mType == IncomeItem.TYPE) {
     			return 50;
+    		} else if (editMode > INCOME_CATEGORY_EDIT_MODE) {
+    			return 50;
     		}
     		return 50;
     	}
@@ -155,6 +181,12 @@ public class NewEditCategoryLayout  extends Activity {
     			return ConstantImagesArray.CATEGORY_IMAGES[position];
     		} else if (mType == IncomeItem.TYPE) {
     			return ConstantImagesArray.INCOME_CATEGORY_IMAGES[position];
+    		} else if (editMode == TAG_ADD_MODE || editMode == TAG_EDIT_MODE) {
+    			return ConstantImagesArray.TAG_IMAGES[position];
+    		} else if (editMode == COMPANY_ADD_MODE || editMode == COMPANY_EDIT_MODE) {
+    			return ConstantImagesArray.COMPANY_IMAGES[position];
+    		} else if (editMode == CARD_COMPANY_ADD_MODE || editMode == CARD_COMPANY_EDIT_MODE) {
+    			return ConstantImagesArray.COMPANY_IMAGES[position];
     		}
     		return null;
     	}
@@ -179,6 +211,10 @@ public class NewEditCategoryLayout  extends Activity {
     			imageView.setImageResource(ConstantImagesArray.INCOME_CATEGORY_IMAGES[position]);
     		} else if (editMode == TAG_ADD_MODE || editMode == TAG_EDIT_MODE){
     			imageView.setImageResource(ConstantImagesArray.TAG_IMAGES[position]);
+    		} else if (editMode == COMPANY_ADD_MODE || editMode == COMPANY_EDIT_MODE) {
+    			imageView.setImageResource(ConstantImagesArray.COMPANY_IMAGES[position]);
+    		} else if (editMode == CARD_COMPANY_ADD_MODE || editMode == CARD_COMPANY_EDIT_MODE) {
+    			imageView.setImageResource(ConstantImagesArray.COMPANY_IMAGES[position]);
     		}
     		imageCheck.setImageResource(R.drawable.openarrow);
     		
@@ -237,13 +273,33 @@ public class NewEditCategoryLayout  extends Activity {
 					return;
 				}
 	        } else if (editMode == TAG_ADD_MODE) {
-	        	if (createItem(name, imagePosition) == null) {
+	        	if (createTag(name, imagePosition) == null) {
 	        		Log.e(LogTag.LAYOUT, ":: Fail make the tag");
 					return;
 	        	}
 	        } else if (editMode == TAG_EDIT_MODE) {
-	        	if (updateItem(mID, name, imagePosition) == null) {
+	        	if (updateTag(mID, name, imagePosition) == null) {
 	        		Log.e(LogTag.LAYOUT, ":: Fail to update tag");
+					return;
+	        	}
+	        } else if (editMode == COMPANY_ADD_MODE) {
+	        	if (createCompany(name, imagePosition) == null) {
+	        		Log.e(LogTag.LAYOUT, ":: Fail make ths company");
+					return;
+	        	}
+	        } else if (editMode == COMPANY_EDIT_MODE) {
+	        	if (updateCompany(mID, name, imagePosition) == null) {
+	        		Log.e(LogTag.LAYOUT, ":: Fail to update company");
+					return;
+	        	}
+	        } else if (editMode == CARD_COMPANY_ADD_MODE) {
+	        	if (createCardCompany(name, imagePosition) == null) {
+	        		Log.e(LogTag.LAYOUT, ":: Fail make the card company");
+					return;
+	        	}
+	        } else if (editMode == CARD_COMPANY_EDIT_MODE) {
+	        	if (updateCardCompany(mID, name, imagePosition) == null) {
+	        		Log.e(LogTag.LAYOUT, ":: Fail to update card company");
 					return;
 	        	}
 	        } else {
@@ -332,7 +388,7 @@ public class NewEditCategoryLayout  extends Activity {
     	alert.show();
     }
     
-	protected ExpenseTag createItem(String itemName, int imgIndex) {
+	protected ExpenseTag createTag(String itemName, int imgIndex) {
 		
 		if (checkCategoryName(itemName) == false || checkCategoryImage(imgIndex) == false) {
 			return null;
@@ -349,7 +405,7 @@ public class NewEditCategoryLayout  extends Activity {
 		return tag;
 	}
 	
-	protected ExpenseTag updateItem(int editTagID, String itemName, int imgIndex) {
+	protected ExpenseTag updateTag(int editTagID, String itemName, int imgIndex) {
 
 		if (checkCategoryName(itemName) == false || checkCategoryImage(imgIndex) == false) {
 			return null;
@@ -369,6 +425,79 @@ public class NewEditCategoryLayout  extends Activity {
 		}
 		
 		return tag;
+	}
+	
+	protected FinancialCompany createCompany(String itemName, int imgIndex) {
+		if (checkCategoryName(itemName) == false || checkCategoryImage(imgIndex) == false) {
+			return null;
+		}
+		
+		FinancialCompany financialCompany = new FinancialCompany();
+		financialCompany.setName(itemName);
+		financialCompany.setImageIndex(imgIndex);
+		
+		if (DBMgr.addCompany(financialCompany) == -1) {
+			Log.e(LogTag.LAYOUT, ":: Fail to create COMPANY_NAME Item");
+			return null;
+		}
+		return financialCompany;
+	}
+	
+
+	protected FinancialCompany updateCompany(int editItemID, String itemName, int imgIndex) {
+		if (checkCategoryName(itemName) == false || checkCategoryImage(imgIndex) == false) {
+			return null;
+		}
+		
+		FinancialCompany financialCompany = DBMgr.getCompany(editItemID);
+		if (financialCompany == null) {
+			Log.e(LogTag.LAYOUT, ":: Fail to load FinancialCompany");
+			return null;
+		}
+		
+		financialCompany.setName(itemName);
+		financialCompany.setImageIndex(imgIndex);
+		if (DBMgr.updateCompany(financialCompany) == false) {
+			Log.e(LogTag.LAYOUT, ":: Fail update the FinancialCompany");
+			return null;
+		}
+		return financialCompany;
+	}
+	
+	protected CardCompanyName createCardCompany(String itemName, int imgIndex) {
+		if (checkCategoryName(itemName) == false || checkCategoryImage(imgIndex) == false) {
+			return null;
+		}
+		
+		CardCompanyName cardCompanyName = new CardCompanyName();
+		cardCompanyName.setName(itemName);
+		cardCompanyName.setImageIndex(imgIndex);
+		
+		if (DBMgr.addCardCompanyName(cardCompanyName) == -1) {
+			Log.e(LogTag.LAYOUT, ":: Fail to create COMPANY_CARD_NAME Item");
+			return null;
+		}
+		return cardCompanyName;
+	}
+	
+	protected CardCompanyName updateCardCompany(int editItemID, String itemName, int imgIndex) {
+		if (checkCategoryName(itemName) == false || checkCategoryImage(imgIndex) == false) {
+			return null;
+		}
+		
+		CardCompanyName cardCompanyName = DBMgr.getCardCompanyName(editItemID);
+		if (cardCompanyName == null) {
+			Log.e(LogTag.LAYOUT, ":: Fail to load CardCompanyName");
+			return null;
+		}
+		
+		cardCompanyName.setName(itemName);
+		cardCompanyName.setImageIndex(imgIndex);
+		if (DBMgr.updateCardCompanyName(cardCompanyName) == false) {
+			Log.e(LogTag.LAYOUT, ":: Fail update the CardCompanyName");
+			return null;
+		}
+		return cardCompanyName;
 	}
 
 }
