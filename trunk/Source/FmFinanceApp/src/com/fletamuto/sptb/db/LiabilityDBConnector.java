@@ -276,7 +276,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	 * @return 부채 아이템
 	 */
 	public LiabilityItem createLiabilityItem(Cursor c) {
-		LiabilityItem item = createLiabilityItem(c.getInt(17), c.getInt(13));
+		LiabilityItem item = createLiabilityItem(c.getInt(17), c.getInt(11));
 		item.setID(c.getInt(0));
 		try {
 			item.setCreateDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(1)));
@@ -367,6 +367,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		if (c.moveToFirst() != false) {
 			cashService.setCashServiceID(c.getInt(0));
 			cashService.setCard(DBMgr.getCardItem(c.getInt(1)));
+			cashService.getCard().setAccount(DBMgr.getAccountItem(cashService.getCard().getAccount().getID()));
 		}
 		c.close();
 		closeDatabase();
@@ -701,7 +702,7 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	
 	private long addDefaultStateChangeItem(LiabilityChangeItem item) {
 		long ret = -1;
-		LiabilityChangeItem todayItem = (LiabilityChangeItem) getStateChangeItem(item.getChangeDate());
+		LiabilityChangeItem todayItem = (LiabilityChangeItem) getStateChangeItem(item.getID(), item.getChangeDate());
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
@@ -781,11 +782,11 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return LiabilityItems;
 	}
 	
-	public LiabilityChangeItem getStateChangeItem(Calendar calendar) {
+	public LiabilityChangeItem getStateChangeItem(int id, Calendar calendar) {
 		LiabilityChangeItem liability = null;
 		SQLiteDatabase db = openDatabase(READ_MODE);
-		String[] params = {FinanceDataFormat.getDateFormat(calendar.getTime())}; 
-		Cursor c = db.query("liability_change_amount", null, "strftime('%Y-%m-%d', change_date)=?", params, null, null, null);
+		String[] params = {String.valueOf(id), FinanceDataFormat.getDateFormat(calendar.getTime())}; 
+		Cursor c = db.query("liability_change_amount", null, "liability_id=? AND strftime('%Y-%m-%d', change_date)=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			liability = new LiabilityChangeItem();
