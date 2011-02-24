@@ -18,7 +18,7 @@ public class CardCompanyNameDBConnector extends BaseDBConnector {
 		rowItem.put("card_name", cardCompanyName.getName());
 		rowItem.put("finance_company_id", cardCompanyName.getCompanyID());
 		rowItem.put("prioritize", 1);
-		rowItem.put("image_index", 1);
+		rowItem.put("image_index", cardCompanyName.getImageIndex());
 		
 		int ret = (int)db.insert(TABLE_NAME, null, rowItem);
 		closeDatabase();
@@ -32,7 +32,7 @@ public class CardCompanyNameDBConnector extends BaseDBConnector {
 		rowItem.put("card_name", cardCompanyName.getName());
 		rowItem.put("finance_company_id", cardCompanyName.getCompanyID());
 		rowItem.put("prioritize", 1);
-		rowItem.put("image_index", 1);
+		rowItem.put("image_index", cardCompanyName.getImageIndex());
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(cardCompanyName.getID())});
 		closeDatabase();
@@ -74,6 +74,7 @@ public class CardCompanyNameDBConnector extends BaseDBConnector {
 		cardCompanyName.setID(c.getInt(0));
 		cardCompanyName.setName(c.getString(1));
 		cardCompanyName.setCompanyID(c.getInt(2));
+		cardCompanyName.setImageIndex(c.getInt(4));
 		return cardCompanyName;
 	}
 	
