@@ -2,6 +2,7 @@ package com.fletamuto.sptb;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -170,17 +171,19 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 			calendar.set(Calendar.YEAR, mYear);
 			calendar.set(Calendar.MONTH, mMonth);
 			calendar.set(Calendar.DAY_OF_MONTH, mDay);
-//			Toast.makeText(CardDetailCreditLayout.this, calendar.getTime().toLocaleString(), Toast.LENGTH_LONG).show();
-			Calendar calendarTemp = (Calendar) Calendar.getInstance(TimeZone.getDefault(), Locale.KOREA).clone();
-			calendarTemp.set(Calendar.DAY_OF_MONTH, mCard.getSettlementDay());	//°áÁ¦ÀÏ
-			Toast.makeText(CardDetailCreditLayout.this, calendarTemp.getTime().toLocaleString() + "\n" + calendar.getTime().toLocaleString(), Toast.LENGTH_LONG).show();
-			if(calendarTemp.getTime().getYear() == calendar.getTime().getYear() && calendarTemp.getTime().getMonth() == calendar.getTime().getMonth())
-				if(calendarTemp.getTime().getDate() >= calendar.getTime().getDate()) {
-					isNextBilling = true;
-				} else {
-					isNextBilling = false;
-				}
-			else if(calendarTemp.getTimeInMillis() <= calendar.getTimeInMillis()) {
+			//Toast.makeText(CardDetailCreditLayout.this, calendar.getTime().toLocaleString(), Toast.LENGTH_LONG).show();
+			int year = mYear-1900, month = mMonth+1, day = mCard.getSettlementDay();
+			if(mMonth > 12) {
+				year += 1;
+				month = 1;
+			} else if(mMonth < 1) {
+				year -= 1;
+				month = 12;
+			}
+			Date dateTemp = new Date(Date.UTC(year, month, day, 0, 0, 0));
+			
+			Toast.makeText(CardDetailCreditLayout.this, dateTemp.toLocaleString() + "\n" + (new Date()).toLocaleString(), Toast.LENGTH_LONG).show();
+			if(dateTemp.getTime() >= (new Date()).getTime()) {
 				isNextBilling = true;
 			} else {
 				isNextBilling = false;
