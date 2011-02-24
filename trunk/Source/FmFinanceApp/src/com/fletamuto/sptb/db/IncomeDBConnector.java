@@ -288,7 +288,7 @@ public class IncomeDBConnector extends BaseFinanceDBConnector {
 		rowItem.put("name", category.getName());
 		//임시코드
 		rowItem.put("prioritize", 0);
-		rowItem.put("image_index", 0);
+		rowItem.put("image_index", category.getImageIndex());
 		rowItem.put("extend_type", category.getExtndType());
 		rowItem.put("type", category.getUIType());
 		
