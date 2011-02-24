@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 import com.fletamuto.sptb.ConstantImagesArray;
@@ -35,6 +37,8 @@ public class NewEditCategoryLayout  extends Activity {
 	final static int MAIN_CATEGORY_EDIT_MODE = 1;
 	final static int SUB_CATEGORY_ADD_MODE = 2;
 	final static int SUB_CATEGORY_EDIT_MODE = 3;
+	final static int INCOME_CATEGORY_ADD_MODE = 4;
+	final static int INCOME_CATEGORY_EDIT_MODE = 5;
 	
 	//선택된 이미지 위치
 	private int beforeImagePosition = -1;
@@ -71,10 +75,14 @@ public class NewEditCategoryLayout  extends Activity {
         	editMode = SUB_CATEGORY_ADD_MODE;
         } else if (intent.getStringExtra("CATEGORY_EDIT_MODE").contentEquals("SUB_EDIT")) {
         	editMode = SUB_CATEGORY_EDIT_MODE;
+        } else if (intent.getStringExtra("CATEGORY_EDIT_MODE").contentEquals("INCOME_ADD")) {
+        	editMode = INCOME_CATEGORY_ADD_MODE;
+        } else if (intent.getStringExtra("CATEGORY_EDIT_MODE").contentEquals("INCOME_EDIT")) {
+        	editMode = INCOME_CATEGORY_EDIT_MODE;
         } else {
         	editMode = -1;
         }
-        
+        Log.d("jp test (New)", " editMode="+editMode);
         
        	setContentView(R.layout.category_new_edit);
        	
@@ -83,7 +91,7 @@ public class NewEditCategoryLayout  extends Activity {
        	
        	categoryName = (EditText) findViewById (R.id.EditCategoryEditor);
        	
-       	if (editMode == MAIN_CATEGORY_EDIT_MODE || editMode == SUB_CATEGORY_EDIT_MODE) {
+       	if (editMode == MAIN_CATEGORY_EDIT_MODE || editMode == SUB_CATEGORY_EDIT_MODE || editMode == INCOME_CATEGORY_EDIT_MODE) {
         	beforeImagePosition = intent.getIntExtra("CATEGORY_IMAGE_INDEX", -1);
         	categoryName.setText(intent.getStringExtra("CATEGORY_NAME"));   
         	mCategoryName = intent.getStringExtra("CATEGORY_NAME");
@@ -122,11 +130,21 @@ public class NewEditCategoryLayout  extends Activity {
     	}
     	
     	public int getCount() {
-    		return 150;
+    		if (mType == ExpenseItem.TYPE) {
+    			return 150;
+    		} else if (mType == IncomeItem.TYPE) {
+    			return 50;
+    		}
+    		return 50;
     	}
     	
     	public Object getItem (int position) {
-    		return ConstantImagesArray.CATEGORY_IMAGES[position];
+    		if (mType == ExpenseItem.TYPE) {
+    			return ConstantImagesArray.CATEGORY_IMAGES[position];
+    		} else if (mType == IncomeItem.TYPE) {
+    			return ConstantImagesArray.INCOME_CATEGORY_IMAGES[position];
+    		}
+    		return null;
     	}
     	
     	public long getItemId (int position) {
@@ -143,7 +161,13 @@ public class NewEditCategoryLayout  extends Activity {
     		ImageView categoryImage = (ImageView) convertView.findViewById(R.id.CategoryItemImage);
     		ImageView categoryCheck = (ImageView) convertView.findViewById(R.id.CategoryCheckImage);
     		
-    		categoryImage.setImageResource(ConstantImagesArray.CATEGORY_IMAGES[position]);
+    		if (mType == ExpenseItem.TYPE) {
+    			categoryImage.setImageResource(ConstantImagesArray.CATEGORY_IMAGES[position]);
+    		} else if (mType == IncomeItem.TYPE) {
+    			categoryImage.setImageResource(ConstantImagesArray.INCOME_CATEGORY_IMAGES[position]);
+    		} else {
+    			
+    		}
     		categoryCheck.setImageResource(R.drawable.openarrow);
     		
     		if (position == (beforeImagePosition-1)) {
@@ -178,13 +202,13 @@ public class NewEditCategoryLayout  extends Activity {
 			int imagePosition = beforeImagePosition;
 			Category category;
 			
-			if (editMode == MAIN_CATEGORY_ADD_MODE) {
+			if (editMode == MAIN_CATEGORY_ADD_MODE || editMode == INCOME_CATEGORY_ADD_MODE) {
 				category = createMainCategory(name, imagePosition);
 				if (category == null) {
 					Log.e(LogTag.LAYOUT, ":: Fail make the category");
 					return;
 				}
-	        } else if (editMode == MAIN_CATEGORY_EDIT_MODE) {
+	        } else if (editMode == MAIN_CATEGORY_EDIT_MODE || editMode == INCOME_CATEGORY_EDIT_MODE) {
 	        	if (updateMainCategory(mCategoryID, name, imagePosition) == 0) {
 					Log.e(LogTag.LAYOUT, ":: Fail to update category");
 					return;

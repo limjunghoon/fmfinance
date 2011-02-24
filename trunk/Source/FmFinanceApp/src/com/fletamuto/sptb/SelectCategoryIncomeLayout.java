@@ -45,14 +45,14 @@ public class SelectCategoryIncomeLayout extends SelectCategoryBaseLayout /*Input
     
     protected void onClickCategoryButton(Category category) {
     	
-    	int type = getType();
+    	int type = IncomeItem.TYPE;
     	
     	//추가 버튼이 선택 됐을 때 처리
     	if (category.getID() == -2) {
 			Intent intent = new Intent(SelectCategoryIncomeLayout.this, NewEditCategoryLayout.class);
 			intent.putExtra("CATEGORY_EDIT_TYPE", type);
 			intent.putExtra("CATEGORY_EDIT_TITLE", "분류 추가");
-			intent.putExtra("CATEGORY_EDIT_MODE", "MAIN_ADD");
+			intent.putExtra("CATEGORY_EDIT_MODE", "INCOME_ADD");
 
 			startActivityForResult(intent, ACT_ADD_INCOME_CATEGORY);
 			return;
@@ -62,11 +62,11 @@ public class SelectCategoryIncomeLayout extends SelectCategoryBaseLayout /*Input
 			//편집으로 넘어 가는 화면
 			Intent intent = new Intent(SelectCategoryIncomeLayout.this, NewEditCategoryLayout.class);
 			intent.putExtra("CATEGORY_EDIT_TYPE", type);
-			intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, category.getID());
-			intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, category.getName());
+			intent.putExtra("CATEGORY_ID", category.getID());
+			intent.putExtra("CATEGORY_NAME", category.getName());
 			intent.putExtra("CATEGORY_IMAGE_INDEX", category.getImageIndex());
 			intent.putExtra("CATEGORY_EDIT_TITLE", "분류 편집");
-			intent.putExtra("CATEGORY_EDIT_MODE", "MAIN_EDIT");
+			intent.putExtra("CATEGORY_EDIT_MODE", "INCOME_EDIT");
 
 			startActivityForResult(intent, ACT_EDIT_INCOME_CATEGORY);
 			return;
@@ -106,7 +106,7 @@ public class SelectCategoryIncomeLayout extends SelectCategoryBaseLayout /*Input
 			
 			public void onClick(DialogInterface dialog, int which) {
 				
-				if (DBMgr.deleteCategory(ExpenseItem.TYPE, dCategory.getID()) == 0) {
+				if (DBMgr.deleteCategory(IncomeItem.TYPE, dCategory.getID()) == 0) {
 					return;
 				}
 				mArrCategory.remove(dCategory);
@@ -121,6 +121,18 @@ public class SelectCategoryIncomeLayout extends SelectCategoryBaseLayout /*Input
 		}).show();   	
 	}
 
+    @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if (requestCode == ACT_ADD_INCOME_CATEGORY || requestCode == ACT_EDIT_INCOME_CATEGORY) {
+    		
+    		if (resultCode == RESULT_OK) {
+    			updateAdapterCategory();			
+    		}
+    		return;
+    	} 
+		
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 /*
     @Override
 	protected void setTitleBtn() {
