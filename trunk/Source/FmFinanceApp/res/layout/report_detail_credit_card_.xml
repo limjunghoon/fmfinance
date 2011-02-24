@@ -28,7 +28,7 @@
     android:text="기준일별내역" android:textSize="8sp" />
     <Button android:id="@+id/BTDetailCreditCardBilingMonthButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
     android:layout_marginTop="10dp" android:layout_toRightOf="@+id/BTDetailCreditCardBilingBasicDateButton" android:layout_below="@+id/BTDetailCreditExpenseAccount"
-    android:text="기준일별내역" android:textSize="8sp" />
+    android:text="월별내역" android:textSize="8sp" />
     <TextView android:id="@+id/TVDetailCreditCardBilingDate" android:layout_width="fill_parent" android:layout_height="wrap_content"
     android:layout_marginTop="10dp" android:layout_toRightOf="@+id/BTDetailCreditCardBilingMonthButton" android:layout_below="@+id/BTDetailCreditExpenseAccount"
     android:text="2011년 00월 00일" android:textSize="18sp" android:gravity="right"/>
