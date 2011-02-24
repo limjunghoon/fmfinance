@@ -33,9 +33,9 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	protected void initialize() {
 		super.initialize();
 		
-		mYear = Calendar.getInstance().YEAR;
-		mMonth = Calendar.getInstance().MONTH + 1;
-		mDay = Calendar.getInstance().DAY_OF_MONTH;
+		mYear = calendar.get(Calendar.YEAR);
+		mMonth = calendar.get(Calendar.MONTH);
+		mDay = calendar.get(Calendar.DAY_OF_MONTH);
 		
 		if (mCard == null) {
 		}
@@ -58,6 +58,8 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		updateCardBillingTermText();
 		updateCardBillingItemCountText();
 		updateCardBillingAmountText();
+		
+		setBillingTermBtnClickListener();
 	}
 	
 	/**
@@ -103,10 +105,10 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		String billingDateLastText = null;
 		if(isNextBilling) {
 			billingDateLastText = "결제 예정";
-			if(Calendar.getInstance().getTime().getDate() < mCard.getSettlementDay()) {
-				billingDateLastText = (Calendar.getInstance(TimeZone.getDefault(), Locale.KOREA).getTime().getMonth()+1) + "월 " + mCard.getSettlementDay() + "일 " + billingDateLastText; 
+			if(calendar.getTime().getDate() < mCard.getSettlementDay()) {
+				billingDateLastText = (calendar.getTime().getMonth()+1) + "월 " + mCard.getSettlementDay() + "일 " + billingDateLastText; 
 			} else {
-				billingDateLastText = (Calendar.getInstance(TimeZone.getDefault(), Locale.KOREA).getTime().getMonth()+2) + "월 " + mCard.getSettlementDay() + "일 " + billingDateLastText;
+				billingDateLastText = (calendar.getTime().getMonth()+2) + "월 " + mCard.getSettlementDay() + "일 " + billingDateLastText;
 			}
 			((TextView)findViewById(R.id.TVDetailCreditCardBillingDate)).setText(billingDateLastText);
 		} else {
@@ -125,8 +127,9 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	 */
 	private void updateCardBillingTermText() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일");
-		((TextView)findViewById(R.id.TVDetailCreditCardBillingTerm)).setText(format.format(mCard.getStartBillingPeriod(Calendar.getInstance(TimeZone.getDefault(), Locale.KOREA)).getTime()) + " ~ " + format.format(mCard.getEndBillingPeriod(Calendar.getInstance(TimeZone.getDefault(), Locale.KOREA)).getTime()));
+		((TextView)findViewById(R.id.TVDetailCreditCardBillingTerm)).setText(format.format(mCard.getStartBillingPeriod((Calendar)calendar.clone()).getTime()) + " ~ " + format.format(mCard.getEndBillingPeriod((Calendar)calendar.clone()).getTime()));
 	}
+	Calendar calendar = (Calendar) Calendar.getInstance(TimeZone.getDefault(), Locale.KOREA).clone();
 	/**
 	 * 아이템 개수 갱신
 	 */
@@ -143,20 +146,20 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	 * 리스너 등록
 	 */
 	protected void setBillingTermBtnClickListener() {
-		((Button)findViewById(R.id.BTDetailCreditCardBilingDatePreButton)).setOnClickListener(billingTermBtnClickListener);
-		((Button)findViewById(R.id.BTDetailCreditCardBilingDateNextButton)).setOnClickListener(billingTermBtnClickListener);
+		((Button)findViewById(R.id.BTDetailCreditCardBillingDatePreButton)).setOnClickListener(billingTermBtnClickListener);
+		((Button)findViewById(R.id.BTDetailCreditCardBillingDateNextButton)).setOnClickListener(billingTermBtnClickListener);
 	}
 	private View.OnClickListener billingTermBtnClickListener = new View.OnClickListener() {
 		public void onClick(View v) {
 			switch(v.getId()) {
-			case R.id.BTDetailCreditCardBilingDatePreButton:
+			case R.id.BTDetailCreditCardBillingDatePreButton:
 				mMonth -= 1;
 				if(mMonth < 1) {
 					mYear -= 1;
 					mMonth = 12;
 				}
 				break;
-			case R.id.BTDetailCreditCardBilingDateNextButton:
+			case R.id.BTDetailCreditCardBillingDateNextButton:
 				mMonth += 1;
 				if(mMonth > 12) {
 					mYear += 1;
@@ -164,9 +167,26 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 				}
 				break;
 			}
-			mCard.setBillingPeriodMonth(mMonth);
-			mCard.setBillingPeriodDay(mDay);
+			calendar.set(Calendar.YEAR, mYear);
+			calendar.set(Calendar.MONTH, mMonth);
+			calendar.set(Calendar.DAY_OF_MONTH, mDay);
+//			Toast.makeText(CardDetailCreditLayout.this, calendar.getTime().toLocaleString(), Toast.LENGTH_LONG).show();
+			Calendar calendarTemp = (Calendar) Calendar.getInstance(TimeZone.getDefault(), Locale.KOREA).clone();
+			calendarTemp.set(Calendar.DAY_OF_MONTH, mCard.getSettlementDay());	//결제일
+			Toast.makeText(CardDetailCreditLayout.this, calendarTemp.getTime().toLocaleString() + "\n" + calendar.getTime().toLocaleString(), Toast.LENGTH_LONG).show();
+			if(calendarTemp.getTime().getYear() == calendar.getTime().getYear() && calendarTemp.getTime().getMonth() == calendar.getTime().getMonth())
+				if(calendarTemp.getTime().getDate() >= calendar.getTime().getDate()) {
+					isNextBilling = true;
+				} else {
+					isNextBilling = false;
+				}
+			else if(calendarTemp.getTimeInMillis() <= calendar.getTimeInMillis()) {
+				isNextBilling = true;
+			} else {
+				isNextBilling = false;
+			}
 			updateCardBillingDateText();
+			updateCardBillingTermText();
 		}
 	};
 	
