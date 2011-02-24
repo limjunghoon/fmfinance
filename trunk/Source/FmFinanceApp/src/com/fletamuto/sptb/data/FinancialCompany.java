@@ -12,6 +12,7 @@ public class FinancialCompany extends BaseItem {
 	
 	private String mName;
 	private int	mGroup = GROUP_NONE;
+	private int mImageIndex = -1;
 	
 	public FinancialCompany() {
 	}
@@ -35,6 +36,14 @@ public class FinancialCompany extends BaseItem {
 
 	public int getGroup() {
 		return mGroup;
+	}
+	
+	public void setImageIndex(int mImageIndex) {
+		this.mImageIndex = mImageIndex;
+	}
+	
+	public int getImageIndex() {
+		return mImageIndex;
 	}
 
 }

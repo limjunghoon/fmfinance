@@ -36,7 +36,7 @@
 		<activity android:name=".SettingRegstrationLayout" android:label="등록" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".InputAccountLayout" android:label="계좌등록" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		
-		<activity android:label="금융기관 선택" android:name=".SelectCompanyLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:label="금융기관 선택" android:name=".SelectCompanyLayout" android:theme="@android:style/Theme.Translucent"></activity>
 		<activity android:label="계좌" android:name=".ReportAccountLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".SelectCardCompanyLayout" android:label="카드사선택" android:theme="@android:style/Theme.Translucent"></activity>
 		<activity android:name=".InputCreditCardLayout" android:label="신용카드 등록" android:theme="@android:style/Theme.NoTitleBar"></activity>

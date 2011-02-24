@@ -18,7 +18,7 @@ public class CompanyDBConnector extends BaseDBConnector {
 		rowItem.put("name", company.getName());
 		rowItem.put("type", company.getGroup());
 		rowItem.put("prioritize", 1);
-		rowItem.put("image_index", 1);
+		rowItem.put("image_index", company.getImageIndex());
 		
 		int ret = (int)db.insert(TABLE_NAME, null, rowItem);
 		closeDatabase();
@@ -32,7 +32,7 @@ public class CompanyDBConnector extends BaseDBConnector {
 		rowItem.put("name", company.getName());
 		rowItem.put("type", company.getGroup());
 		rowItem.put("prioritize", 1);
-		rowItem.put("image_index", 1);
+		rowItem.put("image_index", company.getImageIndex());
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(company.getID())});
 		closeDatabase();
@@ -74,6 +74,7 @@ public class CompanyDBConnector extends BaseDBConnector {
 		institution.setID(c.getInt(0));
 		institution.setName(c.getString(1));
 		institution.setGroup(c.getInt(2));
+		institution.setImageIndex(c.getInt(4));
 		return institution;
 	}
 	
