@@ -19,7 +19,7 @@ public class TagDBConnector extends BaseDBConnector {
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", tag.getName());
 		rowItem.put("prioritize", 1);
-		rowItem.put("image_index", 1);
+		rowItem.put("image_index", tag.getImageIndex());
 		
 		insertID = (int)db.insert(TABLE_NAME, null, rowItem);
 		tag.setID(insertID);
@@ -33,7 +33,7 @@ public class TagDBConnector extends BaseDBConnector {
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("name", tag.getName());
 		rowItem.put("prioritize", 1);
-		rowItem.put("image_index", 1);
+		rowItem.put("image_index", tag.getImageIndex());
 		
 		db.update(TABLE_NAME, rowItem, "_id=?", new String[] {String.valueOf(tag.getID())});
 		closeDatabase();

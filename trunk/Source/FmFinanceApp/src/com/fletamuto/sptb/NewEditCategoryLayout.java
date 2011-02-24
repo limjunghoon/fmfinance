@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.ExpenseTag;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
@@ -39,6 +40,8 @@ public class NewEditCategoryLayout  extends Activity {
 	final static int SUB_CATEGORY_EDIT_MODE = 3;
 	final static int INCOME_CATEGORY_ADD_MODE = 4;
 	final static int INCOME_CATEGORY_EDIT_MODE = 5;
+	final static int TAG_ADD_MODE = 6;
+	final static int TAG_EDIT_MODE = 7;
 	
 	//선택된 이미지 위치
 	private int beforeImagePosition = -1;
@@ -46,15 +49,15 @@ public class NewEditCategoryLayout  extends Activity {
 	private int editMode;
 	
 	//Editor
-	EditText categoryName;
+	EditText eName;
 
 	//이미지 아답타
 	ImageAdapter Adapter;
 	
 	private String mMainCategoryName;
 	private int mMainCategoryID = -1;
-	private String mCategoryName;
-	private int mCategoryID = -1;
+	private String mName;
+	private int mID = -1;
 	
 	
 	/** Called when the activity is first created. */
@@ -65,20 +68,24 @@ public class NewEditCategoryLayout  extends Activity {
 //        getExtraInfo();
         Intent intent = getIntent();
         
-        mType = intent.getIntExtra("CATEGORY_EDIT_TYPE", -1);
+        mType = intent.getIntExtra("EDIT_TYPE", -1);
         
-        if (intent.getStringExtra("CATEGORY_EDIT_MODE").contentEquals("MAIN_ADD")) {
+        if (intent.getStringExtra("EDIT_MODE").contentEquals("MAIN_CATEGORY_ADD")) {
         	editMode = MAIN_CATEGORY_ADD_MODE;
-        } else if (intent.getStringExtra("CATEGORY_EDIT_MODE").contentEquals("MAIN_EDIT")) {
+        } else if (intent.getStringExtra("EDIT_MODE").contentEquals("MAIN_CATEGORY_EDIT")) {
         	editMode = MAIN_CATEGORY_EDIT_MODE;
-        } else if (intent.getStringExtra("CATEGORY_EDIT_MODE").contentEquals("SUB_ADD")) {
+        } else if (intent.getStringExtra("EDIT_MODE").contentEquals("SUB_CATEGORY_ADD")) {
         	editMode = SUB_CATEGORY_ADD_MODE;
-        } else if (intent.getStringExtra("CATEGORY_EDIT_MODE").contentEquals("SUB_EDIT")) {
+        } else if (intent.getStringExtra("EDIT_MODE").contentEquals("SUB_CATEGORY_EDIT")) {
         	editMode = SUB_CATEGORY_EDIT_MODE;
-        } else if (intent.getStringExtra("CATEGORY_EDIT_MODE").contentEquals("INCOME_ADD")) {
+        } else if (intent.getStringExtra("EDIT_MODE").contentEquals("INCOME_CATEGORY_ADD")) {
         	editMode = INCOME_CATEGORY_ADD_MODE;
-        } else if (intent.getStringExtra("CATEGORY_EDIT_MODE").contentEquals("INCOME_EDIT")) {
+        } else if (intent.getStringExtra("EDIT_MODE").contentEquals("INCOME_CATEGORY_EDIT")) {
         	editMode = INCOME_CATEGORY_EDIT_MODE;
+        } else if (intent.getStringExtra("EDIT_MODE").contentEquals("TAG_ADD")) {
+        	editMode = TAG_ADD_MODE;
+        } else if (intent.getStringExtra("EDIT_MODE").contentEquals("TAG_EDIT")) {
+        	editMode = TAG_EDIT_MODE;
         } else {
         	editMode = -1;
         }
@@ -87,18 +94,23 @@ public class NewEditCategoryLayout  extends Activity {
        	setContentView(R.layout.category_new_edit);
        	
        	TextView title = (TextView) findViewById (R.id.EditCategoryTitle);
-       	title.setText(intent.getStringExtra("CATEGORY_EDIT_TITLE"));
+       	title.setText(intent.getStringExtra("EDIT_TITLE"));
        	
-       	categoryName = (EditText) findViewById (R.id.EditCategoryEditor);
+       	eName = (EditText) findViewById (R.id.EditCategoryEditor);
        	
        	if (editMode == MAIN_CATEGORY_EDIT_MODE || editMode == SUB_CATEGORY_EDIT_MODE || editMode == INCOME_CATEGORY_EDIT_MODE) {
         	beforeImagePosition = intent.getIntExtra("CATEGORY_IMAGE_INDEX", -1);
-        	categoryName.setText(intent.getStringExtra("CATEGORY_NAME"));   
-        	mCategoryName = intent.getStringExtra("CATEGORY_NAME");
-            mCategoryID = intent.getIntExtra("CATEGORY_ID", -1);
+        	eName.setText(intent.getStringExtra("CATEGORY_NAME"));   
+        	mName = intent.getStringExtra("CATEGORY_NAME");
+            mID = intent.getIntExtra("CATEGORY_ID", -1);
+        } else if (editMode == TAG_EDIT_MODE) {
+        	beforeImagePosition = intent.getIntExtra("TAG_IMAGE_INDEX", -1);
+        	eName.setText(intent.getStringExtra("TAG_NAME"));   
+        	mName = intent.getStringExtra("TAG_NAME");
+            mID = intent.getIntExtra("TAG_ID", -1);
         } else {
         	beforeImagePosition = -1;
-        	categoryName.setHint("분류명을 입력하세요");
+        	eName.setHint("분류명을 입력하세요");
         }
        	
        	if (editMode == SUB_CATEGORY_ADD_MODE || editMode == SUB_CATEGORY_EDIT_MODE) {
@@ -158,26 +170,26 @@ public class NewEditCategoryLayout  extends Activity {
     		}
     		
     		FrameLayout fLayout = (FrameLayout) convertView.findViewById (R.id.EditCategoryGridFL);
-    		ImageView categoryImage = (ImageView) convertView.findViewById(R.id.CategoryItemImage);
-    		ImageView categoryCheck = (ImageView) convertView.findViewById(R.id.CategoryCheckImage);
+    		ImageView imageView = (ImageView) convertView.findViewById(R.id.CategoryItemImage);
+    		ImageView imageCheck = (ImageView) convertView.findViewById(R.id.CategoryCheckImage);
     		
     		if (mType == ExpenseItem.TYPE) {
-    			categoryImage.setImageResource(ConstantImagesArray.CATEGORY_IMAGES[position]);
+    			imageView.setImageResource(ConstantImagesArray.CATEGORY_IMAGES[position]);
     		} else if (mType == IncomeItem.TYPE) {
-    			categoryImage.setImageResource(ConstantImagesArray.INCOME_CATEGORY_IMAGES[position]);
-    		} else {
-    			
+    			imageView.setImageResource(ConstantImagesArray.INCOME_CATEGORY_IMAGES[position]);
+    		} else if (editMode == TAG_ADD_MODE || editMode == TAG_EDIT_MODE){
+    			imageView.setImageResource(ConstantImagesArray.TAG_IMAGES[position]);
     		}
-    		categoryCheck.setImageResource(R.drawable.openarrow);
+    		imageCheck.setImageResource(R.drawable.openarrow);
     		
     		if (position == (beforeImagePosition-1)) {
-    			categoryCheck.setVisibility(ImageView.VISIBLE);
+    			imageCheck.setVisibility(ImageView.VISIBLE);
     		} else {
-    			categoryCheck.setVisibility(ImageView.INVISIBLE);
+    			imageCheck.setVisibility(ImageView.INVISIBLE);
     		}
     		
-    		categoryImage.setOnClickListener(imageViewClickLintener);
-    		categoryImage.setTag(position+1);
+    		imageView.setOnClickListener(imageViewClickLintener);
+    		imageView.setTag(position+1);
     		return convertView;
     		
     	}
@@ -198,7 +210,7 @@ public class NewEditCategoryLayout  extends Activity {
 	public View.OnClickListener saveBtnClickLintener = new View.OnClickListener() {
 		
 		public void onClick(View v) {
-			String name = categoryName.getText().toString();
+			String name = eName.getText().toString();
 			int imagePosition = beforeImagePosition;
 			Category category;
 			
@@ -209,7 +221,7 @@ public class NewEditCategoryLayout  extends Activity {
 					return;
 				}
 	        } else if (editMode == MAIN_CATEGORY_EDIT_MODE || editMode == INCOME_CATEGORY_EDIT_MODE) {
-	        	if (updateMainCategory(mCategoryID, name, imagePosition) == 0) {
+	        	if (updateMainCategory(mID, name, imagePosition) == 0) {
 					Log.e(LogTag.LAYOUT, ":: Fail to update category");
 					return;
 				}
@@ -220,10 +232,20 @@ public class NewEditCategoryLayout  extends Activity {
 					return;
 				}
 	        } else if (editMode == SUB_CATEGORY_EDIT_MODE) {
-	        	if (updateSubCategory(mCategoryID, name, imagePosition) == 0) {
+	        	if (updateSubCategory(mID, name, imagePosition) == 0) {
 					Log.e(LogTag.LAYOUT, ":: Fail to update category");
 					return;
 				}
+	        } else if (editMode == TAG_ADD_MODE) {
+	        	if (createItem(name, imagePosition) == null) {
+	        		Log.e(LogTag.LAYOUT, ":: Fail make the tag");
+					return;
+	        	}
+	        } else if (editMode == TAG_EDIT_MODE) {
+	        	if (updateItem(mID, name, imagePosition) == null) {
+	        		Log.e(LogTag.LAYOUT, ":: Fail to update tag");
+					return;
+	        	}
 	        } else {
 	        	
 	        }
@@ -309,5 +331,45 @@ public class NewEditCategoryLayout  extends Activity {
 		});
     	alert.show();
     }
+    
+	protected ExpenseTag createItem(String itemName, int imgIndex) {
+		
+		if (checkCategoryName(itemName) == false || checkCategoryImage(imgIndex) == false) {
+			return null;
+		}
+		
+		ExpenseTag tag = new ExpenseTag();
+		tag.setName(itemName);
+		tag.setImageIndex(imgIndex);
+		
+		if (DBMgr.addTag(tag) == -1) {
+			Log.e(LogTag.LAYOUT, ":: Fail to create TAG Item");
+			return null;
+		}
+		return tag;
+	}
+	
+	protected ExpenseTag updateItem(int editTagID, String itemName, int imgIndex) {
+
+		if (checkCategoryName(itemName) == false || checkCategoryImage(imgIndex) == false) {
+			return null;
+		}
+		
+		ExpenseTag tag = DBMgr.getTag(editTagID);
+		if (tag == null) {
+			Log.e(LogTag.LAYOUT, ":: Fail to load tag");
+			return null;
+		}
+		
+		tag.setName(itemName);
+		tag.setImageIndex(imgIndex);
+		if (DBMgr.updateTag(tag) == false) {
+			Log.e(LogTag.LAYOUT, ":: Fail update the tag");
+			return null;
+		}
+		
+		return tag;
+	}
+
 }
 

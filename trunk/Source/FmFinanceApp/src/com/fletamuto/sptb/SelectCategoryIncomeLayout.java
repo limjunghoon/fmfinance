@@ -50,9 +50,9 @@ public class SelectCategoryIncomeLayout extends SelectCategoryBaseLayout /*Input
     	//추가 버튼이 선택 됐을 때 처리
     	if (category.getID() == -2) {
 			Intent intent = new Intent(SelectCategoryIncomeLayout.this, NewEditCategoryLayout.class);
-			intent.putExtra("CATEGORY_EDIT_TYPE", type);
-			intent.putExtra("CATEGORY_EDIT_TITLE", "분류 추가");
-			intent.putExtra("CATEGORY_EDIT_MODE", "INCOME_ADD");
+			intent.putExtra("EDIT_TYPE", type);
+			intent.putExtra("EDIT_TITLE", "분류 추가");
+			intent.putExtra("EDIT_MODE", "INCOME_CATEGORY_ADD");
 
 			startActivityForResult(intent, ACT_ADD_INCOME_CATEGORY);
 			return;
@@ -61,12 +61,12 @@ public class SelectCategoryIncomeLayout extends SelectCategoryBaseLayout /*Input
 		if (getEditCategoryMode()) {
 			//편집으로 넘어 가는 화면
 			Intent intent = new Intent(SelectCategoryIncomeLayout.this, NewEditCategoryLayout.class);
-			intent.putExtra("CATEGORY_EDIT_TYPE", type);
+			intent.putExtra("EDIT_TYPE", type);
 			intent.putExtra("CATEGORY_ID", category.getID());
 			intent.putExtra("CATEGORY_NAME", category.getName());
 			intent.putExtra("CATEGORY_IMAGE_INDEX", category.getImageIndex());
-			intent.putExtra("CATEGORY_EDIT_TITLE", "분류 편집");
-			intent.putExtra("CATEGORY_EDIT_MODE", "INCOME_EDIT");
+			intent.putExtra("EDIT_TITLE", "분류 편집");
+			intent.putExtra("EDIT_MODE", "INCOME_CATEGORY_EDIT");
 
 			startActivityForResult(intent, ACT_EDIT_INCOME_CATEGORY);
 			return;
