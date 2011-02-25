@@ -154,9 +154,9 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		}
 	}
 	/**
-	 * 기간별내역
-	 * @true	현재 이 후 기간
-	 * @false	지난 기간
+	 * <p>기간별내역</p>
+	 * <b>true</b><br/><dd>현재 이 후 기간</dd><br/>
+	 * <b>false</b><br/><dd>지난 기간</dd>
 	 */
 	private boolean isNextBilling = true;
 	/**
@@ -287,6 +287,7 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	private void updateCardBillingAmountText() {
 		long amount = 0;
 		for(int i = 0, count = mCardExpenseItems.size(); i < count; i++) {
+			//mCardExpenseItems.get(i).
 			amount += mCardExpenseItems.get(i).getAmount();
 		}
 		((TextView)findViewById(R.id.TVDetailCreditCardBillingItemAmount)).setText(String.valueOf(amount));
@@ -309,12 +310,12 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 				break;
 			case R.id.BTDetailCreditCardBillingBasicDateButton:
 				isBasicDate = true;
-				Toast.makeText(CardDetailCreditLayout.this, "기준일별내역 버튼을 누름", Toast.LENGTH_LONG).show();
+				//Toast.makeText(CardDetailCreditLayout.this, "기준일별내역 버튼을 누름", Toast.LENGTH_LONG).show();
 				updateChild();
 				break;
 			case R.id.BTDetailCreditCardBillingMonthButton:
 				isBasicDate = false;
-				Toast.makeText(CardDetailCreditLayout.this, "월별내역 버튼을 누름", Toast.LENGTH_LONG).show();
+				//Toast.makeText(CardDetailCreditLayout.this, "월별내역 버튼을 누름", Toast.LENGTH_LONG).show();
 				updateChild();
 				break;
 			case R.id.BTDetailCreditCardBillingDatePreButton:
