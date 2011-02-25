@@ -140,6 +140,7 @@ public class CardPaymentLayout extends FmBaseActivity {
 				convertView = mInflater.inflate(mResource, parent, false);
 				
 				ViewHolder viewHolder = new ViewHolder(
+						(TextView)convertView.findViewById(R.id.TVTitle),
 						(TextView)convertView.findViewById(R.id.TVListLeft), 
 						(TextView)convertView.findViewById(R.id.TVListCenterTop), 
 						(TextView)convertView.findViewById(R.id.TVListCenterBottom), 
