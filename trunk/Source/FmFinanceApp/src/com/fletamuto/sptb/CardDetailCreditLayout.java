@@ -139,9 +139,9 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		String billingDateLastText = null;
 		if(isNextBilling) {
 			billingDateLastText = "결제 예정";
-			int addMonth = 1;
-			if((new Date()).getDate() >= mCard.getSettlementDay())
-				addMonth = 2;
+			int addMonth = 2;
+//			if((new Date()).getDate() >= mCard.getSettlementDay())
+//				addMonth = 2;
 			Calendar tempCalendar = (Calendar) calendar.clone();
 			tempCalendar.add(Calendar.MONTH, addMonth);
 			tempCalendar.set(Calendar.DAY_OF_MONTH, mCard.getSettlementDay());
