@@ -52,14 +52,19 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	protected void initialize() {
 		super.initialize();
 		
+		if (mCard == null) {
+		}
+		
+		getCalendarDate();
+		setBillingBtnClickListener();
+	}
+	
+	private void getCalendarDate() {
 		mYear = calendar.get(Calendar.YEAR);
 		mMonth = calendar.get(Calendar.MONTH);
 		mDay = calendar.get(Calendar.DAY_OF_MONTH);
-		
-		if (mCard == null) {
-		}
 	}
-	
+
 	public void updateChild() {
 		//updateCardNameText();
 		//updateCardSettlementDayText();
@@ -68,6 +73,7 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		//updateCardExpenseAmountBtnText();
 		//updateCardBillingAmountBtnText();
 		//updateCardNextBillingAmountBtnText();
+		
 		updateCardNameText();
 		updateCardNumberText();
 		updateCardTypeText();
@@ -78,12 +84,18 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		//updateCardBillingItemCountText();
 		//updateCardBillingAmountText();
 		
-		setBillingBtnClickListener();
-		
 		getCardExpenseItems();
-		setAlarmAdapterList();
+		
+		initWidget();
 	}
 	
+	private void initWidget() {
+		if(isBasicDate)
+			((TextView)findViewById(R.id.TVDetailCreditCardBillingDate)).setVisibility(View.VISIBLE);
+		else
+			((TextView)findViewById(R.id.TVDetailCreditCardBillingDate)).setVisibility(View.INVISIBLE);
+	}
+
 	/**
 	 * 카드명 갱신
 	 */
@@ -127,11 +139,14 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		String billingDateLastText = null;
 		if(isNextBilling) {
 			billingDateLastText = "결제 예정";
-			if(calendar.getTime().getDate() < mCard.getSettlementDay()) {
-				billingDateLastText = (calendar.getTime().getMonth()+1) + "월 " + mCard.getSettlementDay() + "일 " + billingDateLastText; 
-			} else {
-				billingDateLastText = (calendar.getTime().getMonth()+2) + "월 " + mCard.getSettlementDay() + "일 " + billingDateLastText;
-			}
+			int addMonth = 1;
+			if((new Date()).getDate() >= mCard.getSettlementDay())
+				addMonth = 2;
+			Calendar tempCalendar = (Calendar) calendar.clone();
+			tempCalendar.add(Calendar.MONTH, addMonth);
+			tempCalendar.set(Calendar.DAY_OF_MONTH, mCard.getSettlementDay());
+			
+			billingDateLastText = tempCalendar.get(Calendar.YEAR) + "년 " + tempCalendar.get(Calendar.MONTH) + "월 " + tempCalendar.get(Calendar.DAY_OF_MONTH) + "일 " + billingDateLastText;
 			((TextView)findViewById(R.id.TVDetailCreditCardBillingDate)).setText(billingDateLastText);
 		} else {
 			billingDateLastText = "결제 됨";
@@ -149,7 +164,17 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	 */
 	private void updateCardBillingTermText() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일");
-		((TextView)findViewById(R.id.TVDetailCreditCardBillingTerm)).setText(format.format(mCard.getStartBillingPeriod((Calendar)calendar.clone()).getTime()) + " ~ " + format.format(mCard.getEndBillingPeriod((Calendar)calendar.clone()).getTime()));
+		if(isBasicDate)
+			((TextView)findViewById(R.id.TVDetailCreditCardBillingTerm)).setText(format.format(mCard.getStartBillingPeriod(calendar).getTime()) + " ~ " + format.format(mCard.getEndBillingPeriod(calendar).getTime()));
+		else {
+			Calendar startDate = (Calendar) calendar.clone();
+			startDate.set(Calendar.DAY_OF_MONTH, 1);
+			Calendar endDate = (Calendar) calendar.clone();
+			endDate.add(Calendar.MONTH, 1);
+			endDate.set(Calendar.DAY_OF_MONTH, 1);
+			endDate.add(Calendar.DAY_OF_MONTH, -1);
+			((TextView)findViewById(R.id.TVDetailCreditCardBillingTerm)).setText(format.format(startDate.getTime()) + " ~ " + format.format(endDate.getTime()));
+		}
 	}
 	Calendar calendar = (Calendar) Calendar.getInstance(TimeZone.getDefault(), Locale.KOREA).clone();
 	/**
@@ -157,27 +182,35 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	 */
 	public void getCardExpenseItems() {
 		CardItem card = mCardInfo.getCard();
-		Calendar tatgetDate = mCardInfo.getSettlementDate();
-		if(isBasicDate)
+		if(isBasicDate) {
+			Calendar tatgetDate = (Calendar) calendar.clone();
 			mCardExpenseItems = DBMgr.getCardExpenseItems(card.getID(), card.getStartBillingPeriod(tatgetDate), card.getEndBillingPeriod(tatgetDate));
-		else
-			mCardExpenseItems = DBMgr.getCardExpenseItems(card.getID(), card.getStartBillingPeriod(tatgetDate), card.getEndBillingPeriod(tatgetDate));	// FIXME 이 부분을 각 달의 첫날과 마지막 달로 넣는 것으로 바꾸어야 함
+		} else {
+			Calendar tatgetStartDate = (Calendar) calendar.clone();
+			tatgetStartDate.set(Calendar.DAY_OF_MONTH, 1);
+			Calendar tatgetEndDate = (Calendar) calendar.clone();
+			tatgetEndDate.add(Calendar.MONTH, 1);
+			tatgetEndDate.set(Calendar.DAY_OF_MONTH, 1);
+			tatgetEndDate.add(Calendar.DAY_OF_MONTH, -1);
+			mCardExpenseItems = DBMgr.getCardExpenseItems(card.getID(), tatgetStartDate, tatgetEndDate);
+		}
 		
 		updateCardBillingItemCountText();
 		updateCardBillingAmountText();
+		setAdapterList();
 	}
 	protected ArrayList<FinanceItem> mCardExpenseItems = null;
 	protected ReportCardExpenseItemAdapter mCardExpenseAdapter = null;
 	/**
 	 * 
 	 */
-	protected void setAlarmAdapterList() {
-    	final ListView listAlarm = (ListView)findViewById(R.id.LVDetailCreditCardBillingItems);
+	protected void setAdapterList() {
+    	final ListView list = (ListView)findViewById(R.id.LVDetailCreditCardBillingItems);
     	
     	mCardExpenseAdapter = new ReportCardExpenseItemAdapter(this, R.layout.report_list_normal, mCardExpenseItems);
-    	listAlarm.setAdapter(mCardExpenseAdapter);
+    	list.setAdapter(mCardExpenseAdapter);
     	
-    	listAlarm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    	list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -276,53 +309,44 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 			case R.id.BTDetailCreditCardBillingBasicDateButton:
 				isBasicDate = true;
 				Toast.makeText(CardDetailCreditLayout.this, "기준일별내역 버튼을 누름", Toast.LENGTH_LONG).show();
+				updateChild();
 				break;
 			case R.id.BTDetailCreditCardBillingMonthButton:
 				isBasicDate = false;
 				Toast.makeText(CardDetailCreditLayout.this, "월별내역 버튼을 누름", Toast.LENGTH_LONG).show();
+				updateChild();
 				break;
 			case R.id.BTDetailCreditCardBillingDatePreButton:
-				mMonth -= 1;
-				if(mMonth < 1) {
-					mYear -= 1;
-					mMonth = 12;
-				}
+				calendar.add(Calendar.MONTH, -1);
+				getCalendarDate();
 				updateCardBillingDateTerm();
 				break;
 			case R.id.BTDetailCreditCardBillingDateNextButton:
-				mMonth += 1;
-				if(mMonth > 12) {
-					mYear += 1;
-					mMonth = 1;
-				}
+				calendar.add(Calendar.MONTH, 1);
+				getCalendarDate();
 				updateCardBillingDateTerm();
 				break;
 			}
 		}
 	};
 	private void updateCardBillingDateTerm() {
-		calendar.set(Calendar.YEAR, mYear);
-		calendar.set(Calendar.MONTH, mMonth);
-		calendar.set(Calendar.DAY_OF_MONTH, mDay);
+		//calendar.set(Calendar.YEAR, mYear);
+		//calendar.set(Calendar.MONTH, mMonth);
+		//calendar.set(Calendar.DAY_OF_MONTH, mDay);
 		//Toast.makeText(CardDetailCreditLayout.this, calendar.getTime().toLocaleString(), Toast.LENGTH_LONG).show();
-		int year = mYear-1900, month = mMonth+1, day = mCard.getSettlementDay();
-		if(mMonth > 12) {
-			year += 1;
-			month = 1;
-		} else if(mMonth < 1) {
-			year -= 1;
-			month = 12;
-		}
-		Date dateTemp = new Date(Date.UTC(year, month, day, 0, 0, 0));
+		Calendar tempCalendar = (Calendar) calendar.clone();
+		tempCalendar.add(Calendar.MONTH, 1);
+		tempCalendar.set(Calendar.DAY_OF_MONTH, mCard.getSettlementDay());
 		
-		Toast.makeText(CardDetailCreditLayout.this, dateTemp.toLocaleString() + "\n" + (new Date()).toLocaleString(), Toast.LENGTH_LONG).show();
-		if(dateTemp.getTime() >= (new Date()).getTime()) {
+		Toast.makeText(CardDetailCreditLayout.this, tempCalendar.getTime().toLocaleString() + "\n" + (new Date()).toLocaleString(), Toast.LENGTH_LONG).show();
+		if(tempCalendar.getTimeInMillis() >= (new Date()).getTime()) {
 			isNextBilling = true;
 		} else {
 			isNextBilling = false;
 		}
 		updateCardBillingDateText();
 		updateCardBillingTermText();
+		getCardExpenseItems();
 	}
 	
 	@Override
@@ -342,7 +366,7 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	protected void setTitleBtn() {
 		super.setTitleBtn();
 		
-		switch(getIntent().getIntExtra("Action", ACTION_DEFAULT)) {
+		switch(getIntent().getIntExtra("Action", 1/*ACTION_DEFAULT*/)) {
 		case ACTION_DEFAULT:
 			break;
 		case ACTION_NOTIFICATION_INTO:
@@ -351,6 +375,11 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 			setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
 			setTitleBtnText(FmBaseLayout.BTN_LEFT_01, "취소");
 			setTitleBtnVisibility(FmBaseLayout.BTN_LEFT_01, View.VISIBLE);
+			
+			((Button)findViewById(R.id.BTDetailCreditCardBillingBasicDateButton)).setVisibility(View.INVISIBLE);
+			((Button)findViewById(R.id.BTDetailCreditCardBillingMonthButton)).setVisibility(View.INVISIBLE);
+			((Button)findViewById(R.id.BTDetailCreditCardBillingDatePreButton)).setVisibility(View.INVISIBLE);
+			((Button)findViewById(R.id.BTDetailCreditCardBillingDateNextButton)).setVisibility(View.INVISIBLE);
 			
 			setButtonListener();
 			break;
