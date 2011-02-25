@@ -1,19 +1,34 @@
 package com.fletamuto.sptb;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fletamuto.sptb.CardPaymentLayout.ReportCardExpenseItemAdapter;
+import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ViewHolder;
+import com.fletamuto.sptb.data.CardExpenseInfo;
 import com.fletamuto.sptb.data.CardItem;
+import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 
 
@@ -57,10 +72,13 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		updateCardBillingCategoryBtnText();
 		updateCardBillingDateText();
 		updateCardBillingTermText();
-		updateCardBillingItemCountText();
+		//updateCardBillingItemCountText();
 		updateCardBillingAmountText();
 		
 		setBillingTermBtnClickListener();
+		
+		getCardExpenseItems();
+		setAlarmAdapterList();
 	}
 	
 	/**
@@ -132,10 +150,98 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	}
 	Calendar calendar = (Calendar) Calendar.getInstance(TimeZone.getDefault(), Locale.KOREA).clone();
 	/**
+	 * 아이템 얻기
+	 */
+	public void getCardExpenseItems() {
+		CardItem card = mCardInfo.getCard();
+		Calendar tatgetDate = mCardInfo.getSettlementDate();
+		if(isBasicDate)
+			mCardExpenseItems = DBMgr.getCardExpenseItems(card.getID(), card.getStartBillingPeriod(tatgetDate), card.getEndBillingPeriod(tatgetDate));
+		else
+			mCardExpenseItems = DBMgr.getCardExpenseItems(card.getID(), card.getStartBillingPeriod(tatgetDate), card.getEndBillingPeriod(tatgetDate));	// FIXME 이 부분을 각 달의 첫날과 마지막 달로 넣는 것으로 바꾸어야 함
+		
+		updateCardBillingItemCountText();
+	}
+	protected ArrayList<FinanceItem> mCardExpenseItems = null;
+	protected ReportCardExpenseItemAdapter mCardExpenseAdapter = null;
+	/**
+	 * 
+	 */
+	protected void setAlarmAdapterList() {
+    	final ListView listAlarm = (ListView)findViewById(R.id.LVDetailCreditCardBillingItems);
+    	
+    	mCardExpenseAdapter = new ReportCardExpenseItemAdapter(this, R.layout.report_list_normal, mCardExpenseItems);
+    	listAlarm.setAdapter(mCardExpenseAdapter);
+    	
+    	listAlarm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				
+			}
+		});
+    }
+	public class ReportCardExpenseItemAdapter extends ArrayAdapter<FinanceItem> {
+    	int mResource;
+    	private LayoutInflater mInflater;
+
+		public ReportCardExpenseItemAdapter(Context context, int resource,
+				 List<FinanceItem> objects) {
+			super(context, resource, objects);
+			this.mResource = resource;
+			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			
+		}
+		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			FinanceItem item = (FinanceItem)getItem(position);
+			
+			if (convertView == null) {
+				convertView = mInflater.inflate(mResource, parent, false);
+				
+				ViewHolder viewHolder = new ViewHolder(
+						(TextView)convertView.findViewById(R.id.TVListLeft), 
+						(TextView)convertView.findViewById(R.id.TVListCenterTop), 
+						(TextView)convertView.findViewById(R.id.TVListCenterBottom), 
+						(TextView)convertView.findViewById(R.id.TVListRightTop), 
+						(TextView)convertView.findViewById(R.id.TVListRightBottom));
+				
+				convertView.setTag(viewHolder);
+			}
+			setExpenseListViewText((ExpenseItem)item, convertView);
+			
+			return convertView;
+		}
+		protected void setExpenseListViewText(ExpenseItem expense, View convertView) {
+	    	ViewHolder viewHolder = (ViewHolder) convertView.getTag();
+	    	viewHolder.getLeftTextView().setText(expense.getCategory().getName());
+			TextView tvSubCategory = viewHolder.getCenterTopTextView() ;
+			tvSubCategory.setText(expense.getSubCategory().getName());
+			
+			TextView tvAmount = viewHolder.getRightTopTextView(); 
+			tvAmount.setText(String.format("%,d원", -expense.getAmount()));
+			tvAmount.setTextColor(Color.RED);
+			
+			TextView tvMemo = viewHolder.getCenterBottomTextView() ;
+			if (expense.getMemo().length() != 0) {
+				tvMemo.setText(expense.getMemo());
+			}
+			else {
+				tvMemo.setVisibility(View.GONE);
+			}
+			
+			TextView tvMothod = viewHolder.getRightBottomTextView(); 
+			tvMothod.setText(expense.getPaymentMethod().getText());
+	    }
+    }
+	
+	/**
 	 * 아이템 개수 갱신
 	 */
 	private void updateCardBillingItemCountText() {
-		
+		((TextView)findViewById(R.id.TVDetailCreditCardBillingItemCount)).setText(String.valueOf(mCardExpenseItems.size()));
 	}
 	/**
 	 * 금액 개수 갱신
