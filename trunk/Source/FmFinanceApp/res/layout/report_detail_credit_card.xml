@@ -75,13 +75,13 @@
     android:layout_marginTop="10dp" android:layout_toRightOf="@+id/BTDetailCreditCardBillingMonthButton" android:layout_below="@+id/BTDetailCreditCardExpenseAccount"
     android:text="2011년 00월 00일" android:textSize="18sp" android:gravity="right"/>
     
-    <Button android:id="@+id/BTDetailCreditCardBillingDatePreButton" android:layout_width="16dp" android:layout_height="16dp"
+    <Button android:id="@+id/BTDetailCreditCardBillingDatePreButton" android:layout_width="24dp" android:layout_height="24dp"
     android:layout_marginTop="5dp" android:layout_marginLeft="10dp" android:layout_alignParentLeft="true" android:layout_below="@+id/BTDetailCreditCardBillingBasicDateButton" />
-    <TextView android:id="@+id/TVDetailCreditCardBillingTerm" android:layout_width="fill_parent" android:layout_height="16dp"
+    <TextView android:id="@+id/TVDetailCreditCardBillingTerm" android:layout_width="fill_parent" android:layout_height="24dp"
     android:layout_marginTop="5dp" android:layout_toRightOf="@+id/BTDetailCreditCardBillingDatePreButton" android:layout_toLeftOf="@+id/BTDetailCreditCardBillingDateNextButton"
     android:layout_below="@+id/BTDetailCreditCardBillingBasicDateButton" android:text="2011년 00월 00일 ~ 2011년 00월 00일" android:textSize="10sp"
     android:gravity="center"/>
-    <Button android:id="@+id/BTDetailCreditCardBillingDateNextButton" android:layout_width="16dp" android:layout_height="16dp"
+    <Button android:id="@+id/BTDetailCreditCardBillingDateNextButton" android:layout_width="24dp" android:layout_height="24dp"
     android:layout_marginTop="5dp" android:layout_marginRight="10dp" android:layout_alignParentRight="true" android:layout_below="@+id/BTDetailCreditCardBillingBasicDateButton" />
     
     
