@@ -73,7 +73,7 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		updateCardBillingDateText();
 		updateCardBillingTermText();
 		//updateCardBillingItemCountText();
-		updateCardBillingAmountText();
+		//updateCardBillingAmountText();
 		
 		setBillingTermBtnClickListener();
 		
@@ -245,7 +245,7 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		((TextView)findViewById(R.id.TVDetailCreditCardBillingItemCount)).setText(String.valueOf(mCardExpenseItems.size()));
 	}
 	/**
-	 * 금액 개수 갱신
+	 * 항목 전체 합산 금액  갱신
 	 */
 	private void updateCardBillingAmountText() {
 		long amount = 0;
