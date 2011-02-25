@@ -24,12 +24,15 @@ import android.widget.Toast;
 
 import com.fletamuto.sptb.CardPaymentLayout.ReportCardExpenseItemAdapter;
 import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ViewHolder;
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardExpenseInfo;
 import com.fletamuto.sptb.data.CardItem;
+import com.fletamuto.sptb.data.CardPayment;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceDataFormat;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 
 public class CardDetailCreditLayout extends CardDetailBaseLayout {
@@ -75,7 +78,7 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		//updateCardBillingItemCountText();
 		//updateCardBillingAmountText();
 		
-		setBillingTermBtnClickListener();
+		setBillingBtnClickListener();
 		
 		getCardExpenseItems();
 		setAlarmAdapterList();
@@ -257,19 +260,34 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	/**
 	 * 리스너 등록
 	 */
-	protected void setBillingTermBtnClickListener() {
-		((Button)findViewById(R.id.BTDetailCreditCardBillingDatePreButton)).setOnClickListener(billingTermBtnClickListener);
-		((Button)findViewById(R.id.BTDetailCreditCardBillingDateNextButton)).setOnClickListener(billingTermBtnClickListener);
+	protected void setBillingBtnClickListener() {
+		((Button)findViewById(R.id.BTDetailCreditCardExpenseAccount)).setOnClickListener(billingBtnClickListener);
+		((Button)findViewById(R.id.BTDetailCreditCardBillingBasicDateButton)).setOnClickListener(billingBtnClickListener);
+		((Button)findViewById(R.id.BTDetailCreditCardBillingMonthButton)).setOnClickListener(billingBtnClickListener);
+		((Button)findViewById(R.id.BTDetailCreditCardBillingDatePreButton)).setOnClickListener(billingBtnClickListener);
+		((Button)findViewById(R.id.BTDetailCreditCardBillingDateNextButton)).setOnClickListener(billingBtnClickListener);
 	}
-	private View.OnClickListener billingTermBtnClickListener = new View.OnClickListener() {
+	private View.OnClickListener billingBtnClickListener = new View.OnClickListener() {
 		public void onClick(View v) {
 			switch(v.getId()) {
+			case R.id.BTDetailCreditCardExpenseAccount:
+				Toast.makeText(CardDetailCreditLayout.this, "계좌 상세보기 버튼을 누름", Toast.LENGTH_LONG).show();
+				break;
+			case R.id.BTDetailCreditCardBillingBasicDateButton:
+				isBasicDate = true;
+				Toast.makeText(CardDetailCreditLayout.this, "기준일별내역 버튼을 누름", Toast.LENGTH_LONG).show();
+				break;
+			case R.id.BTDetailCreditCardBillingMonthButton:
+				isBasicDate = false;
+				Toast.makeText(CardDetailCreditLayout.this, "월별내역 버튼을 누름", Toast.LENGTH_LONG).show();
+				break;
 			case R.id.BTDetailCreditCardBillingDatePreButton:
 				mMonth -= 1;
 				if(mMonth < 1) {
 					mYear -= 1;
 					mMonth = 12;
 				}
+				updateCardBillingDateTerm();
 				break;
 			case R.id.BTDetailCreditCardBillingDateNextButton:
 				mMonth += 1;
@@ -277,36 +295,102 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 					mYear += 1;
 					mMonth = 1;
 				}
+				updateCardBillingDateTerm();
 				break;
 			}
-			calendar.set(Calendar.YEAR, mYear);
-			calendar.set(Calendar.MONTH, mMonth);
-			calendar.set(Calendar.DAY_OF_MONTH, mDay);
-			//Toast.makeText(CardDetailCreditLayout.this, calendar.getTime().toLocaleString(), Toast.LENGTH_LONG).show();
-			int year = mYear-1900, month = mMonth+1, day = mCard.getSettlementDay();
-			if(mMonth > 12) {
-				year += 1;
-				month = 1;
-			} else if(mMonth < 1) {
-				year -= 1;
-				month = 12;
-			}
-			Date dateTemp = new Date(Date.UTC(year, month, day, 0, 0, 0));
-			
-			Toast.makeText(CardDetailCreditLayout.this, dateTemp.toLocaleString() + "\n" + (new Date()).toLocaleString(), Toast.LENGTH_LONG).show();
-			if(dateTemp.getTime() >= (new Date()).getTime()) {
-				isNextBilling = true;
-			} else {
-				isNextBilling = false;
-			}
-			updateCardBillingDateText();
-			updateCardBillingTermText();
 		}
 	};
+	private void updateCardBillingDateTerm() {
+		calendar.set(Calendar.YEAR, mYear);
+		calendar.set(Calendar.MONTH, mMonth);
+		calendar.set(Calendar.DAY_OF_MONTH, mDay);
+		//Toast.makeText(CardDetailCreditLayout.this, calendar.getTime().toLocaleString(), Toast.LENGTH_LONG).show();
+		int year = mYear-1900, month = mMonth+1, day = mCard.getSettlementDay();
+		if(mMonth > 12) {
+			year += 1;
+			month = 1;
+		} else if(mMonth < 1) {
+			year -= 1;
+			month = 12;
+		}
+		Date dateTemp = new Date(Date.UTC(year, month, day, 0, 0, 0));
+		
+		Toast.makeText(CardDetailCreditLayout.this, dateTemp.toLocaleString() + "\n" + (new Date()).toLocaleString(), Toast.LENGTH_LONG).show();
+		if(dateTemp.getTime() >= (new Date()).getTime()) {
+			isNextBilling = true;
+		} else {
+			isNextBilling = false;
+		}
+		updateCardBillingDateText();
+		updateCardBillingTermText();
+	}
 	
 	@Override
 	public void setBtnClickListener() {
 		
+	}
+
+	/**
+	 * 일반적인 액티비티 호출 되었을 경우
+	 */
+	public static final int ACTION_DEFAULT = 0;
+	/**
+	 * 알림을 통해서 액티비티가 호출 되었을 경우
+	 */
+	public static final int ACTION_NOTIFICATION_INTO = 1;
+	@Override
+	protected void setTitleBtn() {
+		super.setTitleBtn();
+		
+		switch(getIntent().getIntExtra("Action", ACTION_DEFAULT)) {
+		case ACTION_DEFAULT:
+			break;
+		case ACTION_NOTIFICATION_INTO:
+			setTitle("카드 결제");
+			setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "완료");
+			setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
+			setTitleBtnText(FmBaseLayout.BTN_LEFT_01, "취소");
+			setTitleBtnVisibility(FmBaseLayout.BTN_LEFT_01, View.VISIBLE);
+			
+			setButtonListener();
+			break;
+		}
+	}
+	public void setButtonListener() {
+		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				AccountItem account = DBMgr.getAccountItem(mCardInfo.getCard().getAccount().getID());
+				if (account != null) {
+					long balance = account.getBalance();
+					
+					if (balance < mCardInfo.getBillingExpenseAmount()) {
+						account.setBalance(0L);
+					}else {
+						account.setBalance(balance - mCardInfo.getBillingExpenseAmount());
+					}
+					
+					DBMgr.updateAccount(account);
+					
+				}
+				
+				CardPayment cardPayment = new CardPayment();
+				cardPayment.setCardId(mCardInfo.getCard().getID());
+				cardPayment.setPaymentAmount(mCardInfo.getBillingExpenseAmount());
+				cardPayment.setPaymentDate(mCardInfo.getSettlementDate());
+				cardPayment.setRemainAmount(0L);
+				cardPayment.setState(CardPayment.DONE);
+				DBMgr.addCardPaymentItem(cardPayment);
+				
+				finish();
+			}
+		});
+		setTitleButtonListener(FmTitleLayout.BTN_LEFT_01, new View.OnClickListener() {
+
+			public void onClick(View v) {
+				finish();
+			}
+		});
 	}
 	
 //	private void updateCardNextBillingAmountBtnText() {
