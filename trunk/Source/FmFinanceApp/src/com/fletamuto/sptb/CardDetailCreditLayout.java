@@ -368,7 +368,7 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	protected void setTitleBtn() {
 		super.setTitleBtn();
 		
-		switch(getIntent().getIntExtra("Action", 1/*ACTION_DEFAULT*/)) {
+		switch(getIntent().getIntExtra("Action", ACTION_DEFAULT)) {
 		case ACTION_DEFAULT:
 			break;
 		case ACTION_NOTIFICATION_INTO:
