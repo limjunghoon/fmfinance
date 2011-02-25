@@ -161,6 +161,7 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 			mCardExpenseItems = DBMgr.getCardExpenseItems(card.getID(), card.getStartBillingPeriod(tatgetDate), card.getEndBillingPeriod(tatgetDate));	// FIXME 이 부분을 각 달의 첫날과 마지막 달로 넣는 것으로 바꾸어야 함
 		
 		updateCardBillingItemCountText();
+		updateCardBillingAmountText();
 	}
 	protected ArrayList<FinanceItem> mCardExpenseItems = null;
 	protected ReportCardExpenseItemAdapter mCardExpenseAdapter = null;
@@ -247,7 +248,11 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	 * 금액 개수 갱신
 	 */
 	private void updateCardBillingAmountText() {
-		
+		long amount = 0;
+		for(int i = 0, count = mCardExpenseItems.size(); i < count; i++) {
+			amount += mCardExpenseItems.get(i).getAmount();
+		}
+		((TextView)findViewById(R.id.TVDetailCreditCardBillingItemAmount)).setText(String.valueOf(amount));
 	}
 	/**
 	 * 리스너 등록
