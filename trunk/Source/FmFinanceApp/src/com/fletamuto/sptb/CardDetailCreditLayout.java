@@ -31,6 +31,7 @@ import com.fletamuto.sptb.data.CardPayment;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.FinanceCurrentDate;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 import com.fletamuto.sptb.view.FmBaseLayout;
 
@@ -79,12 +80,13 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		updateCardTypeText();
 		updateCardExpenseAccountBtnText();
 		updateCardBillingCategoryBtnText();
-		updateCardBillingDateText();
+		//updateCardBillingDateText();
 		updateCardBillingTermText();
 		//updateCardBillingItemCountText();
 		//updateCardBillingAmountText();
 		
 		getCardExpenseItems();
+		//updateCardBillingDateText();
 		
 		initWidget();
 	}
@@ -137,16 +139,16 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	 */
 	private void updateCardBillingDateText() {
 		String billingDateLastText = null;
-		if(isNextBilling) {
+		if(isNextBilling || isDailyListItem) {
 			billingDateLastText = "결제 예정";
-			int addMonth = 2;
-//			if((new Date()).getDate() >= mCard.getSettlementDay())
-//				addMonth = 2;
+			int addMonth = 1;
+			if(mCard.getSettlementDay() >= (new Date()).getDate())
+				addMonth = 0;
 			Calendar tempCalendar = (Calendar) calendar.clone();
 			tempCalendar.add(Calendar.MONTH, addMonth);
 			tempCalendar.set(Calendar.DAY_OF_MONTH, mCard.getSettlementDay());
 			
-			billingDateLastText = tempCalendar.get(Calendar.YEAR) + "년 " + tempCalendar.get(Calendar.MONTH) + "월 " + tempCalendar.get(Calendar.DAY_OF_MONTH) + "일 " + billingDateLastText;
+			billingDateLastText = tempCalendar.get(Calendar.YEAR) + "년 " + (tempCalendar.get(Calendar.MONTH)+1) + "월 " + tempCalendar.get(Calendar.DAY_OF_MONTH) + "일 " + billingDateLastText;
 			((TextView)findViewById(R.id.TVDetailCreditCardBillingDate)).setText(billingDateLastText);
 		} else {
 			billingDateLastText = "결제 됨";
@@ -185,6 +187,13 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		if(isBasicDate) {
 			Calendar tatgetDate = (Calendar) calendar.clone();
 			mCardExpenseItems = DBMgr.getCardExpenseItems(card.getID(), card.getStartBillingPeriod(tatgetDate), card.getEndBillingPeriod(tatgetDate));
+			
+			ArrayList<FinanceItem> expenseItems = DBMgr.getItems(ExpenseItem.TYPE, tatgetDate);
+			if(expenseItems.size() > 0)
+				isDailyListItem = true;
+			else
+				isDailyListItem = false;
+			//Toast.makeText(this, ""+expenseItems.size(), Toast.LENGTH_SHORT).show();
 		} else {
 			Calendar tatgetStartDate = (Calendar) calendar.clone();
 			tatgetStartDate.set(Calendar.DAY_OF_MONTH, 1);
@@ -193,12 +202,15 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 			tatgetEndDate.set(Calendar.DAY_OF_MONTH, 1);
 			tatgetEndDate.add(Calendar.DAY_OF_MONTH, -1);
 			mCardExpenseItems = DBMgr.getCardExpenseItems(card.getID(), tatgetStartDate, tatgetEndDate);
+			isDailyListItem = false;
 		}
 		
 		updateCardBillingItemCountText();
 		updateCardBillingAmountText();
+		updateCardBillingDateText();
 		setAdapterList();
 	}
+	private boolean isDailyListItem = false;
 	protected ArrayList<FinanceItem> mCardExpenseItems = null;
 	protected ReportCardExpenseItemAdapter mCardExpenseAdapter = null;
 	/**
@@ -346,7 +358,7 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		} else {
 			isNextBilling = false;
 		}
-		updateCardBillingDateText();
+		//updateCardBillingDateText();
 		updateCardBillingTermText();
 		getCardExpenseItems();
 	}
