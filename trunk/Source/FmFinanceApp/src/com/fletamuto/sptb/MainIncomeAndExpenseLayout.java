@@ -1314,7 +1314,9 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
-				Intent intent = new Intent(MainIncomeAndExpenseLayout.this, CardPaymentLayout.class);
+				//Intent intent = new Intent(MainIncomeAndExpenseLayout.this, CardPaymentLayout.class);
+				Intent intent = new Intent(MainIncomeAndExpenseLayout.this, CardDetailCreditLayout.class);
+				intent.putExtra("Action", CardDetailCreditLayout.ACTION_NOTIFICATION_INTO);
 				intent.putExtra(MsgDef.ExtraNames.CARD_EXPENSE_INFO_ITEM, mAlarmAdapter.getItem(position));
 				startActivityForResult(intent, MsgDef.ActRequest.ACT_ALARM_CARD_PAYMENT);
 			}
