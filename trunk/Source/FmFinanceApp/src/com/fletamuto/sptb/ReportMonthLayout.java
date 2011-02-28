@@ -23,6 +23,7 @@ import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
@@ -226,7 +227,15 @@ public class ReportMonthLayout extends FmBaseActivity {
 			else if (financeItem.getType() == ExpenseItem.TYPE) {
 				ExpenseItem item = (ExpenseItem)financeItem;
 				((TextView)convertView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
-				String categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
+				
+				String categoryText;
+				if (item.getCategory().getExtndType() == ItemDef.NOT_CATEGORY) {
+					categoryText = String.format("%s", item.getCategory().getName());
+				}
+				else {
+					categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
+				}
+				
 				((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText("분류 : " + categoryText);
 				((TextView)convertView.findViewById(R.id.TVExpenseReportListPaymentMethod)).setText("결제 : " + item.getPaymentMethod().getText());
 			}

@@ -14,6 +14,7 @@ import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.PaymentAccountMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.db.DBMgr;
@@ -81,7 +82,14 @@ public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
 //    	ExpenseItem item = (ExpenseItem)financeItem;
     	item = (ExpenseItem)financeItem;
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
-		String categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
+		
+		String categoryText;
+		if (item.getCategory().getExtndType() == ItemDef.NOT_CATEGORY) {
+			categoryText = String.format("%s", item.getCategory().getName());
+		}
+		else {
+			categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
+		}
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText("분류 : " + categoryText);
 		if (mCard == null) {
 			((TextView)convertView.findViewById(R.id.TVExpenseReportListPaymentMethod)).setText("결제 : " + item.getPaymentMethod().getText());

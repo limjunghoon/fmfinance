@@ -995,6 +995,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		int salaryCategory = categoryLenth-1;
 		int liabilityCategory = salaryCategory-1;
 		int assetsCategory = liabilityCategory-1;
+		int nothingCategory = assetsCategory-1;
 		
 		for (int index = 0; index < categoryLenth; index++) {
 			rowItem.put("name", baseMainCategory[index]);
@@ -1015,6 +1016,11 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			if (assetsCategory == index) {
 				rowItem.put("type", UISelectItem.HIDE);
 				rowItem.put("extend_type", ItemDef.ExtendAssets.NONE);
+			}
+			
+			if (nothingCategory == index) {
+				rowItem.put("type", UISelectItem.HIDE);
+				rowItem.put("extend_type", ItemDef.NOT_CATEGORY);
 			}
 			
 			if (db.insert("expense_main_category", null, rowItem) == -1) {
@@ -1106,6 +1112,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_12));
 		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_13));
 		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_14));
+		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_base_sub_category_15));
 		baseSubCategorys.add(context.getResources().getStringArray(R.array.assets_base_main_category));
 		baseSubCategorys.add(context.getResources().getStringArray(R.array.liability_base_main_category));
 		baseSubCategorys.add(context.getResources().getStringArray(R.array.expense_salary_sub_category));
@@ -1115,6 +1122,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		int salaryCategory = subCategoryArrLenth-1;
 		int liabilityCategory = salaryCategory-1;
 		int assetsCategory = liabilityCategory-1;
+		int notCategory = assetsCategory-1;
 		
 		String [] baseMainCategory = context.getResources().getStringArray(R.array.expense_base_main_category);
 		int categoryLenth = baseMainCategory.length;
@@ -1127,7 +1135,15 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 				rowItem.put("name", subCategory[j]);
 				rowItem.put("prioritize", i+1);
 				rowItem.put("image_index", ++categoryLenth);
-				rowItem.put("main_id", i+1);
+				
+				
+				if (i == notCategory) {
+					rowItem.put("main_id", -1);
+					rowItem.put("extend_type",ItemDef.NOT_CATEGORY);
+				}
+				else {
+					rowItem.put("main_id", i+1);
+				}
 				
 				// 임시 코드 /////////////////
 				if (i == salaryCategory) {
@@ -1148,6 +1164,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 					else if (j == 5) rowItem.put("extend_type", ItemDef.ExtendAssets.REAL_ESTATE);
 					else rowItem.put("extend_type",ItemDef.ExtendAssets.NONE);
 				}
+				
 				
 				////////////////////////////
 				

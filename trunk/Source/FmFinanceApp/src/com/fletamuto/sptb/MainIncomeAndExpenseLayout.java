@@ -880,8 +880,11 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
     protected void setExpenseListViewText(ExpenseItem expense, View convertView) {
     	ViewHolder viewHolder = (ViewHolder) convertView.getTag();
     	viewHolder.getLeftTextView().setText(expense.getCategory().getName());
-		TextView tvSubCategory = viewHolder.getCenterTopTextView() ;
-		tvSubCategory.setText(expense.getSubCategory().getName());
+    	
+    	if (expense.getCategory().getExtndType() != ItemDef.NOT_CATEGORY) {
+    		TextView tvSubCategory = viewHolder.getCenterTopTextView() ;
+    		tvSubCategory.setText(expense.getSubCategory().getName());
+    	}
 		
 		TextView tvAmount = viewHolder.getRightTopTextView(); 
 		tvAmount.setText(String.format("%,d¿ø", -expense.getAmount()));

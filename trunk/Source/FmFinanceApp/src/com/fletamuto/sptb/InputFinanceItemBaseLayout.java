@@ -135,19 +135,6 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     	((Button)findViewById(btnID)).setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
-/*
-				monthlyCalendar.showMonthlyCalendarPopup();
-				monthlyCalendar.getPopupWindow().setOnDismissListener(new PopupWindow.OnDismissListener() {
-					
-					public void onDismiss() {
-						if (monthlyCalendar.getSelectCalendar() == null) return;
-						mItem.getCreateDate().set(Calendar.YEAR, monthlyCalendar.getSelectCalendar().get(Calendar.YEAR));
-						mItem.getCreateDate().set(Calendar.MONTH, monthlyCalendar.getSelectCalendar().get(Calendar.MONTH));
-						mItem.getCreateDate().set(Calendar.DAY_OF_MONTH, monthlyCalendar.getSelectCalendar().get(Calendar.DAY_OF_MONTH));
-						updateDate();
-					}
-				});
-*/
 				Intent intent = new Intent(InputFinanceItemBaseLayout.this, MonthlyCalendar.class);
 				startActivityForResult(intent,37);
 			}

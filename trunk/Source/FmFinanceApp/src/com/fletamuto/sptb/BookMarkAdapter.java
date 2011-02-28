@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.OpenUsedItem;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -68,7 +69,14 @@ public class BookMarkAdapter extends ArrayAdapter<OpenUsedItem> {
 			
 			viewHolder.icon.setImageResource(R.drawable.icon);	// FIXME 나중에 받아와서 처리
 			viewHolder.title.setText(expenseItem.getMemo() + " " + bookMarkItemDatas.get(position).getPriority());
-			viewHolder.category.setText(String.format("%s - %s", expenseItem.getCategory().getName(), expenseItem.getSubCategory().getName()));
+			
+			if (expenseItem.getCategory().getExtndType() == ItemDef.NOT_CATEGORY) {
+				viewHolder.category.setText(String.format("%s - %s", expenseItem.getCategory().getName(), expenseItem.getSubCategory().getName()));
+			}
+			else {
+				viewHolder.category.setText(String.format("%s - %s", expenseItem.getCategory().getName(), expenseItem.getSubCategory().getName()));
+			}
+			
 			viewHolder.method.setText(expenseItem.getPaymentMethod().getName());
 			if(editableList) {
 				viewHolder.deleteImage.setVisibility(View.VISIBLE);
