@@ -20,7 +20,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.fletamuto.sptb.data.AccountItem;
@@ -67,6 +66,45 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	
 	private LinearLayout mLLBookark;
 	private SlidingDrawer mSlidingDrawer;
+	
+	/**
+     * ACTION_DEFAULT = 0, 지출 추가/편집 화면
+     */
+    private final static int ACTION_DEFAULT = 0;
+    /**
+     * ACTION_BOOMARK_EDIT = 1, 즐겨찾기 추가/편집 상태에서 호출 됨
+     */
+    private final static int ACTION_BOOMARK_EDIT = 1;
+    /**
+     * ACTION_BOOMARK_OTHER_ACTIVITY = 2, 다른 타입의 즐겨찾기 추가/편집 호출을 요청
+     */
+    private final static int ACTION_BOOMARK_OTHER_ACTIVITY = 2;
+    /**
+     * ACTION_BOOMARK_EDIT_ACTIVITY = 3, 다른 타입의 즐겨찾기 추가/편집 호출을 요청
+     */
+    private final static int ACTION_BOOMARK_EDIT_ACTIVITY = 3;
+    /**
+     * 호출한 Intent의 상태 값 저장
+     */
+    private int intentAction = ACTION_DEFAULT;
+    
+    //드래그 앤 드롭에서 사용할 뷰들 정의
+	ListView bookmarkList;
+	RelativeLayout bookmarkDrag;
+	ImageView icon;
+	TextView title;
+	TextView category;
+	TextView method;
+	TextView amount;
+	//드래그 앤 드롭에서 사용할 데이터
+	ArrayList<OpenUsedItem> bookMarkItemDatas = new ArrayList<OpenUsedItem>();
+	BookMarkAdapter bookMarkAdapter;
+	float mPositionX, mPositionY;
+	int mPosition;
+	boolean isLongTouch = false;
+	boolean isIncome = false;	//false면 Expense
+	boolean isEditable = false;
+	boolean isEditableList = false;
 	  
 	
     public void onCreate(Bundle savedInstanceState) {
@@ -130,26 +168,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         initWidget();
         
     }
-    /**
-     * ACTION_DEFAULT = 0, 지출 추가/편집 화면
-     */
-    private final static int ACTION_DEFAULT = 0;
-    /**
-     * ACTION_BOOMARK_EDIT = 1, 즐겨찾기 추가/편집 상태에서 호출 됨
-     */
-    private final static int ACTION_BOOMARK_EDIT = 1;
-    /**
-     * ACTION_BOOMARK_OTHER_ACTIVITY = 2, 다른 타입의 즐겨찾기 추가/편집 호출을 요청
-     */
-    private final static int ACTION_BOOMARK_OTHER_ACTIVITY = 2;
-    /**
-     * ACTION_BOOMARK_EDIT_ACTIVITY = 3, 다른 타입의 즐겨찾기 추가/편집 호출을 요청
-     */
-    private final static int ACTION_BOOMARK_EDIT_ACTIVITY = 3;
-    /**
-     * 호출한 Intent의 상태 값 저장
-     */
-    private int intentAction = ACTION_DEFAULT;
     
     /**
      * 인텐트에 담긴 액션에 따라서 화면에 보이는 위젯 개수를 변경하는 메소드 
@@ -368,7 +386,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     }
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Toast.makeText(this, "requestCode : " + requestCode + "\nresultCode : " + resultCode, Toast.LENGTH_LONG).show();
 		if (requestCode == ACT_CATEGORY) {
     		if (resultCode == RESULT_OK) {
     			mExpensItem.setSubCategory(data.getIntExtra("SUB_CATEGORY_ID", -1), data.getStringExtra("SUB_CATEGORY_NAME"));
@@ -737,8 +754,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 //			bookMarkItemDatas.add(bookMarkItemData);
 //		}
 		bookmarkList = (ListView)findViewById(R.id.LLBookmark);
-//		//Toast.makeText(this, ""+bookMarkItemDatas.size(), Toast.LENGTH_LONG).show();	//아이템을 제대로 가지고 오는지 확인
-//		
+
 		bookmarkDrag = (RelativeLayout)findViewById(R.id.BookMarkDragItem);
 		icon = (ImageView)findViewById(R.id.BookMarkItemIcon);
 		title = (TextView)findViewById(R.id.BookMarkItemTitle);
@@ -753,27 +769,10 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		bookmarkList.setOnItemLongClickListener(mItemLongClickListener);
 		bookmarkList.setOnTouchListener(mItemTouchListener);
 	}
-	//드래그 앤 드롭에서 사용할 뷰들 정의
-	ListView bookmarkList;
-	RelativeLayout bookmarkDrag;
-	ImageView icon;
-	TextView title;
-	TextView category;
-	TextView method;
-	TextView amount;
-	//드래그 앤 드롭에서 사용할 데이터
-	ArrayList<OpenUsedItem> bookMarkItemDatas = new ArrayList<OpenUsedItem>();
-	BookMarkAdapter bookMarkAdapter;
-	float mPositionX, mPositionY;
-	int mPosition;
-	boolean longTouch = false;
-	boolean isIncome = false;	//false면 Expense
-	boolean editable = false;
-	boolean editableList = false;
 	
 	AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> items, View v, int position, long id) {
-			if(!editableList) {
+			if(!isEditableList) {
 				if(!isIncome) {
 					((Button)findViewById(R.id.BtnExpenseCategory)).setText(((TextView)v.findViewById(R.id.BookMarkItemCategory)).getText());
 					((Button)findViewById(R.id.BtnExpenseAmount)).setText(((TextView)v.findViewById(R.id.BookMarkItemAmount)).getText());
@@ -821,8 +820,8 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 					finish();
 				}
 			} else {
-				if(!editable) {
-					editable = true;
+				if(!isEditable) {
+					isEditable = true;
 					return;
 				} else {
 					if(!isIncome) {
@@ -887,8 +886,8 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(320, 50);
 		public boolean onItemLongClick(AdapterView<?> item, View v, int position, long id) {
 
-			if(!editableList) {
-				editableList = true;	//수정 가능 상태
+			if(!isEditableList) {
+				isEditableList = true;	//수정 가능 상태
 				updateOpenUsedItem();
 			} else {
 				icon.setImageDrawable(((ImageView)v.findViewById(R.id.BookMarkItemIcon)).getDrawable());
@@ -903,7 +902,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				
 				bookmarkDrag.setVisibility(View.VISIBLE);
 				
-				longTouch = true;
+				isLongTouch = true;
 				
 				mPosition = position;	//드롭 이벤트를 발생 시킬 경우에 데이터 객체에서 해당 내용을 삭제하기 위한 포지션
 			}
@@ -922,7 +921,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			} else if(event.getAction() == MotionEvent.ACTION_MOVE) {
 				// 이벤트가 발생되면 항상 실행되지만 화면에 보여지지 않기 때문에 별도의 처리 안함.
 				// 이벤트가 빠르게 발생되기 때문에 자주 사용되는 변수들은 전역으로 설정하는 것이 좋음.
-				if(longTouch) {
+				if(isLongTouch) {
 					//layoutParams.leftMargin = (int) event.getRawX() - (layoutParams.width / 2);	//터치가 이루어진 위치에 이미지의 중심이 오도록 함
 					layoutParams.topMargin = (int) event.getRawY() - (layoutParams.height / 2) - 70;
 					bookmarkDrag.setLayoutParams(layoutParams);
@@ -932,10 +931,9 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			} else if(event.getAction() == MotionEvent.ACTION_UP) {
 				// 드래그가 끝 났을 경우에 처리해야할 부분을 정의
 				// 별다른 처리가 없었으므로 이미지만 GONE 시킴
-				if(longTouch) {
+				if(isLongTouch) {
 					bookmarkDrag.setVisibility(View.GONE);
 
-					//Toast.makeText(ListViewItemTest.this, ""+((ListView)v).getFirstVisiblePosition(), Toast.LENGTH_LONG).show();
 					int topChildView = ((ListView)v).getFirstVisiblePosition();	//보여지는 최상단의 아이템의 인덱스를 얻어옴
 					int chk = (int) (event.getY() / ((ListView)v).getChildAt(0).getHeight());
 					int newPosition = topChildView + chk;
@@ -956,8 +954,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 						else
 							markItemDatas.remove(mPosition+1);
 						
-						Toast.makeText(InputExpenseLayout.this, "mPosition : " + mPosition + "\nnewPosition : " + newPosition, Toast.LENGTH_LONG).show();
-
 						//아이템 한개 순위만 변경 - 반복문 작성 해야 함 - 작성중
 						for(int i = 0, size = markItemDatas.size(); i < size; i++) {
 							DBMgr.updateOpenUsedItem(markItemDatas.get(i).getType(), markItemDatas.get(i).getID(), markItemDatas.get(i).getItem().getID(), i);
@@ -968,7 +964,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 						updateOpenUsedItem();	//값이 유지되지 않고 DB에서 새로 얻어와서 이동 갱신 불가상태
 						bookmarkList.setSelectionFromTop(topChildView, 0);	//어댑터가 다시 세팅되면 0번 아이템이 선택되기 때문에 기억시켜둔 마지막 위치로 이동
 					}
-					longTouch = false;
+					isLongTouch = false;
 					return true;
 				}
 			}
@@ -980,9 +976,9 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	public void onBackPressed() {
 		if(getIntent().getIntExtra("Action", ACTION_DEFAULT) > ACTION_DEFAULT) {
 			super.onBackPressed();
-		} else if(editableList) {
-			editable = false;
-			editableList = false;	//수정 불가능 상태
+		} else if(isEditableList) {
+			isEditable = false;
+			isEditableList = false;	//수정 불가능 상태
 			updateOpenUsedItem();
 		} else {
 			super.onBackPressed();
@@ -1163,9 +1159,9 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	@Override
 	protected void updateOpenUsedItem() {
 		if(!isIncome) {
-			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(ExpenseItem.TYPE), editableList, new UpdateUsedItem());
+			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(ExpenseItem.TYPE), isEditableList, new UpdateUsedItem());
 		} else {
-			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(IncomeItem.TYPE), editableList, new UpdateUsedItem());
+			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(IncomeItem.TYPE), isEditableList, new UpdateUsedItem());
 		}
 		
 		bookmarkList.setAdapter(bookMarkAdapter);
