@@ -269,20 +269,13 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     		}
     	}
     	else if (mInputMode == InputMode.EDIT_MODE){
-//    		PaymentMethod paymentMethod = mExpensItem.getPaymentMethod();
-//    		if(mExpensItem.getPaymentMethod().getType() == PaymentMethod.ACCOUNT) {
-//    			PaymentAccountMethod accountMethod = (PaymentAccountMethod) paymentMethod;
-//    			fromItem = accountMethod.getAccount();
-//
-//    			long fromItemBalance = fromItem.getBalance();
-//
-//				fromItem.setBalance(fromItemBalance + beforeAmount - mExpensItem.getAmount());
-//				DBMgr.updateAccount(fromItem);
-//    		}
     		saveUpdateItem();
     	}
     }
 
+    /**
+     * 잔액을 갱신한다.
+     */
     protected void updateAccountBalance() {
     	PaymentMethod paymentMethod = mExpensItem.getPaymentMethod();
     	int paymentMethodType = mExpensItem.getPaymentMethod().getType();

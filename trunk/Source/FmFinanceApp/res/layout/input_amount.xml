@@ -8,7 +8,7 @@
 	<LinearLayout android:layout_height="wrap_content" android:id="@+id/LLAmount" android:layout_width="fill_parent" android:background="#C0C0C0" android:orientation="vertical">
 	<TextView android:id="@+id/TVAmount" android:layout_height="wrap_content" android:text="" android:layout_width="fill_parent" android:gravity="right" android:paddingRight="10dp" android:textSize="30dp">
 	</TextView>
-	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
+	<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="right" android:id="@+id/TVAmountChar" android:paddingRight="10dp" android:textSize="15dp"></TextView><LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent">
 		<Button android:id="@+id/BtnAmount_1" android:layout_height="wrap_content" android:text="1" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
 		</Button>
 		<Button android:id="@+id/BtnAmount_2" android:layout_height="wrap_content" android:text="2" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
@@ -31,7 +31,7 @@
 		</Button>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/LinearLayout04" android:layout_height="wrap_content" android:layout_width="fill_parent">
-		<Button android:id="@+id/BtnAmountRemoveAll" android:layout_height="wrap_content" android:text="@string/input_amount_remove_all" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
+		<Button android:layout_height="wrap_content" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1" android:id="@+id/BtnAmount_00" android:text="00">
 		</Button>
 		<Button android:id="@+id/BtnAmount_0" android:layout_height="wrap_content" android:text="0" android:minWidth="80dp" android:layout_width="fill_parent" android:layout_weight="1">
 		</Button>
@@ -44,7 +44,8 @@
 		<Button android:id="@+id/BtnAmountOK" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="완료"></Button>
 		<Button android:id="@+id/BtnAmountCancel" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="취소"></Button>
 		</LinearLayout>
-	</LinearLayout>
+	
+</LinearLayout>
 	
 	
 

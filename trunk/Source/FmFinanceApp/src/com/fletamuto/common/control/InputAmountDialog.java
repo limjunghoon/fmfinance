@@ -3,6 +3,7 @@ package com.fletamuto.common.control;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -14,7 +15,12 @@ import com.fletamuto.sptb.data.ItemDef;
 
 public class InputAmountDialog extends BaseSlidingActivity {
 	private Long mAmount = 0L;
-	final static int MAX_VALUE_DIGIT = 9;
+	public final static int MAX_VALUE_DIGIT = 9;
+	public final static int NUMBER_SEPARATION = 4; 
+	
+	String mAmountChar[]  = {"¿µ", "ÀÏ", "ÀÌ", "»ï", "»ç", "¿À", "À°", "Ä¥", "ÆÈ", "±¸"}; 
+	String mAmountDigit[]  = {"½Ê", "¹é", "Ãµ"};
+	
 	
     /** Called when the activity is first created. */
     @Override
@@ -33,6 +39,7 @@ public class InputAmountDialog extends BaseSlidingActivity {
         setOkCancelListener();
         
         ((TextView)findViewById(R.id.TVAmount)).setTextColor(Color.BLACK);
+        ((TextView)findViewById(R.id.TVAmountChar)).setTextColor(Color.BLACK);
         mAmount = getIntent().getLongExtra(MsgDef.ExtraNames.AMOUNT, 0L);
         
         displayAmount();
@@ -55,12 +62,15 @@ public class InputAmountDialog extends BaseSlidingActivity {
     }
     
     private void setRemoveNumberListener() {
-    	Button btnRemoveAll = (Button)findViewById(R.id.BtnAmountRemoveAll);
+    	Button btnRemoveAll = (Button)findViewById(R.id.BtnAmount_00);
     	btnRemoveAll.setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
-				clear();
-				displayAmount();
+				
+				if  (mAmount.toString().length() < MAX_VALUE_DIGIT-1) {
+					mAmount *= 100;
+					displayAmount();
+				}
 			}
 		 });
     	
@@ -122,10 +132,63 @@ public class InputAmountDialog extends BaseSlidingActivity {
  
 	public void displayAmount() {
 		TextView tvAmount = (TextView)findViewById(R.id.TVAmount);
-		mAmount.toString();
 		tvAmount.setText(String.format("%,d¿ø", mAmount));
+		
+		displayAmountChar();
 	}
 	
+	public void displayAmountChar() {
+		String amountChar  = "";
+		
+		int Separation1 = (int)(mAmount%10000);
+		int Separation2 = (int) ((mAmount/10000)%10000);
+		int Separation3 = (int) (mAmount/100000000);
+		
+		if (Separation3 == 0 && Separation2 == 0 && Separation1 == 0) {
+			amountChar = "¿µ¿ø";
+		}
+		else {
+			if (Separation3 > 0 ) {
+				amountChar = displayAmountSeparationChar(Separation3) + "¾ï";
+			}
+			
+			if (Separation2 > 0 ) {
+				amountChar += displayAmountSeparationChar(Separation2) + "¸¸";
+			}
+			
+			amountChar += displayAmountSeparationChar(Separation1) + "¿ø";
+		}
+		
+		((TextView)findViewById(R.id.TVAmountChar)).setText(amountChar);
+	}
+
+
+	private String displayAmountSeparationChar(int separation1) {
+		String digitText = "";
+		int digitNumber[] = {0, 0, 0, 0};
+		for (int index = 0; index < NUMBER_SEPARATION; index++) {
+			digitNumber[index] = separation1%10;
+			separation1 /= 10;
+		}
+		
+		for (int index = 0; index < NUMBER_SEPARATION; index++) {
+			int digit = NUMBER_SEPARATION - index - 1;
+			
+			if (digitNumber[digit] == 0) continue;
+			
+			if (digitNumber[digit] != 1 || digit == 0) {
+				digitText += mAmountChar[digitNumber[digit]];
+			}
+			
+			if (digit >= 1) {
+				digitText += mAmountDigit[digit-1];
+			}
+		}
+		
+		return digitText;
+	}
+
+
 	public boolean checkNumber() {
 		String amount = mAmount.toString();
 		return (amount.length() > MAX_VALUE_DIGIT) ? false : true;

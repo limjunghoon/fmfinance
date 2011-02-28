@@ -3,6 +3,7 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 
+import android.accounts.Account;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -51,9 +52,6 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 	private PopupWindow popupBookmark, popupBookmarkEdit;
 	private LinearLayout linear;
 	private SlidingDrawer mSlidingDrawer;
-	
-	private AccountItem fromItem;
-	private long beforeAmount;
 	
 	/**
      * ACTION_DEFAULT = 0, 지출 추가/편집 화면
@@ -259,30 +257,30 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
     
     protected void saveItem() {
     	if (mInputMode == InputMode.ADD_MODE) {
-    		if(mReciveMethod.getType() == PaymentMethod.ACCOUNT) {
-    			fromItem = mIncomeItem.getAccount();
-
-    			long fromItemBalance = fromItem.getBalance();
-
-				fromItem.setBalance(fromItemBalance + mIncomeItem.getAmount());
-				DBMgr.updateAccount(fromItem);
-    		}
     		if (saveNewItem(null) == true) {
+    			updateAccountBalance();
     			saveRepeat();
     		}
     	}
     	else if (mInputMode == InputMode.EDIT_MODE){
-    		if(mReciveMethod.getType() == PaymentMethod.ACCOUNT) {
-    			fromItem = mIncomeItem.getAccount();
-
-    			long fromItemBalance = fromItem.getBalance();
-
-				fromItem.setBalance(fromItemBalance - beforeAmount + mIncomeItem.getAmount());
-				DBMgr.updateAccount(fromItem);
-    		}
     		saveUpdateItem();
     	}
     }
+    
+    /**
+     * 잔액을 갱신한다.
+     */
+    protected void updateAccountBalance() {
+    	AccountItem account = mIncomeItem.getAccount();
+    	if (account.getID() == -1) {
+    		account = DBMgr.getAccountMyPocket();
+    	} 
+   
+    	if (account != null) {
+    		account.setBalance(account.getBalance() + mIncomeItem.getAmount());
+    		DBMgr.updateAccount(account);
+    	}
+	}
     
     @Override
 	protected void updateAmount(Long amount) {
@@ -296,7 +294,6 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 		if (mIncomeItem == null) {
 			mIncomeItem = new IncomeItem();
 		}
-		beforeAmount = mIncomeItem.getAmount();
 		setItem(mIncomeItem);
 	}
 	
@@ -304,7 +301,6 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 	protected boolean getItemInstance(int id) {
 		mIncomeItem = (IncomeItem) DBMgr.getItem(IncomeItem.TYPE, id);
 		if (mIncomeItem == null) return false;
-		beforeAmount = mIncomeItem.getAmount();
 		setItem(mIncomeItem);
 		
 		loadPaymnetMethod();
