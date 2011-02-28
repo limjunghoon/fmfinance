@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.fletamuto.sptb.data.CardExpenseInfo;
 import com.fletamuto.sptb.data.CardItem;
+import com.fletamuto.sptb.db.DBMgr;
 
 
 public abstract class CardDetailBaseLayout extends FmBaseActivity {  	
@@ -32,6 +33,7 @@ public abstract class CardDetailBaseLayout extends FmBaseActivity {
 		mYear = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_YEAR, Calendar.getInstance().get(Calendar.YEAR));
 		mCardInfo = (CardExpenseInfo) getIntent().getSerializableExtra(MsgDef.ExtraNames.CARD_EXPENSE_INFO_ITEM);
 		mCard = mCardInfo.getCard();
+		mCard.setAccount(DBMgr.getAccountItem(mCard.getAccount().getID()));
 		super.initialize();
 	}
 	
