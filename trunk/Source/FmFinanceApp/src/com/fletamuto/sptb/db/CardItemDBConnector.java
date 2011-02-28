@@ -2,7 +2,6 @@ package com.fletamuto.sptb.db;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -13,8 +12,6 @@ import android.util.Log;
 import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.CardPayment;
-import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.TransferItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 import com.fletamuto.sptb.util.LogTag;
 

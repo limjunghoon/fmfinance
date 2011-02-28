@@ -18,11 +18,7 @@ import android.widget.ToggleButton;
 
 import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.AssetsInsuranceItem;
-import com.fletamuto.sptb.data.AssetsSavingsItem;
-import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.IncomeItem;
-import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class DetailAssetsInsuranceLayout extends DetailBaseLayout {  	

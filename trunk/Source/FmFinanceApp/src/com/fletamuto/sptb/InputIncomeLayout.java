@@ -3,7 +3,6 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 
-import android.accounts.Account;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;

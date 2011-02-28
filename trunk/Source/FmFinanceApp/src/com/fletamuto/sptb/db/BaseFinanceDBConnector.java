@@ -5,7 +5,6 @@ import java.util.Calendar;
 
 import android.util.Log;
 
-import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.OpenUsedItem;

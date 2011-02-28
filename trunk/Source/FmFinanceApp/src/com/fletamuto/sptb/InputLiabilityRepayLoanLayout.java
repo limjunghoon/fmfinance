@@ -1,30 +1,19 @@
 package com.fletamuto.sptb;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fletamuto.common.control.InputAmountDialog;
-import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
-import com.fletamuto.sptb.data.ItemDef;
-import com.fletamuto.sptb.data.LiabilityChangeItem;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.data.LiabilityLoanItem;
 import com.fletamuto.sptb.data.PaymentAccountMethod;
-import com.fletamuto.sptb.data.PaymentCashMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
-import com.fletamuto.sptb.data.TransferItem;
-import com.fletamuto.sptb.db.DBMgr;
-import com.fletamuto.sptb.util.LogTag;
 
 /**
  * 카드 레이아웃 클레스

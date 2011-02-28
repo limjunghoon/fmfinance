@@ -12,7 +12,6 @@ import android.widget.ToggleButton;
 import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
 import com.fletamuto.sptb.data.AssetsItem;
-import com.fletamuto.sptb.data.AssetsStockItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class DetailAssetsFundLayout extends DetailBaseLayout {  	

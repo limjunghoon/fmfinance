@@ -18,7 +18,6 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsItem;
@@ -27,7 +26,6 @@ import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
-import com.fletamuto.sptb.ConstantImagesArray;
 
 public abstract class SelectCategoryBaseLayout extends SelectGridBaseLayout {
 	private static boolean mSelectSubCategory = true;
