@@ -1163,12 +1163,17 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	@Override
 	protected void updateOpenUsedItem() {
 		if(!isIncome) {
-			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(ExpenseItem.TYPE), editableList);
+			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(ExpenseItem.TYPE), editableList, new UpdateUsedItem());
 		} else {
-			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(IncomeItem.TYPE), editableList);
+			bookMarkAdapter = new BookMarkAdapter(this, R.layout.input_bookmark_item, DBMgr.getOpenUsedItems(IncomeItem.TYPE), editableList, new UpdateUsedItem());
 		}
 		
 		bookmarkList.setAdapter(bookMarkAdapter);
 	}
 	
+	class UpdateUsedItem {
+		public void updateUsedItemDelete() {
+			updateOpenUsedItem();
+		}
+	}
 }

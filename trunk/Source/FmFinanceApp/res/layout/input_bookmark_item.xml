@@ -7,6 +7,10 @@
 		android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
 		android:layout_width="48dip" android:layout_height="48dip"
 		android:src="@drawable/icon" />
+	<ImageView android:id="@+id/BookMarkItemDelete"
+		android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+		android:layout_width="24dip" android:layout_height="24dip"
+		android:scaleType="fitXY" android:src="@drawable/minus_white" />
 
 	<TextView android:id="@+id/BookMarkItemTitle"
 		android:layout_toRightOf="@+id/BookMarkItemIcon"
@@ -15,15 +19,11 @@
 		android:gravity="bottom" android:textColor="#000" android:textSize="16dip"
 		android:textStyle="bold" android:text="Title" android:singleLine="true" />
 	<TextView android:id="@+id/BookMarkItemCategory"
-		android:layout_toLeftOf="@+id/BookMarkItemDelete"
+		android:layout_alignParentRight="true"
 		android:layout_alignParentTop="true" android:layout_width="wrap_content"
 		android:layout_height="24dip" android:gravity="bottom|right"
 		android:textColor="#000" android:textSize="10dip" android:textStyle="bold"
 		android:text="Category" android:singleLine="true" android:minWidth="100dip" />
-	<ImageView android:id="@+id/BookMarkItemDelete"
-		android:layout_alignParentRight="true" android:layout_alignParentTop="true"
-		android:layout_width="24dip" android:layout_height="24dip"
-		android:scaleType="fitXY" android:src="@drawable/minus_white" />
 	<TextView android:id="@+id/BookMarkItemMethod"
 		android:layout_toRightOf="@+id/BookMarkItemIcon" android:layout_below="@+id/BookMarkItemTitle"
 		android:layout_width="wrap_content" android:layout_height="24dip"

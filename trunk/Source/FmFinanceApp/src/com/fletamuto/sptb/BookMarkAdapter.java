@@ -3,7 +3,6 @@ package com.fletamuto.sptb;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,23 +11,35 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.ExpenseItem;
-import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.OpenUsedItem;
+import com.fletamuto.sptb.db.DBMgr;
 
 public class BookMarkAdapter extends ArrayAdapter<OpenUsedItem> {
 	Context context;
 	int layoutResouceId;
 	Boolean editableList;
 	ArrayList<OpenUsedItem> bookMarkItemDatas;
+	InputIncomeLayout.UpdateUsedItem incomeUpdateUsedItem;
+	InputExpenseLayout.UpdateUsedItem expenseUpdateUsedItem;
 	
 	public BookMarkAdapter(Context context, int textViewResourceId,
-			ArrayList<OpenUsedItem> bookMarkItemDatas, Boolean editableList) {
+			ArrayList<OpenUsedItem> bookMarkItemDatas, Boolean editableList, InputIncomeLayout.UpdateUsedItem UpdateUsedItem) {
 		super(context, textViewResourceId, bookMarkItemDatas);
 		this.context = context;
 		this.layoutResouceId = textViewResourceId;
 		this.bookMarkItemDatas = bookMarkItemDatas;
 		this.editableList = editableList;
+		this.incomeUpdateUsedItem = UpdateUsedItem;
+	}
+	public BookMarkAdapter(Context context, int textViewResourceId,
+			ArrayList<OpenUsedItem> bookMarkItemDatas, Boolean editableList, InputExpenseLayout.UpdateUsedItem UpdateUsedItem) {
+		super(context, textViewResourceId, bookMarkItemDatas);
+		this.context = context;
+		this.layoutResouceId = textViewResourceId;
+		this.bookMarkItemDatas = bookMarkItemDatas;
+		this.editableList = editableList;
+		this.expenseUpdateUsedItem = UpdateUsedItem;
 	}
 
 	@Override
@@ -53,7 +64,7 @@ public class BookMarkAdapter extends ArrayAdapter<OpenUsedItem> {
 		
 		OpenUsedItem usedItem = bookMarkItemDatas.get(position);
 		if (usedItem.getType() == ExpenseItem.TYPE) {
-			ExpenseItem expenseItem = (ExpenseItem) usedItem.getItem();
+			final ExpenseItem expenseItem = (ExpenseItem) usedItem.getItem();
 			
 			viewHolder.icon.setImageResource(R.drawable.icon);	// FIXME 나중에 받아와서 처리
 			viewHolder.title.setText(expenseItem.getMemo() + " " + bookMarkItemDatas.get(position).getPriority());
@@ -65,14 +76,24 @@ public class BookMarkAdapter extends ArrayAdapter<OpenUsedItem> {
 				viewHolder.deleteImage.setVisibility(View.INVISIBLE);
 				//viewHolder.deleteImage.setVisibility(View.GONE);
 			}
+			viewHolder.deleteImage.setOnClickListener(new View.OnClickListener() {
+				
+				public void onClick(View v) {
+					DBMgr.deleteOpenUsedItem(ExpenseItem.TYPE, expenseItem.getID());
+					if(incomeUpdateUsedItem != null)
+						incomeUpdateUsedItem.updateUsedItemDelete();
+					else
+						expenseUpdateUsedItem.updateUsedItemDelete();
+				}
+			});
 			viewHolder.amount.setText(String.format("%,d원",expenseItem.getAmount()));
 		}
 		else if (usedItem.getItem().getType() == IncomeItem.TYPE) {
-			IncomeItem incomeItem = (IncomeItem) usedItem.getItem();
+			final IncomeItem incomeItem = (IncomeItem) usedItem.getItem();
 			
 			viewHolder.icon.setImageResource(R.drawable.icon);	// FIXME 나중에 받아와서 처리
 			viewHolder.title.setText(incomeItem.getMemo() + " " + bookMarkItemDatas.get(position).getPriority());
-			viewHolder.category.setText(String.format("%s - %s", incomeItem.getCategory().getName(), incomeItem.getSubCategory().getName()));
+			viewHolder.category.setText(String.format("%s", incomeItem.getCategory().getName()));
 			viewHolder.method.setText(incomeItem.getAccountText());
 			if(editableList) {
 				viewHolder.deleteImage.setVisibility(View.VISIBLE);
@@ -80,6 +101,16 @@ public class BookMarkAdapter extends ArrayAdapter<OpenUsedItem> {
 				viewHolder.deleteImage.setVisibility(View.INVISIBLE);
 				//viewHolder.deleteImage.setVisibility(View.GONE);
 			}
+			viewHolder.deleteImage.setOnClickListener(new View.OnClickListener() {
+				
+				public void onClick(View v) {
+					DBMgr.deleteOpenUsedItem(IncomeItem.TYPE, incomeItem.getID());
+					if(incomeUpdateUsedItem != null)
+						incomeUpdateUsedItem.updateUsedItemDelete();
+					else
+						expenseUpdateUsedItem.updateUsedItemDelete();
+				}
+			});
 			viewHolder.amount.setText(String.format("%,d원",incomeItem.getAmount()));
 		}
 		
