@@ -120,7 +120,8 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	 * 지불계좌 버튼 갱신
 	 */
 	private void updateCardExpenseAccountBtnText() {
-		((Button)findViewById(R.id.BTDetailCreditCardExpenseAccount)).setText(mCard.getAccount().getName() + "\n(" + mCard.getAccount().getNumber() + ")");
+		//((Button)findViewById(R.id.BTDetailCreditCardExpenseAccount)).setText(mCard.getAccount().getName() + "\n(" + mCard.getAccount().getNumber() + ")");
+		((Button)findViewById(R.id.BTDetailCreditCardExpenseAccount)).setText(mCard.getAccount().getCompany().getName() + "\n" + mCard.getAccount().getNumber());
 	}
 	/**
 	 * 기준일별내역/월별내역 버튼 갱신
@@ -318,7 +319,10 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		public void onClick(View v) {
 			switch(v.getId()) {
 			case R.id.BTDetailCreditCardExpenseAccount:
-				Toast.makeText(CardDetailCreditLayout.this, "계좌 상세보기 버튼을 누름", Toast.LENGTH_LONG).show();
+				//Toast.makeText(CardDetailCreditLayout.this, "계좌 상세보기 버튼을 누름", Toast.LENGTH_LONG).show();
+				Intent intent = new Intent(CardDetailCreditLayout.this, DetailAccountLayout.class);
+				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, mCard.getAccount());
+				startActivity(intent);
 				break;
 			case R.id.BTDetailCreditCardBillingBasicDateButton:
 				isBasicDate = true;
