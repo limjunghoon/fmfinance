@@ -372,7 +372,13 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	protected void updateBtnCategoryText(int btnID) {
 		String categoryText = getResources().getString(R.string.input_select_category);
 		if (mExpensItem.isVaildCatetory()) {
-			categoryText = String.format("%s - %s", mExpensItem.getCategory().getName(), mExpensItem.getSubCategory().getName());
+			if (mExpensItem.getCategory().getExtndType() == ItemDef.NOT_CATEGORY) {
+				categoryText = String.format("%s", mExpensItem.getCategory().getName());
+			}
+			else {
+				categoryText = String.format("%s - %s", mExpensItem.getCategory().getName(), mExpensItem.getSubCategory().getName());
+			}
+			
 		}
 		 
     	((Button)findViewById(btnID)).setText(categoryText);
@@ -646,6 +652,22 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	protected void updateItem() {
 		String memo = ((TextView)findViewById(R.id.ETExpenseMemo)).getText().toString();
     	getItem().setMemo(memo);
+    	
+    	if (mExpensItem.getCategory().getID() == -1) {
+    		ArrayList<Category> nothginCategory = DBMgr.getCategory(ExpenseItem.TYPE, ItemDef.NOT_CATEGORY);
+    		if (nothginCategory.size() != 0) {
+    			Category mainCategory = nothginCategory.get(0);
+    			mExpensItem.setCategory(mainCategory);
+    		}
+    	}
+    	
+    	if (mExpensItem.getSubCategory().getID() == -1) {
+    		ArrayList<Category> nothginSubCategory = DBMgr.getSubCategory(ExpenseItem.TYPE, -1);
+    		if (nothginSubCategory.size() != 0) {
+    			Category subCategory = nothginSubCategory.get(0);
+    			mExpensItem.setSubCategory(subCategory);
+    		}
+    	}
 	}
 	
 	

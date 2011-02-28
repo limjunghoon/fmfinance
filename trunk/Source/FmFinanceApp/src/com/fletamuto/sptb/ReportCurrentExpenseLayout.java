@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 import com.fletamuto.sptb.util.LogTag;
@@ -67,7 +68,15 @@ public class ReportCurrentExpenseLayout extends ReportBaseLayout {
     	((TextView)convertView.findViewById(R.id.TVExpenseReportListDate)).setVisibility(View.GONE);
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListMemo)).setText("메모 : " + item.getMemo());
-		String categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
+		
+		String categoryText;
+		if (item.getCategory().getExtndType() == ItemDef.NOT_CATEGORY) {
+			categoryText = String.format("%s", item.getCategory().getName());
+		}
+		else {
+			categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
+		}
+		
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText("분류 : " + categoryText);
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListTag)).setText("태그 : " + item.getTag().getName());
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListPaymentMethod)).setText("결제 : " + item.getPaymentMethod().getText());

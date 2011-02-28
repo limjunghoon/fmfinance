@@ -12,6 +12,8 @@ public final class ItemDef {
 	
 	public static final int EXTEND_NONE = 0;
 	
+	public static final int NOT_CATEGORY = 400;
+	
 	public static final int MOVE_SENSITIVITY = 60;
 	
 	/**	 수입, 지출, 자산, 부채의 고유 값 정의.*/
