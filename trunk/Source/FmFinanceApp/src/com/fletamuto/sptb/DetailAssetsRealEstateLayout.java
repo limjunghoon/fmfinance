@@ -1,30 +1,10 @@
 package com.fletamuto.sptb;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
-import com.fletamuto.sptb.data.AssetsChangeItem;
-import com.fletamuto.sptb.data.AssetsInsuranceItem;
 import com.fletamuto.sptb.data.AssetsRealEstateItem;
-import com.fletamuto.sptb.data.AssetsSavingsItem;
-import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.IncomeItem;
-import com.fletamuto.sptb.data.ItemDef;
-import com.fletamuto.sptb.db.DBMgr;
 
 public class DetailAssetsRealEstateLayout extends DetailBaseLayout {  	
 	private AssetsRealEstateItem mRealEstate;

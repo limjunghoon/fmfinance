@@ -5,15 +5,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
 import com.fletamuto.sptb.data.Category;
-import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
-import com.fletamuto.sptb.util.LogTag;
 
 public class SelectCategoryIncomeLayout extends SelectCategoryBaseLayout /*InputAfterSelectCategoryLayout */{
 	public static final int ACT_ADD_INCOME = MsgDef.ActRequest.ACT_ADD_INCOME;

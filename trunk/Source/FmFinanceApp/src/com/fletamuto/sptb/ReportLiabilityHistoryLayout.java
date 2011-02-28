@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.LiabilityItem;
-import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportLiabilityHistoryLayout extends ReportBaseLayout {
     private LiabilityItem mItem;

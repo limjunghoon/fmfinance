@@ -1,10 +1,5 @@
 package com.fletamuto.sptb.view;
 
-import com.fletamuto.sptb.R;
-import com.fletamuto.sptb.R.anim;
-import com.fletamuto.sptb.R.id;
-import com.fletamuto.sptb.R.layout;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +8,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.fletamuto.sptb.R;
 
 public class FmBaseLayout extends FrameLayout {
 	public static final int MENU_INCOME_EXPENSE  = 0;
