@@ -303,6 +303,8 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
     	list.setOnTouchListener(new View.OnTouchListener() {
 			
 			public boolean onTouch(View v, MotionEvent event) {
+				if(getIntent().getIntExtra("Action", ACTION_DEFAULT) == ACTION_NOTIFICATION_INTO)
+						return false;
 				return gestureDetector.onTouchEvent(event);
 			}
 		});
@@ -428,12 +430,10 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		//calendar.set(Calendar.YEAR, mYear);
 		//calendar.set(Calendar.MONTH, mMonth);
 		//calendar.set(Calendar.DAY_OF_MONTH, mDay);
-		//Toast.makeText(CardDetailCreditLayout.this, calendar.getTime().toLocaleString(), Toast.LENGTH_LONG).show();
 		Calendar tempCalendar = (Calendar) mCalendar.clone();
 		tempCalendar.add(Calendar.MONTH, 1);
 		tempCalendar.set(Calendar.DAY_OF_MONTH, mCard.getSettlementDay());
 		
-		//Toast.makeText(CardDetailCreditLayout.this, tempCalendar.getTime().toLocaleString() + "\n" + (new Date()).toLocaleString(), Toast.LENGTH_LONG).show();
 		if(tempCalendar.getTimeInMillis() >= (new Date()).getTime()) {
 			isNextBilling = true;
 		} else {
@@ -454,6 +454,8 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 		
 		switch(getIntent().getIntExtra("Action", ACTION_DEFAULT)) {
 		case ACTION_DEFAULT:
+			setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "편집");
+			setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
 			break;
 		case ACTION_NOTIFICATION_INTO:
 			setTitle("카드 결제");
@@ -466,38 +468,62 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 			((Button)findViewById(R.id.BTDetailCardBillingMonthButton)).setVisibility(View.INVISIBLE);
 			//((Button)findViewById(R.id.BTDetailCardBillingDatePreButton)).setVisibility(View.INVISIBLE);
 			//((Button)findViewById(R.id.BTDetailCardBillingDateNextButton)).setVisibility(View.INVISIBLE);
-			
-			setButtonListener();
 			break;
 		}
+		setButtonListener();
+	}
+	protected Class<?> getEditCardClass(int type) {
+		if (type == CardItem.CREDIT_CARD) {
+			return InputCreditCardLayout.class;
+		}
+		else if (type == CardItem.CHECK_CARD) {
+			return InputCheckCardLayout.class;
+		}
+		else if (type == CardItem.PREPAID_CARD) {
+			return InputPrepaidCardLayout.class;
+		}
+		return null;
+	}
+	protected void startEditInputActivity(int itemId, Class<?> cls) {
+		Intent intent = new Intent(this, cls);
+    	intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, itemId);
+    	startActivityForResult(intent, EditCardLayout.ACT_EDIT_ITEM);
 	}
 	public void setButtonListener() {
 		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				AccountItem account = DBMgr.getAccountItem(mCardInfo.getCard().getAccount().getID());
-				if (account != null) {
-					long balance = account.getBalance();
-					
-					if (balance < mCardInfo.getBillingExpenseAmount()) {
-						account.setBalance(0L);
-					}else {
-						account.setBalance(balance - mCardInfo.getBillingExpenseAmount());
+				switch(getIntent().getIntExtra("Action", ACTION_DEFAULT)) {
+				case ACTION_DEFAULT:
+					startEditInputActivity(mCard.getID(), getEditCardClass(mCard.getType()));
+					break;
+				case ACTION_NOTIFICATION_INTO:
+					AccountItem account = DBMgr.getAccountItem(mCardInfo.getCard().getAccount().getID());
+					if (account != null) {
+						long balance = account.getBalance();
+						
+						if (balance < mCardInfo.getBillingExpenseAmount()) {
+							account.setBalance(0L);
+						}else {
+							account.setBalance(balance - mCardInfo.getBillingExpenseAmount());
+						}
+						
+						DBMgr.updateAccount(account);
+						
 					}
 					
-					DBMgr.updateAccount(account);
+					CardPayment cardPayment = new CardPayment();
+					cardPayment.setCardId(mCardInfo.getCard().getID());
+					cardPayment.setPaymentAmount(mCardInfo.getBillingExpenseAmount());
+					cardPayment.setPaymentDate(mCardInfo.getSettlementDate());
+					cardPayment.setRemainAmount(0L);
+					cardPayment.setState(CardPayment.DONE);
+					DBMgr.addCardPaymentItem(cardPayment);
 					
+					finish();
+					break;
 				}
 				
-				CardPayment cardPayment = new CardPayment();
-				cardPayment.setCardId(mCardInfo.getCard().getID());
-				cardPayment.setPaymentAmount(mCardInfo.getBillingExpenseAmount());
-				cardPayment.setPaymentDate(mCardInfo.getSettlementDate());
-				cardPayment.setRemainAmount(0L);
-				cardPayment.setState(CardPayment.DONE);
-				DBMgr.addCardPaymentItem(cardPayment);
-				
-				finish();
 			}
 		});
 		setTitleButtonListener(FmTitleLayout.BTN_LEFT_01, new View.OnClickListener() {

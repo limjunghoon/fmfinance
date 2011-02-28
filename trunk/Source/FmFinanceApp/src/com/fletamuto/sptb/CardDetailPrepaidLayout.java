@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,11 +23,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ViewHolder;
+import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 
 public class CardDetailPrepaidLayout extends CardDetailBaseLayout {
@@ -74,10 +79,11 @@ public class CardDetailPrepaidLayout extends CardDetailBaseLayout {
 		updateCardNameText();
 		updateCardNumberText();
 		updateCardTypeText();
-		updateCardExpenseAccountBtnText();
+		//updateCardExpenseBalanceBtnText();
 		updateCardBillingTermText();
 		
 		getCardExpenseItems();
+		updateCardExpenseBalanceBtnText();
 		
 		initWidget();
 	}
@@ -109,11 +115,25 @@ public class CardDetailPrepaidLayout extends CardDetailBaseLayout {
 		((TextView)findViewById(R.id.TVDetailCardType)).setText(mCard.getCardTypeName());
 	}
 	/**
-	 * 지불계좌 버튼 갱신
+	 * 잔액 버튼 갱신
 	 */
-	private void updateCardExpenseAccountBtnText() {
+	private void updateCardExpenseBalanceBtnText() {
 		//((Button)findViewById(R.id.BTDetailCardExpenseAccount)).setText(mCard.getAccount().getName() + "\n(" + mCard.getAccount().getNumber() + ")");
-		((Button)findViewById(R.id.BTDetailCardExpenseAccount)).setText(String.format("%,d", mCard.getBalance()) + "원");
+		long totalAmount = 0;
+		ArrayList<FinanceItem> items = mCardExpenseItems/*getCardExpenseAllItems()*/;
+		for(int i = 0, size = items.size(); i < size; i++)
+			totalAmount += items.get(i).getAmount();
+		((Button)findViewById(R.id.BTDetailCardExpenseAccount)).setText(String.format("%,d", mCard.getBalance() - totalAmount) + "원");
+	}
+	/**
+	 * 모든 아이템을 가져옴
+	 */
+	private ArrayList<FinanceItem> getCardExpenseAllItems() {
+		Calendar startDate = (Calendar) Calendar.getInstance().clone();
+		startDate.set(0, 0, 0);
+		Calendar endDate = (Calendar) Calendar.getInstance().clone();
+		endDate.setTimeInMillis(System.currentTimeMillis());
+		return DBMgr.getCardExpenseItems(mCardInfo.getCard().getID(), startDate, endDate);
 	}
 	/**
 	 * 결제 예정일 갱신
@@ -309,7 +329,13 @@ public class CardDetailPrepaidLayout extends CardDetailBaseLayout {
 			switch(v.getId()) {
 			case R.id.BTDetailCardExpenseAccount:
 				//Toast.makeText(CardDetailCreditLayout.this, "계좌 상세보기 버튼을 누름", Toast.LENGTH_LONG).show();
-
+//				Intent intent = new Intent(CardDetailPrepaidLayout.this, ReportExpenseExpandLayout.class);
+//				intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, mCalendar.get(Calendar.MONTH)+1);
+//				intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, mCalendar.get(Calendar.YEAR));
+//				intent.putExtra(MsgDef.ExtraNames.CARD_ITEM, mCard);
+//				startActivity(intent);
+				Intent intent = new Intent(CardDetailPrepaidLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, InputPrepaidCardLayout.ACT_BALANCE);
 				break;
 			case R.id.BTDetailCardBillingBasicDateButton:
 				//Toast.makeText(CardDetailCreditLayout.this, "기준일별내역 버튼을 누름", Toast.LENGTH_LONG).show();
@@ -355,8 +381,60 @@ public class CardDetailPrepaidLayout extends CardDetailBaseLayout {
 	@Override
 	protected void setTitleBtn() {
 		super.setTitleBtn();
+		setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "편집");
+		setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
+		
+		setButtonListener();
+	}
+	protected Class<?> getEditCardClass(int type) {
+		if (type == CardItem.CREDIT_CARD) {
+			return InputCreditCardLayout.class;
+		}
+		else if (type == CardItem.CHECK_CARD) {
+			return InputCheckCardLayout.class;
+		}
+		else if (type == CardItem.PREPAID_CARD) {
+			return InputPrepaidCardLayout.class;
+		}
+		return null;
+	}
+	protected void startEditInputActivity(int itemId, Class<?> cls) {
+		Intent intent = new Intent(this, cls);
+    	intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, itemId);
+    	startActivityForResult(intent, EditCardLayout.ACT_EDIT_ITEM);
+	}
+	public void setButtonListener() {
+		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				startEditInputActivity(mCard.getID(), getEditCardClass(mCard.getType()));
+			}
+		});
+	}
+
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode == InputPrepaidCardLayout.ACT_BALANCE && resultCode == RESULT_OK) {
+			long totalAmount = 0;
+			ArrayList<FinanceItem> items = mCardExpenseItems/*getCardExpenseAllItems()*/;
+			for(int i = 0, size = items.size(); i < size; i++)
+				totalAmount += items.get(i).getAmount();
+			mCard.setBalance(data.getLongExtra("AMOUNT", 0L) + totalAmount);	//입력한 값 + 사용한 금액
+			updateChild();
+			saveUpdateItem();
+		}
 	}
 	
+	private void saveUpdateItem() {
+		mCard.setAccount(new AccountItem());	//NullPointException 회피
+		if (DBMgr.updateCardItem(mCard) == false) {
+			Log.e(LogTag.LAYOUT, "== NEW fail to the update item : " + mCard.getID());
+    		return;
+		}
+	}
+
 	
 /*	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

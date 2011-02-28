@@ -27,6 +27,7 @@ import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 
 public class CardDetailCheckLayout extends CardDetailBaseLayout {
@@ -358,6 +359,35 @@ public class CardDetailCheckLayout extends CardDetailBaseLayout {
 	@Override
 	protected void setTitleBtn() {
 		super.setTitleBtn();
+		setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "ÆíÁý");
+		setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
+		
+		setButtonListener();
+	}
+	protected Class<?> getEditCardClass(int type) {
+		if (type == CardItem.CREDIT_CARD) {
+			return InputCreditCardLayout.class;
+		}
+		else if (type == CardItem.CHECK_CARD) {
+			return InputCheckCardLayout.class;
+		}
+		else if (type == CardItem.PREPAID_CARD) {
+			return InputPrepaidCardLayout.class;
+		}
+		return null;
+	}
+	protected void startEditInputActivity(int itemId, Class<?> cls) {
+		Intent intent = new Intent(this, cls);
+    	intent.putExtra(MsgDef.ExtraNames.EDIT_ITEM_ID, itemId);
+    	startActivityForResult(intent, EditCardLayout.ACT_EDIT_ITEM);
+	}
+	public void setButtonListener() {
+		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				startEditInputActivity(mCard.getID(), getEditCardClass(mCard.getType()));
+			}
+		});
 	}
 	
 	
