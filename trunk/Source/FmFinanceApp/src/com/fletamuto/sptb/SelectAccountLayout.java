@@ -56,7 +56,7 @@ public class SelectAccountLayout extends BaseSlidingActivity/*Activity*/ {
 	protected void getAccountItems() {
 		if (mMode == MODE_TRASFER) {
 			mArrAccount = new ArrayList<AccountItem>();
-			mArrAccount.add(DBMgr.getAccountMyPoctet());
+			mArrAccount.add(DBMgr.getAccountMyPocket());
 			mArrAccount.addAll(DBMgr.getAccountAllItems());
 			
 			int size = mArrAccount.size();

@@ -420,7 +420,7 @@ public class MainAssetsLayout extends FmBaseActivity {
     	mCardItems = DBMgr.getCardItems();
  //   	updateCardListItem();
     	
-    	mMyPocket = DBMgr.getAccountMyPoctet();
+    	mMyPocket = DBMgr.getAccountMyPocket();
     	mTotalAmount[REPORT_MYPORKET] = mMyPocket.getBalance();
     }
     

@@ -30,11 +30,19 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 	private FinanceItem mItem;
 	private boolean mOpenUsedItem = false;
 	
-//	protected InputAmountLayout mAmountLayout;
-	
 	protected abstract void updateDate();
 	protected abstract void updateCategory(int id, String name);
 	protected abstract void onCategoryClick();
+	
+	/**
+	 * 잔액을 확인
+	 * @return 성공여부
+	 */
+//	protected abstract boolean checkBalance();
+	
+	protected boolean checkBalance() {
+		return true;
+	}
 	
 	protected void setItem(FinanceItem item) {
 		mItem = item;
@@ -237,10 +245,14 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
     		return false;
     	}
     	
+    	if (checkBalance() == false) {
+    		return false;
+    	}
+    	
     	return true;
     }
     
-    @Override
+	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     
     	if (requestCode == ACT_AMOUNT) {

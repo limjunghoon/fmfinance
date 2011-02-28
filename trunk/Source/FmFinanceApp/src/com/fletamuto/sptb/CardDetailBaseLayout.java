@@ -11,8 +11,8 @@ import com.fletamuto.sptb.db.DBMgr;
 
 public abstract class CardDetailBaseLayout extends FmBaseActivity {  	
 	protected CardItem mCard;
-	protected CardExpenseInfo mCardInfo; 
-	//protected long mTotalExpenseAmount = 0L;
+	protected CardExpenseInfo mCardInfo;
+	
 	protected int mMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
 	protected int mYear = Calendar.getInstance().get(Calendar.YEAR);
 	
@@ -22,10 +22,7 @@ public abstract class CardDetailBaseLayout extends FmBaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        
     }
-	
-	
 
 	@Override
 	protected void initialize() {
