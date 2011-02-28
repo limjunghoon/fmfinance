@@ -529,7 +529,7 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getAccountDBConnector().getItem(id);
 	}
 	
-	public static AccountItem getAccountMyPoctet() {
+	public static AccountItem getAccountMyPocket() {
 		return mInstance.mDBConnector.getAccountDBConnector().getMyPocket();
 	}
 	

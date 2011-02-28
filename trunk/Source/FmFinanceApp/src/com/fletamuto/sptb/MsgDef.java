@@ -48,6 +48,7 @@ public final class MsgDef {
 		public final static int ACT_SELECT_DATE = 42;
 		public final static int ACT_AMOUNT_PRINCIPAL = 43;
 		public final static int ACT_AMOUNT_INTEREST = 44;
+		public final static int ACT_BALANCE_AFTER_CHCKE_ITEM = 45;
 	}
 	
 	public static final class ExtraNames {

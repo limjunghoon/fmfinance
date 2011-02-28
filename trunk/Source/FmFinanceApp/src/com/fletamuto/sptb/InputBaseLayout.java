@@ -2,6 +2,7 @@ package com.fletamuto.sptb;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -109,6 +110,7 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 				
 				if (checkInputData() == true) {
 					saveItem();		
+					setResult(RESULT_OK, new Intent());
 					finish();
 		    	}
 			}

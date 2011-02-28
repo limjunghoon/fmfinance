@@ -70,7 +70,7 @@ public class AccountLayout extends FmBaseActivity {
 		
 		int companyID = -1;
 		AccountItem separator = new AccountItem();
-		AccountItem account = DBMgr.getAccountMyPoctet();
+		AccountItem account = DBMgr.getAccountMyPocket();
 		separator.setSeparatorTitle("내 주머니");
 		mAccountListItems.add(separator);
 		mAccountListItems.add(account);

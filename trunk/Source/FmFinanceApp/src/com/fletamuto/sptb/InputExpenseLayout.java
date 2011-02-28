@@ -3,6 +3,8 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.fletamuto.common.control.InputAmountDialog;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.Category;
@@ -47,24 +50,16 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	protected final static int ACT_ACCOUNT_SELECT = MsgDef.ActRequest.ACT_ACCOUNT_SELECT;
 	protected final static int ACT_BOOKMARK_SELECT = MsgDef.ActRequest.ACT_BOOKMARK_SELECT;
 	
+	/** 지출내역*/
 	private ExpenseItem mExpensItem;
 	
-	//달력 입력과 자주 사용 되는 지출을 위해 start
-/*	
-	private View popupview;
-*/
 	private LinearLayout linear;
 	private View popupviewBookmark;
 	private PopupWindow popupBookmark, popupBookmarkEdit;
 	private TextView tv;
-	private ArrayList<FinanceItem> expenseAllItems;
 	private ArrayList<FinanceItem> itemsTemp;
 	//달력 입력과 자주 사용 되는 지출을 위해 end
 	
-//	private AccountItem fromItem;
-	private long beforeAmount;
-	
-	private LinearLayout mLLBookark;
 	private SlidingDrawer mSlidingDrawer;
 	
 	/**
@@ -294,7 +289,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     	AccountItem account = null; 
     	
     	if (paymentMethodType == PaymentMethod.CASH) {
-    		account = DBMgr.getAccountMyPoctet();
+    		account = DBMgr.getAccountMyPocket();
     	} 
     	else if (paymentMethodType == PaymentMethod.ACCOUNT) {
     		PaymentAccountMethod accountMethod = (PaymentAccountMethod) paymentMethod;
@@ -323,7 +318,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		if (mExpensItem == null) {
 			mExpensItem = new ExpenseItem();
 		}
-		beforeAmount = mExpensItem.getAmount();
 		setItem(mExpensItem);
 	}
 	
@@ -332,7 +326,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		mExpensItem = (ExpenseItem)DBMgr.getItem(ExpenseItem.TYPE, id);
 		if (mExpensItem == null) return false;
 		
-		beforeAmount = mExpensItem.getAmount();
 		setItem(mExpensItem);
 		
 		loadPaymnetMethod();
@@ -449,6 +442,17 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 					return;
 				}
 			}
+		}
+		else if (requestCode == MsgDef.ActRequest.ACT_BALANCE_AFTER_CHCKE_ITEM) {
+			AccountItem account = getPaymentAccount();
+			if (account == null) return;
+			
+			account.setBalance(data.getLongExtra(MsgDef.ExtraNames.AMOUNT, 0L));
+			DBMgr.updateAccount(account);
+			
+			saveItem();		
+			setResult(RESULT_OK, new Intent());
+			finish();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -1172,4 +1176,53 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			updateOpenUsedItem();
 		}
 	}
+	
+	@Override
+	protected boolean checkBalance() {
+		final AccountItem account = getPaymentAccount();
+		if (account == null) return true;
+		
+		if (account.getBalance() < mExpensItem.getAmount()) {
+			new AlertDialog.Builder(this)
+			.setTitle("잔액초과")
+			.setMessage("지출금액이 잔액을 초과했습니다.\n 잔액을 수정하시겠습니까?")
+			.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					Intent intent = new Intent(InputExpenseLayout.this, InputAmountDialog.class);
+					intent.putExtra(MsgDef.ExtraNames.AMOUNT, account.getBalance());
+					startActivityForResult(intent, MsgDef.ActRequest.ACT_BALANCE_AFTER_CHCKE_ITEM);
+				}
+			})
+			.setNegativeButton("무시", new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					saveItem();		
+					setResult(RESULT_OK, new Intent());
+					finish();
+				}
+			})
+			.show();
+			
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public AccountItem getPaymentAccount() {
+		PaymentMethod paymentMethod = mExpensItem.getPaymentMethod();
+		AccountItem account = null;
+		if (paymentMethod.getType() == PaymentMethod.CASH) {
+			account = DBMgr.getAccountMyPocket();
+		}
+		else if (paymentMethod.getType() == PaymentMethod.ACCOUNT) {
+			PaymentAccountMethod accountMethod = (PaymentAccountMethod) paymentMethod;
+			account = accountMethod.getAccount();
+		}
+		
+		return account;
+	}
+
+	
 }

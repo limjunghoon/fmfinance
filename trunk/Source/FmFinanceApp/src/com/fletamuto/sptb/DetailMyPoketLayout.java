@@ -17,7 +17,7 @@ import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class DetailMyPoketLayout extends DetailMonthHistoryLayout {
-	private AccountItem mMyPocket = DBMgr.getAccountMyPoctet();
+	private AccountItem mMyPocket = DBMgr.getAccountMyPocket();
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
