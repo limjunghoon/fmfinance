@@ -12,7 +12,7 @@
 		<Button android:layout_width="wrap_content" android:id="@+id/BtnPreviousDay" android:layout_height="wrap_content" android:text="이전" android:visibility="gone" android:layout_weight="0"></Button>
 		<Button android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:id="@+id/BtnCurrentday" android:layout_marginRight="5dp" android:textSize="24sp" android:gravity="center" android:layout_width="fill_parent" android:layout_weight="1"></Button>
 		<Button android:layout_width="wrap_content" android:id="@+id/BtnNextDay" android:layout_height="wrap_content" android:text="다음" android:visibility="gone" android:layout_weight="0"></Button>
-		<Button android:layout_width="wrap_content" android:id="@+id/BtnInput" android:text="입력" android:layout_height="wrap_content" android:layout_weight="0"></Button>
+		<ImageButton android:layout_width="wrap_content" android:id="@+id/BtnInput" android:text="입력" android:layout_height="wrap_content" android:layout_weight="0" android:src="@drawable/category_001"></ImageButton>
 	</LinearLayout>
 	<LinearLayout android:layout_width="fill_parent" android:id="@+id/TotalLayout" android:gravity="bottom" android:layout_height="wrap_content" android:layout_weight="0" android:orientation="horizontal" android:paddingLeft="20dp" android:paddingRight="20dp">
 		<LinearLayout android:layout_width="fill_parent" android:id="@+id/LinearLayout" android:gravity="bottom" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="4">

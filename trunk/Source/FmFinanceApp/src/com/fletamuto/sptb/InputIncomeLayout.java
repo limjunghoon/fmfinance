@@ -353,6 +353,14 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 	protected void updateItem() {
     	String memo = ((TextView)findViewById(R.id.ETIncomeMemo)).getText().toString();
     	getItem().setMemo(memo);
+    	
+    	if (mIncomeItem.getCategory().getID() == -1) {
+    		ArrayList<Category> nothginCategory = DBMgr.getCategory(IncomeItem.TYPE, ItemDef.NOT_CATEGORY);
+    		if (nothginCategory.size() != 0) {
+    			Category mainCategory = nothginCategory.get(0);
+    			mIncomeItem.setCategory(mainCategory);
+    		}
+    	}
 	}
 	
 	protected void updateRepeat(int type, int value) {

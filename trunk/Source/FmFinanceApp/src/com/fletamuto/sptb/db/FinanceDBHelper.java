@@ -932,6 +932,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		ContentValues rowItem = new ContentValues();
 		String [] baseMainCategory = context.getResources().getStringArray(R.array.income_base_main_category);
 		int categoryLenth = baseMainCategory.length;
+		int nothingCategory = categoryLenth-1;
 		
 		for (int index = 0; index < categoryLenth; index++) {
 			rowItem.put("name", baseMainCategory[index]);
@@ -941,6 +942,10 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			// 임시 코드  //////////////////////////////////////////////////////
 			if (index == 0) {
 				rowItem.put("extend_type", ItemDef.ExtendIncome.SALARY);
+			}
+			else if (index == nothingCategory) {
+				rowItem.put("type", UISelectItem.HIDE);
+				rowItem.put("extend_type", ItemDef.NOT_CATEGORY);
 			}
 			else {
 				rowItem.put("extend_type", ItemDef.ExtendIncome.NONE);
