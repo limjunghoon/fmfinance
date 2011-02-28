@@ -40,15 +40,22 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	protected int mYear = -1;
 	protected int mMonth = -1;
 	protected int mDay = -1;
+	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.report_detail_credit_card, true);
-        updateChild();
+        //updateChild();
         
         setBtnClickListener();
     }
 	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		updateChild();
+	}
+
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -225,11 +232,21 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
     	
     	list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				
-				
-			}
+    		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+    			FinanceItem item = mCardExpenseItems.get(position);
+    			
+    	    	if (item.getType() == ExpenseItem.TYPE) {
+    	    		startEditInputActivity(InputExpenseLayout.class, item.getID());
+    	    	}
+    	    	else {
+    	    		startEditInputActivity(InputIncomeLayout.class, item.getID());
+    	    	}
+    		}
+    		protected void startEditInputActivity(Class<?> cls, int itemId) {
+    			Intent intent = new Intent(CardDetailCreditLayout.this, cls);
+    	    	intent.putExtra("EDIT_ITEM_ID", itemId);
+    	    	startActivityForResult(intent, MsgDef.ActRequest.ACT_EDIT_ITEM);
+    		}
 		});
     }
 	public class ReportCardExpenseItemAdapter extends ArrayAdapter<FinanceItem> {
@@ -347,6 +364,9 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 			}
 		}
 	};
+	/**
+	 * 기간 갱신
+	 */
 	private void updateCardBillingDateTerm() {
 		//calendar.set(Calendar.YEAR, mYear);
 		//calendar.set(Calendar.MONTH, mMonth);
