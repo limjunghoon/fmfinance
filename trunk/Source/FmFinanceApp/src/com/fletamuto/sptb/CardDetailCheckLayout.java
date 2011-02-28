@@ -84,8 +84,8 @@ public class CardDetailCheckLayout extends CardDetailBaseLayout {
 	}
 	
 	private void initWidget() {
-		((Button)findViewById(R.id.BTDetailCardBillingBasicDateButton)).setVisibility(View.INVISIBLE);
-		((Button)findViewById(R.id.BTDetailCardBillingMonthButton)).setVisibility(View.INVISIBLE);
+		((TextView)findViewById(R.id.TVDetailCardBillingBasicDate)).setVisibility(View.INVISIBLE);
+		((TextView)findViewById(R.id.TVDetailCardBillingMonth)).setVisibility(View.INVISIBLE);
 		((TextView)findViewById(R.id.TVDetailCardBillingDate)).setVisibility(View.INVISIBLE);
 	}
 	/**
@@ -297,8 +297,8 @@ public class CardDetailCheckLayout extends CardDetailBaseLayout {
 	 */
 	protected void setBillingBtnClickListener() {
 		((Button)findViewById(R.id.BTDetailCardExpenseAccount)).setOnClickListener(billingBtnClickListener);
-		((Button)findViewById(R.id.BTDetailCardBillingBasicDateButton)).setOnClickListener(billingBtnClickListener);
-		((Button)findViewById(R.id.BTDetailCardBillingMonthButton)).setOnClickListener(billingBtnClickListener);
+		((TextView)findViewById(R.id.TVDetailCardBillingBasicDate)).setOnClickListener(billingBtnClickListener);
+		((TextView)findViewById(R.id.TVDetailCardBillingMonth)).setOnClickListener(billingBtnClickListener);
 //		((Button)findViewById(R.id.BTDetailCardBillingDatePreButton)).setOnClickListener(billingBtnClickListener);
 //		((Button)findViewById(R.id.BTDetailCardBillingDateNextButton)).setOnClickListener(billingBtnClickListener);
 	}
@@ -306,19 +306,16 @@ public class CardDetailCheckLayout extends CardDetailBaseLayout {
 		public void onClick(View v) {
 			switch(v.getId()) {
 			case R.id.BTDetailCardExpenseAccount:
-				//Toast.makeText(CardDetailCreditLayout.this, "계좌 상세보기 버튼을 누름", Toast.LENGTH_LONG).show();
 				Intent intent = new Intent(CardDetailCheckLayout.this, DetailAccountLayout.class);
 				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, mCard.getAccount());
 				startActivity(intent);
 				break;
-			case R.id.BTDetailCardBillingBasicDateButton:
-				//Toast.makeText(CardDetailCreditLayout.this, "기준일별내역 버튼을 누름", Toast.LENGTH_LONG).show();
-				updateChild();
-				break;
-			case R.id.BTDetailCardBillingMonthButton:
-				//Toast.makeText(CardDetailCreditLayout.this, "월별내역 버튼을 누름", Toast.LENGTH_LONG).show();
-				updateChild();
-				break;
+//			case R.id.TVDetailCardBillingBasicDate:
+//				updateChild();
+//				break;
+//			case R.id.TVDetailCardBillingMonth:
+//				updateChild();
+//				break;
 //			case R.id.BTDetailCardBillingDatePreButton:
 //				mCalendar.add(Calendar.MONTH, -1);
 //				getCalendarDate();

@@ -23,14 +23,14 @@
     android:layout_marginLeft="5dp" android:layout_toRightOf="@+id/TVDetailExpenseAccountLable" android:layout_below="@+id/TVDetailCardType" android:text="내 카드 지불계좌" android:textSize="18sp" />
     
     
-    <Button android:id="@+id/BTDetailCardBillingBasicDateButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
+    <TextView android:id="@+id/TVDetailCardBillingBasicDate" android:layout_width="wrap_content" android:layout_height="24dp"
     android:layout_marginTop="10dp" android:layout_alignParentLeft="true" android:layout_below="@+id/BTDetailCardExpenseAccount"
-    android:text="기준일별내역" android:textSize="8sp" />
-    <Button android:id="@+id/BTDetailCardBillingMonthButton" android:layout_width="wrap_content" android:layout_height="wrap_content"
-    android:layout_marginTop="10dp" android:layout_toRightOf="@+id/BTDetailCardBillingBasicDateButton" android:layout_below="@+id/BTDetailCardExpenseAccount"
-    android:text="월별내역" android:textSize="8sp" />
+    android:text="기준일별내역" android:textSize="12sp" />
+    <TextView android:id="@+id/TVDetailCardBillingMonth" android:layout_width="wrap_content" android:layout_height="24dp"
+    android:layout_marginTop="10dp" android:layout_toRightOf="@+id/TVDetailCardBillingBasicDate" android:layout_below="@+id/BTDetailCardExpenseAccount"
+    android:text="월별내역" android:textSize="12sp" />
     <TextView android:id="@+id/TVDetailCardBillingDate" android:layout_width="fill_parent" android:layout_height="wrap_content"
-    android:layout_marginTop="10dp" android:layout_toRightOf="@+id/BTDetailCardBillingMonthButton" android:layout_below="@+id/BTDetailCardExpenseAccount"
+    android:layout_marginTop="10dp" android:layout_toRightOf="@+id/TVDetailCardBillingMonth" android:layout_below="@+id/BTDetailCardExpenseAccount"
     android:text="2011년 00월 00일" android:textSize="14sp" android:gravity="right"/>
     
     <!--
@@ -39,7 +39,7 @@
     -->
     <TextView android:id="@+id/TVDetailCardBillingTerm" android:layout_width="fill_parent" android:layout_height="24dp"
     android:layout_marginTop="5dp" android:layout_alignParentLeft="true"
-    android:layout_below="@+id/BTDetailCardBillingBasicDateButton" android:text="2011년 00월 00일 ~ 2011년 00월 00일" android:textSize="10sp"
+    android:layout_below="@+id/TVDetailCardBillingBasicDate" android:text="2011년 00월 00일 ~ 2011년 00월 00일" android:textSize="14sp"
     android:gravity="center"/>
     <!--
     <Button android:id="@+id/BTDetailCardBillingDateNextButton" android:layout_width="24dp" android:layout_height="24dp"

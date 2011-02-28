@@ -386,8 +386,8 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 	 */
 	protected void setBillingBtnClickListener() {
 		((Button)findViewById(R.id.BTDetailCardExpenseAccount)).setOnClickListener(billingBtnClickListener);
-		((Button)findViewById(R.id.BTDetailCardBillingBasicDateButton)).setOnClickListener(billingBtnClickListener);
-		((Button)findViewById(R.id.BTDetailCardBillingMonthButton)).setOnClickListener(billingBtnClickListener);
+		((TextView)findViewById(R.id.TVDetailCardBillingBasicDate)).setOnClickListener(billingBtnClickListener);
+		((TextView)findViewById(R.id.TVDetailCardBillingMonth)).setOnClickListener(billingBtnClickListener);
 		//((Button)findViewById(R.id.BTDetailCardBillingDatePreButton)).setOnClickListener(billingBtnClickListener);
 		//((Button)findViewById(R.id.BTDetailCardBillingDateNextButton)).setOnClickListener(billingBtnClickListener);
 	}
@@ -400,12 +400,12 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 				intent.putExtra(MsgDef.ExtraNames.ACCOUNT_ITEM, mCard.getAccount());
 				startActivity(intent);
 				break;
-			case R.id.BTDetailCardBillingBasicDateButton:
+			case R.id.TVDetailCardBillingBasicDate:
 				isBasicDate = true;
 				//Toast.makeText(CardDetailCreditLayout.this, "기준일별내역 버튼을 누름", Toast.LENGTH_LONG).show();
 				updateChild();
 				break;
-			case R.id.BTDetailCardBillingMonthButton:
+			case R.id.TVDetailCardBillingMonth:
 				isBasicDate = false;
 				//Toast.makeText(CardDetailCreditLayout.this, "월별내역 버튼을 누름", Toast.LENGTH_LONG).show();
 				updateChild();
@@ -464,8 +464,8 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 			setTitleBtnText(FmBaseLayout.BTN_LEFT_01, "취소");
 			setTitleBtnVisibility(FmBaseLayout.BTN_LEFT_01, View.VISIBLE);
 			
-			((Button)findViewById(R.id.BTDetailCardBillingBasicDateButton)).setVisibility(View.INVISIBLE);
-			((Button)findViewById(R.id.BTDetailCardBillingMonthButton)).setVisibility(View.INVISIBLE);
+			((TextView)findViewById(R.id.TVDetailCardBillingBasicDate)).setVisibility(View.INVISIBLE);
+			((TextView)findViewById(R.id.TVDetailCardBillingMonth)).setVisibility(View.INVISIBLE);
 			//((Button)findViewById(R.id.BTDetailCardBillingDatePreButton)).setVisibility(View.INVISIBLE);
 			//((Button)findViewById(R.id.BTDetailCardBillingDateNextButton)).setVisibility(View.INVISIBLE);
 			break;
