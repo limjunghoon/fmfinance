@@ -10,8 +10,17 @@
 
 package com.fletamuto.sptb.file;
 
+import android.content.Context;
+
 
 public class POIOutPut {
+	static final String XLS_OUTPUT_DB_DIRECTORY = "/backup/";
+	private Context context;
+	
+	public POIOutPut(Context context) {
+		super();
+		this.context = context;
+	}
 
 //	@SuppressWarnings("static-access")
 //    public void onCreate(Context context) {
