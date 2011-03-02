@@ -250,4 +250,8 @@ public class InputAssetsFundLayout extends InputAssetsExtendLayout {
     	super.onActivityResult(requestCode, resultCode, data);
     }
 	
+	@Override
+	String getExpenseTitle() {
+		return "ÆÝµå¸Å¼ö";
+	}
 }

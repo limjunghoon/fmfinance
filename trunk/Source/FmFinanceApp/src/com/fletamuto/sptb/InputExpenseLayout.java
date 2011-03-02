@@ -106,23 +106,14 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_expense, true);
         
+        initChildView();
         updateChildView();
-        
-        //달력을 이용한 날짜 입력을 위해
-/*
-        final Intent intent = getIntent();
-        linear = (LinearLayout) findViewById(R.id.inputAssetsExpense);
-        popupview = View.inflate(this, R.layout.monthly_calendar_popup, null);
-        monthlyCalendar = new MonthlyCalendar(this, intent, popupview, linear);
-*/
         
         switch(getIntent().getIntExtra("Action", 0)) {
         case ACTION_DEFAULT:	//일반 호출
-        	setTitle(getResources().getString(R.string.input_expense_name));
             initBookmark();
         	break;
         case ACTION_BOOMARK_EDIT:	//즐겨찾기 추가/편집 호출
-        	setTitle(getResources().getString(R.string.input_bookmark_name));
         	intentAction = ACTION_BOOMARK_EDIT;
         	mExpensItem.setOpenUsedItem(true);
         	if(getIntent().getBooleanExtra("Fill", false)) {
@@ -130,7 +121,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         	}
         	break;
         case ACTION_BOOMARK_OTHER_ACTIVITY :	//서로 다른 타입의 즐겨찾기를 선택시 상대 액티비티에 요청 처리
-        	setTitle(getResources().getString(R.string.input_expense_name));
         	intentAction = ACTION_BOOMARK_OTHER_ACTIVITY;
         	initBookmark();
         	if(getIntent().getBooleanExtra("Fill", false)) {
@@ -145,7 +135,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			}
         	break;
         case ACTION_BOOMARK_EDIT_ACTIVITY:	//다른 타입 즐겨찾기 추가/편집 호출
-        	setTitle(getResources().getString(R.string.input_bookmark_name));
         	intentAction = ACTION_BOOMARK_EDIT_ACTIVITY;
         	if(getIntent().getBooleanExtra("Fill", false)) {
         		fill();
@@ -164,6 +153,37 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         
     }
     
+    @Override
+    public void setTitleName() {
+    	int action = getIntent().getIntExtra("Action", ACTION_DEFAULT);
+    	
+    	if (action == ACTION_BOOMARK_EDIT || action == ACTION_BOOMARK_EDIT_ACTIVITY) {
+    		setTitle(getResources().getString(R.string.input_bookmark_name));
+    	}
+    	else {
+    		String titleName = getIntent().getStringExtra(MsgDef.ExtraNames.GET_TITLE);
+    		if (titleName == null) {
+    			setTitle(getResources().getString(R.string.input_expense_name));
+    		}
+    		else {
+    			setTitle(titleName);
+    		}
+    		
+    	}	
+    	super.setTitleName();
+    }
+    
+    /**
+     * 자식뷰 초기화
+     */
+    public void initChildView() {
+    	if (mInputMode == InputMode.EDIT_MODE) {
+    		findViewById(R.id.LLOption).setVisibility(View.VISIBLE);
+    	}
+    	
+    	updateChildViewState();
+	}
+
     /**
      * 인텐트에 담긴 액션에 따라서 화면에 보이는 위젯 개수를 변경하는 메소드 
      */
@@ -178,6 +198,10 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     		((View)findViewById(R.id.LLRepeat)).setVisibility(View.GONE);
     		((View)findViewById(R.id.BtnExpenseRepeat)).setVisibility(View.GONE);
     		
+    		((View)findViewById(R.id.LLBookmarkSliding)).setVisibility(View.GONE);
+    	}
+    	
+    	if (mExpensItem.getCategory().getExtndType() == ItemDef.ExtendAssets.NONE) {
     		((View)findViewById(R.id.LLBookmarkSliding)).setVisibility(View.GONE);
     	}
     }
@@ -224,7 +248,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         setPaymentToggleBtnClickListener();
         setTagButtonListener();
         setRepeatBtnClickListener(R.id.BtnExpenseRepeat);
-        setBookmarkTvClickListener(R.id.TVExpenseBookmark);
         setDeleteBtnListener(R.id.BtnExpenseDelete);
 	}
     
@@ -533,7 +556,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 
 	@Override
 	protected void updateChildView() {
-		updateChildViewState();
 		updateDate();
 		updateBtnCategoryText(R.id.BtnExpenseCategory);
 		updateBtnAmountText(R.id.BtnExpenseAmount);
@@ -551,8 +573,8 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			findViewById(R.id.BtnExpenseAmount).setEnabled(false);
 			findViewById(R.id.TBExpenseMethodCard).setVisibility(View.GONE);
 			findViewById(R.id.LLRepeat).setVisibility(View.GONE);
-			findViewById(R.id.LLBookmarkSliding).setVisibility(View.GONE);
 			findViewById(R.id.BtnExpenseDelete).setVisibility(View.GONE);
+			findViewById(R.id.LLBookmarkSliding).setVisibility(View.GONE);
 			setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.INVISIBLE);
 		}
 		else {
@@ -666,21 +688,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	}
 	
 	
-	//자주 사용 되는 지출 구현 start
-	protected void setBookmarkTvClickListener(int tvID) {
-		tv = (TextView) findViewById (tvID);
-        tv.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				setBookmark ();
-			}
-		});
-	}
-	class CategoryTemp {
-		FinanceItem item = null;
-		int count = 0;;
-	}
-	
 	protected void initBookmark() {
 		//if (mLLBookark == null) return;
 		((LinearLayout)findViewById(R.id.LLBookmarkSliding)).setVisibility(View.VISIBLE);
@@ -698,7 +705,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		amount = (TextView)findViewById(R.id.BookMarkItemAmount);
 
 		updateOpenUsedItem();
-
 		bookmarkList.setOnItemClickListener(mItemClickListener);
 		bookmarkList.setOnItemLongClickListener(mItemLongClickListener);
 		bookmarkList.setOnTouchListener(mItemTouchListener);
@@ -923,107 +929,6 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		}
 	}
 	
-	
-
-	protected void setBookmark () {
-//		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_popup, null);
-//		popupBookmark = new PopupWindow(popupviewBookmark, 320, 300, true);
-//		
-//		
-//		LinearLayout btnlist = (LinearLayout) popupviewBookmark.findViewById(R.id.bookmarkexpensepopupsub2);
-//		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//		
-//		expenseAllItems = DBMgr.getAllItems(ExpenseItem.TYPE);
-//				
-//		ArrayList<CategoryTemp> categorysTemp = new ArrayList<CategoryTemp>();
-//		
-//		for (int i = expenseAllItems.size()-1 ; i >= 0 ; i--) {
-//			Boolean duplicationCheck = false;
-//			CategoryTemp categoryTemp = new CategoryTemp();
-//			if (categorysTemp.isEmpty() == true) {				
-//				categoryTemp.item = expenseAllItems.get(i);
-//				categoryTemp.count++;
-//				categorysTemp.add(categoryTemp);
-//			} else {
-//				for (int j=0; j < categorysTemp.size(); j++) {
-//
-//					if (categorysTemp.get(j).item.getCategory().getName().equals(expenseAllItems.get(i).getCategory().getName()) && 
-//							categorysTemp.get(j).item.getSubCategory().getName().equals(expenseAllItems.get(i).getSubCategory().getName())  &&
-//							categorysTemp.get(j).item.getAmount() == expenseAllItems.get(i).getAmount()) {
-//						categorysTemp.get(j).count++;
-//						duplicationCheck = true;
-//						break;
-//					} 
-//				}
-//				if (duplicationCheck == false) {
-//					categoryTemp.item = expenseAllItems.get(i);
-//					categoryTemp.count++;
-//					categorysTemp.add(categoryTemp);
-//				}
-//			}			
-//		}
-//		
-//		itemsTemp = new ArrayList<FinanceItem>();
-//		
-//		for (int i=0; i < categorysTemp.size(); i++) {
-//			itemsTemp.add(null);
-//		}
-//
-//		for (int i=0; i < categorysTemp.size(); i++) {
-//			int idx=0;
-//			for (int j=0; j < categorysTemp.size(); j++) {
-//				if (i==j) {
-//					
-//				}else {
-//					if (categorysTemp.get(i).count < categorysTemp.get(j).count) {
-//						idx++;
-//					} else if (categorysTemp.get(i).count == categorysTemp.get(j).count && i>j) {
-//						idx++;
-//					}
-//				}
-//			}
-//
-//			itemsTemp.set(idx, categorysTemp.get(i).item);
-//		}
-//
-//		for (int i=0; i < 5; i++) {
-//			if (itemsTemp.size() - 1 - i < 0) break;
-//			Button btnBookmark = new Button(getApplicationContext());
-//			btnBookmark.setText(itemsTemp.get(i).getCategory().getName() + " - " + itemsTemp.get(i).getSubCategory().getName()
-//					+ "\t\t" + String.format("%,d원", itemsTemp.get(i).getAmount()));
-//			btnBookmark.setId(itemsTemp.get(i).getID());
-//			btnlist.addView(btnBookmark, params);
-//			btnBookmark.setOnClickListener(mClickListener);
-//		}
-//				
-//		Button btnBack = (Button) popupviewBookmark.findViewById (R.id.bookmarkBack);
-//		btnBack.setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				popupBookmark.dismiss();
-//			}
-//		});
-		
-
-		//popupBookmark.showAtLocation(linear, Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 0);
-	//	popupBookmark.showAsDropDown(anchor, xoff, yoff)
-//		popupBookmark.update();
-		
-//		Animation Ani = AnimationUtils.loadAnimation(this, R.anim.popup_effect);
-//		linear.startAnimation(Ani);
-/*		
-		Button btnEdit = (Button) popupviewBookmark.findViewById (R.id.bookmarkEdit);
-		btnEdit.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				setBookmarkEdit();
-				
-				
-			}
-		});
-*/
-	}
-		
 	protected void setBookmarkEdit() {
 		
 		popupviewBookmark = View.inflate(getApplicationContext(), R.layout.bookmark_expense_edit_popup, null);
@@ -1115,6 +1020,11 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 	protected boolean checkBalance() {
 		final AccountItem account = getPaymentAccount();
 		if (account == null) return true;
+		
+		// 최근수정된 날짜이전에 입력된 금액은 잔액을 수정하지 않는다. 
+		if (account.getLastModifyDate().after(mExpensItem.getCreateDate())) {
+			return true;
+		}
 		
 		if (account.getBalance() < mExpensItem.getAmount()) {
 			new AlertDialog.Builder(this)

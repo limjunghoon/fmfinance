@@ -151,4 +151,9 @@ public class InputAssetsLayout extends InputAssetsBaseLayout {
     	String memo = ((TextView)findViewById(R.id.ETAssetsMemo)).getText().toString();
     	getItem().setMemo(memo);
 	}
+	
+	@Override
+	String getExpenseTitle() {
+		return "구입 금액";
+	}
 }

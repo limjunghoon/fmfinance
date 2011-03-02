@@ -15,6 +15,8 @@ import com.fletamuto.sptb.util.LogTag;
 
 public abstract class InputAssetsBaseLayout extends InputFinanceItemBaseLayout {
 	
+	abstract String getExpenseTitle();
+	
 	 protected void setSaveBtnClickListener(int btnID) {
     	findViewById(btnID).setOnClickListener(new Button.OnClickListener() {
 		
@@ -30,6 +32,7 @@ public abstract class InputAssetsBaseLayout extends InputFinanceItemBaseLayout {
 					}
 					Intent intent = new Intent(InputAssetsBaseLayout.this, InputExpenseLayout.class);
 					intent.putExtra(MsgDef.ExtraNames.ITEM, expense);
+					intent.putExtra(MsgDef.ExtraNames.GET_TITLE, getExpenseTitle());
 					startActivityForResult(intent, MsgDef.ActRequest.ACT_ADD_ITEM);
 		    	}
 			}

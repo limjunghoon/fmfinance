@@ -667,6 +667,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE account ( " +
 				"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 				"create_date DATE," +
+				"last_modify_date DATE," +
 				"number TEXT," +
 				"balance INTEGER," +
 				"company INTEGER," +
@@ -1186,6 +1187,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		account.setType(AccountItem.MY_POCKET);
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("create_date", account.getCreateDateString());
+		rowItem.put("last_modify_date", account.getLastModifyDateString());
 		rowItem.put("number", account.getNumber());
 		rowItem.put("balance", account.getBalance());
 		rowItem.put("company", account.getCompany().getID());

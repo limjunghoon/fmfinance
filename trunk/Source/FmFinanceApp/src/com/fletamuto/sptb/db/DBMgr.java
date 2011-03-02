@@ -522,6 +522,7 @@ public final class DBMgr {
 	}
 	
 	public static int addAccountItem(AccountItem account) {
+		
 		return mInstance.mDBConnector.getAccountDBConnector().addItem(account);
 	}
 	
@@ -538,6 +539,7 @@ public final class DBMgr {
 	}
 	
 	public static boolean updateAccount(AccountItem account) {
+		account.setLastModifyDate(Calendar.getInstance());
 		return mInstance.mDBConnector.getAccountDBConnector().updateItem(account);
 	}
 	

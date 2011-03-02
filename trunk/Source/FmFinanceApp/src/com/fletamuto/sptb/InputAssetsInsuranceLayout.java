@@ -195,4 +195,8 @@ public class InputAssetsInsuranceLayout extends InputAssetsExtendLayout {
     	super.onActivityResult(requestCode, resultCode, data);
     }
   
+	@Override
+	String getExpenseTitle() {
+		return "보험예치 금액";
+	}
 }
