@@ -107,8 +107,9 @@
 				android:layout_width="wrap_content"></Button>
 		</LinearLayout>
 
-
-		<LinearLayout android:id="@+id/LLBookmarkSliding"
+		<include layout="@layout/input_income_expense_slide" />
+		<include layout="@layout/input_income_expense_drag" />
+		<!--<LinearLayout android:id="@+id/LLBookmarkSliding"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
 			android:gravity="bottom" android:visibility="gone">
 			<SlidingDrawer android:id="@+id/SlidingDrawer"
@@ -157,15 +158,15 @@
 					<ListView android:id="@+id/LLBookmark"
 						android:layout_width="fill_parent" android:layout_height="200dp"
 						android:layout_margin="10dip" android:cacheColorHint="#0000" />
-					<!-- 북마크를 표시하는 부분 <ScrollView android:id="@+id/ScrollView02" android:layout_height="fill_parent" 
+					 북마크를 표시하는 부분 <ScrollView android:id="@+id/ScrollView02" android:layout_height="fill_parent" 
 						android:layout_width="fill_parent"> <LinearLayout android:id="@+id/LLBookmark" 
 						android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp" 
-						android:orientation="vertical"> </LinearLayout> </ScrollView> -->
+						android:orientation="vertical"> </LinearLayout> </ScrollView> 
 				</LinearLayout>
 			</SlidingDrawer>
 		</LinearLayout>
 
-		<!-- 드래그 할때 사용할 부분 -->
+		 드래그 할때 사용할 부분 
 		<RelativeLayout android:id="@+id/BookMarkDragPanel"
 			android:layout_width="fill_parent" android:layout_height="fill_parent">
 			<RelativeLayout android:id="@+id/BookMarkDragItem"
@@ -206,7 +207,7 @@
 			</RelativeLayout>
 		</RelativeLayout>
 
-	</FrameLayout>
+	--></FrameLayout>
 
 
 </LinearLayout>

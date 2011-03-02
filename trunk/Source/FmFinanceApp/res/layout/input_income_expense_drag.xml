@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/BookMarkDragPanel" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<RelativeLayout android:id="@+id/BookMarkDragItem"
+		android:layout_width="320dip" android:layout_height="50dip"
+		android:padding="1dip" android:background="#dfff" android:visibility="gone">
+
+		<ImageView android:id="@+id/BookMarkItemIcon"
+			android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+			android:layout_width="48dip" android:layout_height="48dip"
+			android:src="@drawable/icon" />
+
+		<TextView android:id="@+id/BookMarkItemTitle"
+			android:layout_toRightOf="@+id/BookMarkItemIcon"
+			android:layout_alignParentTop="true" android:layout_toLeftOf="@+id/BookMarkItemCategory"
+			android:layout_width="wrap_content" android:layout_height="24dip"
+			android:gravity="bottom" android:textColor="#000" android:textSize="16dip"
+			android:textStyle="bold" android:text="Title" android:singleLine="true" />
+		<TextView android:id="@+id/BookMarkItemCategory"
+			android:layout_alignParentRight="true" android:layout_alignParentTop="true"
+			android:layout_width="wrap_content" android:layout_height="24dip"
+			android:gravity="bottom|right" android:textColor="#000"
+			android:textSize="10dip" android:textStyle="bold" android:text="Category"
+			android:singleLine="true" android:minWidth="100dip" />
+		<TextView android:id="@+id/BookMarkItemMethod"
+			android:layout_toRightOf="@+id/BookMarkItemIcon"
+			android:layout_below="@+id/BookMarkItemTitle" android:layout_width="wrap_content"
+			android:layout_height="24dip" android:gravity="bottom"
+			android:textColor="#000" android:textSize="12dip" android:text="Method"
+			android:singleLine="true" />
+		<TextView android:id="@+id/BookMarkItemAmount"
+			android:layout_alignParentRight="true" android:layout_below="@+id/BookMarkItemCategory"
+			android:layout_width="wrap_content" android:layout_height="24dip"
+			android:gravity="bottom|right" android:textColor="#000"
+			android:textSize="12dip" android:text="Amount" android:singleLine="true"
+			android:minWidth="100dip" />
+	</RelativeLayout>
+</RelativeLayout>
