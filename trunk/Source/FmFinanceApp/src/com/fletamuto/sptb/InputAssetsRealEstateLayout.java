@@ -137,5 +137,10 @@ public class InputAssetsRealEstateLayout extends InputAssetsExtendLayout {
     	
     	super.onActivityResult(requestCode, resultCode, data);
     }
+	
+	@Override
+	String getExpenseTitle() {
+		return "구입 금액";
+	}
   
 }

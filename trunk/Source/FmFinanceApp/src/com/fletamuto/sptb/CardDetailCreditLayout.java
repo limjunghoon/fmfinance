@@ -30,8 +30,7 @@ import com.fletamuto.sptb.data.CardPayment;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
-import com.fletamuto.sptb.file.DBOutput;
-import com.fletamuto.sptb.file.Output;
+
 import com.fletamuto.sptb.view.FmBaseLayout;
 
 

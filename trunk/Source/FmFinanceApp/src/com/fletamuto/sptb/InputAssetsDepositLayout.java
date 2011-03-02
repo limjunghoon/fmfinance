@@ -256,6 +256,11 @@ public class InputAssetsDepositLayout extends InputAssetsExtendLayout {
 		saveUpdateItem();
 	}
 
+	@Override
+	String getExpenseTitle() {
+		return "예치 금액";
+	}
+
 
   
 }

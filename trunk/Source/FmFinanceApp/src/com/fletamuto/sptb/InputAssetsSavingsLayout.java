@@ -270,5 +270,10 @@ public class InputAssetsSavingsLayout extends InputAssetsExtendLayout {
 	protected void saveUpdateStateItem() {
 		saveUpdateItem();
 	}
+	
+	@Override
+	String getExpenseTitle() {
+		return "³³ÀÔ ±Ý¾×";
+	}
 
 }

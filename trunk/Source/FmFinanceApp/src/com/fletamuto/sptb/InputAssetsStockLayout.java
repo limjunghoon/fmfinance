@@ -189,4 +189,9 @@ public class InputAssetsStockLayout extends InputAssetsExtendLayout {
 		// 히스토리에 신규 자산 추가
 		// 지출 내역 적용
 	}
+	
+	@Override
+	String getExpenseTitle() {
+		return "매수 금액";
+	}
 }

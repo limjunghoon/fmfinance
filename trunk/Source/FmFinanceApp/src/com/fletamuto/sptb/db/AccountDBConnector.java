@@ -23,6 +23,7 @@ public class AccountDBConnector extends BaseDBConnector {
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("create_date", account.getCreateDateString());
+		rowItem.put("last_modify_date", account.getLastModifyDateString());
 		rowItem.put("number", account.getNumber());
 		rowItem.put("balance", account.getBalance());
 		rowItem.put("company", account.getCompany().getID());
@@ -43,6 +44,7 @@ public class AccountDBConnector extends BaseDBConnector {
 		
 		ContentValues rowItem = new ContentValues();
 		rowItem.put("create_date", account.getCreateDateString());
+		rowItem.put("last_modify_date", account.getLastModifyDateString());
 		rowItem.put("number", account.getNumber());
 		rowItem.put("balance", account.getBalance());
 		rowItem.put("company", account.getCompany().getID());
@@ -134,25 +136,30 @@ public class AccountDBConnector extends BaseDBConnector {
 			e.printStackTrace();
 		}
 		
-		account.setNumber(c.getString(2));
-		account.setBalance(c.getInt(3));
-	//	account.setCompany(c.getInt(4));
-		account.setType(c.getInt(5));
-		
 		try {
-			account.setExpiryDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(6)));
+			account.setLastModifyDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(2)));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		account.setMemo(c.getString(7));
-		account.setName(c.getString(8));
+		account.setNumber(c.getString(3));
+		account.setBalance(c.getInt(4));
+		account.setType(c.getInt(6));
+		
+		try {
+			account.setExpiryDate(FinanceDataFormat.DATE_FORMAT.parse(c.getString(7)));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		account.setMemo(c.getString(8));
+		account.setName(c.getString(9));
 		
 		if (account.getType() != AccountItem.MY_POCKET) {
 			FinancialCompany Company = new FinancialCompany();
-			Company.setID(c.getInt(9));
-			Company.setName(c.getString(10));
-			Company.setGroup(c.getInt(11));
+			Company.setID(c.getInt(10));
+			Company.setName(c.getString(11));
+			Company.setGroup(c.getInt(12));
 			account.setCompany(Company);
 		}
 		return account;

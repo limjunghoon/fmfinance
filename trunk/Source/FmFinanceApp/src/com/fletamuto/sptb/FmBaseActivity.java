@@ -101,13 +101,22 @@ public abstract class FmBaseActivity extends Activity {
     	}
     	
     	initialize();
+    	setTitleName();
     	setTitleBtn();
     	setTitleButtonListener();
     	
     	mBaseLayout.setMenuBtnClickListener(mMenuClickListener);
     }
     
-    public void setContentView(int layoutResID) {
+    /**
+     * 제목 이름을 설정
+     */
+    public void setTitleName() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setContentView(int layoutResID) {
     	
     	if (mMenuVisible == true) {
 			mBaseLayout = new FmBaseLayout(this, layoutResID, false);
