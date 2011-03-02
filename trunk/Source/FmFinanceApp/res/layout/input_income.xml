@@ -102,8 +102,9 @@
 		</LinearLayout>
 
 
-
-		<LinearLayout android:id="@+id/LLBookmarkSliding"
+		<include layout="@layout/input_income_expense_slide" />
+		<include layout="@layout/input_income_expense_drag" />
+		<!--<LinearLayout android:id="@+id/LLBookmarkSliding"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
 			android:gravity="bottom" android:visibility="gone">
 			<SlidingDrawer android:id="@+id/SlidingDrawer"
@@ -154,7 +155,7 @@
 			</SlidingDrawer>
 		</LinearLayout>
 
-		<!-- 드래그 할때 사용할 부분 -->
+		 드래그 할때 사용할 부분 
 		<RelativeLayout android:id="@+id/BookMarkDragPanel"
 			android:layout_width="fill_parent" android:layout_height="fill_parent">
 			<RelativeLayout android:id="@+id/BookMarkDragItem"
@@ -194,7 +195,7 @@
 					android:minWidth="100dip" />
 			</RelativeLayout>
 		</RelativeLayout>
-	</FrameLayout>
+	--></FrameLayout>
 
 
 </LinearLayout>
