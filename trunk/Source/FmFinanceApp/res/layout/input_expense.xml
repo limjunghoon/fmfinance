@@ -113,11 +113,13 @@
 			android:gravity="bottom" android:visibility="gone">
 			<SlidingDrawer android:id="@+id/SlidingDrawer"
 				android:handle="@+id/slideBar" android:content="@+id/contentLayout"
-				android:layout_height="272dip" android:layout_width="fill_parent">
+				android:layout_height="296dip" android:layout_width="fill_parent">
 
-				<LinearLayout android:layout_width="fill_parent"
-					android:id="@+id/slideBar" android:orientation="vertical"
-					android:background="#808080" android:layout_height="8dip" />
+
+				<RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/slideBar">
+					<LinearLayout android:layout_alignParentRight="true" android:layout_width="48dp" android:layout_height="32dip"
+						android:background="#808080" />
+				</RelativeLayout>
 
 				<LinearLayout android:layout_width="wrap_content"
 					android:id="@+id/contentLayout" android:orientation="vertical"
@@ -153,7 +155,7 @@
 					</RelativeLayout>
 
 					<ListView android:id="@+id/LLBookmark"
-						android:layout_width="fill_parent" android:layout_height="fill_parent"
+						android:layout_width="fill_parent" android:layout_height="200dp"
 						android:layout_margin="10dip" android:cacheColorHint="#0000" />
 					<!-- 북마크를 표시하는 부분 <ScrollView android:id="@+id/ScrollView02" android:layout_height="fill_parent" 
 						android:layout_width="fill_parent"> <LinearLayout android:id="@+id/LLBookmark" 

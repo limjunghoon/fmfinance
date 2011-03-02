@@ -13,6 +13,7 @@ package com.fletamuto.sptb.file;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,15 +49,13 @@ public class POIOutPut {
 		try {
 			makeWorkbook();
 			makeSheet("테스트용 출력");
-			makeExpenseDataSheet();
-			return true;
+			return makeExpenseDataSheet();
 		} catch (Exception e) {
 			return false;
 		}
 	}
 	
-	private void makeExpenseDataSheet() {
-		makeRow();
+	private boolean makeExpenseDataSheet() {
 		makeHead(new String[]{ExpenseData.STRING_DATE,
 								ExpenseData.STRING_CATEGORY,
 								ExpenseData.STRING_AMOUNT,
@@ -77,11 +76,14 @@ public class POIOutPut {
 		try {
 			if(savePOI()) {
 				Log.e("POI Export", "Successed");
+				return true;
 			} else {
 				Log.e("POI Export", "Failed");
+				return false;
 			}
 		} catch (Exception e) {
 			Log.e("POI Export", "Error");
+			return false;
 		}
 	}
 
@@ -98,7 +100,8 @@ public class POIOutPut {
 		return (mWorkbook != null);
 	}
 	/**
-	 * 시트를 만든다
+	 * 시트를 만든다.<br/>
+	 * 시트를 만듦과 동시에 0번 행을 자동으로 만드므로 첫 번째 행은 만들지 않고 시작해도 됨
 	 * @return
 	 * <p><b>true</b><br/>시트가 만들어짐</p>
 	 * <p><b>false</b><br/>시트가 만들어지지 않음</p>
@@ -108,6 +111,7 @@ public class POIOutPut {
 			return false;
 		else {
 			mHssfSheet = mWorkbook.createSheet(title);
+			mHssfRow = mHssfSheet.createRow(0);
 			return (mHssfSheet != null);
 		}
 	}
@@ -121,10 +125,7 @@ public class POIOutPut {
 		if(mWorkbook == null || mHssfSheet == null)
 			return false;
 		else {
-			if(mHssfSheet.getLastRowNum() == -1)
-				mHssfRow = mHssfSheet.createRow(0);
-			else
-				mHssfRow = mHssfSheet.createRow(mHssfSheet.getLastRowNum()+1);
+			mHssfRow = mHssfSheet.createRow(mHssfSheet.getLastRowNum()+1);
 			return (mHssfRow != null);
 		}
 	}
@@ -282,313 +283,12 @@ public class POIOutPut {
 		}
 	}
 
-//	@SuppressWarnings("static-access")
-//    public void onCreate(Context context) {
-//        // TODO : 엑셀 파일을 만들기 위해서 워크북을 생성
-//        HSSFWorkbook Workbook = new HSSFWorkbook();
-//        
-//        /**
-//         * 수입-지출 시트
-//         */
-//        HSSFSheet hssfSheet = workbook.createSheet("수입-지출");
-//        
-//        ArrayList<ExpendData> expendDatas = new ExpendDatas().expendDatas;
-//        
-//        HSSFRow hssfRow = hssfSheet.createRow(0);
-//        hssfRow.createCell(0, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(0).STRING_DATE);
-//        hssfRow.createCell(1, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(0).STRING_EXPEND);
-//        hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(0).STRING_TYPE);
-//        hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(0).STRING_COAST);
-//        hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(0).STRING_PAY);
-//        hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(0).STRING_MEMO);
-//        hssfRow.createCell(6, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(0).STRING_TAG);
-//        hssfRow.createCell(7, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(0).STRING_REPEAT);
-//        
-//        for(int i = 0; i < expendDatas.size(); i++) {
-//        	hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//            hssfRow.createCell(0, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(i).date);
-//            hssfRow.createCell(1, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(i).expend);
-//            hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(i).type);
-//            hssfRow.createCell(3, HSSFCell.CELL_TYPE_NUMERIC).setCellValue(expendDatas.get(i).coast);
-//            hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(i).pay);
-//            hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(i).memo);
-//            hssfRow.createCell(6, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(i).pay);
-//            hssfRow.createCell(7, HSSFCell.CELL_TYPE_STRING).setCellValue(expendDatas.get(i).repeat);
-//        }
-//        
-//        hssfRow = hssfSheet.createRow(expendDatas.size()+1);
-//        hssfRow.createCell(3, HSSFCell.CELL_TYPE_FORMULA).setCellFormula("SUM(D2:D6)");
-//        
-//        
-//        /**
-//         * 셀 스타일 정의 부분
-//         */
-//        CellStyle rootCategoryCellStyle = workbook.createCellStyle();
-//        rootCategoryCellStyle.setAlignment(CellStyle.ALIGN_CENTER);
-//        rootCategoryCellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-//        //rootCategoryCellStyle.setFillBackgroundColor(IndexedColors.AQUA.getIndex());
-//        
-//        CellStyle categoryCellStyle = workbook.createCellStyle();
-//        categoryCellStyle.setAlignment(CellStyle.ALIGN_CENTER);
-//        categoryCellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-//        //categoryCellStyle.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-//        
-//        CellStyle colunmNameStyle = workbook.createCellStyle();
-//        colunmNameStyle.setAlignment(CellStyle.ALIGN_CENTER);
-//        colunmNameStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-//        //colunmNameStyle.setFillBackgroundColor(IndexedColors.BLUE_GREY.getIndex());
-//        
-//        
-//        /**
-//         * 자산 시트
-//         */
-//        hssfSheet = workbook.createSheet("자산");
-//
-//        AssetsData assetsData = new AssetsData();	//데이터를 얻어오기 위한 객체 - 자산관련 데이터를 전부 접근
-//        
-//        //보통예금
-//        ArrayList<SavingsData> savingsDatas = assetsData.savingsData.getSavingsDatas();
-//        
-//        hssfRow = hssfSheet.createRow(0);
-//        hssfRow.createCell(0, HSSFCell.CELL_TYPE_STRING).setCellValue(assetsData.STRING_ASSETS);
-//        hssfRow.getCell(0).setCellStyle(rootCategoryCellStyle);
-//        hssfRow.createCell(1, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsDatas.get(0).STRING_NAME);
-//        hssfRow.getCell(1).setCellStyle(categoryCellStyle);
-//        hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsDatas.get(0).STRING_FINANCIAL);
-//        hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsDatas.get(0).STRING_ACCOUNT_NUMBER);
-//        hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsDatas.get(0).STRING_TYPE);
-//        hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsDatas.get(0).STRING_BALANCE);
-//        for(int i = 2; i <= 5; i++)
-//        	hssfRow.getCell(i).setCellStyle(colunmNameStyle);
-//        
-//        for(int i = 0; i < savingsDatas.size(); i++) {
-//        	hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//        	hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsDatas.get(i).financial);
-//            hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsDatas.get(i).accountNumber);
-//            hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsDatas.get(i).type);
-//            hssfRow.createCell(5, HSSFCell.CELL_TYPE_NUMERIC).setCellValue(savingsDatas.get(i).balance);
-//        }
-//        hssfSheet.addMergedRegion(new CellRangeAddress(hssfSheet.getLastRowNum()-savingsDatas.size(), hssfSheet.getLastRowNum(), 1, 1));	//셀 병합
-//        
-//        //예금
-//        ArrayList<DepositData> depositDatas = assetsData.depositDatas.getDepositDatas();
-//        
-//        hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//        hssfRow.createCell(1, HSSFCell.CELL_TYPE_STRING).setCellValue(depositDatas.get(0).STRING_NAME);
-//        hssfRow.getCell(1).setCellStyle(categoryCellStyle);
-//        hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(depositDatas.get(0).STRING_TITLE);
-//        hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(depositDatas.get(0).STRING_AMOUNT);
-//        hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(depositDatas.get(0).STRING_DEPO_DATE);
-//        hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(depositDatas.get(0).STRING_EXPI_DATE);
-//        hssfRow.createCell(6, HSSFCell.CELL_TYPE_STRING).setCellValue(depositDatas.get(0).STRING_ACCOUNT);
-//        hssfRow.createCell(7, HSSFCell.CELL_TYPE_STRING).setCellValue(depositDatas.get(0).STRING_INTEREST);
-//        hssfRow.createCell(8, HSSFCell.CELL_TYPE_STRING).setCellValue(depositDatas.get(0).STRING_MEMO);
-//        for(int i = 2; i <= 8; i++)
-//        	hssfRow.getCell(i).setCellStyle(colunmNameStyle);
-//        
-//        for(int i = 0; i < depositDatas.size(); i++) {
-//        	hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//            hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(depositDatas.get(i).title);
-//            hssfRow.createCell(3, HSSFCell.CELL_TYPE_NUMERIC).setCellValue(depositDatas.get(i).amount);
-//            hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(depositDatas.get(i).depoDate.toLocaleString());
-//            hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(depositDatas.get(i).expiDate.toLocaleString());
-//            hssfRow.createCell(6, HSSFCell.CELL_TYPE_STRING).setCellValue(depositDatas.get(i).account);
-//            hssfRow.createCell(7, HSSFCell.CELL_TYPE_NUMERIC).setCellValue(depositDatas.get(i).interest);
-//            hssfRow.createCell(8, HSSFCell.CELL_TYPE_STRING).setCellValue(depositDatas.get(i).memo);
-//        }
-//        hssfSheet.addMergedRegion(new CellRangeAddress(hssfSheet.getLastRowNum()-depositDatas.size(), hssfSheet.getLastRowNum(), 1, 1));	//셀 병합
-//        
-//        //적금
-//        ArrayList<SavingsPlanData> savingsPlanDatas = assetsData.savingsPlanDatas.getSavingsPlanDatas();
-//        
-//        hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//        hssfRow.createCell(1, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsPlanDatas.get(0).STRING_NAME);
-//        hssfRow.getCell(1).setCellStyle(categoryCellStyle);
-//        hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsPlanDatas.get(0).STRING_TITLE);
-//        hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsPlanDatas.get(0).STRING_AMOUNT);
-//        hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsPlanDatas.get(0).STRING_DEPO_DATE);
-//        hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsPlanDatas.get(0).STRING_EXPI_DATE);
-//        hssfRow.createCell(6, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsPlanDatas.get(0).STRING_ACCOUNT);
-//        hssfRow.createCell(7, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsPlanDatas.get(0).STRING_INTEREST);
-//        hssfRow.createCell(8, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsPlanDatas.get(0).STRING_MEMO);
-//        for(int i = 2; i <= 8; i++)
-//        	hssfRow.getCell(i).setCellStyle(colunmNameStyle);
-//        
-//        for(int i = 0; i < savingsPlanDatas.size(); i++) {
-//        	hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//            hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsPlanDatas.get(i).title);
-//            hssfRow.createCell(3, HSSFCell.CELL_TYPE_NUMERIC).setCellValue(savingsPlanDatas.get(i).amount);
-//            hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsPlanDatas.get(i).depoDate.toLocaleString());
-//            hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsPlanDatas.get(i).expiDate.toLocaleString());
-//            hssfRow.createCell(6, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsPlanDatas.get(i).account);
-//            hssfRow.createCell(7, HSSFCell.CELL_TYPE_NUMERIC).setCellValue(savingsPlanDatas.get(i).interest);
-//            hssfRow.createCell(8, HSSFCell.CELL_TYPE_STRING).setCellValue(savingsPlanDatas.get(i).memo);
-//        }
-//        hssfSheet.addMergedRegion(new CellRangeAddress(hssfSheet.getLastRowNum()-savingsPlanDatas.size(), hssfSheet.getLastRowNum(), 1, 1));	//셀 병합
-//        
-//        //주식
-//        ArrayList<StockData> stockDatas = assetsData.stockDatas.getStockDatas();
-//        
-//        hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//        hssfRow.createCell(1, HSSFCell.CELL_TYPE_STRING).setCellValue(stockDatas.get(0).STRING_NAME);
-//        hssfRow.getCell(1).setCellStyle(categoryCellStyle);
-//        hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(stockDatas.get(0).STRING_TICKER);
-//        hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(stockDatas.get(0).STRING_DATE);
-//        hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(stockDatas.get(0).STRING_QUANTITY);
-//        hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(stockDatas.get(0).STRING_PRICE);
-//        hssfRow.createCell(6, HSSFCell.CELL_TYPE_STRING).setCellValue(stockDatas.get(0).STRING_DEALER);
-//        hssfRow.createCell(7, HSSFCell.CELL_TYPE_STRING).setCellValue(stockDatas.get(0).STRING_MEMO);
-//        for(int i = 2; i <= 7; i++)
-//        	hssfRow.getCell(i).setCellStyle(colunmNameStyle);
-//        
-//        for(int i = 0; i < stockDatas.size(); i++) {
-//        	hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//            hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(stockDatas.get(0).ticker);
-//            hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(stockDatas.get(0).date.toLocaleString());
-//            hssfRow.createCell(4, HSSFCell.CELL_TYPE_NUMERIC).setCellValue(stockDatas.get(0).quantity);
-//            hssfRow.createCell(5, HSSFCell.CELL_TYPE_NUMERIC).setCellValue(stockDatas.get(0).price);
-//            hssfRow.createCell(6, HSSFCell.CELL_TYPE_STRING).setCellValue(stockDatas.get(0).dealer);
-//            hssfRow.createCell(7, HSSFCell.CELL_TYPE_STRING).setCellValue(stockDatas.get(0).memo);
-//        }
-//        hssfSheet.addMergedRegion(new CellRangeAddress(hssfSheet.getLastRowNum()-stockDatas.size(), hssfSheet.getLastRowNum(), 1, 1));	//셀 병합
-//        
-//        //펀드
-//        ArrayList<FundsData> fundsDatas = assetsData.fundsDatas.getFundsDatas();
-//        
-//        hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//        hssfRow.createCell(1, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).STRING_NAME);
-//        hssfRow.getCell(1).setCellStyle(categoryCellStyle);
-//        hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).STRING_BRAND);
-//        hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).STRING_OPENING);
-//        hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).STRING_MATURITY);
-//        hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).STRING_PRICE);
-//        hssfRow.createCell(6, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).STRING_TYPE);
-//        hssfRow.createCell(7, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).STRING_DEALER);
-//        hssfRow.createCell(8, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).STRING_MEMO);
-//        hssfRow.createCell(9, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).STRING_REPEAT);
-//        for(int i = 2; i <= 9; i++)
-//        	hssfRow.getCell(i).setCellStyle(colunmNameStyle);
-//        
-//        for(int i = 0; i < fundsDatas.size(); i++) {
-//        	hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//            hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).brand);
-//            hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).opening.toLocaleString());
-//            hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).maturity.toLocaleString());
-//            hssfRow.createCell(5, HSSFCell.CELL_TYPE_NUMERIC).setCellValue(fundsDatas.get(0).price);
-//            hssfRow.createCell(6, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).type);
-//            hssfRow.createCell(7, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).dealer);
-//            hssfRow.createCell(8, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).memo);
-//            hssfRow.createCell(9, HSSFCell.CELL_TYPE_STRING).setCellValue(fundsDatas.get(0).repeat);
-//        }
-//        hssfSheet.addMergedRegion(new CellRangeAddress(hssfSheet.getLastRowNum()-fundsDatas.size(), hssfSheet.getLastRowNum(), 1, 1));	//셀 병합
-//
-//        //보험
-//        ArrayList<InsuranceData> insuranceDatas = assetsData.insuranceDatas.getInsuranceDatas();
-//        
-//        hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//        hssfRow.createCell(1, HSSFCell.CELL_TYPE_STRING).setCellValue(insuranceDatas.get(0).STRING_NAME);
-//        hssfRow.getCell(1).setCellStyle(categoryCellStyle);
-//        hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(insuranceDatas.get(0).STRING_TITLE);
-//        hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(insuranceDatas.get(0).STRING_OPENING);
-//        hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(insuranceDatas.get(0).STRING_MATURITY);
-//        hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(insuranceDatas.get(0).STRING_AMOUNT);
-//        hssfRow.createCell(6, HSSFCell.CELL_TYPE_STRING).setCellValue(insuranceDatas.get(0).STRING_INSURANCE);
-//        hssfRow.createCell(7, HSSFCell.CELL_TYPE_STRING).setCellValue(insuranceDatas.get(0).STRING_MEMO);
-//        for(int i = 2; i <= 7; i++)
-//        	hssfRow.getCell(i).setCellStyle(colunmNameStyle);
-//        
-//        for(int i = 0; i < insuranceDatas.size(); i++) {
-//        	hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//            hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(insuranceDatas.get(0).title);
-//            hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(insuranceDatas.get(0).opening.toLocaleString());
-//            hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(insuranceDatas.get(0).maturity.toLocaleString());
-//            hssfRow.createCell(5, HSSFCell.CELL_TYPE_NUMERIC).setCellValue(insuranceDatas.get(0).amount);
-//            hssfRow.createCell(6, HSSFCell.CELL_TYPE_STRING).setCellValue(insuranceDatas.get(0).insurance);
-//            hssfRow.createCell(7, HSSFCell.CELL_TYPE_STRING).setCellValue(insuranceDatas.get(0).memo);
-//        }
-//        hssfSheet.addMergedRegion(new CellRangeAddress(hssfSheet.getLastRowNum()-insuranceDatas.size(), hssfSheet.getLastRowNum(), 1, 1));	//셀 병합
-//        
-//        //부동산
-//        ArrayList<RealEstateData> realEstateDatas = assetsData.realEstateDatas.getRealEstateDatas();
-//        
-//        hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//        hssfRow.createCell(1, HSSFCell.CELL_TYPE_STRING).setCellValue(realEstateDatas.get(0).STRING_NAME);
-//        hssfRow.getCell(1).setCellStyle(categoryCellStyle);
-//        hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(realEstateDatas.get(0).STRING_DATE);
-//        hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(realEstateDatas.get(0).STRING_TITLE);
-//        hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(realEstateDatas.get(0).STRING_AMOUNT);
-//        hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(realEstateDatas.get(0).STRING_MEMO);
-//        for(int i = 2; i <= 5; i++)
-//        	hssfRow.getCell(i).setCellStyle(colunmNameStyle);
-//        
-//        for(int i = 0; i < realEstateDatas.size(); i++) {
-//        	hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//            hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(realEstateDatas.get(0).date.toLocaleString());
-//            hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(realEstateDatas.get(0).title);
-//            hssfRow.createCell(4, HSSFCell.CELL_TYPE_NUMERIC).setCellValue(realEstateDatas.get(0).amount);
-//            hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(realEstateDatas.get(0).memo);
-//        }
-//        hssfSheet.addMergedRegion(new CellRangeAddress(hssfSheet.getLastRowNum()-realEstateDatas.size(), hssfSheet.getLastRowNum(), 1, 1));	//셀 병합
-//        
-//        //기타 
-//        ArrayList<OtherData> otherDatas = assetsData.otherDatas.getOtherDatas();
-//        
-//        hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//        hssfRow.createCell(1, HSSFCell.CELL_TYPE_STRING).setCellValue(otherDatas.get(0).STRING_NAME);
-//        hssfRow.getCell(1).setCellStyle(categoryCellStyle);
-//        hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(otherDatas.get(0).STRING_DATE);
-//        hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(otherDatas.get(0).STRING_TITLE);
-//        hssfRow.createCell(4, HSSFCell.CELL_TYPE_STRING).setCellValue(otherDatas.get(0).STRING_AMOUNT);
-//        hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(otherDatas.get(0).STRING_MEMO);
-//        for(int i = 2; i <= 5; i++)
-//        	hssfRow.getCell(i).setCellStyle(colunmNameStyle);
-//        
-//        for(int i = 0; i < otherDatas.size(); i++) {
-//        	hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+1);
-//            hssfRow.createCell(2, HSSFCell.CELL_TYPE_STRING).setCellValue(otherDatas.get(0).date.toLocaleString());
-//            hssfRow.createCell(3, HSSFCell.CELL_TYPE_STRING).setCellValue(otherDatas.get(0).title);
-//            hssfRow.createCell(4, HSSFCell.CELL_TYPE_NUMERIC).setCellValue(otherDatas.get(0).amount);
-//            hssfRow.createCell(5, HSSFCell.CELL_TYPE_STRING).setCellValue(otherDatas.get(0).memo);
-//        }
-//        hssfSheet.addMergedRegion(new CellRangeAddress(hssfSheet.getLastRowNum()-otherDatas.size(), hssfSheet.getLastRowNum(), 1, 1));	//셀 병합
-//        
-//        hssfSheet.addMergedRegion(new CellRangeAddress(0, hssfSheet.getLastRowNum(), 0, 0));	//셀 병합
-//
-//        
-//        //최하단 시간 표시
-//        hssfRow = hssfSheet.createRow(hssfSheet.getLastRowNum()+2);
-//        hssfRow.createCell(0, HSSFCell.CELL_TYPE_STRING).setCellValue("작성일");
-//        hssfRow.createCell(1, HSSFCell.CELL_TYPE_STRING).setCellValue(new Date().toLocaleString());
-//        
-//        
-//        
-//        
-//        
-//        
-//        
-//        //만들어진 개체를 파일로 출력하는 부분
-//        File directory = new File(Environment.getExternalStorageDirectory() + "/" + context.getPackageName());
-//        if(!directory.isDirectory())
-//        	directory.mkdir();
-//        String path =  directory.getPath() + "/backup_" + (new Date().getYear()+1900+"-") + (new Date().getMonth()+1+"-") + (new Date().getDate()) + ".xls";
-//        Toast.makeText(context.getApplicationContext(), path, Toast.LENGTH_LONG).show();
-//        File file = new File(path);
-//        FileOutputStream out;
-//		try {
-//			out = new FileOutputStream(file);
-//			
-//			workbook.write(out);
-//			out.close();
-//			
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//    }
-	
+	/**
+	 * 만들어진 워크북을 파일로 출력
+	 * @return
+	 * <b>boolean</b> 파일 만들기가 성공적으로 이루어 졌는지에 대한 결과. true인 경우 성공.
+	 * @throws Exception
+	 */
 	protected boolean savePOI() throws Exception {
 		if(!(new DBOutput(mContext)).packageMkDir())
 			return false;
@@ -596,7 +296,7 @@ public class POIOutPut {
 		if(!directory.isDirectory())
 			directory.mkdir();
 		Date date = new Date();
-		String path =  directory.getPath() + "/backup_" + (date.getYear()+1900+"-") + (date.getMonth()+1+"-") + (date.getDate()) + ".xls";
+		String path =  directory.getPath() + "/backup_" + new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss").format(date) + ".xls";
 		File file = new File(path);
 		FileOutputStream out = new FileOutputStream(file);
 		mWorkbook.write(out);
