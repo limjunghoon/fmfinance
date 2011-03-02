@@ -314,7 +314,7 @@ public abstract class InputFinanceItemBaseLayout extends InputBaseLayout {
 			btnRepeat.setText(repeat.getRepeatMessage());
 		}
 		else {
-			btnRepeat.setText("반복을 설정합니다.");
+			btnRepeat.setText("반복없음");
 		}
 	}
     

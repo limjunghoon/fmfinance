@@ -90,7 +90,7 @@
     <string name="input_expense_tag_name">태그</string>
     <string name="input_expense_repeat_name">반복</string>
     <string name="input_expense_btn_save">저장</string>
-    <string name="input_expense_selected_tag">태그를 선택해주세요</string>
+    <string name="input_expense_selected_tag">태그없음</string>
     <string name="input_income_name">수입입력</string>
     <string name="input_income_btn_name">수입</string>
     <string name="input_income_date_name">날짜</string>

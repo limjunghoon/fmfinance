@@ -243,6 +243,10 @@ public abstract class FinanceItem extends BaseItem {
 	public void setRepeatMonthly(int day) {
 		mRepeat.setMonthlyRepeat(day);
 	}
+	
+	public void setRepeatOnce() {
+		mRepeat.setType(Repeat.ONCE);
+	}
 
 
 	public void setExtendID(int extendID) {

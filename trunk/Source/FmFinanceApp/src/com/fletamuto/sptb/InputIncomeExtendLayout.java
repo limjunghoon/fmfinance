@@ -92,7 +92,7 @@ public abstract class InputIncomeExtendLayout extends InputFinanceItemBaseLayout
 					updateRepeat(Repeat.WEEKLY, weekly);
 				}
 				else {
-					return;
+					updateRepeat(Repeat.ONCE, 0);
 				}
 			}
 		}

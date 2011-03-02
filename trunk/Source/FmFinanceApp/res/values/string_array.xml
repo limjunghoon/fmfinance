@@ -164,7 +164,7 @@
 		<item>기타</item>
 	</string-array>
 	<string-array name="assets_base_main_category">
-		<item>예금</item>
+		<item>정기예금</item>
 		<item>적금</item>
 		<item>주식</item>
 		<item>펀드</item>
@@ -210,7 +210,7 @@
 	
 	<string-array name="account_type">
 		<!--<item>내 주머니</item>-->
-		<item>예금</item>
+		<item>보통예금</item>
 	</string-array>
 	<string-array name="credit_card_period_month">
 		<item>전전월</item>
