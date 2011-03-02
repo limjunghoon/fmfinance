@@ -102,7 +102,7 @@ public abstract class InputAssetsExtendLayout extends InputAssetsBaseLayout {
 					updateRepeat(Repeat.WEEKLY, weekly);
 				}
 				else {
-					return;
+					updateRepeat(Repeat.ONCE, 0);
 				}
 			}
 		}
