@@ -4,4 +4,5 @@
   android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical">
 <Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="등록" android:id="@+id/BtnSettingRegistration"></Button>
 <Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="DB 백업" android:id="@+id/BtnSettingDBBackup"></Button>
+<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="XLS 저장" android:id="@+id/BtnSettingXLSExport"></Button>
 </LinearLayout>

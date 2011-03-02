@@ -26,6 +26,7 @@ public class MainSettingLayout extends FmBaseActivity {
 	private void setButtonClickListener() {
 		((Button)findViewById(R.id.BtnSettingRegistration)).setOnClickListener(onClickListener);
         ((Button)findViewById(R.id.BtnSettingDBBackup)).setOnClickListener(onClickListener);
+        ((Button)findViewById(R.id.BtnSettingXLSExport)).setOnClickListener(onClickListener);
 	}
 	
 	View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -38,6 +39,9 @@ public class MainSettingLayout extends FmBaseActivity {
 				break;
 			case R.id.BtnSettingDBBackup:
 				mOutput.saveDB();
+				break;
+			case R.id.BtnSettingXLSExport:
+				mOutput.savePOI();
 				break;
 			}
 			
