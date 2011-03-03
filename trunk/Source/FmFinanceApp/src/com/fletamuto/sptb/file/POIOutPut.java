@@ -48,26 +48,24 @@ public class POIOutPut {
 	protected boolean poiOutput() {
 		try {
 			makeWorkbook();
-			makeSheet("테스트용 출력");
-			return makeExpenseDataSheet();
+			return makeIncomeExpenseDataSheet();
 		} catch (Exception e) {
 			return false;
 		}
 	}
 	
-	private boolean makeExpenseDataSheet() {
-		makeHead(new String[]{ExpenseData.STRING_DATE,
-								ExpenseData.STRING_CATEGORY,
-								ExpenseData.STRING_AMOUNT,
-								ExpenseData.STRING_PAY_METHOD,
-								ExpenseData.STRING_PAY_MONNEY_BALANCE,
-								ExpenseData.STRING_PAY_ACCOUNT,
-								ExpenseData.STRING_PAY_ACCOUNT_BALANCE,
-								ExpenseData.STRING_PAY_BALANCE,
-								ExpenseData.STRING_MEMO,
-								ExpenseData.STRING_TAG,
-								ExpenseData.STRING_REPEAT});
-		ArrayList<ExpenseData> expenseDatas =  new GetExpenseDatas().getExpenseDatas();
+	private boolean makeIncomeExpenseDataSheet() {
+		makeSheet("수입-지출");
+		makeHead(new String[]{IncomeExpenseData.STRING_DATE,
+								IncomeExpenseData.STRING_TYPE,
+								IncomeExpenseData.STRING_CATEGORY,
+								IncomeExpenseData.STRING_AMOUNT,
+								IncomeExpenseData.STRING_PAY_METHOD,
+								IncomeExpenseData.STRING_PAY_ACCOUNT,
+								IncomeExpenseData.STRING_MEMO,
+								IncomeExpenseData.STRING_TAG,
+								IncomeExpenseData.STRING_REPEAT});
+		ArrayList<IncomeExpenseData> expenseDatas =  new IncomeExpenseData().getIncomeExpenseDatas();
 		for(int i = 0, size = expenseDatas.size(); i < size; i++) {
 			makeRow();
 			makeCells(expenseDatas.get(i));
@@ -146,21 +144,19 @@ public class POIOutPut {
 	}
 	
 	/**
-	 * 복수의 셀을 만든다
+	 * 수입/지출 복수의 셀을 만든다
 	 */
-	private boolean makeCells(ExpenseData data) {
+	private boolean makeCells(IncomeExpenseData data) {
 		try {
 			makeCell(0, data.getDate());
-			makeCell(1, data.getCategory());
-			makeCell(2, data.getAmount());
-			makeCell(3, data.getPayMethod());
-			makeCell(4, data.getMonneyBalance());
+			makeCell(1, (data.getType())?"수입":"지출");
+			makeCell(2, data.getCategory());
+			makeCell(3, data.getAmount());
+			makeCell(4, data.getPayMethod());
 			makeCell(5, data.getAccount());
-			makeCell(6, data.getAccountBalance());
-			makeCell(7, data.getBalance());
-			makeCell(8, data.getMemo());
-			makeCell(9, data.getTag());
-			makeCell(10, data.getRepeat());
+			makeCell(6, data.getMemo());
+			makeCell(7, data.getTag());
+			makeCell(8, data.getRepeat());
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -296,7 +292,7 @@ public class POIOutPut {
 		if(!directory.isDirectory())
 			directory.mkdir();
 		Date date = new Date();
-		String path =  directory.getPath() + "/backup_" + new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss").format(date) + ".xls";
+		String path =  directory.getPath() + "/backup_" + new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(date) + ".xls";
 		File file = new File(path);
 		FileOutputStream out = new FileOutputStream(file);
 		mWorkbook.write(out);
