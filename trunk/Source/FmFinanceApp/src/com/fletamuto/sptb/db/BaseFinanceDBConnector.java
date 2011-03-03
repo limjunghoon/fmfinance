@@ -24,6 +24,7 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	public abstract long getTotalAmount();
 	public abstract long getTotalAmountDay(Calendar calendar);
 	public abstract long getTotalAmountMonth(int year, int month);
+	public abstract ArrayList<Long> getTotalAmountMonth(int year);
 	public abstract long getTotalAmountMonth(int categoryID, int year, int month);
 	public abstract ArrayList<Long> getTotalAmountMonthInYear(int categorID, int year);
 	public abstract long getTotalAmountYear(int year);
@@ -75,5 +76,6 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 	
 }

@@ -100,5 +100,6 @@ public final class MsgDef {
 		public static final String CHANGE_AMOUNT = "CHANGE_AMOUNT";
 		public static final String INSTALLMENT_PLAN_MODE = "INSTALLMENT_PLAN_MODE";
 		public static final String GET_TITLE = "GET_TITLE";
+		public static final String VIEW_MODE = "VIEW_MODE";
 	}
 }
