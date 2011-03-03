@@ -2,6 +2,7 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -10,17 +11,27 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fletamuto.common.control.fmgraph.BarGraph;
-import com.fletamuto.common.control.fmgraph.Constants;
+import com.fletamuto.common.control.fmgraph.LineGraph;
+import com.fletamuto.sptb.data.AssetsChangeItem;
+import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportMonthOfYearLayout extends FmBaseActivity {
-	private int mYear = Calendar.getInstance().get(Calendar.YEAR);
+	public static final int VIEW_INCOME_EXPENSE = 0;
+	public static final int VIEW_ASSETS = 1;
+	public static final int VIEW_BUDGET = 2;
 	
-	private BarGraph bg;
-	private boolean barGraphDifferenceMode = false;
+	private ArrayList<Long> mItem1 = new ArrayList<Long>();
+	private ArrayList<Long> mItem2 = new ArrayList<Long>();
+	private ArrayList<Long> mItemDifference = new ArrayList<Long>();
+	private LineGraph mLineGraph;
+	private ArrayList<String> mMonthName = new ArrayList<String>();
+	
+	private int mYear = Calendar.getInstance().get(Calendar.YEAR);
+	private int mViewMode = VIEW_INCOME_EXPENSE;
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -28,107 +39,96 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
     	
     	setContentView(R.layout.report_month_of_year, true);
     	
+    	Collections.addAll(mMonthName, getResources().getStringArray(R.array.year_in_month_name));
+    	
+    	getDate();
     	updateChildView();
 //    	setBunClickListener();
     }
     
+    @Override
+    protected void initialize() {
+    	mViewMode = getIntent().getIntExtra(MsgDef.ExtraNames.VIEW_MODE, VIEW_INCOME_EXPENSE);
+    	super.initialize();
+    }
+    
 	@Override
 	protected void setTitleBtn() {
-    	setTitle("연간 월별 수입/지출 비교");
-    	setChangeButtonListener();
-        setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, "변경");
-        setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+		if (mViewMode == VIEW_ASSETS) {
+			setTitle("자산  변동추이");
+		}
+		else if (mViewMode == VIEW_BUDGET) {
+			setTitle("예산 변동추이");
+		}
+		else {
+			setTitle("수입/지출 변동추이");
+		}
         
 		super.setTitleBtn();
 	}
-	
-	public void setChangeButtonListener() {
-		setTitleButtonListener(FmTitleLayout.BTN_RIGTH_01, new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				
-				if (barGraphDifferenceMode == false) {
-					updateBarGraphDifferenceMode();
-				} else {
-					updateBarGraph();
-				}
-			}
-		});
-	}
-    
-//    private void setBunClickListener() {
-//		Button btnPreviusYear = (Button)findViewById(R.id.BtnPreviousYear);
-//		btnPreviusYear.setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				mYear--;
-//				updateChildView();
-//			}
-//		});
-//		
-//		Button btnNextYear = (Button)findViewById(R.id.BtnNextYear);
-//		btnNextYear.setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				mYear++;
-//				updateChildView();
-//			}
-//		});
-//	}
 
 	private void updateChildView() {
-		updateBarGraph();
+		updateLineView();
 		
 		TextView tvCurrent = (TextView)findViewById(R.id.TVCurrentYear);
 		tvCurrent.setText(String.format("%d 년", mYear));
 		
-		long expenseYear = DBMgr.getTotalAmountYear(ExpenseItem.TYPE, mYear);
-		long incomeYear = DBMgr.getTotalAmountYear(IncomeItem.TYPE, mYear);
+		addItemInfoList();
 		
-		TextView tvIncomeYear = (TextView)findViewById(R.id.TVTotalIncome);
-		tvIncomeYear.setText(String.format("총 수입 : %,d원", incomeYear));
-		TextView tvExpenseYear = (TextView)findViewById(R.id.TVTotalExpense);
-		tvExpenseYear.setText(String.format("총 지출 : %,d원", expenseYear));
+//		long expenseYear = DBMgr.getTotalAmountYear(ExpenseItem.TYPE, mYear);
+//		long incomeYear = DBMgr.getTotalAmountYear(IncomeItem.TYPE, mYear);
+//		
+//		TextView tvIncomeYear = (TextView)findViewById(R.id.TVTotalIncome);
+//		tvIncomeYear.setText(String.format("총 수입 : %,d원", incomeYear));
+//		TextView tvExpenseYear = (TextView)findViewById(R.id.TVTotalExpense);
+//		tvExpenseYear.setText(String.format("총 지출 : %,d원", expenseYear));
 	}
-
-	private void updateBarGraph() {
-		barGraphDifferenceMode = false;
 	
-		ArrayList<Long> iv = new ArrayList<Long>();
-		ArrayList<Integer> ap = new ArrayList<Integer>();
-		ArrayList<String> at = new ArrayList<String>();
-		
-		for (int i=0; i<12; i++) {
-			iv.add(DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, i+1));
-			iv.add(DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, i+1));
-			at.add(String.valueOf(i+1));
+	public void getDate() {
+		if (mViewMode == VIEW_INCOME_EXPENSE) {
+			mItem1 = DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear);
+			mItem2 = DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear);
+		} 
+		else if (mViewMode == VIEW_ASSETS) {
+			mItem1 = DBMgr.getTotalAmountMonth(AssetsItem.TYPE, mYear);
+			mItem2 = DBMgr.getTotalAmountMonth(LiabilityItem.TYPE, mYear);
+		}
+		else if (mViewMode == VIEW_BUDGET) {
+		//	mItem1 = DBMgr.getTotalAmountMonth(AssetsItem.TYPE, mYear);
+			//mItem2 = DBMgr.getTotalAmountMonth(LiabilityItem.TYPE, mYear);
+		}
+		else {
+			mItem1 = DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear);
+			mItem2 = DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear);
 		}
 		
-		ap.add(Constants.BAR_AXIS_X_BOTTOM);
-		ap.add(Constants.BAR_AXIS_Y_LEFT);
-    
-        bg = (BarGraph) findViewById (R.id.bgraph);
- 
-        bg.makeUserTypeGraph(ap, Constants.BAR_AXIS_X_BOTTOM, iv, 2, at);
+		
+		int size = mItem1.size();
+		for (int index = 0; index < size; index++) {
+			mItemDifference.add(mItem1.get(index)- mItem2.get(index));
+		}
+	}
 
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bg.getLayoutParams();
-
-        params.width = (320 > bg.getBarGraphWidth()) ? 320 : bg.getBarGraphWidth();
-        params.height = (350 > bg.getBarGraphHeight()) ? 320 : bg.getBarGraphHeight();
-       
-        bg.setLayoutParams(params);
-        
-        bg.setOnTouchListener(new View.OnTouchListener() {
+	
+	private void updateLineView() {
+		mLineGraph = (LineGraph) findViewById (R.id.lgraph);
+		mLineGraph.makeUserTypeGraph(mItem1, mItem2, mItemDifference, mMonthName);
+		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLineGraph.getLayoutParams();
+		
+		params.width = (320 > mLineGraph.getLineGraphWidth()) ? 320 : mLineGraph.getLineGraphWidth();
+		params.height = (180 > mLineGraph.getLineGraphHeight()) ? 180 : mLineGraph.getLineGraphHeight();
+		
+		mLineGraph.setLayoutParams(params);
+		mLineGraph.setOnTouchListener(new View.OnTouchListener() {
 			
-        	public boolean onTouch(View v, MotionEvent event) {
+			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 		    		int sel;
-		    		sel = bg.FindTouchItemID((int)event.getX(), (int)event.getY());
-
+		    		sel = mLineGraph.FindTouchItemID((int)event.getX(), (int)event.getY());
+		
 		    		if (sel == -1) {
 		    			return true;
 		    		} else {
-		    			Toast.makeText(bg.getContext(), "ID = " + sel + " 그래프 터치됨", Toast.LENGTH_SHORT).show();
 		    			return true;
 		    		}
 		    	}
@@ -137,50 +137,36 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 		});
 	}
 	
-	private void updateBarGraphDifferenceMode() {
-		barGraphDifferenceMode = true;
+	protected void addItemInfoList() {
+		LinearLayout llPayment = (LinearLayout) findViewById(R.id.LLAddView);
+		llPayment.removeAllViewsInLayout();
 		
-		ArrayList<Long> iv = new ArrayList<Long>();
-		ArrayList<Integer> ap = new ArrayList<Integer>();
-		ArrayList<String> at = new ArrayList<String>();
+		int size = mMonthName.size();
+		for (int index = 0; index < size; index++) {
+			LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.report_list_normal2, null);
+			
+			setListViewText(llMember, index);
+			
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
+			llPayment.addView(llMember, params);
+		}
+	}
+
+	protected void setListViewText(LinearLayout llMember, final int index) {
+		if (mViewMode == VIEW_ASSETS) {
+			((TextView)llMember.findViewById(R.id.TVListLeftTop)).setText(mMonthName.get(index));
+			((TextView)llMember.findViewById(R.id.TVListRightTop)).setText(String.format("%,d원", mItemDifference.get(index)));
+			((TextView)llMember.findViewById(R.id.TVListLeftBottom)).setText(String.format("%,d원", mItem1.get(index)));
+			((TextView)llMember.findViewById(R.id.TVListRightBottom)).setText(String.format("%,d원", mItem2.get(index)));
+		}
+		else if (mViewMode == VIEW_BUDGET) {
+		}
+		else {
+			((TextView)llMember.findViewById(R.id.TVListLeftTop)).setText(mMonthName.get(index));
+			((TextView)llMember.findViewById(R.id.TVListRightTop)).setText(String.format("%,d원", mItemDifference.get(index)));
+			((TextView)llMember.findViewById(R.id.TVListLeftBottom)).setText(String.format("%,d원", mItem1.get(index)));
+			((TextView)llMember.findViewById(R.id.TVListRightBottom)).setText(String.format("%,d원", mItem2.get(index)));
+		}
 		
-			for (int i=0; i<12; i++) {
-				iv.add(DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear, i+1) - DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear, i+1));
-				at.add(String.valueOf(i+1));
-			}
-			
-			ap.add(Constants.BAR_AXIS_X_CENTER);
-			ap.add(Constants.BAR_AXIS_Y_LEFT);
-
-			//        setContentView(R.layout.report_month_of_year, true);
-        
-        bg = (BarGraph) findViewById (R.id.bgraph);
- 
-        bg.makeUserTypeGraph(ap, Constants.BAR_AXIS_X_CENTER, iv, 1, at);
-
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bg.getLayoutParams();
-
-        params.width = (320 > bg.getBarGraphWidth()) ? 320 : bg.getBarGraphWidth();
-        params.height = (350 > bg.getBarGraphHeight()) ? 320 : bg.getBarGraphHeight();
-       
-        bg.setLayoutParams(params);
-        
-        bg.setOnTouchListener(new View.OnTouchListener() {
-			
-        	public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-		    		int sel;
-		    		sel = bg.FindTouchItemID((int)event.getX(), (int)event.getY());
-
-		    		if (sel == -1) {
-		    			return true;
-		    		} else {
-		    			Toast.makeText(bg.getContext(), "ID = " + sel + " 그래프 터치됨", Toast.LENGTH_SHORT).show();
-		    			return true;
-		    		}
-		    	}
-				return false;
-			}
-		});
 	}
 }

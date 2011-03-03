@@ -129,6 +129,7 @@
 <activity android:name=".DetailLiabilityPersonLoanLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".InputLiabilityRepayPersonLoanLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".DetailLiabilityDefaultLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportSettleAccountsLayout"></activity>
 </application>
 
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>

@@ -527,6 +527,24 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		return amount;
 	}
 	
+	public ArrayList<Long> getTotalAmountMonth(int year) {
+		ArrayList<Long> amountMonthInYear = new ArrayList<Long>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		for (int month = 1; month <= 12; month++) {
+			String[] params = {String.format("%d-%02d", year, month)};
+			String query = "SELECT SUM(amount) FROM liability WHERE strftime('%Y-%m', create_date)=?";
+			Cursor c = db.rawQuery(query, params);
+			
+			if (c.moveToFirst() != false) {
+				amountMonthInYear.add(c.getLong(0));
+			}
+			c.close();
+		}
+		
+		closeDatabase();
+		return amountMonthInYear;
+	}
+	
 	public long getTotalAmountMonth(int categoryID, int year, int month) {
 		long amount = 0L;
 		SQLiteDatabase db = openDatabase(READ_MODE);

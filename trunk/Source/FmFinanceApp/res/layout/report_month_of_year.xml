@@ -4,29 +4,21 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
    	android:scrollbarStyle="outsideOverlay">
-   	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center">
+   	<ScrollView android:id="@+id/ScrollView01" android:layout_width="fill_parent" android:layout_height="fill_parent"><LinearLayout android:id="@+id/LinearLayout03" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical"><LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center">
    		<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TVCurrentYear" android:text="년도" android:textSize="20sp"></TextView>
    		
-	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:layout_marginLeft="40dp">
+	
+
+</LinearLayout><LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:layout_marginLeft="40dp" android:visibility="gone">
 	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TVTotalExpense"></TextView>
 	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TVTotalIncome">
 	</TextView>
-	</LinearLayout>
-	<HorizontalScrollView
-       	android:id="@+id/scrollview"
-       	android:layout_width="wrap_content"
-       	android:layout_height="wrap_content"
-       	android:scrollbarStyle="outsideOverlay">
-   		<LinearLayout 
-   			android:id="@+id/hsv"
-   			android:orientation="vertical"
-   			android:layout_width="wrap_content"
-   			android:layout_height="wrap_content">
-       		<com.fletamuto.common.control.fmgraph.BarGraph
-   				android:id="@+id/bgraph"
-   				android:layout_width="320dip"
-   				android:layout_height="330dip"/>
+	</LinearLayout><HorizontalScrollView android:id="@+id/scrollview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:scrollbarStyle="outsideOverlay">
+   		<LinearLayout android:id="@+id/hsv" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+       		<com.fletamuto.common.control.fmgraph.LineGraph android:id="@+id/lgraph" android:layout_width="210dp" android:layout_height="210dp" />
 		</LinearLayout>
-   	</HorizontalScrollView>    
+   	</HorizontalScrollView><LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLAddView" android:orientation="vertical"></LinearLayout></LinearLayout></ScrollView>
+	
+	    
+
 </LinearLayout>

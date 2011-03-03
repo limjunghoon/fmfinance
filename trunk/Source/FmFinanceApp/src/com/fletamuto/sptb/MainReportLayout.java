@@ -19,16 +19,14 @@ public class MainReportLayout extends FmBaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.report_main);
+        setContentView(R.layout.report_main, true);
         
         setRootView(true);
         setAdapterList();
       
-        mReportActivityList.add(new ReportActivity(ReportMonthLayout.class));
-        mReportActivityList.add(new ReportActivity(ReportMonthOfYearLayout.class));
+        mReportActivityList.add(new ReportActivity(ReportSettleAccountsLayout.class));
         mReportActivityList.add(new ReportActivity(ReportMonthCompareExpenseToIncomeLayout.class));
         mReportActivityList.add(new ReportActivity(ReportChangeAssets.class));
-        mReportActivityList.add(new ReportActivity(ReportCompareAssetsAndLiability.class));
         mReportActivityList.add(new ReportActivity(ReportCategoryCompareLayout.class));
         mReportActivityList.add(new ReportActivity(SelectTagLayout.class, MsgDef.ActRequest.ACT_TAG_SELECTED));
         mReportActivityList.add(new ReportActivity(ReportExpenseRateLayout.class));
@@ -36,7 +34,7 @@ public class MainReportLayout extends FmBaseActivity {
     
     @Override
 	protected void setTitleBtn() {
-		setTitle("목록");
+		setTitle("통계");
 		super.setTitleBtn();
 	}
     
