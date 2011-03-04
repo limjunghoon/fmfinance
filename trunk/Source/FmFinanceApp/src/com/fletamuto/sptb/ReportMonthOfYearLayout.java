@@ -26,17 +26,20 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 	public static final int VIEW_ASSETS = 1;
 	public static final int VIEW_BUDGET = 2;
 	
+	public static final int BASE_PERIOD_TERM = 6;
+	
 	private ArrayList<Long> mItem1 = new ArrayList<Long>();
 	private ArrayList<Long> mItem2 = new ArrayList<Long>();
 	private ArrayList<Long> mItemDifference = new ArrayList<Long>();
 	private LineGraph mLineGraph;
 	private ArrayList<String> mMonthName = new ArrayList<String>();
 	
-	private int mYear = Calendar.getInstance().get(Calendar.YEAR);
+	private Calendar mMonthCalendar = Calendar.getInstance();
 	private int mViewMode = VIEW_INCOME_EXPENSE;
 	
 	private float mTouchMove;
 	private boolean mTouchMoveFlag = false;
+	private int mPeriodTerm = BASE_PERIOD_TERM;
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,6 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
     	
     	setContentView(R.layout.report_month_of_year, true);
     	
-    	Collections.addAll(mMonthName, getResources().getStringArray(R.array.year_in_month_name));
     	
     	getDate();
     	updateChildView();
@@ -85,7 +87,7 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 		updateLineView();
 		
 		TextView tvCurrent = (TextView)findViewById(R.id.TVCurrentYear);
-		tvCurrent.setText(String.format("%d ³â", mYear));
+		tvCurrent.setText(String.format("%d ³â", mMonthCalendar.get(Calendar.YEAR)));
 		
 		addItemInfoList();
 		
@@ -99,21 +101,28 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 	}
 	
 	public void getDate() {
+		
+		setMonthName();
+		
+		
 		if (mViewMode == VIEW_INCOME_EXPENSE) {
-			mItem1 = DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear);
-			mItem2 = DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear);
+//			mItem1 = DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear);
+//			mItem2 = DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear);
+			
+			mItem1 = DBMgr.getTotalAmount(IncomeItem.TYPE, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+			mItem2 = DBMgr.getTotalAmount(ExpenseItem.TYPE, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
 		} 
 		else if (mViewMode == VIEW_ASSETS) {
-			mItem1 = DBMgr.getTotalAmountMonth(AssetsItem.TYPE, mYear);
-			mItem2 = DBMgr.getTotalAmountMonth(LiabilityItem.TYPE, mYear);
+			mItem1 = DBMgr.getTotalAmountMonth(AssetsItem.TYPE, mMonthCalendar.get(Calendar.YEAR));
+			mItem2 = DBMgr.getTotalAmountMonth(LiabilityItem.TYPE, mMonthCalendar.get(Calendar.YEAR));
 		}
 		else if (mViewMode == VIEW_BUDGET) {
 		//	mItem1 = DBMgr.getTotalAmountMonth(AssetsItem.TYPE, mYear);
 			//mItem2 = DBMgr.getTotalAmountMonth(LiabilityItem.TYPE, mYear);
 		}
 		else {
-			mItem1 = DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear);
-			mItem2 = DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear);
+			mItem1 = DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mMonthCalendar.get(Calendar.YEAR));
+			mItem2 = DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mMonthCalendar.get(Calendar.YEAR));
 		}
 		
 		
@@ -125,6 +134,30 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 	}
 
 	
+	private void setMonthName() {
+		mMonthName.clear();
+		
+		int year = mMonthCalendar.get(Calendar.YEAR);
+		int month = mMonthCalendar.get(Calendar.MONTH) +1;
+		
+		int targetMonth = month - mPeriodTerm;
+		if (targetMonth <= 0) {
+			targetMonth += 12 + 1;
+			year--;
+		}
+		
+		for (int index = 0; index < mPeriodTerm; index++) {
+			
+			if (targetMonth > 12) {
+				targetMonth = 1;
+				year++;
+			}
+			
+			mMonthName.add(String.format("%d¿ù", targetMonth));
+			targetMonth++;
+		}
+	}
+
 	private void updateLineView() {
 		mLineGraph = (LineGraph) findViewById (R.id.lgraph);
 		mLineGraph.makeUserTypeGraph(mItem1, mItem2, mItemDifference, mMonthName);
@@ -160,7 +193,7 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 		for (int index = 0; index < size; index++) {
 			LinearLayout llMember = (LinearLayout)View.inflate(this, R.layout.report_list_normal2, null);
 			
-			setListViewText(llMember, index);
+			setListViewText(llMember, size-index-1);
 			
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0);
 			llPayment.addView(llMember, params);
@@ -204,7 +237,7 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
     }
 	
 	protected void moveCurrentDate(int dayValue) {
-		mYear += dayValue;
+		mMonthCalendar.add(Calendar.MONTH, dayValue);
 		
 		getDate();
     	updateChildView();

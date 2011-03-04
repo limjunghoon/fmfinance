@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class ReportMonthCompareIncomeLayout extends ReportBaseMonthCompare {
 	
@@ -26,9 +27,33 @@ public class ReportMonthCompareIncomeLayout extends ReportBaseMonthCompare {
     
 	@Override
 	protected void setTitleBtn() {
-    	setTitle("월 수입");
+    	setTitle("월간 수입");
+    	
+    	setTitleBtnText(FmBaseLayout.BTN_LEFT_01, "지출");
+		setTitleBtnVisibility(FmBaseLayout.BTN_LEFT_01, View.VISIBLE);
+		
 		super.setTitleBtn();
 	}
+	
+	@Override
+	protected void updateChildView() {
+		if (mViewMode == VIEW_MONTH) {
+			setTitle("월간 수입");
+		}
+		else {
+			setTitle("년간 수입");
+		}
+		super.updateChildView();
+	}
+	
+	
+	@Override
+    protected void onClickLeft1TitleBtn() {
+    	Intent intent = new Intent(this, ReportMonthCompareExpenseLayout.class);
+		startActivity(intent);
+		
+    	finish();
+    }
 	
     protected void setListViewText(FinanceItem financeItem, View convertView) {
     	IncomeItem item = (IncomeItem)financeItem;

@@ -197,6 +197,26 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		return expenseItems;
 	}
 	
+	public ArrayList<FinanceItem> getItems(int year) {
+		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.format("%d", year)};
+		
+		queryBilder.setTables("expense, expense_main_category, expense_sub_category, expense_tag, payment_method");
+		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id AND expense.tag=expense_tag._id AND expense.payment_method=payment_method._id");
+		Cursor c = queryBilder.query(db, null, "strftime('%Y', create_date)=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				expenseItems.add(createExpenseItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		closeDatabase();
+		return expenseItems;
+	}
+	
 	public ArrayList<FinanceItem> getItemsFromCategoryID(int mainCategoryID, int year, int month) {
 		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
 		SQLiteDatabase db = openDatabase(READ_MODE);
@@ -206,6 +226,26 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		queryBilder.setTables("expense, expense_main_category, expense_sub_category, expense_tag, payment_method");
 		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id AND expense.tag=expense_tag._id AND expense.payment_method=payment_method._id");
 		Cursor c = queryBilder.query(db, null, "strftime('%Y-%m', create_date)=? AND expense.main_category=?", params, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			do {
+				expenseItems.add(createExpenseItem(c));
+			} while (c.moveToNext());
+		}
+		c.close();
+		closeDatabase();
+		return expenseItems;
+	}
+	
+	public ArrayList<FinanceItem> getItemsFromCategoryID(int mainCategoryID, int year) {
+		ArrayList<FinanceItem> expenseItems = new ArrayList<FinanceItem>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		SQLiteQueryBuilder queryBilder = new SQLiteQueryBuilder();
+		String[] params = {String.format("%d", year), String.valueOf(mainCategoryID)};
+		
+		queryBilder.setTables("expense, expense_main_category, expense_sub_category, expense_tag, payment_method");
+		queryBilder.appendWhere("expense.main_category=expense_main_category._id AND expense.sub_category=expense_sub_category._id AND expense.tag=expense_tag._id AND expense.payment_method=payment_method._id");
+		Cursor c = queryBilder.query(db, null, "strftime('%Y', create_date)=? AND expense.main_category=?", params, null, null, null);
 		
 		if (c.moveToFirst() != false) {
 			do {
@@ -512,6 +552,37 @@ public class ExpenseDBConnector extends BaseFinanceDBConnector {
 		c.close();
 		closeDatabase();
 		return amount;
+	}
+	
+	public ArrayList<Long> getTotalAmount(int year, int month, int beforMonthCount) {
+		ArrayList<Long> amountMonthInYear = new ArrayList<Long>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		int targetMonth = month - beforMonthCount;
+		if (targetMonth <= 0) {
+			targetMonth += 12 + 1;
+			year--;
+		}
+		for (int index = 0; index < beforMonthCount; index++) {
+			
+			if (targetMonth > 12) {
+				targetMonth = 1;
+				year++;
+			}
+			
+			String[] params = {String.format("%d-%02d", year, targetMonth)};
+			String query = "SELECT SUM(amount) FROM expense WHERE strftime('%Y-%m', create_date)=?";
+			Cursor c = db.rawQuery(query, params);
+			
+			if (c.moveToFirst() != false) {
+				amountMonthInYear.add(c.getLong(0));
+			}
+			targetMonth++;
+			c.close();
+		}
+		
+		closeDatabase();
+		return amountMonthInYear;
 	}
 	
 	public ArrayList<Long> getTotalAmountMonth(int year) {

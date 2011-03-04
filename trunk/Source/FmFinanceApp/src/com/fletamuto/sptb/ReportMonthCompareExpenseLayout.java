@@ -29,13 +29,38 @@ public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
     
 	@Override
 	protected void setTitleBtn() {
-    	setTitle("월 지출");
     	
     	setTitleBtnText(FmBaseLayout.BTN_LEFT_01, "수입");
 		setTitleBtnVisibility(FmBaseLayout.BTN_LEFT_01, View.VISIBLE);
 		
 		super.setTitleBtn();
 	}
+	
+	@Override
+	public void setTitleName() {
+		if (mViewMode == VIEW_MONTH) {
+			setTitle("월간 지출");
+		}
+		else {
+			setTitle("년간 지출");
+		}
+		
+		super.setTitleName();
+	}
+	
+	@Override
+	protected void updateChildView() {
+		setTitleName();
+		super.updateChildView();
+	}
+	
+	@Override
+    protected void onClickLeft1TitleBtn() {
+    	Intent intent = new Intent(this, ReportMonthCompareIncomeLayout.class);
+		startActivity(intent);
+		
+    	finish();
+    }
 	
 
 	@Override
@@ -68,4 +93,5 @@ public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
 	protected int getChildLayoutResourceID() {
 		return R.layout.report_list_expense_expand;
 	}
+
 }
