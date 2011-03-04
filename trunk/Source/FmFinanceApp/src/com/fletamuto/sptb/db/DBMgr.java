@@ -859,16 +859,22 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(type).deleteOpenUsedItem(id);
 	}
 	
-	public static ArrayList<FinanceItem> getCompletionItems() {
+	public static ArrayList<FinanceItem> getCompletionItems(int itemType) {
 		ArrayList<FinanceItem> completionItems = new ArrayList<FinanceItem>();
-		ArrayList<FinanceItem> completionAssetsItems = getAssetsDBConnecter().getCompletionAll();
-		if (completionAssetsItems != null) {
-			completionItems.addAll(completionAssetsItems);
+		if (itemType == AssetsItem.TYPE) {
+			ArrayList<FinanceItem> completionAssetsItems = getAssetsDBConnecter().getCompletionAll();
+			if (completionAssetsItems != null) {
+				completionItems.addAll(completionAssetsItems);
+			}
+		} else if (itemType == LiabilityItem.TYPE) {
+			ArrayList<FinanceItem> completionLiabilityItems = getLiabilityDBConnecter().getCompletionAll();
+			if (completionLiabilityItems != null) {
+				completionItems.addAll(completionLiabilityItems);
+			}
+		} else {
+			completionItems = null;
 		}
-		ArrayList<FinanceItem> completionLiabilityItems = getLiabilityDBConnecter().getCompletionAll();
-		if (completionLiabilityItems != null) {
-			completionItems.addAll(completionLiabilityItems);
-		}
+			
 		return completionItems;
 	}
 }
