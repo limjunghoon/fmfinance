@@ -52,6 +52,7 @@ public class POIOutPut {
 			
 			makeIncomeExpenseDataSheet();	//수입-지출
 			makeAssetsSheet();	//자산
+			makeCardSheet();	//카드
 			
 			try {
 				if(savePOI()) {
@@ -87,6 +88,16 @@ public class POIOutPut {
 			makeRealEstateDataSheet();	//자산-부동산
 			makeRows(4);
 			makeOtherDataSheet();	//자산-기타
+			makeRows(4);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	private boolean makeCardSheet() {
+		try {
+			makeSheet("카드");
+			makeCreditCardDataSheet();	//카드-신용카드
 			makeRows(4);
 			return true;
 		} catch (Exception e) {
@@ -257,6 +268,27 @@ public class POIOutPut {
 		}
 		
 		return !otherDatas.isEmpty();
+	}
+	/** 카드 시트를 만듬 */
+	private boolean makeCreditCardDataSheet() {
+		//makeSheet("카드");
+		makeHead(new String[]{CardData.getCreditCardData.STRING_NAME});
+		makeRow();
+		makeHead(new String[]{CardData.getCreditCardData.STRING_TITLE,
+				CardData.getCreditCardData.STRING_COMPANY,
+				CardData.getCreditCardData.STRING_NUMBER,
+				CardData.getCreditCardData.STRING_ACCOUNT_COMPANY,
+				CardData.getCreditCardData.STRING_ACCOUNT,
+				CardData.getCreditCardData.STRING_BILLING_DATE,
+				CardData.getCreditCardData.STRING_BILLING_PERIOD,
+				CardData.getCreditCardData.STRING_MEMO});
+		ArrayList<CardData.CreditCardData> creditCardDatas = new CardData().getCreditCardData.getCreditCardDatas();
+		for(int i = 0, size = creditCardDatas.size(); i < size; i++) {
+			makeRow();
+			makeCells(creditCardDatas.get(i));
+		}
+		
+		return !creditCardDatas.isEmpty();
 	}
 
 	/**
@@ -461,6 +493,24 @@ public class POIOutPut {
 			makeCell(1, data.getDate());
 			makeCell(2, data.getAmount());
 			makeCell(3, data.getMemo());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	/**
+	 * 신용카드의 복수 셀을 만든다
+	 */
+	private boolean makeCells(CardData.CreditCardData data) {
+		try {
+			makeCell(0, data.getTitle());
+			makeCell(1, data.getCompany());
+			makeCell(2, data.getNumber());
+			makeCell(3, data.getAccountCompany());
+			makeCell(4, data.getAccount());
+			makeCell(5, data.getBillingDate());
+			makeCell(6, data.getBllingPeriod());
+			makeCell(7, data.getMemo());
 			return true;
 		} catch (Exception e) {
 			return false;
