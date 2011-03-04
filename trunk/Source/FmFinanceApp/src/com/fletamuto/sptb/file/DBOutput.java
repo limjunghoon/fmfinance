@@ -12,15 +12,15 @@ public class DBOutput {
 	static final String DB_OUTPUT_PACKAGE_PATH = Environment.getExternalStorageDirectory() + "/com.fletamuto.sptb/";
 	static final String DB_OUTPUT_DB_DIRECTORY = "/db/";
 	static final String DB_FILE_NAME = "fmfinance.db";
-	private Context context;
+	private Context mContext;
 	
 	public DBOutput(Context context) {
 		super();
-		this.context = context;
+		this.mContext = context;
 	}
 	
 	protected boolean dbOutput() {
-		File file = context.getDatabasePath(DB_FILE_NAME);
+		File file = mContext.getDatabasePath(DB_FILE_NAME);
 		int size = (int)file.length();
 		
 		try {

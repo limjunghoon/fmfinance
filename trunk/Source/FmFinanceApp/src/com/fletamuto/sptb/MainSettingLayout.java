@@ -14,7 +14,7 @@ public class MainSettingLayout extends FmBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_setting);
         
-        mOutput = new Output(getApplicationContext());
+        mOutput = new Output(this);
         
         setRootView(true);
         //Button btnRegistration = (Button)findViewById(R.id.BtnSettingRegistration);
