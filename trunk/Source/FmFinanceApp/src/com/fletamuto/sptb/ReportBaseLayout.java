@@ -150,14 +150,23 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	}
 	
 	protected boolean getItemsFromDB(int itemType) {
-		
-		if (isDisplayCategory()) {
+		//완료된 자산을 불러 오는 부분
+		if (mCategoryID == -2) {
+			mItems = DBMgr.getCompletionItems(itemType);
+		} else if (isDisplayCategory()) {
 			mItems = DBMgr.getItemsFromCategoryID(itemType, mCategoryID);
-		}
-		else {
+		} else {
 			mItems = DBMgr.getAllItems(itemType);
 		}
-    	
+ 	
+		for (int index = 0; index < mItems.size(); index++) {
+			if (mItems.get(index).getState() == FinanceItem.STATE_COMPLEATE) {
+				if (mCategoryID != -2) {
+					mItems.remove(index);
+				}
+			}
+		}
+	
         if (mItems == null) {
         	return false;
         }

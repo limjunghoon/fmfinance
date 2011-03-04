@@ -19,9 +19,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
 
@@ -33,7 +35,7 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 	
 	protected ListView mSeparationList;
 	
-    /** Called when the activity is first created. */
+	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,20 +107,39 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 		mCategoryItems.clear();
 		
 		int itemSize = arrItems.size();
+
 		for (int index = 0; index < itemSize; index++) {
 			FinanceItem item = arrItems.get(index);
+			
 			Category category = item.getCategory();
 			if (category == null) {
 				Log.w(LogTag.LAYOUT, ":: INVAILD CATEGORU :: ");
 				continue;
 			}
 			
-			Integer categoryID = category.getID();
+			//완료된 자산을 위한 좌측 리스트에 메뉴 만드는 부분
+			Integer categoryID;
+			String categoryName = null;
+			
+			if (item.getState() == FinanceItem.STATE_COMPLEATE) {
+				categoryID = -2;
+				if (item.getType() == AssetsItem.TYPE) {
+					categoryName = "완료된 자산";
+				} else {
+					categoryName = "완료된 부채";
+				}
+				
+			} else {
+				categoryID = category.getID();
+				categoryName = category.getName();
+			}
+			
 			CategoryAmount categoryAmount = mCategoryItems.get(categoryID);
 			
 			if (categoryAmount == null) {
+				
 				categoryAmount = new CategoryAmount(item.getType());
-				categoryAmount.set(categoryID, category.getName(), item.getAmount());
+				categoryAmount.set(categoryID, /*category.getName()*/categoryName, item.getAmount());
 				mCategoryItems.put(categoryID, categoryAmount);
 			}
 			else {
@@ -127,13 +148,19 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 		}
 	}
 	
+	//완료된 자산을 위해 일부 수정
 	protected ArrayList<CategoryAmount> getListItems() {
     	ArrayList<CategoryAmount> listItems = new ArrayList<CategoryAmount>();
     	Collection<CategoryAmount> categoryAmountItems = mCategoryItems.values();
-    	
+    	CategoryAmount finishedAssets = null;
     	for (CategoryAmount iterator:categoryAmountItems) {
+    		if (iterator.getCategoryID() == -2) {
+    			finishedAssets = iterator;
+    			continue;
+    		}
 			listItems.add(iterator);
 		}
+    	listItems.add(finishedAssets);
     	
     	return listItems;
     }

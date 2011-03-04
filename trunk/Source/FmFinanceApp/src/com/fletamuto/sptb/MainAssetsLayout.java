@@ -478,6 +478,11 @@ public class MainAssetsLayout extends FmBaseActivity {
 				continue;
 			}
 			
+			//완료된 자산은 <자산내역>에 표시 하지 않음
+			if (item.getState() == FinanceItem.STATE_COMPLEATE) {
+				continue;
+			}
+			
 			Integer categoryID = category.getID();
 			CategoryAmount categoryAmount = mapCategoryItems.get(categoryID);
 			

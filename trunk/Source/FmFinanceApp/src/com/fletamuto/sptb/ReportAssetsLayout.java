@@ -83,7 +83,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     protected void setAdapterList() {
     	if (isSelectedAccount()) {
     		setAccountAdapterList();
-		}
+		} 
     	else {
     		super.setAdapterList();
     	}
@@ -108,7 +108,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     	for (CategoryAmount iterator:categoryAmountItems) {
 			listItems.add(iterator);
 		}
-    	
+	
     	return listItems;
     }
     
@@ -347,10 +347,12 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
 		for (int index = 0; index < itemSize; index++) {
 			FinanceItem item = mItems.get(index);
 			
+			//완료된 자산을 메뉴로 인해 막음
+			/*
 			if (item.getState() == FinanceItem.STATE_COMPLEATE) {
 				continue;
 			}
-			
+			*/
 			mTotalAmount += item.getAmount();
 			mListItems.add(item);
 		}
