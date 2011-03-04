@@ -81,6 +81,7 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
     		
     		//Main Category 자기 자신을 눌렀을 때 다시 사라지게 하는 부분
     		if (currentMainCagegoryID == category.getID() && getSubCategoryCount() > 0 && subCategory.contains(category) == false) {
+    			/*
     			mArrCategory.removeAll(subCategory);
     			setSubCategoryCount(-1);
     			setSubCategoryStartPosition(-1);
@@ -89,6 +90,17 @@ public class SelectCategoryExpenseLayout extends SelectCategoryBaseLayout {
     			setSubCategoryMode(false);
     			setCategoryAdaper();
     			return;
+    			*/
+    			Intent intent = new Intent();
+				intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, mMainCategory.getID());
+				intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, mMainCategory.getName());
+				intent.putExtra("SUB_CATEGORY_ID", /*category.getID()*/-1);
+				intent.putExtra("SUB_CATEGORY_NAME", /*category.getName()*/"");
+				setResult(RESULT_OK, intent);
+				setSubCategoryMode(false);
+			
+				finish();
+				return;
     		}    		
     		
     		//SubCategory 떠 있는 상황
