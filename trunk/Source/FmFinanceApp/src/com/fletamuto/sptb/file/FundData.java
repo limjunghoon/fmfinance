@@ -97,7 +97,7 @@ public class FundData {	//ÆÝµå
 			fundData.setOpening(fundItem.getCreateDate().getTime());
 			fundData.setMaturity(fundItem.getExpiryDate().getTime());
 			fundData.setPrice(fundItem.getAmount());
-			fundData.setType(String.valueOf(fundItem.getType()));
+			fundData.setType(fundItem.getKindString());
 			fundData.setDealer(fundItem.getStore());
 			fundData.setMemo(fundItem.getMemo());
 			fundData.setRepeat(fundItem.getRepeat().getRepeatMessage());
