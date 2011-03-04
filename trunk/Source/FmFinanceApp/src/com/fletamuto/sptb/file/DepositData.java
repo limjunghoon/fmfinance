@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.AssetsDepositItem;
+import com.fletamuto.sptb.data.AssetsFundItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
@@ -11,7 +13,7 @@ public class DepositData {	//예금	-	위와 형태와 사용 방법은 동일
 	public static final String STRING_NAME = "예금";
 	public static final String STRING_TITLE = "제목";
 	public static final String STRING_FINANCIAL = "금융기관";
-	public static final String STRING_EXPECTAMOUNT = "기대금액";
+	public static final String STRING_EXPECTAMOUNT = "예상수익금";
 	public static final String STRING_TOTALAMOUNT = "전체금액";
 	public static final String STRING_DEPO_DATE = "예금일";
 	public static final String STRING_EXPI_DATE = "만기일";
@@ -94,16 +96,21 @@ public class DepositData {	//예금	-	위와 형태와 사용 방법은 동일
 		ArrayList<DepositData> depositDatas = new ArrayList<DepositData>();
 		
 		for(int i = 0, size = financeItems.size(); i < size; i++) {
-			com.fletamuto.sptb.data.AssetsDepositItem depositItem = DBMgr.getAssetsDBConnecter().getDepositItem(financeItems.get(i).getID());
+			AssetsDepositItem depositItem = null;
+			if(AssetsDepositItem.class.getName().equals(financeItems.get(i).getClass().getName()))
+				depositItem = (AssetsDepositItem)financeItems.get(i);
+			else
+				continue;
 			DepositData depositData = new DepositData();
 			
 			depositData.setTitle(depositItem.getTitle());
 			depositData.setFinance(depositItem.getAccount().getCompany().getName());
 			depositData.setExpectAmount(depositItem.getExpectAmount());
+			depositData.setTotalAmount(depositItem.getTotalAmount());
 			depositData.setDepoDate(depositItem.getCreateDate().getTime());
 			depositData.setExpiDate(depositItem.getExpiryDate().getTime());
 			depositData.setAccount(depositItem.getAccount().getNumber());
-			//depositData.setInterest(depositItem.get);
+			depositData.setInterest(depositItem.getRate());
 			depositData.setMemo(depositItem.getMemo());
 			
 			depositDatas.add(depositData);

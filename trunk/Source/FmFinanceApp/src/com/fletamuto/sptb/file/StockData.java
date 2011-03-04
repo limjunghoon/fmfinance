@@ -20,7 +20,7 @@ public class StockData {	//주식
 	
 	private String ticker;
 	private Date date;
-	private int quantity;
+	private long quantity;
 	private long price;
 	private String dealer;
 	private String memo;
@@ -37,10 +37,10 @@ public class StockData {	//주식
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public int getQuantity() {
+	public long getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(int quantity) {
+	public void setQuantity(long quantity) {
 		this.quantity = quantity;
 	}
 	public long getPrice() {
@@ -71,12 +71,16 @@ public class StockData {	//주식
 		ArrayList<StockData> stockDatas = new ArrayList<StockData>();
 		
 		for(int i = 0, size = financeItems.size(); i < size; i++) {
-			AssetsStockItem stockItem = (AssetsStockItem)financeItems.get(i);
+			AssetsStockItem stockItem = null;
+			if(AssetsStockItem.class.getName().equals(financeItems.get(i).getClass().getName()))
+				stockItem = (AssetsStockItem)financeItems.get(i);
+			else
+				continue;
 			StockData stockData = new StockData();
 			
-			stockData.setTicker(stockItem.getSeparatorTitle());
+			stockData.setTicker(stockItem.getTitle());
 			stockData.setDate(stockItem.getCreateDate().getTime());
-			stockData.setQuantity(stockItem.getCount());
+			stockData.setQuantity(stockItem.getTotalCount());
 			stockData.setPrice(stockItem.getPrice());
 			stockData.setDealer(stockItem.getStore());
 			stockData.setMemo(stockItem.getMemo());

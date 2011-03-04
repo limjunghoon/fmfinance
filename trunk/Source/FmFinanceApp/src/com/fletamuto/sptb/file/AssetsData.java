@@ -11,7 +11,7 @@ public class AssetsData {
 	private ArrayList<DepositData> depositDatas;
 	private ArrayList<SavingsData> savingsPlanDatas;
 	private ArrayList<StockData> stockDatas;
-	private ArrayList<FundsData> fundsDatas;
+	private ArrayList<FundData> fundsDatas;
 	private ArrayList<InsuranceData> insuranceDatas;
 	private ArrayList<RealEstateData> realEstateDatas;
 	private ArrayList<OtherData> otherDatas;

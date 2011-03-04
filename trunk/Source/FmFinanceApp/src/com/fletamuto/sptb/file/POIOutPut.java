@@ -24,6 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
@@ -34,9 +35,9 @@ public class POIOutPut {
 	static final String XLS_OUTPUT_DB_DIRECTORY = "/backup/";
 	private Context mContext;
 	
-	HSSFWorkbook mWorkbook;
-	HSSFSheet mHssfSheet;
-	HSSFRow mHssfRow;
+	private HSSFWorkbook mWorkbook;
+	private HSSFSheet mHssfSheet;
+	private HSSFRow mHssfRow;
 	
 	CellStyle defaultStyle;
 	
@@ -76,6 +77,16 @@ public class POIOutPut {
 			makeDepositDataSheet();	//자산-예금
 			makeRows(4);
 			makeSavingsDataSheet();	//자산-적금
+			makeRows(4);
+			makeStockDataSheet();	//자산-주식
+			makeRows(4);
+			makeFundDataSheet();	//자산-펀드
+			makeRows(4);
+			makeInsuranceDataSheet();	//자산-보험
+			makeRows(4);
+			makeRealEstateDataSheet();	//자산-부동산
+			makeRows(4);
+			makeOtherDataSheet();	//자산-기타
 			makeRows(4);
 			return true;
 		} catch (Exception e) {
@@ -158,6 +169,94 @@ public class POIOutPut {
 		}
 		
 		return !savingsDatas.isEmpty();
+	}
+	private boolean makeStockDataSheet() {
+		//makeSheet("주식");
+		makeHead(new String[]{StockData.STRING_NAME});
+		makeRow();
+		makeHead(new String[]{StockData.STRING_TICKER,
+								StockData.STRING_DATE,
+								StockData.STRING_QUANTITY,
+								StockData.STRING_PRICE,
+								StockData.STRING_DEALER,
+								StockData.STRING_MEMO});
+		ArrayList<StockData> stockDatas =  new StockData().getStockDatas();
+		for(int i = 0, size = stockDatas.size(); i < size; i++) {
+			makeRow();
+			makeCells(stockDatas.get(i));
+		}
+		
+		return !stockDatas.isEmpty();
+	}
+	private boolean makeFundDataSheet() {
+		//makeSheet("펀드");
+		makeHead(new String[]{FundData.STRING_NAME});
+		makeRow();
+		makeHead(new String[]{FundData.STRING_BRAND,
+								FundData.STRING_OPENING,
+								FundData.STRING_MATURITY,
+								FundData.STRING_PRICE,
+								FundData.STRING_TYPE,
+								FundData.STRING_DEALER,
+								FundData.STRING_MEMO});
+		ArrayList<FundData> fundDatas =  new FundData().getFundDatas();
+		for(int i = 0, size = fundDatas.size(); i < size; i++) {
+			makeRow();
+			makeCells(fundDatas.get(i));
+		}
+		
+		return !fundDatas.isEmpty();
+	}
+	private boolean makeInsuranceDataSheet() {
+		//makeSheet("보험");
+		makeHead(new String[]{InsuranceData.STRING_NAME});
+		makeRow();
+		makeHead(new String[]{InsuranceData.STRING_TITLE,
+								InsuranceData.STRING_OPENING,
+								InsuranceData.STRING_MATURITY,
+								InsuranceData.STRING_AMOUNT,
+								InsuranceData.STRING_INSURANCE,
+								InsuranceData.STRING_MEMO});
+		ArrayList<InsuranceData> insuranceDatas =  new InsuranceData().getInsuranceDatas();
+		for(int i = 0, size = insuranceDatas.size(); i < size; i++) {
+			makeRow();
+			makeCells(insuranceDatas.get(i));
+		}
+		
+		return !insuranceDatas.isEmpty();
+	}
+	private boolean makeRealEstateDataSheet() {
+		//makeSheet("부동산");
+		makeHead(new String[]{RealEstateData.STRING_NAME});
+		makeRow();
+		makeHead(new String[]{RealEstateData.STRING_TITLE,
+								RealEstateData.STRING_DATE,
+								RealEstateData.STRING_AMOUNT,
+								RealEstateData.STRING_SCALE,
+								RealEstateData.STRING_MEMO});
+		ArrayList<RealEstateData> realEstateDatas =  new RealEstateData().getRealEstateDatas();
+		for(int i = 0, size = realEstateDatas.size(); i < size; i++) {
+			makeRow();
+			makeCells(realEstateDatas.get(i));
+		}
+		
+		return !realEstateDatas.isEmpty();
+	}
+	private boolean makeOtherDataSheet() {
+		//makeSheet("기타");
+		makeHead(new String[]{OtherData.STRING_NAME});
+		makeRow();
+		makeHead(new String[]{OtherData.STRING_TITLE,
+				OtherData.STRING_DATE,
+				OtherData.STRING_AMOUNT,
+				OtherData.STRING_MEMO});
+		ArrayList<OtherData> otherDatas =  new OtherData().getOtherDatas();
+		for(int i = 0, size = otherDatas.size(); i < size; i++) {
+			makeRow();
+			makeCells(otherDatas.get(i));
+		}
+		
+		return !otherDatas.isEmpty();
 	}
 
 	/**
@@ -284,6 +383,84 @@ public class POIOutPut {
 			makeCell(6, data.getDepoDate());
 			makeCell(7, data.getExpiDate());
 			makeCell(8, data.getMemo());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	/**
+	 * 주식의 복수의 셀을 만든다
+	 */
+	private boolean makeCells(StockData data) {
+		try {
+			makeCell(0, data.getTicker());
+			makeCell(1, data.getDate());
+			makeCell(2, data.getQuantity());
+			makeCell(3, data.getPrice());
+			makeCell(4, data.getDealer());
+			makeCell(5, data.getMemo());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	/**
+	 * 펀드의 복수의 셀을 만든다
+	 */
+	private boolean makeCells(FundData data) {
+		try {
+			makeCell(0, data.getBrand());
+			makeCell(1, data.getOpening());
+			makeCell(2, data.getMaturity());
+			makeCell(3, data.getPrice());
+			makeCell(4, data.getType());
+			makeCell(5, data.getDealer());
+			makeCell(5, data.getMemo());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	/**
+	 * 보험의 복수의 셀을 만든다
+	 */
+	private boolean makeCells(InsuranceData data) {
+		try {
+			makeCell(0, data.getTitle());
+			makeCell(1, data.getOpening());
+			makeCell(2, data.getMaturity());
+			makeCell(3, data.getAmount());
+			makeCell(4, data.getInsurance());
+			makeCell(5, data.getMemo());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	/**
+	 * 부동산의 복수의 셀을 만든다
+	 */
+	private boolean makeCells(RealEstateData data) {
+		try {
+			makeCell(0, data.getTitle());
+			makeCell(1, data.getDate());
+			makeCell(2, data.getAmount());
+			makeCell(3, data.getScale());
+			makeCell(4, data.getMemo());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	/**
+	 * 기타의 복수 셀을 만든다
+	 */
+	private boolean makeCells(OtherData data) {
+		try {
+			makeCell(0, data.getTitle());
+			makeCell(1, data.getDate());
+			makeCell(2, data.getAmount());
+			makeCell(3, data.getMemo());
 			return true;
 		} catch (Exception e) {
 			return false;
