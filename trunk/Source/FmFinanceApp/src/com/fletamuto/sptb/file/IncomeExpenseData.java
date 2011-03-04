@@ -13,6 +13,7 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class IncomeExpenseData {
+	public static final String STRING_NAME = "수입-지출";
 	public static final String STRING_DATE = "년도/월/일";
 	public static final String STRING_TYPE = "구분";
 	public static final String STRING_CATEGORY = "분류";
@@ -142,95 +143,108 @@ public class IncomeExpenseData {
 			return (data1.getType() == data2.getType()) ? 1 : 0;
 		}
 	}
-}
-
-class GetIncomeExpenseDatas {
-	private ArrayList<IncomeExpenseData> incomeExpendDatas;
-	protected ArrayList<IncomeExpenseData> getIncomeExpenseDatas(Calendar calendar) {
-		incomeExpendDatas = new ArrayList<IncomeExpenseData>();
-		
-		getIncomeDatas(calendar);
-		getExpenseDatas(calendar);
-
-		return incomeExpendDatas;
-	}
 	
-	private ArrayList<IncomeExpenseData> getIncomeDatas(Calendar calendar) {
-		ArrayList<FinanceItem> financeMyPocketItems = DBMgr.getIncomeItemFromMypocket(calendar.get(calendar.YEAR), calendar.get(calendar.DATE));
+	/** 데이터를 얻어오기 위한 내부 클래스 */
+	private class GetIncomeExpenseDatas {
+		private ArrayList<IncomeExpenseData> incomeExpendDatas;
+		protected ArrayList<IncomeExpenseData> getIncomeExpenseDatas(Calendar calendar) {
+			incomeExpendDatas = new ArrayList<IncomeExpenseData>();
+			
+			getIncomeDatas(calendar);
+			getExpenseDatas(calendar);
 
-		for(int i = 0, size = financeMyPocketItems.size(); i < size; i++) {
-			IncomeExpenseData data = new IncomeExpenseData();
-			data.setDate(financeMyPocketItems.get(i).getCreateDate());
-			data.setType(true);	//수입
-			data.setCategory(financeMyPocketItems.get(i).getCategory().getName());
-			data.setAmount(financeMyPocketItems.get(i).getAmount());
-			data.setPayMethod("현금");
-			//data.setMonneyBalance(0);
-			data.setAccount("");
-			//data.setAccountBalance(0);
-			//data.setBalance(0);
-			data.setMemo(financeMyPocketItems.get(i).getMemo());
-			//data.setTag(financeMyPocketItems.get(i).getTag());
-			data.setRepeat(financeMyPocketItems.get(i).getRepeat().getRepeatMessage());
-			
-			incomeExpendDatas.add(data);
+			return incomeExpendDatas;
 		}
-		return incomeExpendDatas;
-	}
-	private ArrayList<IncomeExpenseData> getExpenseDatas(Calendar calendar) {
-		ArrayList<FinanceItem> financeMyPocketItems = DBMgr.getExpenseItemFromMypocket(calendar.get(calendar.YEAR), calendar.get(calendar.DATE));
-		//AccountItem accountItem = DBMgr.getAccountMyPocket();
+		/** 수입 항목을 얻어옴
+		 *@param
+		 *@return	ArrayList&lt;IncomeExpenseData&gt;
+		 */
+		private ArrayList<IncomeExpenseData> getIncomeDatas(Calendar calendar) {
+			ArrayList<FinanceItem> financeMyPocketItems = DBMgr.getIncomeItemFromMypocket(calendar.get(calendar.YEAR), calendar.get(calendar.MONTH)+1);
 
-		for(int i = 0, size = financeMyPocketItems.size(); i < size; i++) {
-			IncomeExpenseData data = new IncomeExpenseData();
-			data.setDate(financeMyPocketItems.get(i).getCreateDate());
-			data.setType(false);	//지출
-			data.setCategory(financeMyPocketItems.get(i).getCategory().getName() + " - " + financeMyPocketItems.get(i).getSubCategory().getName());
-			data.setAmount(financeMyPocketItems.get(i).getAmount());
-			data.setPayMethod("현금");
-			//data.setMonneyBalance(accountItem.getBalance());
-			//data.setAccount("");
-			//data.setAccountBalance(0);
-			//data.setBalance(0);
-			data.setMemo(financeMyPocketItems.get(i).getMemo());
-			//data.setTag(financeMyPocketItems.get(i).getTag());
-			data.setRepeat(financeMyPocketItems.get(i).getRepeat().getRepeatMessage());
+			for(int i = 0, size = financeMyPocketItems.size(); i < size; i++) {
+				IncomeExpenseData data = new IncomeExpenseData();
+				data.setDate(financeMyPocketItems.get(i).getCreateDate());
+				data.setType(true);	//수입
+				data.setCategory(financeMyPocketItems.get(i).getCategory().getName());
+				data.setAmount(financeMyPocketItems.get(i).getAmount());
+				data.setPayMethod("현금");
+				//data.setMonneyBalance(0);
+				data.setAccount("");
+				//data.setAccountBalance(0);
+				//data.setBalance(0);
+				data.setMemo(financeMyPocketItems.get(i).getMemo());
+				//data.setTag(financeMyPocketItems.get(i).getTag());
+				data.setRepeat(financeMyPocketItems.get(i).getRepeat().getRepeatMessage());
+				
+				incomeExpendDatas.add(data);
+			}
+			return incomeExpendDatas;
+		}
+		/** 지출 항목을 얻어옴
+		 *@param
+		 *@return	ArrayList&lt;IncomeExpenseData&gt;
+		 */
+		private ArrayList<IncomeExpenseData> getExpenseDatas(Calendar calendar) {
+			ArrayList<FinanceItem> financeMyPocketItems = DBMgr.getExpenseItemFromMypocket(calendar.get(calendar.YEAR), calendar.get(calendar.MONTH)+1);
+			//AccountItem accountItem = DBMgr.getAccountMyPocket();
+
+			for(int i = 0, size = financeMyPocketItems.size(); i < size; i++) {
+				IncomeExpenseData data = new IncomeExpenseData();
+				data.setDate(financeMyPocketItems.get(i).getCreateDate());
+				data.setType(false);	//지출
+				data.setCategory(financeMyPocketItems.get(i).getCategory().getName() + " - " + financeMyPocketItems.get(i).getSubCategory().getName());
+				data.setAmount(financeMyPocketItems.get(i).getAmount());
+				data.setPayMethod("현금");
+				//data.setMonneyBalance(accountItem.getBalance());
+				//data.setAccount("");
+				//data.setAccountBalance(0);
+				//data.setBalance(0);
+				data.setMemo(financeMyPocketItems.get(i).getMemo());
+				//data.setTag(financeMyPocketItems.get(i).getTag());
+				data.setRepeat(financeMyPocketItems.get(i).getRepeat().getRepeatMessage());
+				
+				incomeExpendDatas.add(data);
+			}
 			
-			incomeExpendDatas.add(data);
+			getCardExpenseDatas(calendar);
+			return incomeExpendDatas;
 		}
-		
-		getCardExpenseDatas(calendar);
-		return incomeExpendDatas;
-	}
-	private ArrayList<IncomeExpenseData> getCardExpenseDatas(Calendar calendar) {
-		ArrayList<CardItem> cardItems = DBMgr.getCardItems();
-		for(int i = 0, size = cardItems.size(); i < size; i++) {
-			getCardExpenseDatas(calendar, cardItems.get(i).getID());
+		/**
+		 * 카드 지출 항목을 얻어옴
+		 * @param
+		 * @return	ArrayList&lt;IncomeExpenseData&gt;
+		 */
+		private ArrayList<IncomeExpenseData> getCardExpenseDatas(Calendar calendar) {
+			ArrayList<CardItem> cardItems = DBMgr.getCardItems();
+			for(int i = 0, size = cardItems.size(); i < size; i++) {
+				getCardExpenseDatas(calendar, cardItems.get(i).getID());
+			}
+			return incomeExpendDatas;
 		}
-		return incomeExpendDatas;
-	}
-	private ArrayList<IncomeExpenseData> getCardExpenseDatas(Calendar calendar, int cardId) {
-		ArrayList<FinanceItem> financeCardItems = DBMgr.getCardExpenseItems(calendar.get(calendar.YEAR), calendar.get(calendar.DATE), cardId);
-		CardItem cardItem = DBMgr.getCardItem(cardId);
-		AccountItem accountItem = DBMgr.getAccountItem(cardItem.getAccount().getID());
-		
-		for(int i = 0, size = financeCardItems.size(); i < size; i++) {
-			IncomeExpenseData data = new IncomeExpenseData();
-			data.setDate(financeCardItems.get(i).getCreateDate());
-			data.setType(false);	//지출
-			data.setCategory(financeCardItems.get(i).getCategory().getName() + " - " + financeCardItems.get(i).getSubCategory().getName());
-			data.setAmount(financeCardItems.get(i).getAmount());
-			data.setPayMethod(cardItem.getCardTypeName());
-			//data.setMonneyBalance(0);
-			data.setAccount(accountItem.getCompany().getName() + " - " + accountItem.getNumber());
-			//data.setAccountBalance(cardItem.getAccount().getBalance());
-			//data.setBalance(cardItem.getBalance());
-			data.setMemo(financeCardItems.get(i).getMemo());
-			//data.setTag(financeCardItems.get(i).getTag());
-			data.setRepeat(financeCardItems.get(i).getRepeat().getRepeatMessage());
+		private ArrayList<IncomeExpenseData> getCardExpenseDatas(Calendar calendar, int cardId) {
+			ArrayList<FinanceItem> financeCardItems = DBMgr.getCardExpenseItems(calendar.get(calendar.YEAR), calendar.get(calendar.MONTH)+1, cardId);
+			CardItem cardItem = DBMgr.getCardItem(cardId);
+			AccountItem accountItem = DBMgr.getAccountItem(cardItem.getAccount().getID());
 			
-			incomeExpendDatas.add(data);
+			for(int i = 0, size = financeCardItems.size(); i < size; i++) {
+				IncomeExpenseData data = new IncomeExpenseData();
+				data.setDate(financeCardItems.get(i).getCreateDate());
+				data.setType(false);	//지출
+				data.setCategory(financeCardItems.get(i).getCategory().getName() + " - " + financeCardItems.get(i).getSubCategory().getName());
+				data.setAmount(financeCardItems.get(i).getAmount());
+				data.setPayMethod(cardItem.getCardTypeName());
+				//data.setMonneyBalance(0);
+				data.setAccount(accountItem.getCompany().getName() + " - " + accountItem.getNumber());
+				//data.setAccountBalance(cardItem.getAccount().getBalance());
+				//data.setBalance(cardItem.getBalance());
+				data.setMemo(financeCardItems.get(i).getMemo());
+				//data.setTag(financeCardItems.get(i).getTag());
+				data.setRepeat(financeCardItems.get(i).getRepeat().getRepeatMessage());
+				
+				incomeExpendDatas.add(data);
+			}
+			return incomeExpendDatas;
 		}
-		return incomeExpendDatas;
 	}
 }

@@ -42,13 +42,12 @@ public class AccountData {	//보통예금
 		this.balance = balance;
 	}
 
+	
 	public ArrayList<AccountData> getAccountDatas() {
-		return new GetAccountDatas().getAccountDatas();
+		return getDatas();
 	}
-}
-
-class GetAccountDatas {
-	protected ArrayList<AccountData> getAccountDatas() {
+	
+	protected ArrayList<AccountData> getDatas() {
 		ArrayList<AccountItem> accountItems = DBMgr.getAccountAllItems();
 		ArrayList<AccountData> accountDatas = new ArrayList<AccountData>();
 		
@@ -60,7 +59,8 @@ class GetAccountDatas {
 			accountData.setType(accountItems.get(i).getTypeName());
 			accountData.setBalance(accountItems.get(i).getBalance());
 			
-			accountDatas.add(accountData);
+			if(accountItems.get(i).getType() == accountItems.get(i).ORDINARY_DEPOSIT)
+				accountDatas.add(accountData);
 		}
 		return accountDatas;
 	}

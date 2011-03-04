@@ -50,8 +50,7 @@ public class POIOutPut {
 			makeWorkbook();
 			
 			makeIncomeExpenseDataSheet();	//수입-지출
-			makeAccountDataSheet();	//자산-보통예금
-			makeDepositDataSheet();	//자산-예금
+			makeAssetsSheet();	//자산
 			
 			try {
 				if(savePOI()) {
@@ -69,9 +68,22 @@ public class POIOutPut {
 			return false;
 		}
 	}
-	
+	private boolean makeAssetsSheet() {
+		try {
+			makeSheet("자산");
+			makeAccountDataSheet();	//자산-보통예금
+			makeRows(4);
+			makeDepositDataSheet();	//자산-예금
+			makeRows(4);
+			makeSavingsDataSheet();	//자산-적금
+			makeRows(4);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 	private boolean makeIncomeExpenseDataSheet() {
-		makeSheet("수입-지출");
+		makeSheet(IncomeExpenseData.STRING_NAME);
 		makeHead(new String[]{IncomeExpenseData.STRING_DATE,
 								IncomeExpenseData.STRING_TYPE,
 								IncomeExpenseData.STRING_CATEGORY,
@@ -90,7 +102,9 @@ public class POIOutPut {
 		return !expenseDatas.isEmpty();
 	}
 	private boolean makeAccountDataSheet() {
-		makeSheet("자산-보통예금 ");
+		//makeSheet("자산-보통예금");
+		makeHead(new String[]{AccountData.STRING_NAME});
+		makeRow();
 		makeHead(new String[]{AccountData.STRING_FINANCIAL,
 								AccountData.STRING_ACCOUNT_NUMBER,
 								AccountData.STRING_TYPE,
@@ -104,7 +118,9 @@ public class POIOutPut {
 		return !accountDatas.isEmpty();
 	}
 	private boolean makeDepositDataSheet() {
-		makeSheet("자산-예금 ");
+		//makeSheet("자산-예금 ");
+		makeHead(new String[]{DepositData.STRING_NAME});
+		makeRow();
 		makeHead(new String[]{DepositData.STRING_TITLE,
 								DepositData.STRING_FINANCIAL,
 								DepositData.STRING_ACCOUNT,
@@ -121,6 +137,27 @@ public class POIOutPut {
 		}
 		
 		return !depositDatas.isEmpty();
+	}
+	private boolean makeSavingsDataSheet() {
+		//makeSheet("자산-적금 ");
+		makeHead(new String[]{SavingsData.STRING_NAME});
+		makeRow();
+		makeHead(new String[]{SavingsData.STRING_TITLE,
+								SavingsData.STRING_FINANCIAL,
+								SavingsData.STRING_ACCOUNT,
+								SavingsData.STRING_AMOUNT,
+								SavingsData.STRING_TOTALAMOUNT,
+								SavingsData.STRING_INTEREST,
+								SavingsData.STRING_DEPO_DATE,
+								SavingsData.STRING_EXPI_DATE,
+								SavingsData.STRING_MEMO});
+		ArrayList<SavingsData> savingsDatas =  new SavingsData().getSavingsDatas();
+		for(int i = 0, size = savingsDatas.size(); i < size; i++) {
+			makeRow();
+			makeCells(savingsDatas.get(i));
+		}
+		
+		return !savingsDatas.isEmpty();
 	}
 
 	/**
@@ -233,6 +270,26 @@ public class POIOutPut {
 			return false;
 		}
 	}
+	/**
+	 * 적금의 복수의 셀을 만든다
+	 */
+	private boolean makeCells(SavingsData data) {
+		try {
+			makeCell(0, data.getTitle());
+			makeCell(1, data.getFinance());
+			makeCell(2, data.getAccount());
+			makeCell(3, data.getAmount());
+			makeCell(4, data.getTotalAmount());
+			makeCell(5, data.getInterest());
+			makeCell(6, data.getDepoDate());
+			makeCell(7, data.getExpiDate());
+			makeCell(8, data.getMemo());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
 	/**
 	 * 표의 항목을 만든다
 	 */

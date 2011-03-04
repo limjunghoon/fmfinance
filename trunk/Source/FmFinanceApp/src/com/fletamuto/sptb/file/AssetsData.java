@@ -9,7 +9,7 @@ public class AssetsData {
 	public static final String STRING_ASSETS = "ÀÚ»ê";
 	private ArrayList<AccountData> savingsDatas;
 	private ArrayList<DepositData> depositDatas;
-	private ArrayList<SavingsPlanData> savingsPlanDatas;
+	private ArrayList<SavingsData> savingsPlanDatas;
 	private ArrayList<StockData> stockDatas;
 	private ArrayList<FundsData> fundsDatas;
 	private ArrayList<InsuranceData> insuranceDatas;
