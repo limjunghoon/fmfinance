@@ -1,5 +1,7 @@
 package com.fletamuto.sptb;
 
+import java.util.Calendar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -37,8 +39,8 @@ public class ReportMonthCompareIncomeLayout extends ReportBaseMonthCompare {
     
 	protected void onClickCategoryButton(CategoryAmount categoryAmount) {
 		Intent intent = new Intent(ReportMonthCompareIncomeLayout.this, ReportIncomeExpandLayout.class);
-		intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, getYear());
-		intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, getMonth());
+		intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, getMonthCalender().get(Calendar.YEAR));
+		intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, getMonthCalender().get(Calendar.MONTH));
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, categoryAmount.getCategoryID());
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, categoryAmount.getName());
 		startActivity(intent);

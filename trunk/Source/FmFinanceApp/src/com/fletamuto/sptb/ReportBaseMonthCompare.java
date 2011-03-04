@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -19,25 +21,38 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
+	private static final int MOVE_SENSITIVITY = ItemDef.MOVE_SENSITIVITY;
 	
-	protected int mMonth;
-	protected int mYear;
+	private Calendar mMonthCalendar = Calendar.getInstance();
 	protected ReportExpandableListAdapter mAdapterItem;
 	protected ArrayList<ArrayList<FinanceItem>> mChildItems = new ArrayList<ArrayList<FinanceItem>>();
 	protected ArrayList<String> mParentItems = new ArrayList<String>();
 	
+	private float mTouchMove;
+	private boolean mTouchMoveFlag = false;
+	
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
 	protected abstract int getChildLayoutResourceID();
 	
-	public int getMonth() {
-		return mMonth;
+	public Calendar getMonthCalender() {
+		return mMonthCalendar;
 	}
+//	
+//	public int getYear() {
+//		return mYear;
+//	}
 	
-	public int getYear() {
-		return mYear;
+	@Override
+	protected void setTitleBtn() {
+		setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "년");
+		setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
+		
+		super.setTitleBtn();
 	}
 	
     /** Called when the activity is first created. */
@@ -47,22 +62,23 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
     	setContentView(R.layout.report_month_compare, true);
     	
     	getData();
-    	setButtonClickListener();
+    	setListener();
+    	
     	
     	updateChildView();
     }
     
     protected void getData() {
-		mFinanceItems = DBMgr.getItems(mType, mYear, mMonth);
-		mTotalAmout = DBMgr.getTotalAmountMonth(mType, mYear, mMonth);
+		mFinanceItems = DBMgr.getItems(mType, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1);
+		mTotalAmout = DBMgr.getTotalAmountMonth(mType, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1);
 		updateMapCategory();
 		updateReportItem();
 	}
     
     @Override
     protected void initialize() {
-    	mMonth = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_MONTH, Calendar.getInstance().get(Calendar.MONTH)+1);
-    	mYear = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_YEAR, Calendar.getInstance().get(Calendar.YEAR));
+    	mMonthCalendar.set(Calendar.MONTH, getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_MONTH, Calendar.getInstance().get(Calendar.MONTH)));
+    	mMonthCalendar.set(Calendar.YEAR, getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_YEAR, Calendar.getInstance().get(Calendar.YEAR)));
     }
     
 	private void setButtonClickListener() {
@@ -111,11 +127,11 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 		LinearLayout dayOfMonthLayout = (LinearLayout)findViewById(R.id.LLDayofMonth);
 		ToggleButton tbMonth = (ToggleButton)findViewById(R.id.TBMonth);
 		TextView tvMonth = (TextView)findViewById(R.id.TVCurrentMonth);
-		tvMonth.setText(String.format("%d년 %d월", mYear, mMonth));
+		tvMonth.setText(String.format("%d년 %d월", mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1));
 		TextView tvTotalAmount = (TextView)findViewById(R.id.TVTotalAmount);
 		tvTotalAmount.setText(String.format("금액 : %,d", mTotalAmout));
 		TextView tvDayOfMonthTitle = (TextView)findViewById(R.id.TVDayOfMonthTitle);
-		tvDayOfMonthTitle.setText(String.format("%d년 %d월", mYear, mMonth));
+		tvDayOfMonthTitle.setText(String.format("%d년 %d월", mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1));
 		
 		monthLayout.setVisibility(View.INVISIBLE);
 		dayOfMonthLayout.setVisibility(View.INVISIBLE);
@@ -257,12 +273,7 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 	}
 	
 	protected String getCompareText(final FinanceItem item) {
-		if (mMonth == -1 || mYear == -1) {
-			return item.getCreateDateString();
-		}
-		else {
-			return String.format("%d일", item.getCreateDate().get(Calendar.DAY_OF_MONTH));
-		}
+		return String.format("%d일", item.getCreateDate().get(Calendar.DAY_OF_MONTH));
 	}
 	
 	public int findItemFromParentItem(String date) {
@@ -276,27 +287,46 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 	}
 	
 	public void moveNextMonth() {
-		if (12 == mMonth) {
-			mYear++;
-			mMonth = 1;
-		}
-		else {
-			mMonth++;
-		}
+		mMonthCalendar.add(Calendar.MONTH, 1);
 		
 		getData();
 		updateChildView();
 	}
 	
 	public void movePreviousMonth() {
-		if (1 == mMonth) {
-			mYear--;
-			mMonth = 12;
-		}
-		else {
-			mMonth--;
-		}
+		mMonthCalendar.add(Calendar.MONTH, -1);
 		getData();
 		updateChildView();
 	}
+	
+	public void setListener() {
+		setButtonClickListener();
+		
+		findViewById(R.id.FLMain).setOnTouchListener(new View.OnTouchListener() {
+			
+			public boolean onTouch(View v, MotionEvent event) {
+				setMoveViewMotionEvent(event);
+		    	return false;
+			}
+		});
+	}
+	
+	public void setMoveViewMotionEvent(MotionEvent event) {
+    	if (event.getAction() == MotionEvent.ACTION_DOWN) {
+    		mTouchMove = event.getX();
+    		mTouchMoveFlag = true;
+    	}
+    	else if (event.getAction() == MotionEvent.ACTION_MOVE && mTouchMoveFlag == true) {
+    		
+    		if (mTouchMove-event.getX()< -MOVE_SENSITIVITY) {
+    			mTouchMoveFlag = false;
+    			moveNextMonth();
+    		}
+    		if (mTouchMove-event.getX()> MOVE_SENSITIVITY) {
+    			mTouchMoveFlag = false;
+    			movePreviousMonth();
+    		}
+    	}
+    }
+
 }

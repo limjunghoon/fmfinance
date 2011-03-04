@@ -25,7 +25,7 @@ public class MainReportLayout extends FmBaseActivity {
         setAdapterList();
       
         mReportActivityList.add(new ReportActivity(ReportSettleAccountsLayout.class));
-        mReportActivityList.add(new ReportActivity(ReportMonthCompareExpenseToIncomeLayout.class));
+        mReportActivityList.add(new ReportActivity(ReportMonthCompareExpenseLayout.class));
         mReportActivityList.add(new ReportActivity(ReportChangeAssets.class));
         mReportActivityList.add(new ReportActivity(ReportCategoryCompareLayout.class));
         mReportActivityList.add(new ReportActivity(SelectTagLayout.class, MsgDef.ActRequest.ACT_TAG_SELECTED));
@@ -101,4 +101,6 @@ public class MainReportLayout extends FmBaseActivity {
     		return mRequestCode;
     	}
     }
+    
+    
 }
