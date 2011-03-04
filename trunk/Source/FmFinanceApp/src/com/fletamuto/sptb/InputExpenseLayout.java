@@ -392,8 +392,9 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		if (mExpensItem.isVaildCatetory()) {
 			if (mExpensItem.getCategory().getExtndType() == ItemDef.NOT_CATEGORY) {
 				categoryText = String.format("%s", mExpensItem.getCategory().getName());
-			}
-			else {
+			} else if (mExpensItem.getSubCategory().getID() == -1 || mExpensItem.getSubCategory().getName() == "") {
+				categoryText = String.format("%s", mExpensItem.getCategory().getName());
+			} else {
 				categoryText = String.format("%s - %s", mExpensItem.getCategory().getName(), mExpensItem.getSubCategory().getName());
 			}
 			
