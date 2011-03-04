@@ -3,6 +3,12 @@ package com.fletamuto.sptb.file;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.fletamuto.sptb.data.AssetsExtendItem;
+import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.AssetsStockItem;
+import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.db.DBMgr;
+
 public class StockData {	//주식
 	public static final String STRING_NAME = "주식";
 	public static final String STRING_TICKER = "종목";
@@ -12,25 +18,69 @@ public class StockData {	//주식
 	public static final String STRING_DEALER = "판매처";
 	public static final String STRING_MEMO = "메모";
 	
-	public String ticker;
-	public Date date;
-	public int quantity;
-	public long price;
-	public String dealer;
-	public String memo;
+	private String ticker;
+	private Date date;
+	private int quantity;
+	private long price;
+	private String dealer;
+	private String memo;
 	
-	public static ArrayList<StockData> getStockDatas() {	// FIXME 객체를 얻어오는 부분
+	public String getTicker() {
+		return ticker;
+	}
+	public void setTicker(String ticker) {
+		this.ticker = ticker;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public long getPrice() {
+		return price;
+	}
+	public void setPrice(long price) {
+		this.price = price;
+	}
+	public String getDealer() {
+		return dealer;
+	}
+	public void setDealer(String dealer) {
+		this.dealer = dealer;
+	}
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+
+	public ArrayList<StockData> getStockDatas() {
+		return getDatas();
+	}
+	
+	private ArrayList<StockData> getDatas() {
+		ArrayList<FinanceItem> financeItems = DBMgr.getAllItems(AssetsStockItem.TYPE);
 		ArrayList<StockData> stockDatas = new ArrayList<StockData>();
 		
-		for(int i = 0; i < 10; i++) {	//출력 확인용 임시 데이터 만들기
+		for(int i = 0, size = financeItems.size(); i < size; i++) {
+			AssetsStockItem stockItem = (AssetsStockItem)financeItems.get(i);
 			StockData stockData = new StockData();
 			
-			stockData.ticker = "테스트";
-			stockData.date = new Date();
-			stockData.quantity = 1000;
-			stockData.price = 10000;
-			stockData.dealer = "테스트";
-			stockData.memo = "";
+			stockData.setTicker(stockItem.getSeparatorTitle());
+			stockData.setDate(stockItem.getCreateDate().getTime());
+			stockData.setQuantity(stockItem.getCount());
+			stockData.setPrice(stockItem.getPrice());
+			stockData.setDealer(stockItem.getStore());
+			stockData.setMemo(stockItem.getMemo());
+			
 			stockDatas.add(stockData);
 		}
 		

@@ -29,6 +29,7 @@ import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.CardPayment;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 
 import com.fletamuto.sptb.view.FmBaseLayout;
@@ -266,50 +267,77 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
     		}
 		});
     	
-    	final GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.OnGestureListener() {
-			
-			public boolean onSingleTapUp(MotionEvent e) {
-				return false;
-			}
-			
-			public void onShowPress(MotionEvent e) {
-			}
-			
-			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-				return false;
-			}
-			
-			public void onLongPress(MotionEvent e) {
-			}
-			
-			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-				if(Math.abs(e2.getX()-e1.getX()) > 100) {
-					if(e2.getX() > e1.getX()) {	//터치 후 오른쪽으로 플링
-						mCalendar.add(Calendar.MONTH, -1);
-						getCalendarDate();
-						updateCardBillingDateTerm();
-					} else {
-						mCalendar.add(Calendar.MONTH, 1);
-						getCalendarDate();
-						updateCardBillingDateTerm();
-					}
-				}
-				return false;
-			}
-			
-			public boolean onDown(MotionEvent e) {
-				return false;
-			}
-		});
+//    	final GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.OnGestureListener() {
+//		
+//		public boolean onSingleTapUp(MotionEvent e) {
+//			return false;
+//		}
+//		
+//		public void onShowPress(MotionEvent e) {
+//		}
+//		
+//		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+//			return false;
+//		}
+//		
+//		public void onLongPress(MotionEvent e) {
+//		}
+//		
+//		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+//			if(Math.abs(e2.getX()-e1.getX()) > 100) {
+//				if(e2.getX() > e1.getX()) {	//터치 후 오른쪽으로 플링
+//					mCalendar.add(Calendar.MONTH, -1);
+//					getCalendarDate();
+//					updateCardBillingDateTerm();
+//				} else {
+//					mCalendar.add(Calendar.MONTH, 1);
+//					getCalendarDate();
+//					updateCardBillingDateTerm();
+//				}
+//			}
+//			return false;
+//		}
+//		
+//		public boolean onDown(MotionEvent e) {
+//			return false;
+//		}
+//		});
     	list.setOnTouchListener(new View.OnTouchListener() {
-			
-			public boolean onTouch(View v, MotionEvent event) {
-				if(getIntent().getIntExtra("Action", ACTION_DEFAULT) == ACTION_NOTIFICATION_INTO)
-						return false;
-				return gestureDetector.onTouchEvent(event);
+
+    		public boolean onTouch(View v, MotionEvent event) {
+//    			//return gestureDetector.onTouchEvent(event);
+//    			if(getIntent().getIntExtra("Action", ACTION_DEFAULT) == ACTION_NOTIFICATION_INTO)
+//    				return false;
+    			setMoveViewMotionEvent(event);
+    			return true;
+    		}
+    	});
+	}
+	private static final int MOVE_SENSITIVITY = ItemDef.MOVE_SENSITIVITY;
+	private float mTouchMove;
+	private boolean mTouchMoveFlag = false;
+
+	public void setMoveViewMotionEvent(MotionEvent event) {
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			mTouchMove = event.getX();
+			mTouchMoveFlag = true;
+		}
+		else if (event.getAction() == MotionEvent.ACTION_MOVE && mTouchMoveFlag == true) {
+
+			if (mTouchMove-event.getX()< -MOVE_SENSITIVITY) {
+				mTouchMoveFlag = false;
+				mCalendar.add(Calendar.MONTH, 1);
+				getCalendarDate();
+				updateCardBillingDateTerm();
 			}
-		});
-    }
+			if (mTouchMove-event.getX()> MOVE_SENSITIVITY) {
+				mTouchMoveFlag = false;
+				mCalendar.add(Calendar.MONTH, -1);
+				getCalendarDate();
+				updateCardBillingDateTerm();
+			}
+		}
+	}
 	public class ReportCardExpenseItemAdapter extends ArrayAdapter<FinanceItem> {
     	int mResource;
     	private LayoutInflater mInflater;
