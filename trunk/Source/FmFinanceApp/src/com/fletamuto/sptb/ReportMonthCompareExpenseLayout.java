@@ -1,5 +1,7 @@
 package com.fletamuto.sptb;
 
+import java.util.Calendar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,7 @@ import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.ItemDef;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
 
@@ -27,8 +30,13 @@ public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
 	@Override
 	protected void setTitleBtn() {
     	setTitle("월 지출");
+    	
+    	setTitleBtnText(FmBaseLayout.BTN_LEFT_01, "수입");
+		setTitleBtnVisibility(FmBaseLayout.BTN_LEFT_01, View.VISIBLE);
+		
 		super.setTitleBtn();
 	}
+	
 
 	@Override
     protected void setListViewText(FinanceItem financeItem, View convertView) {
@@ -49,8 +57,8 @@ public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
 	
 	protected void onClickCategoryButton(CategoryAmount categoryAmount) {
 		Intent intent = new Intent(ReportMonthCompareExpenseLayout.this, ReportMonthCompareExpenseSubLayout.class);
-		intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, getYear());
-		intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, getMonth());
+		intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, getMonthCalender().get(Calendar.YEAR));
+		intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, getMonthCalender().get(Calendar.MONTH));
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, categoryAmount.getCategoryID());
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, categoryAmount.getName());
 		startActivity(intent);

@@ -16,10 +16,12 @@ import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportMonthOfYearLayout extends FmBaseActivity {
+	private static final int MOVE_SENSITIVITY = ItemDef.MOVE_SENSITIVITY;
 	public static final int VIEW_INCOME_EXPENSE = 0;
 	public static final int VIEW_ASSETS = 1;
 	public static final int VIEW_BUDGET = 2;
@@ -33,6 +35,9 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 	private int mYear = Calendar.getInstance().get(Calendar.YEAR);
 	private int mViewMode = VIEW_INCOME_EXPENSE;
 	
+	private float mTouchMove;
+	private boolean mTouchMoveFlag = false;
+	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -44,6 +49,15 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
     	getDate();
     	updateChildView();
 //    	setBunClickListener();
+    	
+    	findViewById(R.id.ScrollView01).setOnTouchListener(new View.OnTouchListener() {
+			
+			public boolean onTouch(View v, MotionEvent event) {
+				setMoveViewMotionEvent(event);
+		    	return false;
+			}
+		});
+
     }
     
     @Override
@@ -104,6 +118,7 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 		
 		
 		int size = mItem1.size();
+		mItemDifference.clear();
 		for (int index = 0; index < size; index++) {
 			mItemDifference.add(mItem1.get(index)- mItem2.get(index));
 		}
@@ -168,5 +183,30 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 			((TextView)llMember.findViewById(R.id.TVListRightBottom)).setText(String.format("%,d¿ø", mItem2.get(index)));
 		}
 		
+	}
+	
+	public void setMoveViewMotionEvent(MotionEvent event) {
+    	if (event.getAction() == MotionEvent.ACTION_DOWN) {
+    		mTouchMove = event.getX();
+    		mTouchMoveFlag = true;
+    	}
+    	else if (event.getAction() == MotionEvent.ACTION_MOVE && mTouchMoveFlag == true) {
+    		
+    		if (mTouchMove-event.getX()< -MOVE_SENSITIVITY) {
+    			mTouchMoveFlag = false;
+    			moveCurrentDate(1);
+    		}
+    		if (mTouchMove-event.getX()> MOVE_SENSITIVITY) {
+    			mTouchMoveFlag = false;
+    			moveCurrentDate(-1);
+    		}
+    	}
+    }
+	
+	protected void moveCurrentDate(int dayValue) {
+		mYear += dayValue;
+		
+		getDate();
+    	updateChildView();
 	}
 }

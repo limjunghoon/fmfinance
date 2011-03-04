@@ -1,5 +1,7 @@
 package com.fletamuto.sptb;
 
+import java.util.Calendar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -31,7 +33,7 @@ public class ReportMonthCompareExpenseSubLayout extends ReportBaseMonthCompare {
 	protected void getData() {
 		if (mMainCategoryID == -1) return;
 		
-		mFinanceItems = DBMgr.getItemsFromCategoryID(mType, mMainCategoryID, mYear, mMonth);
+		mFinanceItems = DBMgr.getItemsFromCategoryID(mType, mMainCategoryID, getMonthCalender().get(Calendar.YEAR), getMonthCalender().get(Calendar.MONTH)+1);
 		
 		int itemSize = mFinanceItems.size();
 		for (int index = 0; index < itemSize; index++) {
@@ -74,8 +76,8 @@ public class ReportMonthCompareExpenseSubLayout extends ReportBaseMonthCompare {
 	
 	protected void onClickCategoryButton(CategoryAmount categoryAmount) {
 		Intent intent = new Intent(ReportMonthCompareExpenseSubLayout.this, ReportExpenseExpandLayout.class);
-		intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, getYear());
-		intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, getMonth());
+		intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, getMonthCalender().get(Calendar.YEAR));
+		intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, getMonthCalender().get(Calendar.MONTH));
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_SUB_ID, categoryAmount.getCategoryID());
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, categoryAmount.getName());
 		startActivity(intent);
