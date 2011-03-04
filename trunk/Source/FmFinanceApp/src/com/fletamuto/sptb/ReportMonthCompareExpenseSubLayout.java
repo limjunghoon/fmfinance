@@ -33,8 +33,14 @@ public class ReportMonthCompareExpenseSubLayout extends ReportBaseMonthCompare {
 	protected void getData() {
 		if (mMainCategoryID == -1) return;
 		
-		mFinanceItems = DBMgr.getItemsFromCategoryID(mType, mMainCategoryID, getMonthCalender().get(Calendar.YEAR), getMonthCalender().get(Calendar.MONTH)+1);
+		if (mViewMode == VIEW_MONTH) {
+			mFinanceItems = DBMgr.getItemsFromCategoryID(mType, mMainCategoryID, getMonthCalender().get(Calendar.YEAR), getMonthCalender().get(Calendar.MONTH)+1);
+		}
+		else {
+			mFinanceItems = DBMgr.getItemsFromCategoryID(mType, mMainCategoryID, mYear);
+		}
 		
+		mTotalAmout = 0L;
 		int itemSize = mFinanceItems.size();
 		for (int index = 0; index < itemSize; index++) {
 			mTotalAmout += mFinanceItems.get(index).getAmount();
@@ -50,11 +56,28 @@ public class ReportMonthCompareExpenseSubLayout extends ReportBaseMonthCompare {
 	
 	@Override
 	protected void setTitleBtn() {
-    	setTitle(getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME));
+    	
 
 		super.setTitleBtn();
 	}
-
+	
+	@Override
+	public void setTitleName() {
+		if (mViewMode == VIEW_MONTH) {
+			setTitle("월간 " + getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME));
+		}
+		else {
+			setTitle("년간 " + getIntent().getStringExtra(MsgDef.ExtraNames.CATEGORY_NAME));
+		}
+		
+		super.setTitleName();
+	}
+	
+	@Override
+	protected void updateChildView() {
+		setTitleName();
+		super.updateChildView();
+	}
 
 
 	@Override
@@ -87,4 +110,5 @@ public class ReportMonthCompareExpenseSubLayout extends ReportBaseMonthCompare {
 	protected int getChildLayoutResourceID() {
 		return R.layout.report_list_expense_expand;
 	}
+
 }

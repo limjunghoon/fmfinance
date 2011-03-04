@@ -27,11 +27,15 @@ import com.fletamuto.sptb.view.FmBaseLayout;
 
 public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 	private static final int MOVE_SENSITIVITY = ItemDef.MOVE_SENSITIVITY;
+	protected static final int VIEW_MONTH = 0;
+	protected static final int VIEW_YEAR = 1;
 	
+	protected int mYear = Calendar.getInstance().get(Calendar.YEAR);
 	private Calendar mMonthCalendar = Calendar.getInstance();
 	protected ReportExpandableListAdapter mAdapterItem;
 	protected ArrayList<ArrayList<FinanceItem>> mChildItems = new ArrayList<ArrayList<FinanceItem>>();
 	protected ArrayList<String> mParentItems = new ArrayList<String>();
+	protected int mViewMode = VIEW_MONTH;
 	
 	private float mTouchMove;
 	private boolean mTouchMoveFlag = false;
@@ -39,23 +43,8 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
 	protected abstract int getChildLayoutResourceID();
 	
-	public Calendar getMonthCalender() {
-		return mMonthCalendar;
-	}
-//	
-//	public int getYear() {
-//		return mYear;
-//	}
 	
-	@Override
-	protected void setTitleBtn() {
-		setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "년");
-		setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
-		
-		super.setTitleBtn();
-	}
-	
-    /** Called when the activity is first created. */
+	/** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	
@@ -67,10 +56,38 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
     	
     	updateChildView();
     }
+	
+	public Calendar getMonthCalender() {
+		return mMonthCalendar;
+	}
+	
+	@Override
+	protected void setTitleBtn() {
+		setTitleBtnName();
+		setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
+		
+		super.setTitleBtn();
+	}
+	
+	public void setTitleBtnName() {
+		if (mViewMode == VIEW_MONTH) {
+			setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "년");
+		} else {
+			setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "월");
+		}
+	}
+	
     
     protected void getData() {
-		mFinanceItems = DBMgr.getItems(mType, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1);
-		mTotalAmout = DBMgr.getTotalAmountMonth(mType, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1);
+    	if (mViewMode == VIEW_MONTH) {
+    		mFinanceItems = DBMgr.getItems(mType, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1);
+    		mTotalAmout = DBMgr.getTotalAmountMonth(mType, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1);
+    	}
+    	else {
+    		mFinanceItems = DBMgr.getItems(mType, mYear);
+    		mTotalAmout = DBMgr.getTotalAmountYear(mType, mYear);
+    	}
+		
 		updateMapCategory();
 		updateReportItem();
 	}
@@ -128,8 +145,8 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 		ToggleButton tbMonth = (ToggleButton)findViewById(R.id.TBMonth);
 		TextView tvMonth = (TextView)findViewById(R.id.TVCurrentMonth);
 		tvMonth.setText(String.format("%d년 %d월", mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1));
-		TextView tvTotalAmount = (TextView)findViewById(R.id.TVTotalAmount);
-		tvTotalAmount.setText(String.format("금액 : %,d", mTotalAmout));
+		Button btnTotalAmount = (Button)findViewById(R.id.BtnTotalAmount);
+		btnTotalAmount.setText(String.format("금액 : %,d", mTotalAmout));
 		TextView tvDayOfMonthTitle = (TextView)findViewById(R.id.TVDayOfMonthTitle);
 		tvDayOfMonthTitle.setText(String.format("%d년 %d월", mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1));
 		
@@ -145,8 +162,9 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 		
 		updateBarGraph();
 		addButtonInLayout();
-		
-		setExpandListAdapter();
+
+		// 일별보기는 지원 미정이기때문에 일단 주석처리
+//		setExpandListAdapter();
 	}
 	
 	
@@ -301,12 +319,35 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 	
 	public void setListener() {
 		setButtonClickListener();
+		setChangeViewBtnListener();
+//		findViewById(R.id.ScrollView01).setOnTouchListener(new View.OnTouchListener() {
+//			
+//			public boolean onTouch(View v, MotionEvent event) {
+//				setMoveViewMotionEvent(event);
+//		    	return true;
+//			}
+//		});
 		
-		findViewById(R.id.FLMain).setOnTouchListener(new View.OnTouchListener() {
+		findViewById(R.id.BtnTotalAmount).setOnClickListener(new View.OnClickListener() {
 			
-			public boolean onTouch(View v, MotionEvent event) {
-				setMoveViewMotionEvent(event);
-		    	return false;
+			public void onClick(View v) {
+				onClickTotalAmountBtn();
+			}
+		});
+		
+		
+	}
+	
+	protected void onClickTotalAmountBtn() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void setChangeViewBtnListener() {
+		setTitleButtonListener(FmBaseLayout.BTN_RIGTH_01, new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				onChageViewMode();
 			}
 		});
 	}
@@ -329,4 +370,15 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
     	}
     }
 
+	protected void onChageViewMode() {
+		if (mViewMode == VIEW_MONTH) {
+			mViewMode = VIEW_YEAR;
+		} else {
+			mViewMode = VIEW_MONTH;
+		}
+		
+		setTitleBtnName();
+		getData();
+		updateChildView();
+	}
 }

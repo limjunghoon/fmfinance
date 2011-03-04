@@ -326,9 +326,19 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItems(year, month);
 	}
 	
+	public static ArrayList<FinanceItem> getItems(int itemType, int year) {
+		if (checkFinanceItemType(itemType) == false) return null;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItems(year);
+	}
+	
 	public static ArrayList<FinanceItem> getItemsFromCategoryID(int itemType, int mainCategoryID, int year, int month) {
 		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItemsFromCategoryID(mainCategoryID, year, month);
+	}
+	
+	public static ArrayList<FinanceItem> getItemsFromCategoryID(int itemType, int mainCategoryID, int year) {
+		if (checkFinanceItemType(itemType) == false) return null;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getItemsFromCategoryID(mainCategoryID, year);
 	}
 	
 	public static ArrayList<FinanceItem> getItemsFromCategoryID(int itemType, int mainCategoryID) {
@@ -397,6 +407,11 @@ public final class DBMgr {
 	public static ArrayList<Long> getTotalAmountMonth(int itemType, int year) {
 		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountMonth(year);
+	}
+	
+	public static ArrayList<Long> getTotalAmount(int itemType, int year, int month, int beforMonthCount) {
+		if (checkFinanceItemType(itemType) == false) return null;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmount(year, month, beforMonthCount);
 	}
 	
 	public static long getTotalAmountMonth(int itemType, int categorID, int year, int month) {
