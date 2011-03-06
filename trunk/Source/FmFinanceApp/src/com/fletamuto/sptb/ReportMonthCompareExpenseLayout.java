@@ -94,4 +94,10 @@ public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
 		return R.layout.report_list_expense_expand;
 	}
 
+	@Override
+	protected void onClickTotalAmountBtn() {
+		Intent intent = new Intent(this, ReportMonthOfYearCategoryLayout.class);
+		intent.putExtra(MsgDef.ExtraNames.ITEM_TYPE, ExpenseItem.TYPE);
+		startActivity(intent);
+	}
 }

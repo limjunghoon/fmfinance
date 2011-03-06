@@ -26,7 +26,6 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 	public static final int VIEW_ASSETS = 1;
 	public static final int VIEW_BUDGET = 2;
 	
-	public static final int BASE_PERIOD_TERM = 6;
 	
 	private ArrayList<Long> mItem1 = new ArrayList<Long>();
 	private ArrayList<Long> mItem2 = new ArrayList<Long>();
@@ -39,7 +38,7 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 	
 	private float mTouchMove;
 	private boolean mTouchMoveFlag = false;
-	private int mPeriodTerm = BASE_PERIOD_TERM;
+	private int mPeriodTerm = ItemDef.BASE_PERIOD_MONTH_TERM;
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {

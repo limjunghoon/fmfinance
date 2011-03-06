@@ -338,9 +338,10 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 		
 	}
 	
+	/**
+	 * 총액 버튼 클릭 시
+	 */
 	protected void onClickTotalAmountBtn() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void setChangeViewBtnListener() {

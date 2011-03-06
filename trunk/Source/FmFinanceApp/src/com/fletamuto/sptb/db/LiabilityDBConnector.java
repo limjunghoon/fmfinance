@@ -512,6 +512,21 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 		closeDatabase();
 		return category;
 	}
+	
+	@Override
+	public Category getSubCategoryFromID(int categoryID) {
+		Category category = null;
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		Cursor c = db.query("liability_sub_category", null, "_id=?", new String[]{String.valueOf(categoryID)}, null, null, null);
+		
+		if (c.moveToFirst() != false) {
+			category = new Category(c.getInt(0), c.getString(1), c.getInt(2), c.getInt(3), c.getInt(4), c.getInt(5));
+		}
+		c.close();
+		closeDatabase();
+		return category;
+	}
 
 	
 	/**
@@ -585,6 +600,68 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 			
 			String[] params = {String.format("%d-%02d", year, targetMonth)};
 			String query = "SELECT SUM(amount) FROM liability WHERE strftime('%Y-%m', create_date)=?";
+			Cursor c = db.rawQuery(query, params);
+			
+			if (c.moveToFirst() != false) {
+				amountMonthInYear.add(c.getLong(0));
+			}
+			targetMonth++;
+			c.close();
+		}
+		
+		closeDatabase();
+		return amountMonthInYear;
+	}
+	
+	public ArrayList<Long> getTotalMainCategoryAmount(int mainCategoryID, int year, int month, int beforMonthCount) {
+		ArrayList<Long> amountMonthInYear = new ArrayList<Long>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		int targetMonth = month - beforMonthCount;
+		if (targetMonth <= 0) {
+			targetMonth += 12 + 1;
+			year--;
+		}
+		for (int index = 0; index < beforMonthCount; index++) {
+			
+			if (targetMonth > 12) {
+				targetMonth = 1;
+				year++;
+			}
+			
+			String[] params = {String.valueOf(mainCategoryID), String.format("%d-%02d", year, targetMonth)};
+			String query = "SELECT SUM(amount) FROM liability WHERE main_category=? AND strftime('%Y-%m', create_date)=?";
+			Cursor c = db.rawQuery(query, params);
+			
+			if (c.moveToFirst() != false) {
+				amountMonthInYear.add(c.getLong(0));
+			}
+			targetMonth++;
+			c.close();
+		}
+		
+		closeDatabase();
+		return amountMonthInYear;
+	}
+	
+	public ArrayList<Long> getTotalSubCategoryAmount(int subCategoryID, int year, int month, int beforMonthCount) {
+		ArrayList<Long> amountMonthInYear = new ArrayList<Long>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		int targetMonth = month - beforMonthCount;
+		if (targetMonth <= 0) {
+			targetMonth += 12 + 1;
+			year--;
+		}
+		for (int index = 0; index < beforMonthCount; index++) {
+			
+			if (targetMonth > 12) {
+				targetMonth = 1;
+				year++;
+			}
+			
+			String[] params = {String.valueOf(subCategoryID), String.format("%d-%02d", year, targetMonth)};
+			String query = "SELECT SUM(amount) FROM liability WHERE sub_category=? AND strftime('%Y-%m', create_date)=?";
 			Cursor c = db.rawQuery(query, params);
 			
 			if (c.moveToFirst() != false) {

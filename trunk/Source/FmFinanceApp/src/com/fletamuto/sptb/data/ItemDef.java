@@ -6,6 +6,9 @@ package com.fletamuto.sptb.data;
  * @version 1.0.0.0
  */
 public final class ItemDef {
+	
+	public static final int BASE_PERIOD_MONTH_TERM = 6;
+	
 	public static final int VIEW_DAY_OF_MONTH = 0;
 	public static final int VIEW_MONTH = 1;
 	public static final int LAST_DAY_OF_MONTH = 31;
