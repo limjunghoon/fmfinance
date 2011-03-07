@@ -113,7 +113,6 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 			
 			Category category = item.getCategory();
 			if (category == null) {
-				Log.w(LogTag.LAYOUT, ":: INVAILD CATEGORU :: ");
 				continue;
 			}
 			
@@ -129,15 +128,16 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 					categoryName = "완료된 부채";
 				}
 				
+				
 			} else {
 				categoryID = category.getID();
 				categoryName = category.getName();
 			}
-			
+
 			CategoryAmount categoryAmount = mCategoryItems.get(categoryID);
 			
 			if (categoryAmount == null) {
-				
+
 				categoryAmount = new CategoryAmount(item.getType());
 				categoryAmount.set(categoryID, /*category.getName()*/categoryName, item.getAmount());
 				mCategoryItems.put(categoryID, categoryAmount);
@@ -145,10 +145,10 @@ public abstract class ReportSeparationLayout extends ReportBaseLayout {
 			else {
 				categoryAmount.addAmount(item.getAmount());
 			}
-		}
+		}	
 	}
 	
-	//완료된 자산을 위해 일부 수정
+	//완료된 부채을 가장 아랫쪽에 배치 하기 위해
 	protected ArrayList<CategoryAmount> getListItems() {
     	ArrayList<CategoryAmount> listItems = new ArrayList<CategoryAmount>();
     	Collection<CategoryAmount> categoryAmountItems = mCategoryItems.values();
