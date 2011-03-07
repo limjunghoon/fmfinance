@@ -24,11 +24,11 @@ public class ReportAssetsExpandLayout extends ReportExpandBaseLayout {
     }
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
-    	AssetsItem item = (AssetsItem)financeItem;
-		
-		((TextView)convertView.findViewById(R.id.TVAssetsReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
-		((TextView)convertView.findViewById(R.id.TVAssetsReportListTitle)).setText(String.format("제목 : %s", item.getTitle()));
-		((TextView)convertView.findViewById(R.id.TVAssetsReportListCategory)).setText(String.format("분류 : %s", item.getCategory().getName()));
+//    	AssetsItem item = (AssetsItem)financeItem;
+//		
+//		((TextView)convertView.findViewById(R.id.TVAssetsReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
+//		((TextView)convertView.findViewById(R.id.TVAssetsReportListTitle)).setText(String.format("제목 : %s", item.getTitle()));
+//		((TextView)convertView.findViewById(R.id.TVAssetsReportListCategory)).setText(String.format("분류 : %s", item.getCategory().getName()));
 	}
     
     protected void setDeleteBtnListener(final View convertView, final int id, final int groupPosition, final int childPosition) {

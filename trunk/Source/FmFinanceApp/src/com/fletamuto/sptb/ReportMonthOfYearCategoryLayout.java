@@ -189,6 +189,8 @@ public class ReportMonthOfYearCategoryLayout extends FmBaseActivity {
 		getMonthAmount();
 		setMonthData();
 	}
+	
+	
 
 	
 	public void getMonthAmount() {

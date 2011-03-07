@@ -97,6 +97,7 @@ public abstract class ReportBaseCompare extends FmBaseActivity {
 		mCategoryAmount.clear();
 		
 		int itemSize = mFinanceItems.size();
+		
 		for (int index = 0; index < itemSize; index++) {
 			FinanceItem item = mFinanceItems.get(index);
 			Category category = getCategory(item);
