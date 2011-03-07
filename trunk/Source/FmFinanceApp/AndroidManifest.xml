@@ -60,7 +60,6 @@
 <activity android:name=".EditSelecCompanyLayout"></activity>
 <activity android:name=".InputIncomeSelaryLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".ReportMonthOfYearLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
-
 <activity android:name=".InputTakeHomePayLayout"></activity>
 <activity android:name=".ReportMonthCompareExpenseToIncomeLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
 <activity android:name=".ReportMonthCompareExpenseLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>

@@ -97,12 +97,20 @@ public class ReportMonthCompareExpenseSubLayout extends ReportBaseMonthCompare {
 		((TextView)convertView.findViewById(R.id.TVExpenseReportListPaymentMethod)).setText("∞·¡¶ : " + item.getPaymentMethod().getText());
 	}
 	
+
+	
+	
 	protected void onClickCategoryButton(CategoryAmount categoryAmount) {
-		Intent intent = new Intent(ReportMonthCompareExpenseSubLayout.this, ReportExpenseExpandLayout.class);
-		intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, getMonthCalender().get(Calendar.YEAR));
-		intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, getMonthCalender().get(Calendar.MONTH));
+		Intent intent = new Intent(this, ReportMonthOfYearCategoryLayout.class);
+		intent.putExtra(MsgDef.ExtraNames.VIEW_MODE, mViewMode);
+		if (mViewMode == VIEW_MONTH) {
+			intent.putExtra(MsgDef.ExtraNames.CALENDAR, getMonthCalender());
+		}
+		else {
+			intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, mYear);
+		}
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_SUB_ID, categoryAmount.getCategoryID());
-		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, categoryAmount.getName());
+		intent.putExtra(MsgDef.ExtraNames.ITEM_TYPE, ExpenseItem.TYPE);
 		startActivity(intent);
 	}
 	
@@ -110,5 +118,22 @@ public class ReportMonthCompareExpenseSubLayout extends ReportBaseMonthCompare {
 	protected int getChildLayoutResourceID() {
 		return R.layout.report_list_expense_expand;
 	}
+	
+	@Override
+	protected void onClickTotalAmountBtn() {
+		Intent intent = new Intent(this, ReportMonthOfYearCategoryLayout.class);
+		intent.putExtra(MsgDef.ExtraNames.VIEW_MODE, mViewMode);
+		if (mViewMode == VIEW_MONTH) {
+			intent.putExtra(MsgDef.ExtraNames.CALENDAR, getMonthCalender());
+		}
+		else {
+			intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, mYear);
+		}
+		intent.putExtra(MsgDef.ExtraNames.ITEM_TYPE, ExpenseItem.TYPE);
+		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, mMainCategoryID);
+		startActivity(intent);
+	}
+	
+	
 
 }

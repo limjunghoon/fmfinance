@@ -1,6 +1,7 @@
 package com.fletamuto.sptb;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ViewHolder;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
@@ -22,12 +24,42 @@ public class ReportIncomeExpandLayout extends ReportExpandBaseLayout {
         updateChildView();
     }
     
+//    protected void setListViewText(FinanceItem financeItem, View convertView) {
+//    	IncomeItem item = (IncomeItem)financeItem;
+//		((TextView)convertView.findViewById(R.id.TVIncomeReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
+//		((TextView)convertView.findViewById(R.id.TVIncomeReportListMemo)).setText("메모 : " + item.getMemo());
+//		((TextView)convertView.findViewById(R.id.TVIncomeReportListCategory)).setText("분류 : " + item.getCategory().getName());
+//	}
+    
     protected void setListViewText(FinanceItem financeItem, View convertView) {
-    	IncomeItem item = (IncomeItem)financeItem;
-		((TextView)convertView.findViewById(R.id.TVIncomeReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
-		((TextView)convertView.findViewById(R.id.TVIncomeReportListMemo)).setText("메모 : " + item.getMemo());
-		((TextView)convertView.findViewById(R.id.TVIncomeReportListCategory)).setText("분류 : " + item.getCategory().getName());
+    	IncomeItem income = (IncomeItem)financeItem;
+    	ViewHolder viewHolder = (ViewHolder) convertView.getTag();
+    	viewHolder.getLeftTextView().setText(income.getCategory().getName());
+    	TextView tvTitle = viewHolder.getCenterTopTextView();
+    	if (income.getTitle().length() != 0) {
+    		tvTitle.setText(income.getTitle());
+    	}
+    	else {
+    		tvTitle.setVisibility(View.GONE);
+    	}
+    	
+    	TextView tvAmount = viewHolder.getRightTopTextView();
+    	tvAmount.setText(String.format("%,d원", income.getAmount()));
+    	tvAmount.setTextColor(Color.BLUE);
+    	
+    	TextView tvMemo = viewHolder.getCenterBottomTextView();
+    	if (income.getMemo().length() != 0) {
+    		tvMemo.setText(income.getMemo());
+    	}
+    	else {
+    		tvMemo.setVisibility(View.GONE);
+    	}
+    	
+    	TextView tvMothod = viewHolder.getRightBottomTextView();
+    	tvMothod.setText(income.getAccountText());
 	}
+    
+    
     
     protected void setDeleteBtnListener(final View convertView, final int id, final int groupPosition, final int childPosition) {
     	Button btnDelete = (Button)convertView.findViewById(R.id.BtnReportIncomeDelete);
@@ -54,10 +86,10 @@ public class ReportIncomeExpandLayout extends ReportExpandBaseLayout {
 //		return DBMgr.getItem(ExpenseItem.TYPE, id);
 //	}
 
-	@Override
-	protected int getChildLayoutResourceID() {
-		return R.layout.report_list_income_expand;
-	}
+//	@Override
+//	protected int getChildLayoutResourceID() {
+//		return R.layout.report_list_income_expand;
+//	}
 
 	@Override
 	protected int getItemType() {

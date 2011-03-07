@@ -45,10 +45,10 @@ public class ReportLiabilityExpandLayout extends ReportExpandBaseLayout {
 	}
    
 
-	@Override
-	protected int getChildLayoutResourceID() {
-		return R.layout.report_list_liability_expand;
-	}
+//	@Override
+//	protected int getChildLayoutResourceID() {
+//		return R.layout.report_list_liability_expand;
+//	}
 
 	@Override
 	protected int getItemType() {

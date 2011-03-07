@@ -815,12 +815,30 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	}
 	
 	@Override
-	public ArrayList<Long> getTotalAmountMonthInYear(int categoryID, int year) {
+	public ArrayList<Long> getTotalMainCategoryAmount(int categoryID, int year) {
 		ArrayList<Long> amountMonthInYear = new ArrayList<Long>();
 		SQLiteDatabase db = openDatabase(READ_MODE);
 		for (int month = 1; month <= 12; month++) {
 			String[] params = {String.valueOf(categoryID), String.format("%d-%02d", year, month)};
 			String query = "SELECT SUM(amount) FROM assets WHERE main_category=? AND strftime('%Y-%m', create_date)=?";
+			Cursor c = db.rawQuery(query, params);
+			
+			if (c.moveToFirst() != false) {
+				amountMonthInYear.add(c.getLong(0));
+			}
+			c.close();
+		}
+		closeDatabase();
+		return amountMonthInYear;
+	}
+	
+	@Override
+	public ArrayList<Long> getTotalSubCategoryAmount(int categoryID, int year) {
+		ArrayList<Long> amountMonthInYear = new ArrayList<Long>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		for (int month = 1; month <= 12; month++) {
+			String[] params = {String.valueOf(categoryID), String.format("%d-%02d", year, month)};
+			String query = "SELECT SUM(amount) FROM assets WHERE sub_category=? AND strftime('%Y-%m', create_date)=?";
 			Cursor c = db.rawQuery(query, params);
 			
 			if (c.moveToFirst() != false) {

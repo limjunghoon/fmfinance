@@ -47,10 +47,10 @@ public class ReportAssetsExpandLayout extends ReportExpandBaseLayout {
 	}
    
 
-	@Override
-	protected int getChildLayoutResourceID() {
-		return R.layout.report_list_assets_expand;
-	}
+//	@Override
+//	protected int getChildLayoutResourceID() {
+//		return R.layout.report_list_assets_expand;
+//	}
 
 	@Override
 	protected int getItemType() {

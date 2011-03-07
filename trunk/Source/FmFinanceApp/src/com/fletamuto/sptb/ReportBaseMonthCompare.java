@@ -94,8 +94,16 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
     
     @Override
     protected void initialize() {
-    	mMonthCalendar.set(Calendar.MONTH, getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_MONTH, Calendar.getInstance().get(Calendar.MONTH)));
-    	mMonthCalendar.set(Calendar.YEAR, getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_YEAR, Calendar.getInstance().get(Calendar.YEAR)));
+    	mViewMode = getIntent().getIntExtra(MsgDef.ExtraNames.VIEW_MODE, VIEW_MONTH);
+    	if (mViewMode == VIEW_MONTH) {
+    		mMonthCalendar = (Calendar) getIntent().getSerializableExtra(MsgDef.ExtraNames.CALENDAR);
+    		if (mMonthCalendar == null) {
+    			mMonthCalendar = Calendar.getInstance();
+    		}
+    	}
+    	else {
+    		mYear = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_YEAR, Calendar.getInstance().get(Calendar.YEAR));
+    	}
     }
     
 	private void setButtonClickListener() {
@@ -144,11 +152,24 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 		LinearLayout dayOfMonthLayout = (LinearLayout)findViewById(R.id.LLDayofMonth);
 		ToggleButton tbMonth = (ToggleButton)findViewById(R.id.TBMonth);
 		TextView tvMonth = (TextView)findViewById(R.id.TVCurrentMonth);
-		tvMonth.setText(String.format("%d년 %d월", mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1));
+		if (mViewMode == VIEW_MONTH) {
+			tvMonth.setText(String.format("%d년 %d월", mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1));
+		}
+		else {
+			tvMonth.setText(String.format("%d년", mYear));
+		}
+		
 		Button btnTotalAmount = (Button)findViewById(R.id.BtnTotalAmount);
 		btnTotalAmount.setText(String.format("금액 : %,d", mTotalAmout));
 		TextView tvDayOfMonthTitle = (TextView)findViewById(R.id.TVDayOfMonthTitle);
-		tvDayOfMonthTitle.setText(String.format("%d년 %d월", mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1));
+		
+		if (mViewMode == VIEW_MONTH) {
+			tvDayOfMonthTitle.setText(String.format("%d년 %d월", mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1));
+		}
+		else {
+			tvDayOfMonthTitle.setText(String.format("%d년", mYear));
+		}
+		
 		
 		monthLayout.setVisibility(View.INVISIBLE);
 		dayOfMonthLayout.setVisibility(View.INVISIBLE);

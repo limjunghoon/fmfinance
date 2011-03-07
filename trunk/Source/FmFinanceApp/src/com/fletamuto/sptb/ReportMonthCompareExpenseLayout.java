@@ -82,8 +82,14 @@ public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
 	
 	protected void onClickCategoryButton(CategoryAmount categoryAmount) {
 		Intent intent = new Intent(ReportMonthCompareExpenseLayout.this, ReportMonthCompareExpenseSubLayout.class);
-		intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, getMonthCalender().get(Calendar.YEAR));
-		intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, getMonthCalender().get(Calendar.MONTH));
+		intent.putExtra(MsgDef.ExtraNames.VIEW_MODE, mViewMode);
+		if (mViewMode == VIEW_MONTH) {
+			intent.putExtra(MsgDef.ExtraNames.CALENDAR, getMonthCalender());
+		}
+		else {
+			intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, mYear);
+		}
+		
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, categoryAmount.getCategoryID());
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, categoryAmount.getName());
 		startActivity(intent);
@@ -97,6 +103,13 @@ public class ReportMonthCompareExpenseLayout extends ReportBaseMonthCompare {
 	@Override
 	protected void onClickTotalAmountBtn() {
 		Intent intent = new Intent(this, ReportMonthOfYearCategoryLayout.class);
+		intent.putExtra(MsgDef.ExtraNames.VIEW_MODE, mViewMode);
+		if (mViewMode == VIEW_MONTH) {
+			intent.putExtra(MsgDef.ExtraNames.CALENDAR, getMonthCalender());
+		}
+		else {
+			intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, mYear);
+		}
 		intent.putExtra(MsgDef.ExtraNames.ITEM_TYPE, ExpenseItem.TYPE);
 		startActivity(intent);
 	}

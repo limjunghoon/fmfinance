@@ -42,7 +42,7 @@ public class ReportCategoryCompareBaseLayout extends FmBaseActivity {
     
     private void getData() {
     	if (mItemType == -1) return;
-    	mMonthCategoryAmount = DBMgr.getTotalAmountMonthInYear(mItemType, mCategoryID, mYear);
+    	mMonthCategoryAmount = DBMgr.getTotalMainCategoryAmount(mItemType, mCategoryID, mYear);
 	}
 
 	@Override

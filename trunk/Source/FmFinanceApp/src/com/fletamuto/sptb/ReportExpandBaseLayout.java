@@ -18,6 +18,7 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ViewHolder;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.LogTag;
@@ -35,8 +36,8 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 	protected String mCategoryName;
 	
 	protected abstract void setListViewText(FinanceItem financeItem, View convertView);
-	protected abstract void setDeleteBtnListener(View convertView, int itemId, int groupPosition, int childPosition);
-	protected abstract int getChildLayoutResourceID();
+//	protected abstract void setDeleteBtnListener(View convertView, int itemId, int groupPosition, int childPosition);
+//	protected abstract int getChildLayoutResourceID();
 	protected abstract int getItemType();
 	protected abstract void onClickChildView(ExpandableListView parent, View v, int groupPosition, int childPosition, long id);
 	
@@ -159,14 +160,24 @@ public abstract class ReportExpandBaseLayout extends FmBaseActivity  {
 				String inflater = Context.LAYOUT_INFLATER_SERVICE;
 				LayoutInflater li;
 				li = (LayoutInflater)mContext.getSystemService(inflater);
-				li.inflate(getChildLayoutResourceID(), reportListView, true);
+				li.inflate(R.layout.report_list_normal, reportListView, true);
+				
+				ViewHolder viewHolder = new ViewHolder(
+						(TextView)reportListView.findViewById(R.id.TVTitle),
+						(TextView)reportListView.findViewById(R.id.TVListLeft), 
+						(TextView)reportListView.findViewById(R.id.TVListCenterTop), 
+						(TextView)reportListView.findViewById(R.id.TVListCenterBottom), 
+						(TextView)reportListView.findViewById(R.id.TVListRightTop), 
+						(TextView)reportListView.findViewById(R.id.TVListRightBottom));
+				
+				reportListView.setTag(viewHolder);
 			}
 			else {
 				reportListView = (LinearLayout)convertView;
 			}
 			
 			setListViewText(item, reportListView);
-			setDeleteBtnListener(reportListView, item.getID(), groupPosition, childPosition);
+//			setDeleteBtnListener(reportListView, item.getID(), groupPosition, childPosition);
 			
 			return reportListView;
         }

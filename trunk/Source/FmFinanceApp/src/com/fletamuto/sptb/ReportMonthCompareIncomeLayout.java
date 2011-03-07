@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.CategoryAmount;
+import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.view.FmBaseLayout;
@@ -63,16 +64,35 @@ public class ReportMonthCompareIncomeLayout extends ReportBaseMonthCompare {
 	}
     
 	protected void onClickCategoryButton(CategoryAmount categoryAmount) {
-		Intent intent = new Intent(ReportMonthCompareIncomeLayout.this, ReportIncomeExpandLayout.class);
-		intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, getMonthCalender().get(Calendar.YEAR));
-		intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, getMonthCalender().get(Calendar.MONTH));
+		Intent intent = new Intent(ReportMonthCompareIncomeLayout.this, ReportMonthOfYearCategoryLayout.class);
+		intent.putExtra(MsgDef.ExtraNames.VIEW_MODE, mViewMode);
+		if (mViewMode == VIEW_MONTH) {
+			intent.putExtra(MsgDef.ExtraNames.CALENDAR, getMonthCalender());
+		}
+		else {
+			intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, mYear);
+		}
 		intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, categoryAmount.getCategoryID());
-		intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, categoryAmount.getName());
+		intent.putExtra(MsgDef.ExtraNames.ITEM_TYPE, IncomeItem.TYPE);
 		startActivity(intent);
 	}
 	
 	@Override
 	protected int getChildLayoutResourceID() {
 		return R.layout.report_list_income_expand;
+	}
+	
+	@Override
+	protected void onClickTotalAmountBtn() {
+		Intent intent = new Intent(this, ReportMonthOfYearCategoryLayout.class);
+		intent.putExtra(MsgDef.ExtraNames.VIEW_MODE, mViewMode);
+		if (mViewMode == VIEW_MONTH) {
+			intent.putExtra(MsgDef.ExtraNames.CALENDAR, getMonthCalender());
+		}
+		else {
+			intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, mYear);
+		}
+		intent.putExtra(MsgDef.ExtraNames.ITEM_TYPE, IncomeItem.TYPE);
+		startActivity(intent);
 	}
 }
