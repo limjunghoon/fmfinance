@@ -151,6 +151,8 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 	
 	protected boolean getItemsFromDB(int itemType) {
 		//완료된 자산을 불러 오는 부분
+		ArrayList<FinanceItem> finishedItems = new ArrayList<FinanceItem>();
+		
 		if (mCategoryID == -2) {
 			mItems = DBMgr.getCompletionItems(itemType);
 		} else if (isDisplayCategory()) {
@@ -160,11 +162,20 @@ public abstract class ReportBaseLayout extends FmBaseActivity {
 		}
  	
 		for (int index = 0; index < mItems.size(); index++) {
-			if (mItems.get(index).getState() == FinanceItem.STATE_COMPLEATE) {
-				if (mCategoryID != -2) {
-					mItems.remove(index);
+			if (mCategoryID == -2) {
+				if (mItems.get(index).getState() != FinanceItem.STATE_COMPLEATE) {
+					finishedItems.add(mItems.get(index));
+				}
+			} else {
+				if (mItems.get(index).getState() == FinanceItem.STATE_COMPLEATE) {
+					finishedItems.add(mItems.get(index));
 				}
 			}
+		}
+		
+		for (int index = 0; index < finishedItems.size(); index++) {
+
+			mItems.remove(finishedItems.get(index));
 		}
 	
         if (mItems == null) {
