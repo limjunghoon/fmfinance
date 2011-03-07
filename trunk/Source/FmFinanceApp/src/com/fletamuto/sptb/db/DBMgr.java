@@ -429,6 +429,11 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountMonth(categorID, year, month);
 	}
 	
+	public static long getTotalMainCategoryAmount(int itemType, int categorID) {
+		if (checkFinanceItemType(itemType) == false) return 0L;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalMainCategoryAmount(categorID);
+	}
+	
 	public static ArrayList<Long> getTotalMainCategoryAmount(int itemType, int categorID, int year) {
 		if (checkFinanceItemType(itemType) == false) return null;
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalMainCategoryAmount(categorID, year);
@@ -777,6 +782,19 @@ public final class DBMgr {
 	
 	public static ArrayList<Long> getLastAmountMonthInYear(int assetsID, int year) {
 		return getAssetsDBConnecter().getLastAmountMonthInYear(assetsID, year);
+	}
+	
+	public static ArrayList<Long> getLastAmountMonth(int itemType, int assetsID, int year, int month, int priodTerm) {
+		if (itemType == AssetsItem.TYPE) {
+			return getAssetsDBConnecter().getLastAmountMonthInYear(assetsID, year, month, priodTerm);
+		}
+		else if (itemType == AssetsItem.TYPE) {
+			return null;
+		}
+		else {
+			return null;
+		}
+		
 	}
 
 	public static long getAssetsPurchasePrice(int id) {

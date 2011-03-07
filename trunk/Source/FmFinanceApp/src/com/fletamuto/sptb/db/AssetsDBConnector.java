@@ -833,6 +833,22 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 	}
 	
 	@Override
+	public long getTotalMainCategoryAmount(int categoryID) {
+		long amount = 0L;
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		String[] params = {String.valueOf(categoryID)};
+		String query = "SELECT SUM(amount) FROM assets WHERE main_category=?";
+		Cursor c = db.rawQuery(query, params);
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		closeDatabase();
+		return amount;
+	}
+	
+	@Override
 	public ArrayList<Long> getTotalSubCategoryAmount(int categoryID, int year) {
 		ArrayList<Long> amountMonthInYear = new ArrayList<Long>();
 		SQLiteDatabase db = openDatabase(READ_MODE);
@@ -1419,6 +1435,47 @@ public class AssetsDBConnector extends BaseFinanceDBConnector {
 
 			amountArr.add(lastAmount);
 			c.close();
+		}
+		
+		closeDatabase();
+		return amountArr;
+	}
+	
+	/**
+	 * 입력된 금액중 달에 마지막에 입력된 금액을 얻는다. 
+	 * @param assetsID
+	 * @param year
+	 * @return
+	 */
+	public ArrayList<Long> getLastAmountMonthInYear(int assetsID, int year, int month, int beforMonthCount) {
+		ArrayList<Long> amountArr = new ArrayList<Long>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		int targetMonth = month - beforMonthCount;
+		if (targetMonth <= 0) {
+			targetMonth += 12 + 1;
+			year--;
+		}
+		for (int index = 0; index < beforMonthCount; index++) {
+			long lastAmount = 0L;
+			
+			if (targetMonth > 12) {
+				targetMonth = 1;
+				year++;
+			}
+			
+			String[] params = {String.valueOf(assetsID),  String.format("%d-%02d", year, targetMonth)};
+			String query = "SELECT amount, count FROM assets_change_amount WHERE assets_id=? AND strftime('%Y-%m', change_date)=? ORDER BY change_date DESC";
+			Cursor c = db.rawQuery(query, params);
+			
+			if (c.moveToFirst() != false) {
+				lastAmount = c.getLong(0) * c.getInt(1);
+			}
+
+			amountArr.add(lastAmount);
+			c.close();
+			
+			targetMonth++;
 		}
 		
 		closeDatabase();

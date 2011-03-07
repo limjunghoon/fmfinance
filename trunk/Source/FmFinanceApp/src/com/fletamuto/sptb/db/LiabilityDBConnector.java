@@ -727,6 +727,22 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	}
 	
 	@Override
+	public long getTotalMainCategoryAmount(int categoryID) {
+		long amount = 0L;
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		String[] params = {String.valueOf(categoryID)};
+		String query = "SELECT SUM(amount) FROM liability WHERE main_category=?";
+		Cursor c = db.rawQuery(query, params);
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		closeDatabase();
+		return amount;
+	}
+	
+	@Override
 	public ArrayList<Long> getTotalSubCategoryAmount(int categoryID, int year) {
 		ArrayList<Long> amountMonthInYear = new ArrayList<Long>();
 		SQLiteDatabase db = openDatabase(READ_MODE);

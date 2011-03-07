@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.LiabilityItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class ReportCompareLiabilityLayout extends ReportBaseCompare {
 	public static final int ACT_ADD_LIABLITY = MsgDef.ActRequest.ACT_ADD_LIABLITY;
@@ -48,13 +49,24 @@ public class ReportCompareLiabilityLayout extends ReportBaseCompare {
     
 	@Override
 	protected void setTitleBtn() {
-		setTitle("부체");
-		setAddButtonListener();
-		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
-		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, getResources().getString(R.string.btn_add));
+		setTitle("부체분류");
+//		setAddButtonListener();
+//		setTitleBtnVisibility(FmTitleLayout.BTN_RIGTH_01, View.VISIBLE);
+//		setTitleBtnText(FmTitleLayout.BTN_RIGTH_01, getResources().getString(R.string.btn_add));
+		
+		setTitleBtnText(FmBaseLayout.BTN_LEFT_01, "자산");
+		setTitleBtnVisibility(FmBaseLayout.BTN_LEFT_01, View.VISIBLE);
 		
 		super.setTitleBtn();
 	}
+	
+	@Override
+    protected void onClickLeft1TitleBtn() {
+    	Intent intent = new Intent(this, ReportCompareAssetsLayout.class);
+		startActivity(intent);
+		
+    	finish();
+    }
 	
 	protected void onClickCategoryButton(CategoryAmount categoryAmount) {
 		Intent intent = new Intent(ReportCompareLiabilityLayout.this, ReportLiabilityExpandLayout.class);
