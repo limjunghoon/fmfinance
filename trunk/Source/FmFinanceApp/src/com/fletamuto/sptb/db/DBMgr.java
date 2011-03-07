@@ -429,9 +429,14 @@ public final class DBMgr {
 		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountMonth(categorID, year, month);
 	}
 	
-	public static ArrayList<Long> getTotalAmountMonthInYear(int itemType, int categorID, int year) {
+	public static ArrayList<Long> getTotalMainCategoryAmount(int itemType, int categorID, int year) {
 		if (checkFinanceItemType(itemType) == false) return null;
-		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalAmountMonthInYear(categorID, year);
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalMainCategoryAmount(categorID, year);
+	}
+	
+	public static ArrayList<Long> getTotalSubCategoryAmount(int itemType, int categorID, int year) {
+		if (checkFinanceItemType(itemType) == false) return null;
+		return mInstance.mDBConnector.getBaseFinanceDBInstance(itemType).getTotalSubCategoryAmount(categorID, year);
 	}
 	
 	public static ArrayList<Long> getTotalTagAmountMonthInYear(int tagID, int year) {

@@ -34,7 +34,6 @@ public class ReportMonthCompareExpenseToIncomeLayout extends FmBaseActivity {
     }
     
 	private void setButtonClickListener() {
-		
 		Button btnExpense = (Button)findViewById(R.id.BtnTotalMonthExpense);
 		btnExpense.setOnClickListener(new View.OnClickListener() {
 			
@@ -141,4 +140,6 @@ public class ReportMonthCompareExpenseToIncomeLayout extends FmBaseActivity {
 		getData();
     	updateChildView();
 	}
+	
+	
 }

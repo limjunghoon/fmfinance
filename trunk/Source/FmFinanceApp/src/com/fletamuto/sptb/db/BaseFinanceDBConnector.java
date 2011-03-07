@@ -28,9 +28,10 @@ public abstract class BaseFinanceDBConnector extends BaseDBConnector{
 	public abstract ArrayList<Long> getTotalAmountMonth(int year);
 	public abstract ArrayList<Long> getTotalAmount(int year, int month, int beforMonthCount);
 	public abstract ArrayList<Long> getTotalMainCategoryAmount(int mainCategoryID, int year, int month, int beforMonthCount);
-	public abstract ArrayList<Long> getTotalSubCategoryAmount(int mainSubCategoryID, int year, int month, int beforMonthCount);
+	public abstract ArrayList<Long> getTotalMainCategoryAmount(int categorID, int year);
+	public abstract ArrayList<Long> getTotalSubCategoryAmount(int subCategoryID, int year, int month, int beforMonthCount);
+	public abstract ArrayList<Long> getTotalSubCategoryAmount(int subCategoryID, int year);
 	public abstract long getTotalAmountMonth(int categoryID, int year, int month);
-	public abstract ArrayList<Long> getTotalAmountMonthInYear(int categorID, int year);
 	public abstract long getTotalAmountYear(int year);
 	public abstract int getItemCount(Calendar calendar);
 	public abstract ArrayList<FinanceItem> getItems(Calendar calendar);

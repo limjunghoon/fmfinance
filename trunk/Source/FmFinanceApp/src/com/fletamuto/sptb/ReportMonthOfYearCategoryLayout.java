@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,16 +32,18 @@ import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportMonthOfYearCategoryLayout extends FmBaseActivity {
 	private static final int MOVE_SENSITIVITY = ItemDef.MOVE_SENSITIVITY;
+	protected static final int VIEW_MONTH = 0;
+	protected static final int VIEW_YEAR = 1;
 	private static final int CATEGORY_ALL = 0;
 	private static final int CATEGORY_MAIN = 1;
 	private static final int CATEGORY_SUB = 2;
 	
 	private ArrayList<Long> mItemAmount = new ArrayList<Long>();
-	protected ArrayList<FinanceItem> mMonthlyItems = null;
+	protected ArrayList<MonthAmountItem> mMonthlyItems = new ArrayList<MonthAmountItem>();
 	private ArrayList<String> mMonthName = new ArrayList<String>();
 	private LineGraph mLineGraph;
 	private Calendar mMonthCalendar = Calendar.getInstance();
-	private Calendar mMonthItemListDate = Calendar.getInstance();
+	protected int mYear = Calendar.getInstance().get(Calendar.YEAR);
 	private int mItemType = ExpenseItem.TYPE;
 	
 	private float mTouchMove;
@@ -49,6 +52,7 @@ public class ReportMonthOfYearCategoryLayout extends FmBaseActivity {
 	private Category mMainCategory = null;
 	private Category mSubCategory = null;
 	private int mCategoryMode = CATEGORY_ALL;
+	private int mViewMode = VIEW_MONTH;
 	
 	protected ReportMonthlyItemAdapter mMonthlyAdapter = null;
 	
@@ -64,16 +68,41 @@ public class ReportMonthOfYearCategoryLayout extends FmBaseActivity {
     
     protected void setMonthlyAdapterList() {
     	final ListView listMonthItem = (ListView)findViewById(R.id.LVMonthItem);
-    	mMonthlyAdapter = new ReportMonthlyItemAdapter(this, R.layout.report_list_normal, mMonthlyItems);
+    	mMonthlyAdapter = new ReportMonthlyItemAdapter(this, R.layout.report_month_of_year_category_list_item, mMonthlyItems);
     	listMonthItem.setAdapter(mMonthlyAdapter);
     	
     	listMonthItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+
+				MonthAmountItem monthAmount = mMonthlyAdapter.getItem(position);
+
+				Intent intent = null;
 				
-	
+				if (mItemType == ExpenseItem.TYPE) {
+					intent = new Intent(ReportMonthOfYearCategoryLayout.this, ReportExpenseExpandLayout.class);
+				}
+				else if (mItemType == IncomeItem.TYPE) {
+					intent = new Intent(ReportMonthOfYearCategoryLayout.this, ReportIncomeExpandLayout.class);
+				}
+				else {
+					return;
+				}
+					
+				intent.putExtra(MsgDef.ExtraNames.CALENDAR_MONTH, monthAmount.mMonth);
+				intent.putExtra(MsgDef.ExtraNames.CALENDAR_YEAR, monthAmount.mYear);
 				
+				if (mCategoryMode == CATEGORY_MAIN) {
+					intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, mMainCategory.getID());
+					intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, mMainCategory.getName());
+				}
+				else if (mCategoryMode == CATEGORY_SUB) {
+					intent.putExtra(MsgDef.ExtraNames.CATEGORY_SUB_ID, mSubCategory.getID());
+					intent.putExtra(MsgDef.ExtraNames.CATEGORY_NAME, mSubCategory.getName());
+				}
+				
+				startActivity(intent);
 			}
 		});
 //    	
@@ -88,6 +117,17 @@ public class ReportMonthOfYearCategoryLayout extends FmBaseActivity {
     
     @Override
     protected void initialize() {
+    	mViewMode = getIntent().getIntExtra(MsgDef.ExtraNames.VIEW_MODE, VIEW_MONTH);
+    	if (mViewMode == VIEW_MONTH) {
+    		mMonthCalendar = (Calendar) getIntent().getSerializableExtra(MsgDef.ExtraNames.CALENDAR);
+    		if (mMonthCalendar == null) {
+    			mMonthCalendar = Calendar.getInstance();
+    		}
+    	}
+    	else {
+    		mYear = getIntent().getIntExtra(MsgDef.ExtraNames.CALENDAR_YEAR, Calendar.getInstance().get(Calendar.YEAR));
+    	}
+    	
     	mItemType = getIntent().getIntExtra(MsgDef.ExtraNames.ITEM_TYPE, ExpenseItem.TYPE);
     	int mainCategory = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1);
     	int subCategory = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_SUB_ID, -1);
@@ -102,7 +142,7 @@ public class ReportMonthOfYearCategoryLayout extends FmBaseActivity {
     		}
     		else {
     			mCategoryMode = CATEGORY_SUB;
-    			mMainCategory = DBMgr.getSubCategoryFromID(mItemType, subCategory);
+    			mSubCategory = DBMgr.getSubCategoryFromID(mItemType, subCategory);
     		}
     	}
     	super.initialize();
@@ -110,18 +150,26 @@ public class ReportMonthOfYearCategoryLayout extends FmBaseActivity {
     
 	@Override
 	protected void setTitleBtn() {
-		if (mItemType == IncomeItem.TYPE) {
-			setTitle("수입 변동내역");
-		} 
-		else if (mItemType == ExpenseItem.TYPE) {
-			setTitle("지출 변동내역");
-		} 
-		else if (mItemType == AssetsItem.TYPE) {
-			setTitle("자산 변동내역");
-		} 
-		else if (mItemType == LiabilityItem.TYPE) {
-			setTitle("부채 변동내역");
-		} 
+		if (mMainCategory != null) {
+			setTitle(mMainCategory.getName() + " 변동내역");
+		}
+		else if (mSubCategory != null) {
+			setTitle(mSubCategory.getName() + " 변동내역");
+		}
+		else {
+			if (mItemType == IncomeItem.TYPE) {
+				setTitle("수입 변동내역");
+			} 
+			else if (mItemType == ExpenseItem.TYPE) {
+				setTitle("지출 변동내역");
+			} 
+			else if (mItemType == AssetsItem.TYPE) {
+				setTitle("자산 변동내역");
+			} 
+			else if (mItemType == LiabilityItem.TYPE) {
+				setTitle("부채 변동내역");
+			} 
+		}
         
 		super.setTitleBtn();
 	}
@@ -133,32 +181,41 @@ public class ReportMonthOfYearCategoryLayout extends FmBaseActivity {
 	}
 	
 	public void updateItemList() {
-		TextView tvMonth = (TextView) findViewById(R.id.TVMonth);
-		tvMonth.setText(String.format("%d년 %d월", mMonthItemListDate.get(Calendar.YEAR), mMonthItemListDate.get(Calendar.MONTH)+1));
+//		TextView tvMonth = (TextView) findViewById(R.id.TVMonth);
+//		tvMonth.setText(String.format("%d년 %d월", mMonthItemListDate.get(Calendar.YEAR), mMonthItemListDate.get(Calendar.MONTH)+1));
 	}
 
 	public void getDate() {
-		setMonthName();
 		getMonthAmount();
-		getMonthItems();
+		setMonthData();
 	}
 
 	
 	public void getMonthAmount() {
 		if (mCategoryMode == CATEGORY_ALL) {
-			mItemAmount = DBMgr.getTotalAmount(mItemType, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+			if (mViewMode == VIEW_MONTH) {
+				mItemAmount = DBMgr.getTotalAmount(mItemType, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+			}
+			else {
+				mItemAmount = DBMgr.getTotalAmountMonth(mItemType, mYear);
+			}
 		}
 		else if (mCategoryMode == CATEGORY_MAIN) {
-			mItemAmount = DBMgr.getTotalMainCategoryAmount(mItemType, mMainCategory.getID(), mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+			if (mViewMode == VIEW_MONTH) {
+				mItemAmount = DBMgr.getTotalMainCategoryAmount(mItemType, mMainCategory.getID(), mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+			}
+			else {
+				mItemAmount = DBMgr.getTotalMainCategoryAmount(mItemType, mMainCategory.getID(), mYear);
+			}
 		}
 		else if (mCategoryMode == CATEGORY_SUB) {
-			mItemAmount = DBMgr.getTotalMainCategoryAmount(mItemType, mSubCategory.getID(), mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+			if (mViewMode == VIEW_MONTH) {
+				mItemAmount = DBMgr.getTotalSubCategoryAmount(mItemType, mSubCategory.getID(), mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+			}
+			else {
+				mItemAmount = DBMgr.getTotalSubCategoryAmount(mItemType, mSubCategory.getID(), mYear);
+			}	
 		}
-		
-	}
-
-	public void getMonthItems() {
-		mMonthlyItems = DBMgr.getItems(mItemType, mMonthItemListDate.get(Calendar.YEAR), mMonthItemListDate.get(Calendar.MONTH)+1);
 	}
 
 	private void updateLineView() {
@@ -188,26 +245,6 @@ public class ReportMonthOfYearCategoryLayout extends FmBaseActivity {
 		});
 	}
 	
-
-
-	protected void setListViewText(LinearLayout llMember, final int index) {
-//		if (mViewMode == VIEW_ASSETS) {
-//			((TextView)llMember.findViewById(R.id.TVListLeftTop)).setText(mMonthName.get(index));
-//			((TextView)llMember.findViewById(R.id.TVListRightTop)).setText(String.format("%,d원", mItemDifference.get(index)));
-//			((TextView)llMember.findViewById(R.id.TVListLeftBottom)).setText(String.format("%,d원", mItem1.get(index)));
-//			((TextView)llMember.findViewById(R.id.TVListRightBottom)).setText(String.format("%,d원", mItem2.get(index)));
-//		}
-//		else if (mViewMode == VIEW_BUDGET) {
-//		}
-//		else {
-//			((TextView)llMember.findViewById(R.id.TVListLeftTop)).setText(mMonthName.get(index));
-//			((TextView)llMember.findViewById(R.id.TVListRightTop)).setText(String.format("%,d원", mItemDifference.get(index)));
-//			((TextView)llMember.findViewById(R.id.TVListLeftBottom)).setText(String.format("%,d원", mItem1.get(index)));
-//			((TextView)llMember.findViewById(R.id.TVListRightBottom)).setText(String.format("%,d원", mItem2.get(index)));
-//		}
-		
-	}
-	
 	public void setMoveViewMotionEvent(MotionEvent event) {
     	if (event.getAction() == MotionEvent.ACTION_DOWN) {
     		mTouchMove = event.getX();
@@ -233,36 +270,58 @@ public class ReportMonthOfYearCategoryLayout extends FmBaseActivity {
 //    	updateChildView();
 	}
 	
-	private void setMonthName() {
+	private void setMonthData() {
 		mMonthName.clear();
+		mMonthlyItems.clear();
 		
-		int year = mMonthCalendar.get(Calendar.YEAR);
-		int month = mMonthCalendar.get(Calendar.MONTH) +1;
-		
-		int targetMonth = month - mPeriodTerm;
-		if (targetMonth <= 0) {
-			targetMonth += 12 + 1;
-			year--;
-		}
-		
-		for (int index = 0; index < mPeriodTerm; index++) {
+		if (mViewMode == VIEW_MONTH) {
+			int year = mMonthCalendar.get(Calendar.YEAR);
+			int month = mMonthCalendar.get(Calendar.MONTH) +1;
 			
-			if (targetMonth > 12) {
-				targetMonth = 1;
-				year++;
+			int targetMonth = month - mPeriodTerm;
+			if (targetMonth <= 0) {
+				targetMonth += 12 + 1;
+				year--;
 			}
 			
-			mMonthName.add(String.format("%d월", targetMonth));
-			targetMonth++;
+			for (int index = 0; index < mPeriodTerm; index++) {
+				
+				if (targetMonth > 12) {
+					targetMonth = 1;
+					year++;
+				}
+				
+				mMonthName.add(String.format("%d월", targetMonth));
+				mMonthlyItems.add(0, new MonthAmountItem(year, targetMonth, mItemAmount.get(index)));
+				targetMonth++;
+			}
+		}
+		else {
+			for (int index = 0; index < 12; index++) {
+				mMonthName.add(String.format("%d월", index+1));
+				mMonthlyItems.add(new MonthAmountItem(mYear, index+1, mItemAmount.get(index)));
+			}
 		}
 	}
 	
-	 public class ReportMonthlyItemAdapter extends ArrayAdapter<FinanceItem> {
+	public class MonthAmountItem {
+		int mYear;
+		int mMonth;
+		long mAmount;
+		
+		public MonthAmountItem(int year, int month, long amount) {
+			mYear = year;
+			mMonth = month;
+			mAmount = amount;
+		}
+	}
+	
+	 public class ReportMonthlyItemAdapter extends ArrayAdapter<MonthAmountItem> {
 	    	int mResource;
 	    	private LayoutInflater mInflater;
 
 			public ReportMonthlyItemAdapter(Context context, int resource,
-					 List<FinanceItem> objects) {
+					 List<MonthAmountItem> objects) {
 				super(context, resource, objects);
 				this.mResource = resource;
 				mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -271,91 +330,21 @@ public class ReportMonthOfYearCategoryLayout extends FmBaseActivity {
 			
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
-				FinanceItem item = (FinanceItem)getItem(position);
+				MonthAmountItem item = (MonthAmountItem)getItem(position);
 				
 				if (convertView == null) {
 					convertView = mInflater.inflate(mResource, parent, false);
-					
-					ViewHolder viewHolder = new ViewHolder(
-							(TextView)convertView.findViewById(R.id.TVTitle),
-							(TextView)convertView.findViewById(R.id.TVListLeft), 
-							(TextView)convertView.findViewById(R.id.TVListCenterTop), 
-							(TextView)convertView.findViewById(R.id.TVListCenterBottom), 
-							(TextView)convertView.findViewById(R.id.TVListRightTop), 
-							(TextView)convertView.findViewById(R.id.TVListRightBottom));
-					
-					convertView.setTag(viewHolder);
 				}
 				
-				
-				convertView.findViewById(R.id.LLTitle).setVisibility(View.GONE);
-				convertView.findViewById(R.id.LLBody).setVisibility(View.VISIBLE);
-				setListViewText(item, convertView);
-
+				TextView tvMonth = (TextView) convertView.findViewById(R.id.TVMonth);
+				tvMonth.setText(item.mMonth+"월");
+				TextView tvAmount = (TextView) convertView.findViewById(R.id.TVAmount);
+				tvAmount.setText(String.format("%,d원", item.mAmount));
 				
 				return convertView;
 			}
 	    }
 	 
-	 protected void setListViewText(FinanceItem item, View convertView) {
-    	if (item.getType() == IncomeItem.TYPE) {
-    		setIncomeListViewText((IncomeItem)item, convertView);
-    	}
-    	else if (item.getType() == ExpenseItem.TYPE) {
-    		setExpenseListViewText((ExpenseItem)item, convertView);
-    	}
-	}
-	 
-	 protected void setIncomeListViewText(IncomeItem income, View convertView) {
-    	ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-    	viewHolder.getLeftTextView().setText(income.getCategory().getName());
-		TextView tvTitle = viewHolder.getCenterTopTextView();
-		if (income.getTitle().length() != 0) {
-			tvTitle.setText(income.getTitle());
-		}
-		else {
-			tvTitle.setVisibility(View.GONE);
-		}
-		
-		TextView tvAmount = viewHolder.getRightTopTextView();
-		tvAmount.setText(String.format("%,d원", income.getAmount()));
-		tvAmount.setTextColor(Color.BLUE);
-		
-		TextView tvMemo = viewHolder.getCenterBottomTextView();
-		if (income.getMemo().length() != 0) {
-			tvMemo.setText(income.getMemo());
-		}
-		else {
-			tvMemo.setVisibility(View.GONE);
-		}
-		
-		TextView tvMothod = viewHolder.getRightBottomTextView();
-		tvMothod.setText(income.getAccountText());
-    }
-	    
-    protected void setExpenseListViewText(ExpenseItem expense, View convertView) {
-    	ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-    	viewHolder.getLeftTextView().setText(expense.getCategory().getName());
-    	
-    	if (expense.getCategory().getExtndType() != ItemDef.NOT_CATEGORY) {
-    		TextView tvSubCategory = viewHolder.getCenterTopTextView() ;
-    		tvSubCategory.setText(expense.getSubCategory().getName());
-    	}
-		
-		TextView tvAmount = viewHolder.getRightTopTextView(); 
-		tvAmount.setText(String.format("%,d원", -expense.getAmount()));
-		tvAmount.setTextColor(Color.RED);
-		
-		TextView tvMemo = viewHolder.getCenterBottomTextView() ;
-		if (expense.getMemo().length() != 0) {
-			tvMemo.setText(expense.getMemo());
-		}
-		else {
-			tvMemo.setVisibility(View.GONE);
-		}
-		
-		TextView tvMothod = viewHolder.getRightBottomTextView(); 
-		tvMothod.setText(expense.getPaymentMethod().getText());
-    }
+	
     
 }

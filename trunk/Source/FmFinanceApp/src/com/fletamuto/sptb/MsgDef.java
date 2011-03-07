@@ -78,8 +78,10 @@ public final class MsgDef {
 		public static final String TAKE_HOME_PAY_TAX = "TAKE_HOME_PAY_TAX";
 		public static final String TAKE_HOME_PAY_ETC = "TAKE_HOME_PAY_ETC";
 		public static final String TAKE_HOME_PAY_PENSION = "TAKE_HOME_PAY_PENSION";
+		public static final String CALENDAR = "CALENDAR";
 		public static final String CALENDAR_YEAR = "CALENDAR_YEAR";
 		public static final String CALENDAR_MONTH = "CANLENDER_MONTH";
+		public static final String CANLENDER_YEAR = "CANLENDER_YEAR";
 		public static final String CALENDAR_DAY = "CANLENDER_DAY";
 		public static final String BUDGET_ITEM_LIST = "BUDGET_ITEM_LIST";
 		public static final String SELECT_SUB_CATEGORY_IN_MAIN_CATEGORY = "SELECT_SUB_CATEGORY_IN_MAIN_CATEGORY";

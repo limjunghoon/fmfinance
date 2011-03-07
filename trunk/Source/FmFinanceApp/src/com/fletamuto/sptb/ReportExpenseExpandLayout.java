@@ -3,6 +3,7 @@ package com.fletamuto.sptb;
 
 import java.util.Calendar;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ViewHolder;
 import com.fletamuto.sptb.data.AccountItem;
 import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.ExpenseItem;
@@ -79,26 +81,55 @@ public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
     }    
     
     protected void setListViewText(FinanceItem financeItem, View convertView) {
-//    	ExpenseItem item = (ExpenseItem)financeItem;
-    	item = (ExpenseItem)financeItem;
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
-		
-		String categoryText;
-		if (item.getCategory().getExtndType() == ItemDef.NOT_CATEGORY) {
-			categoryText = String.format("%s", item.getCategory().getName());
-		}
-		else {
-			categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
-		}
-		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText("분류 : " + categoryText);
-		if (mCard == null) {
-			((TextView)convertView.findViewById(R.id.TVExpenseReportListPaymentMethod)).setText("결제 : " + item.getPaymentMethod().getText());
-		}
-		else {
-			convertView.findViewById(R.id.TVExpenseReportListPaymentMethod).setVisibility(View.GONE);
-		}
+    	ExpenseItem expense = (ExpenseItem) financeItem;
+    	ViewHolder viewHolder = (ViewHolder) convertView.getTag();
+    	viewHolder.getLeftTextView().setText(expense.getCategory().getName());
+    	
+    	if (expense.getCategory().getExtndType() != ItemDef.NOT_CATEGORY) {
+    		TextView tvSubCategory = viewHolder.getCenterTopTextView() ;
+    		tvSubCategory.setText(expense.getSubCategory().getName());
+    	}
+    	
+    	TextView tvAmount = viewHolder.getRightTopTextView(); 
+    	tvAmount.setText(String.format("%,d원", -expense.getAmount()));
+    	tvAmount.setTextColor(Color.RED);
+    	
+    	TextView tvMemo = viewHolder.getCenterBottomTextView() ;
+    	if (expense.getMemo().length() != 0) {
+    		tvMemo.setText(expense.getMemo());
+    	}
+    	else {
+    		tvMemo.setVisibility(View.GONE);
+    	}
+    	
+    	TextView tvMothod = viewHolder.getRightBottomTextView(); 
+    	tvMothod.setText(expense.getPaymentMethod().getText());
 		
 	}
+    
+    
+    
+//    protected void setListViewText(FinanceItem financeItem, View convertView) {
+////    	ExpenseItem item = (ExpenseItem)financeItem;
+//    	item = (ExpenseItem)financeItem;
+//		((TextView)convertView.findViewById(R.id.TVExpenseReportListAmount)).setText(String.format("금액 : %,d원", item.getAmount()));
+//		
+//		String categoryText;
+//		if (item.getCategory().getExtndType() == ItemDef.NOT_CATEGORY) {
+//			categoryText = String.format("%s", item.getCategory().getName());
+//		}
+//		else {
+//			categoryText = String.format("%s - %s", item.getCategory().getName(), item.getSubCategory().getName());
+//		}
+//		((TextView)convertView.findViewById(R.id.TVExpenseReportListCategory)).setText("분류 : " + categoryText);
+//		if (mCard == null) {
+//			((TextView)convertView.findViewById(R.id.TVExpenseReportListPaymentMethod)).setText("결제 : " + item.getPaymentMethod().getText());
+//		}
+//		else {
+//			convertView.findViewById(R.id.TVExpenseReportListPaymentMethod).setVisibility(View.GONE);
+//		}
+//		
+//	}
     
     protected void setDeleteBtnListener(final View convertView, final int id, final int groupPosition, final int childPosition) {
     	Button btnDelete = (Button)convertView.findViewById(R.id.BtnReportExpenseDelete);
@@ -137,10 +168,10 @@ public class ReportExpenseExpandLayout extends ReportExpandBaseLayout {
 //		return DBMgr.getItem(ExpenseItem.TYPE, id);
 //	}
 
-	@Override
-	protected int getChildLayoutResourceID() {
-		return R.layout.report_list_expense_expand;
-	}
+//	@Override
+//	protected int getChildLayoutResourceID() {
+//		return R.layout.report_list_expense_expand;
+//	}
 
 	@Override
 	protected int getItemType() {
