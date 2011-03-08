@@ -1,8 +1,8 @@
 package com.fletamuto.sptb.sms;
 
 public class SMSCardData {
-	private int id, type_id, company_id, amountStartRow, installmentStartRow, shopStartRow;
-	private String amountEndText = "", installmentEndText = "", shopEndText = "", parseSource = "";
+	private int id, typeId, companyId, amountStartRow, installmentStartRow, shopStartRow;
+	private String number = "", amountEndText = "", installmentEndText = "", shopEndText = "", parseSource = "";
 	public int getAmountStartRow() {
 		return amountStartRow;
 	}
@@ -12,17 +12,17 @@ public class SMSCardData {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getType_id() {
-		return type_id;
+	public int getTypeId() {
+		return typeId;
 	}
-	public void setType_id(int type_id) {
-		this.type_id = type_id;
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
 	}
-	public int getCompany_id() {
-		return company_id;
+	public int getCompanyId() {
+		return companyId;
 	}
-	public void setCompany_id(int company_id) {
-		this.company_id = company_id;
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
 	}
 	public void setAmountStartRow(int amountStartRow) {
 		this.amountStartRow = amountStartRow;
@@ -38,6 +38,12 @@ public class SMSCardData {
 	}
 	public void setShopStartRow(int shopStartRow) {
 		this.shopStartRow = shopStartRow;
+	}
+	public String getNumber() {
+		return number;
+	}
+	public void setNumber(String number) {
+		this.number = number;
 	}
 	public String getAmountEndText() {
 		return amountEndText;
