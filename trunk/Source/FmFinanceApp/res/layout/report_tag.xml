@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical">
   
-  <LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center">
+  <LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center" android:visibility="gone">
 	   		<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/BtnPreviusYear" android:text="이전년">
 	   		</Button>
 	   		<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="년도" android:textSize="20sp" android:id="@+id/TVCurrentYear" android:layout_marginLeft="10dp" android:layout_marginRight="10dp">
@@ -16,4 +16,9 @@
 		<com.fletamuto.common.control.fmgraph.LineGraph android:id="@+id/lgraph" android:layout_width="210dp" android:layout_height="210dp" />
 		</LinearLayout>
 		</HorizontalScrollView>
+		
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
+		<TextView android:layout_height="wrap_content" android:id="@+id/TVMonth" android:gravity="center" android:textSize="18sp" android:layout_width="fill_parent" android:visibility="gone"></TextView>
+		<ListView android:id="@+id/LVMonthItem" android:layout_width="fill_parent" android:layout_height="fill_parent"></ListView>
+	</LinearLayout>
 </LinearLayout>
