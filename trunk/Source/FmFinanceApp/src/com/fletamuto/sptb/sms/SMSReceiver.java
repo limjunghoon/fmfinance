@@ -16,7 +16,6 @@ public class SMSReceiver extends BroadcastReceiver {
 		Bundle bundle = intent.getExtras();
 		SmsMessage[] smsMessage = null;
 		String number = "";
-		//String originating_number = "";
 		String msg = "";
 		Date date = null;
 		
@@ -27,13 +26,9 @@ public class SMSReceiver extends BroadcastReceiver {
 			for(int i = 0, size = smsMessage.length; i < size; i++) {
 				smsMessage[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
 				number = smsMessage[i].getDisplayOriginatingAddress();
-				//originating_number = smsMessage[i].getOriginatingAddress();
 				msg = smsMessage[i].getMessageBody().toString();
 				date = new Date(smsMessage[i].getTimestampMillis());
 			}
-			
-			//Toast.makeText(context, "발신번호 : " + number + /*"\n숨은발신번호 : " + originating_number +*/ "\n메시지 : \n" + msg + "\n시간 : " + date.toLocaleString(), Toast.LENGTH_LONG).show();
-			//Toast.makeText(context, msg.split("\n")[4], Toast.LENGTH_LONG).show();
 		}
 		
 		
