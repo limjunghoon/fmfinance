@@ -32,7 +32,27 @@
 				<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVCashServiceMemo" android:textSize="18sp">
 				</TextView>
 			</LinearLayout>
-			<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginTop="20dp">
+			
+			<LinearLayout android:id="@+id/CashServiceOriginalAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="25dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="원금" android:id="@+id/CashServiceOriginalAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/CashServiceOriginalAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/CashServiceExpiryAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="총상환금" android:id="@+id/CashServiceExpiryAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/CashServiceExpiryAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/CashServiceGainAndLossAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="이자" android:id="@+id/CashServiceGainAndLossAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/CashServiceGainAndLossAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	
+			<LinearLayout android:id="@+id/CashServiceDeleteLL" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginTop="20dp">
 				<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="상환" android:id="@+id/BtnStateDelete"></Button>
 			</LinearLayout>
   			
