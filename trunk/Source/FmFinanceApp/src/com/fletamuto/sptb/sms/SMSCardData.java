@@ -3,9 +3,6 @@ package com.fletamuto.sptb.sms;
 public class SMSCardData {
 	private int id, typeId, companyId, amountStartRow, installmentStartRow, shopStartRow;
 	private String number = "", amountEndText = "", installmentEndText = "", shopEndText = "", parseSource = "";
-	public int getAmountStartRow() {
-		return amountStartRow;
-	}
 	public int getId() {
 		return id;
 	}
@@ -23,6 +20,9 @@ public class SMSCardData {
 	}
 	public void setCompanyId(int companyId) {
 		this.companyId = companyId;
+	}
+	public int getAmountStartRow() {
+		return amountStartRow;
 	}
 	public void setAmountStartRow(int amountStartRow) {
 		this.amountStartRow = amountStartRow;

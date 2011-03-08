@@ -1,105 +1,70 @@
 package com.fletamuto.sptb.sms;
 
-import java.util.Hashtable;
-import java.util.StringTokenizer;
-
 import android.content.Context;
-import android.widget.Toast;
 
 public class SMSParser {
-	static final String TAG_AMOUNT = "<amount>";
-	static final String TAG_INSTALLMENT = "<installment>";
-	static final String TAG_SHOP = "<shop>";
-	
 	private Context context;
+	private SMSCardParser smsCardParser;
+	
+	static final int TYPE_NONE = 0;
+	static final int TYPE_CARD = 1;
 	
 	public SMSParser(Context context) {
+		super();
 		this.context = context;
+		this.smsCardParser = new SMSCardParser(context);
+		
+		
+		//파싱 테스트용
+		String parseText[] = new String[4];
+		parseText[0] = "[KB체크]\n" +
+							"홍길동님\n" +
+							"0*0*카드\n" +
+							"00월00일00:00\n" +
+							"<amount>원<installment>\n" +
+							"<shop> 사용";
+		parseText[1] = "삼성카드\n" +
+							"04/01 16:00\n" +
+							"<shop>\n" +
+							"<amount>원\n" +
+							"<installment>사용\n" +
+							"감사합니다";
+		parseText[2] = "신한카드정상승인\n" +
+							"홍길동님\n" +
+							"00/00 00:00\n" +
+							"<amount>원<installment>\n" +
+							"<shop>";
+		parseText[3] = "롯데카드 홍길동님 <amount>원 <installment> 00/00 00:00 <shop>";
+		
+		//임시값
+		int typeId = 1, companyId = 1;
+		
+		//DB대신 사용할 값 입력 부분
+		for(int i = 0, size = parseText.length; i < size; i++)
+			smsCardParser.setParserData(String.valueOf(i), parseText[i], typeId, companyId);	//SMS 파싱을 위한 형식 저장 메소드 - DB에 저장	Integer.valueOf(msg) 테스트용
 	}
 
-	private Hashtable<String, SMSCardData> hashtable = new Hashtable<String, SMSCardData>();	//DB처럼 사용하기 위해서 임시로 만든 해시테이블
-
+	/** 등록된 번호인지 확인 해주는 메소드 */
+	public boolean isNumber(String number) {
+		return smsCardParser.isNumber(number);
+	}
 	
-	/** DB에 저장해주는 메소드 */
-	private SMSCardData insertDB(SMSCardData smsCardData) {	//TODO 구현 안되어 있음
-		//insert로 전달할 인자 (smsCardData)
-		//
-		return hashtable.put(smsCardData.getNumber(), smsCardData);
-	}
-	/** DB에서 읽어오는 메소드 */
-	private SMSCardData getDB(String number) {	//TODO 구현 안되어 있음
-		return hashtable.get(number);
-	}
-	
-	public boolean setParserData(String number, String parseText, int typeId, int companyId) {
-		SMSCardData smsCardData = new SMSCardData();
-		
-		StringTokenizer stringTokenizer = new StringTokenizer(parseText, " \n/");
-		String text[] = new String[stringTokenizer.countTokens()];
-		for(int i = 0, size = text.length; i < size; i++) {
-			text[i] = stringTokenizer.nextToken();
-			if(text[i].indexOf(TAG_AMOUNT) != -1) {
-				smsCardData.setAmountStartRow(i);
-				int startPosition = text[i].indexOf(TAG_AMOUNT)+TAG_AMOUNT.getBytes().length;
-				smsCardData.setAmountEndText(text[i].substring(startPosition, startPosition+1));
-			}
-			if(text[i].indexOf(TAG_INSTALLMENT) != -1) {
-				smsCardData.setInstallmentStartRow(i);
-				smsCardData.setInstallmentEndText(text[i].substring(text[i].indexOf(TAG_INSTALLMENT)+TAG_INSTALLMENT.getBytes().length));
-			}
-			if(text[i].indexOf(TAG_SHOP) != -1) {
-				smsCardData.setShopStartRow(i);
-				smsCardData.setShopEndText(text[i].substring(text[i].indexOf(TAG_SHOP)+TAG_SHOP.getBytes().length));
-			}
-		}
-		smsCardData.setNumber(number);
-		smsCardData.setTypeId(typeId);
-		smsCardData.setCompanyId(companyId);
-		smsCardData.setParseSource(parseText);
-		
-		// TODO 위에서 얻은 데이터를 Set 하는 메소드를 추가 해야함
-		insertDB(smsCardData);
-		
-		
-		/*Toast.makeText(context, "금액 시작 행 번호 : " + smsCardData.getAmountStartRow() + "\n금액 마지막 문자열 : " + smsCardData.getAmountEndText() + "\n" +
-								"할부 시작 행 번호 : " + smsCardData.getInstallmentStartRow() + "\n할부 마지막 문자열 : " + smsCardData.getInstallmentEndText() +  "\n" +
-								"상호 시작 행 번호 : " + smsCardData.getShopStartRow() + "\n상호 마지막 문자열 : " + smsCardData.getShopEndText(), Toast.LENGTH_LONG).show();*/
-		
-		return false;
-	}
-
-	public boolean getParserData(String number, String inputText) {	//inputText는 SMS에서 얻은 MessageBody
-		SMSCardData smsCardData = getDB(number);	//DB에서 읽어오는 메소드
-		
-		int amountStartRow = smsCardData.getAmountStartRow(), installmentStartRow = smsCardData.getInstallmentStartRow(), shopStartRow = smsCardData.getShopStartRow();
-		String amountEndText = smsCardData.getAmountEndText(), installmentEndText = smsCardData.getInstallmentEndText(), shopEndText = smsCardData.getShopEndText();
-		
-		long resultAmount = 0;
-		String resultInstallment = "일시불";
-		String resultShopName = "";
-		
-		StringTokenizer stringTokenizer = new StringTokenizer(inputText, " \n/");
-		String[] resultText = new String[stringTokenizer.countTokens()];
-		for(int i = 0, size = resultText.length; i < size; i++)
-			resultText[i] = stringTokenizer.nextToken();
-		
-		resultAmount = Long.valueOf(resultText[amountStartRow].substring(0, resultText[amountStartRow].indexOf(amountEndText)).replace(",", ""));
-		if(amountStartRow == installmentStartRow) {
-			//금액과 할부가 같은 토큰에 나오는 경우에는 금액이 먼저 나옴
-			resultInstallment = resultText[installmentStartRow].substring(resultText[amountStartRow].indexOf(amountEndText)+1).trim();
-		} else {
-			if(!installmentEndText.trim().equals(""))
-				resultInstallment = resultText[installmentStartRow].substring(0, resultText[installmentStartRow].indexOf(installmentEndText)).trim();
-			else
-				resultInstallment = resultText[installmentStartRow].trim();
-		}
-		if(!shopEndText.trim().equals(""))
-			resultShopName = resultText[shopStartRow].substring(0, resultText[shopStartRow].indexOf(shopEndText)).trim();
+	/** 입력한 번호가 어느 타입인지 */
+	public int getNumberType(String number) {
+		if(smsCardParser.isNumber(number))
+			return TYPE_CARD;
 		else
-			resultShopName = resultText[shopStartRow];
+			return TYPE_NONE;
+	}
 
-		Toast.makeText(context, "금액 : " + resultAmount + "\n할부기간 : " + resultInstallment + "\n상호 : " + resultShopName, Toast.LENGTH_LONG).show();
-		
+	public boolean getParserData(String number, int typeCard, String inputText) {
+		switch(typeCard) {
+		case TYPE_NONE:
+			return false;
+		case TYPE_CARD:
+			smsCardParser.getParserData(number, inputText);
+			return true;
+		}
 		return false;
 	}
 }
