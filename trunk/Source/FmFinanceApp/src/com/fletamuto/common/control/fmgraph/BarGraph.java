@@ -64,6 +64,9 @@ public class BarGraph extends View {
 	private Paint[] barPaint;
 	private RectF[] bar;
 	
+	private int detailedMoveAllBars = 0; //바 그래프 위치 변경, 좌측은 -, 우측은 +
+	private int detailedMoveTitles = 0; //Title 위치 변경, 좌측은 -, 우측은 +
+	
 		
 	/* =============================== 생성자 =================================*/
 	public BarGraph (Context context) {
@@ -245,6 +248,14 @@ public class BarGraph extends View {
 			defaultGraphColors[i] = default_Graph_Colors[i];
 		}
 	}
+	
+	public void setDetailedMoveAllBars (int value) {
+		detailedMoveAllBars = value;
+	}
+	
+	public void setDetailedMoveTitles (int value) {
+		detailedMoveTitles = value;
+	}
 
 	/* =============================== GET Method =================================*/
 	public ArrayList<Integer> getAxisPositions () {
@@ -300,10 +311,10 @@ public class BarGraph extends View {
 			return 0;
 		}
 		if (barGroupMemberCount == 1) {
-			return (bargroupAndBargroupGap * (graphItemValues.size() + 1)) + (barWidth * graphItemValues.size()) + barGraphMargin*2;
+			return (bargroupAndBargroupGap * (graphItemValues.size() + 1)) + (barWidth * graphItemValues.size()) + barGraphMargin*2 + detailedMoveAllBars;
 		} else {
 			return (bargroupAndBargroupGap * (barGraphGroupCount + 1)) + 
-				(((barWidth * barGroupMemberCount) + ((barGroupMemberCount - 1) * barAndBarGapInBargroup)))*barGraphGroupCount + barGraphMargin*2;
+				(((barWidth * barGroupMemberCount) + ((barGroupMemberCount - 1) * barAndBarGapInBargroup)))*barGraphGroupCount + barGraphMargin*2 + detailedMoveAllBars;
 		}	
 	}
 	public int getBarGraphHeight() {
@@ -311,11 +322,19 @@ public class BarGraph extends View {
 			return 0;
 		}
 		if (barGroupMemberCount == 1) {
-			return (bargroupAndBargroupGap * (graphItemValues.size() + 1)) + (barWidth * graphItemValues.size()) + barGraphMargin*2;
+			return (bargroupAndBargroupGap * (graphItemValues.size() + 1)) + (barWidth * graphItemValues.size()) + barGraphMargin*2 + detailedMoveAllBars;
 		} else {
 			return (bargroupAndBargroupGap * (barGraphGroupCount + 1)) + 
-			(((barWidth * barGroupMemberCount) + ((barGroupMemberCount - 1) * barAndBarGapInBargroup)))*barGraphGroupCount + + barGraphMargin*2;
+			(((barWidth * barGroupMemberCount) + ((barGroupMemberCount - 1) * barAndBarGapInBargroup)))*barGraphGroupCount + + barGraphMargin*2 + detailedMoveAllBars;
 		}
+	}
+	
+	public int getDetailedMoveAllBars () {
+		return detailedMoveAllBars;
+	}
+	
+	public int getDetailedMoveTitles () {
+		return detailedMoveTitles;
 	}
 	/* =============================== Methods =================================*/
 	
@@ -480,8 +499,8 @@ public class BarGraph extends View {
 		barPaint = new Paint[graphItemValues.size()];
 		bar = new RectF[graphItemValues.size()];
 		
-		int tempX = bargroupAndBargroupGap + barGraphMargin;
-		int tempY = bargroupAndBargroupGap;
+		int tempX = bargroupAndBargroupGap + barGraphMargin + detailedMoveAllBars;
+		int tempY = bargroupAndBargroupGap + detailedMoveAllBars;
 		
 		for (int i=0; i<graphItemValues.size(); i++) {
 			
@@ -536,12 +555,12 @@ public class BarGraph extends View {
 		
 		//타이틀 그리기
 		Paint[] titlePaint = new Paint[standardAxisTitles.size()];
-		
+
 		int titleXTemp;
 		if (barGroupMemberCount == 1) {
-			titleXTemp = bargroupAndBargroupGap + barWidth/2 + barGraphMargin;
+			titleXTemp = bargroupAndBargroupGap + barWidth/2 + barGraphMargin + detailedMoveAllBars + detailedMoveTitles;
 		} else {
-			titleXTemp = bargroupAndBargroupGap + ((barWidth*barGroupMemberCount + (barGroupMemberCount-1) * barAndBarGapInBargroup))/2 + barGraphMargin;
+			titleXTemp = bargroupAndBargroupGap + ((barWidth*barGroupMemberCount + (barGroupMemberCount-1) * barAndBarGapInBargroup))/2 + barGraphMargin + detailedMoveAllBars + detailedMoveTitles;
 		}
 		
 		

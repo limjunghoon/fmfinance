@@ -217,7 +217,7 @@ public class ReportSettleAccountsLayout extends FmBaseActivity {
 		at.add("자산/부채");
 		
 		ap.add(Constants.BAR_AXIS_X_BOTTOM);
-		ap.add(Constants.BAR_AXIS_Y_LEFT);
+//		ap.add(Constants.BAR_AXIS_Y_LEFT);
     
         bg = (BarGraph) findViewById (R.id.bgraph);
  
@@ -229,6 +229,12 @@ public class ReportSettleAccountsLayout extends FmBaseActivity {
         params.height = (150 > bg.getBarGraphHeight()) ? 150 : bg.getBarGraphHeight();
        
         bg.setLayoutParams(params);
+        
+        //Bar 그래프 세부 보정
+        bg.setBarWidth(20);
+        bg.setbargroupAndBargroupGap(55);
+        bg.setDetailedMoveAllBars(-40);
+        bg.setDetailedMoveTitles(-23);
         
         bg.setOnTouchListener(new View.OnTouchListener() {
 			
