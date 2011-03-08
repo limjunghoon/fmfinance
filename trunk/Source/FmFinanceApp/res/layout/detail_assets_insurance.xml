@@ -53,12 +53,32 @@
 			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVInsuranceMemo" android:textSize="18sp">
 			</TextView>
 		</LinearLayout>
-		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLPrograss" android:visibility="gone" android:layout_marginTop="5dp" android:orientation="horizontal">
+		
+		<LinearLayout android:id="@+id/InsuranceOriginalAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="15dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="투자원금" android:id="@+id/InsuranceOriginalAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/InsuranceOriginalAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/InsuranceExpiryAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="만기금" android:id="@+id/InsuranceExpiryAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/InsuranceExpiryAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/InsuranceGainAndLossAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="손익" android:id="@+id/InsuranceGainAndLossAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/InsuranceGainAndLossAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	
+		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/InsurancePrograssLL" android:visibility="gone" android:layout_marginTop="5dp" android:orientation="horizontal">
 			<TextView android:layout_height="wrap_content" android:id="@+id/TVStatePrograss" android:layout_width="95dp" android:textSize="18sp"></TextView>
 			<ProgressBar style="?android:attr/progressBarStyleHorizontal" android:layout_height="wrap_content" android:id="@+id/PBState" android:layout_width="fill_parent" android:layout_marginRight="20dp"></ProgressBar>
 		</LinearLayout>
 	  
-		<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<LinearLayout android:id="@+id/InsuranceDeleteLL" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginTop="5dp">
 			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="환매" android:id="@+id/BtnStateDelete"></Button>
 		</LinearLayout>
   			

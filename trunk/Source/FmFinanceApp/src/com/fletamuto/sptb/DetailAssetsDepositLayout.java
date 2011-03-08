@@ -15,6 +15,8 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.Revenue;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class DetailAssetsDepositLayout extends DetailBaseLayout {  	
 	private AssetsDepositItem mDeposit;
@@ -24,7 +26,17 @@ public class DetailAssetsDepositLayout extends DetailBaseLayout {
         
         setContentView(R.layout.detail_assets_deposit, true);
         
-        findViewById(R.id.LLPrograss).setVisibility(View.VISIBLE);
+        //완료된 자산에서 결산 보여 주기 위한
+        if (mDeposit.getState() == FinanceItem.STATE_COMPLEATE) {
+        	findViewById(R.id.DepositOriginalAmountLL).setVisibility(View.VISIBLE);
+			findViewById(R.id.DepositGainAndLossAmountLL).setVisibility(View.VISIBLE);
+			findViewById(R.id.DepositExpiryAmountLL).setVisibility(View.VISIBLE);
+			
+			findViewById(R.id.DepositDeleteLL).setVisibility(View.GONE);
+			
+        } else {
+        	findViewById(R.id.DepositPrograssLL).setVisibility(View.VISIBLE);
+        }
         
         setButtonListener();
         updateChildView();
@@ -63,8 +75,33 @@ public class DetailAssetsDepositLayout extends DetailBaseLayout {
 		tvExpect.setText(String.format("%,d원", mDeposit.getExpectAmount()));
 		TextView tvMemo = (TextView)findViewById(R.id.TVDepositMemo);
 		tvMemo.setText(mDeposit.getMemo());
-		setPorgress();
-		updateDeleteBtnText();
+		
+		//완료된 자산에서 결산 보여 주기 위한
+		if (mDeposit.getState() == FinanceItem.STATE_COMPLEATE) {
+			
+			TextView tvOiriginalAmount = (TextView)findViewById(R.id.DepositOriginalAmount);
+			tvOiriginalAmount.setText(String.format("%,d원", mDeposit.getTotalAmount()));
+			
+			ArrayList<Integer> incomeItemID = DBMgr.getIncomeFromAssets(mDeposit.getID());
+			if (incomeItemID.isEmpty())
+    		{
+				TextView tvExpiryAmount = (TextView)findViewById(R.id.DepositExpiryAmount);
+				tvExpiryAmount.setText(String.format("%,d원", mDeposit.getTotalAmount()));
+				TextView tvGainAndLossAmount = (TextView)findViewById(R.id.DepositGainAndLossAmount);
+				tvGainAndLossAmount.setText("수익율 : 0%");
+    		} else {
+    			FinanceItem incomeItem = DBMgr.getItem(IncomeItem.TYPE,incomeItemID.get(0));
+    			
+    			TextView tvExpiryAmount = (TextView)findViewById(R.id.DepositExpiryAmount);
+    			tvExpiryAmount.setText(String.format("%,d원", incomeItem.getAmount()));
+    			
+    			TextView tvGainAndLossAmount = (TextView)findViewById(R.id.DepositGainAndLossAmount);
+    			tvGainAndLossAmount.setText(Revenue.getString(mDeposit.getAmount(), incomeItem.getAmount()));
+    		}
+		} else {
+			setPorgress();
+			updateDeleteBtnText();
+		}
 	}
 	
 	@Override
@@ -72,6 +109,11 @@ public class DetailAssetsDepositLayout extends DetailBaseLayout {
 		super.setTitleBtn();
 		
 		setTitle("정기예금 내역");
+		
+		//완료된 자산에서 결산 보여 주기 위한
+		if (mDeposit.getState() == FinanceItem.STATE_COMPLEATE) {
+			setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.INVISIBLE);
+		}
   	}
 
 	@Override

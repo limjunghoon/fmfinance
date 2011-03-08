@@ -12,7 +12,11 @@ import android.widget.ToggleButton;
 import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.AssetsFundItem;
 import com.fletamuto.sptb.data.AssetsItem;
+import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.Revenue;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class DetailAssetsFundLayout extends DetailBaseLayout {  	
 	private AssetsFundItem mFund;
@@ -24,6 +28,16 @@ public class DetailAssetsFundLayout extends DetailBaseLayout {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.detail_assets_fund, true);
+        
+      //완료된 자산에서 결산 보여 주기 위한
+        if (mFund.getState() == FinanceItem.STATE_COMPLEATE) {
+        	findViewById(R.id.FundOriginalAmountLL).setVisibility(View.VISIBLE);
+			findViewById(R.id.FundGainAndLossAmountLL).setVisibility(View.VISIBLE);
+			findViewById(R.id.FundExpiryAmountLL).setVisibility(View.VISIBLE);
+			
+			findViewById(R.id.FundSellBuyLL).setVisibility(View.GONE);
+			
+        }
         
  //       findViewById(R.id.LLPrograss).setVisibility(View.VISIBLE);
         
@@ -39,20 +53,22 @@ public class DetailAssetsFundLayout extends DetailBaseLayout {
 				findViewById(R.id.LLFundPayment).setVisibility((tbPayment.isChecked()) ? View.VISIBLE : View.GONE);
 			}
 		});
-		
-		findViewById(R.id.BtnFundBuy).setOnClickListener(new View.OnClickListener() {
+		//완료된 자산에서 결산 보여 주기 위한
+        if (mFund.getState() != FinanceItem.STATE_COMPLEATE) {
+			findViewById(R.id.BtnFundBuy).setOnClickListener(new View.OnClickListener() {
+				
+				public void onClick(View v) {
+					addBuyStateActivtiy();
+				}
+			});
 			
-			public void onClick(View v) {
-				addBuyStateActivtiy();
-			}
-		});
-		
-		findViewById(R.id.BtnFundSell).setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				addSellStateActivtiy();
-			}
-		});
+			findViewById(R.id.BtnFundSell).setOnClickListener(new View.OnClickListener() {
+				
+				public void onClick(View v) {
+					addSellStateActivtiy();
+				}
+			});
+        }
 	}
 	
 	protected void addBuyStateActivtiy() {
@@ -88,6 +104,30 @@ public class DetailAssetsFundLayout extends DetailBaseLayout {
 		tvStore.setText(mFund.getStore());
 		TextView tvMemo = (TextView)findViewById(R.id.TVFundMemo);
 		tvMemo.setText(mFund.getMemo());
+		
+		//완료된 자산에서 결산 보여 주기 위한
+		if (mFund.getState() == FinanceItem.STATE_COMPLEATE) {
+			
+			TextView tvOiriginalAmount = (TextView)findViewById(R.id.FundOriginalAmount);
+			tvOiriginalAmount.setText(String.format("%,d원", mFund.getTotalAmount()));
+			
+			ArrayList<Integer> incomeItemID = DBMgr.getIncomeFromAssets(mFund.getID());
+			if (incomeItemID.isEmpty())
+    		{
+				TextView tvExpiryAmount = (TextView)findViewById(R.id.FundExpiryAmount);
+				tvExpiryAmount.setText(String.format("%,d원", mFund.getTotalAmount()));
+				TextView tvGainAndLossAmount = (TextView)findViewById(R.id.FundGainAndLossAmount);
+				tvGainAndLossAmount.setText("수익율 : 0%");
+    		} else {
+    			FinanceItem incomeItem = DBMgr.getItem(IncomeItem.TYPE,incomeItemID.get(0));
+    			
+    			TextView tvExpiryAmount = (TextView)findViewById(R.id.FundExpiryAmount);
+    			tvExpiryAmount.setText(String.format("%,d원", incomeItem.getAmount()));
+    			
+    			TextView tvGainAndLossAmount = (TextView)findViewById(R.id.FundGainAndLossAmount);
+    			tvGainAndLossAmount.setText(Revenue.getString(mFund.getAmount(), incomeItem.getAmount()));
+    		}
+		}
 	}
 	
 	@Override
@@ -95,6 +135,11 @@ public class DetailAssetsFundLayout extends DetailBaseLayout {
 		super.setTitleBtn();
 		
 		setTitle("펀드 내역");
+		
+		//완료된 자산에서 결산 보여 주기 위한
+		if (mFund.getState() == FinanceItem.STATE_COMPLEATE) {
+			setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.INVISIBLE);
+		}
   	}
 
 	@Override

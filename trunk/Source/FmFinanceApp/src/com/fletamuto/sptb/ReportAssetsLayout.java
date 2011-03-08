@@ -208,7 +208,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     private void setListViewTextInsurance(AssetsInsuranceItem insurance,
 			View convertView) {
     	if (insurance.getState() == FinanceItem.STATE_COMPLEATE) {
-    		Log.d("jp test", "Insurance");
+
     		ArrayList<Integer> incomeItemID = DBMgr.getIncomeFromAssets(insurance.getID());
     		
     		((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(insurance.getTitle());
@@ -241,7 +241,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
 
 	private void setListViewTextFund(AssetsFundItem item, View convertView) {
 		if (item.getState() == FinanceItem.STATE_COMPLEATE) {
-			Log.d("jp test", "Fund");
+
     		ArrayList<Integer> incomeItemID = DBMgr.getIncomeFromAssets(item.getID());
     		
     		((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(item.getTitle());
@@ -276,7 +276,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
 
 	protected void setListViewTextDeposit(AssetsDepositItem deposit, View convertView) {
 		if (deposit.getState() == FinanceItem.STATE_COMPLEATE) {
-			Log.d("jp test", "Deposit");
+
 			ArrayList<Integer> incomeItemID = DBMgr.getIncomeFromAssets(deposit.getID());
 			
 			((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(deposit.getTitle());
@@ -311,7 +311,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     
     protected void setListViewTextSavings(AssetsSavingsItem savings, View convertView) {
     	if (savings.getState() == FinanceItem.STATE_COMPLEATE) {
-    		Log.d("jp test", "Savings");
+
 			ArrayList<Integer> incomeItemID = DBMgr.getIncomeFromAssets(savings.getID());
 			
 			((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(savings.getTitle());
@@ -346,7 +346,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     
     protected void setListViewTextStock(AssetsStockItem stock, View convertView) {
     	if (stock.getState() == FinanceItem.STATE_COMPLEATE) {
-    		Log.d("jp test", "Stock");
+
 			ArrayList<Integer> incomeItemID = DBMgr.getIncomeFromAssets(stock.getID());
 			
 			((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(stock.getTitle());
@@ -381,7 +381,7 @@ public class ReportAssetsLayout extends ReportSeparationLayout {
     
     protected void setListViewTextDefault(FinanceItem item, View convertView) {
     	if (item.getState() == FinanceItem.STATE_COMPLEATE) {
-    		Log.d("jp test", "default");
+
 			ArrayList<Integer> incomeItemID = DBMgr.getIncomeFromAssets(item.getID());
 			
 			((TextView)convertView.findViewById(R.id.TVSectionLine1Left)).setText(item.getTitle());
