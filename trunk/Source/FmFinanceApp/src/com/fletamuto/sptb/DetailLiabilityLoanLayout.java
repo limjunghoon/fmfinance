@@ -12,9 +12,12 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.LiabilityChangeItem;
 import com.fletamuto.sptb.data.LiabilityLoanItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.Revenue;
 
 public class DetailLiabilityLoanLayout extends DetailBaseLayout {  	
 	private LiabilityLoanItem mLoan;
@@ -25,7 +28,7 @@ public class DetailLiabilityLoanLayout extends DetailBaseLayout {
         
         setContentView(R.layout.detail_liability_loan, true);
         
-        findViewById(R.id.LLPrograss).setVisibility(View.VISIBLE);
+       	findViewById(R.id.LoanPrograssLL).setVisibility(View.VISIBLE);
         
         setButtonListener();
         updateChildView();
@@ -77,10 +80,12 @@ public class DetailLiabilityLoanLayout extends DetailBaseLayout {
 		
 		TextView tvMemo = (TextView)findViewById(R.id.TVLoanMemo);
 		tvMemo.setText(mLoan.getMemo());
+		
 		setPorgress();
 //		updateDeleteBtnText();
 //		
 		addLoanPaymentList();
+
 	}
 	
 	protected void setPorgress() {

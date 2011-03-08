@@ -55,12 +55,32 @@
 			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVLiabilityMemo" android:textSize="18sp">
 			</TextView>
 		</LinearLayout>
-		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLPrograss" android:visibility="gone" android:layout_marginTop="5dp" android:orientation="horizontal">
+		
+		<LinearLayout android:id="@+id/DefaultOriginalAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="25dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="원금" android:id="@+id/DefaultOriginalAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/DefaultOriginalAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/DefaultExpiryAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="총상환금" android:id="@+id/DefaultExpiryAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/DefaultExpiryAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/DefaultGainAndLossAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="이자" android:id="@+id/DefaultGainAndLossAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/DefaultGainAndLossAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	
+		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/DefaultPrograssLL" android:visibility="gone" android:layout_marginTop="5dp" android:orientation="horizontal">
 			<TextView android:layout_height="wrap_content" android:id="@+id/TVStatePrograss" android:layout_width="95dp" android:textSize="18sp"></TextView>
 			<ProgressBar style="?android:attr/progressBarStyleHorizontal" android:layout_height="wrap_content" android:id="@+id/PBState" android:layout_width="fill_parent" android:layout_marginRight="20dp"></ProgressBar>
 		</LinearLayout>
 	  
-		<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<LinearLayout android:id="@+id/DefaultDeleteLL" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginTop="5dp">
 			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="상환" android:id="@+id/BtnStateDelete"></Button>
 		</LinearLayout>
   			
