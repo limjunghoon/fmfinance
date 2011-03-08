@@ -41,8 +41,27 @@
 			<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVStockMemo" android:textSize="18sp">
 			</TextView>
 		</LinearLayout>
+		
+		<LinearLayout android:id="@+id/StockOriginalAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="15dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="투자원금" android:id="@+id/StockOriginalAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/StockOriginalAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/StockExpiryAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="만기금" android:id="@+id/StockExpiryAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/StockExpiryAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/StockGainAndLossAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="손익" android:id="@+id/StockGainAndLossAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/StockGainAndLossAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
 	  
-		<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="0">
+		<LinearLayout android:id="@+id/StockSellBuyLL" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="0">
 			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="매도" android:layout_weight="1" android:id="@+id/BtnStockSell"></Button>
 			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="매수" android:id="@+id/BtnStockBuy"></Button>
 		</LinearLayout>

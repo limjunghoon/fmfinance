@@ -1,10 +1,18 @@
 package com.fletamuto.sptb;
 
+import java.util.ArrayList;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.fletamuto.sptb.data.AssetsRealEstateItem;
+import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.IncomeItem;
+import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.Revenue;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class DetailAssetsRealEstateLayout extends DetailBaseLayout {  	
 	private AssetsRealEstateItem mRealEstate;
@@ -14,17 +22,30 @@ public class DetailAssetsRealEstateLayout extends DetailBaseLayout {
         
         setContentView(R.layout.detail_assets_real_estate, true);
         
+      //완료된 자산에서 결산 보여 주기 위한
+        if (mRealEstate.getState() == FinanceItem.STATE_COMPLEATE) {
+        	findViewById(R.id.RealEstateOriginalAmountLL).setVisibility(View.VISIBLE);
+			findViewById(R.id.RealEstateGainAndLossAmountLL).setVisibility(View.VISIBLE);
+			findViewById(R.id.RealEstateExpiryAmountLL).setVisibility(View.VISIBLE);
+			
+			findViewById(R.id.RealEstateDeleteLL).setVisibility(View.GONE);
+			
+        }
+        
         setButtonListener();
         updateChildView();
     }
 
 	public void setButtonListener() {
-//		findViewById(R.id.BtnStateDelete).setOnClickListener(new View.OnClickListener() {
-//			
-//			public void onClick(View v) {
-//				onDeleteBtnClick();
-//			}
-//		});
+		//완료된 자산에서 결산 보여 주기 위한
+        if (mRealEstate.getState() != FinanceItem.STATE_COMPLEATE) {
+	//		findViewById(R.id.BtnStateDelete).setOnClickListener(new View.OnClickListener() {
+	//			
+	//			public void onClick(View v) {
+	//				onDeleteBtnClick();
+	//			}
+	//		});
+        }
 //		
 //		final ToggleButton tbPayment = (ToggleButton) findViewById(R.id.TBSavingPeruse);
 //		tbPayment.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +68,30 @@ public class DetailAssetsRealEstateLayout extends DetailBaseLayout {
 		TextView tvMemo = (TextView)findViewById(R.id.TVRealEstateMemo);
 		tvMemo.setText(mRealEstate.getMemo());
 		updateDeleteBtnText();
+		
+		//완료된 자산에서 결산 보여 주기 위한
+		if (mRealEstate.getState() == FinanceItem.STATE_COMPLEATE) {
+			
+			TextView tvOiriginalAmount = (TextView)findViewById(R.id.RealEstateOriginalAmount);
+			tvOiriginalAmount.setText(String.format("%,d원", mRealEstate.getTotalAmount()));
+			
+			ArrayList<Integer> incomeItemID = DBMgr.getIncomeFromAssets(mRealEstate.getID());
+			if (incomeItemID.isEmpty())
+    		{
+				TextView tvExpiryAmount = (TextView)findViewById(R.id.RealEstateExpiryAmount);
+				tvExpiryAmount.setText(String.format("%,d원", mRealEstate.getTotalAmount()));
+				TextView tvGainAndLossAmount = (TextView)findViewById(R.id.RealEstateGainAndLossAmount);
+				tvGainAndLossAmount.setText("수익율 : 0%");
+    		} else {
+    			FinanceItem incomeItem = DBMgr.getItem(IncomeItem.TYPE,incomeItemID.get(0));
+    			
+    			TextView tvExpiryAmount = (TextView)findViewById(R.id.RealEstateExpiryAmount);
+    			tvExpiryAmount.setText(String.format("%,d원", incomeItem.getAmount()));
+    			
+    			TextView tvGainAndLossAmount = (TextView)findViewById(R.id.RealEstateGainAndLossAmount);
+    			tvGainAndLossAmount.setText(Revenue.getString(mRealEstate.getAmount(), incomeItem.getAmount()));
+    		}
+		}
 	}
 	
 	@Override
@@ -54,6 +99,11 @@ public class DetailAssetsRealEstateLayout extends DetailBaseLayout {
 		super.setTitleBtn();
 		
 		setTitle("부동산 내역");
+		
+		//완료된 자산에서 결산 보여 주기 위한
+		if (mRealEstate.getState() == FinanceItem.STATE_COMPLEATE) {
+			setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.INVISIBLE);
+		}
   	}
 
 	@Override

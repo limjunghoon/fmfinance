@@ -18,6 +18,8 @@ import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.Revenue;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class DetailAssetsStockLayout extends DetailBaseLayout {  	
 	private AssetsStockItem mStock;
@@ -29,7 +31,18 @@ public class DetailAssetsStockLayout extends DetailBaseLayout {
         
         setContentView(R.layout.detail_assets_stock, true);
         
+      //완료된 자산에서 결산 보여 주기 위한
+        if (mStock.getState() == FinanceItem.STATE_COMPLEATE) {
+        	findViewById(R.id.StockOriginalAmountLL).setVisibility(View.VISIBLE);
+			findViewById(R.id.StockGainAndLossAmountLL).setVisibility(View.VISIBLE);
+			findViewById(R.id.StockExpiryAmountLL).setVisibility(View.VISIBLE);
+			
+			findViewById(R.id.StockSellBuyLL).setVisibility(View.GONE);
+			
+        }
+        
         //findViewById(R.id.LLPrograss).setVisibility(View.VISIBLE);
+        
         
         setButtonListener();
         updateChildView();
@@ -109,7 +122,31 @@ public class DetailAssetsStockLayout extends DetailBaseLayout {
 		TextView tvMemo = (TextView)findViewById(R.id.TVStockMemo);
 		tvMemo.setText(mStock.getMemo());
 		
-		addSavingsPaymentList();
+		//완료된 자산에서 결산 보여 주기 위한
+		if (mStock.getState() == FinanceItem.STATE_COMPLEATE) {
+			
+			TextView tvOiriginalAmount = (TextView)findViewById(R.id.StockOriginalAmount);
+			tvOiriginalAmount.setText(String.format("%,d원", mStock.getTotalAmount()));
+			
+			ArrayList<Integer> incomeItemID = DBMgr.getIncomeFromAssets(mStock.getID());
+			if (incomeItemID.isEmpty())
+    		{
+				TextView tvExpiryAmount = (TextView)findViewById(R.id.StockExpiryAmount);
+				tvExpiryAmount.setText(String.format("%,d원", mStock.getTotalAmount()));
+				TextView tvGainAndLossAmount = (TextView)findViewById(R.id.StockGainAndLossAmount);
+				tvGainAndLossAmount.setText("수익율 : 0%");
+    		} else {
+    			FinanceItem incomeItem = DBMgr.getItem(IncomeItem.TYPE,incomeItemID.get(0));
+    			
+    			TextView tvExpiryAmount = (TextView)findViewById(R.id.StockExpiryAmount);
+    			tvExpiryAmount.setText(String.format("%,d원", incomeItem.getAmount()));
+    			
+    			TextView tvGainAndLossAmount = (TextView)findViewById(R.id.StockGainAndLossAmount);
+    			tvGainAndLossAmount.setText(Revenue.getString(mStock.getAmount(), incomeItem.getAmount()));
+    		}
+		} else {
+			addSavingsPaymentList();
+		}
 	}
 	
 	@Override
@@ -117,6 +154,11 @@ public class DetailAssetsStockLayout extends DetailBaseLayout {
 		super.setTitleBtn();
 		
 		setTitle("주식 내역");
+		
+		//완료된 자산에서 결산 보여 주기 위한
+		if (mStock.getState() == FinanceItem.STATE_COMPLEATE) {
+			setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.INVISIBLE);
+		}
   	}
 
 	@Override

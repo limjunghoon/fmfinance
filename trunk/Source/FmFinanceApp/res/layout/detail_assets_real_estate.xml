@@ -37,7 +37,26 @@
 			</TextView>
 		</LinearLayout>
 	  
-		<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+	  	<LinearLayout android:id="@+id/RealEstateOriginalAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="15dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="투자원금" android:id="@+id/RealEstateOriginalAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/RealEstateOriginalAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/RealEstateExpiryAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="만기금" android:id="@+id/RealEstateExpiryAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/RealEstateExpiryAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/RealEstateGainAndLossAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="손익" android:id="@+id/RealEstateGainAndLossAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/RealEstateGainAndLossAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	
+		<LinearLayout android:id="@+id/RealEstateDeleteLL" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginTop="5dp">
 			<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="매매" android:id="@+id/BtnStateDelete"></Button>
 		</LinearLayout>
   			

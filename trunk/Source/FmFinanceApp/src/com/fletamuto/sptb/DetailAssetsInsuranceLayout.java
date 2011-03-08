@@ -19,7 +19,10 @@ import android.widget.ToggleButton;
 import com.fletamuto.sptb.data.AssetsChangeItem;
 import com.fletamuto.sptb.data.AssetsInsuranceItem;
 import com.fletamuto.sptb.data.FinanceItem;
+import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.Revenue;
+import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class DetailAssetsInsuranceLayout extends DetailBaseLayout {  	
 	private AssetsInsuranceItem mInsurance;
@@ -31,7 +34,18 @@ public class DetailAssetsInsuranceLayout extends DetailBaseLayout {
         
         setContentView(R.layout.detail_assets_insurance, true);
         
-        findViewById(R.id.LLPrograss).setVisibility(View.VISIBLE);
+      //완료된 자산에서 결산 보여 주기 위한
+        if (mInsurance.getState() == FinanceItem.STATE_COMPLEATE) {
+        	findViewById(R.id.InsuranceOriginalAmountLL).setVisibility(View.VISIBLE);
+			findViewById(R.id.InsuranceGainAndLossAmountLL).setVisibility(View.VISIBLE);
+			findViewById(R.id.InsuranceExpiryAmountLL).setVisibility(View.VISIBLE);
+			
+			findViewById(R.id.InsuranceDeleteLL).setVisibility(View.GONE);
+			
+        } else {
+        	findViewById(R.id.InsurancePrograssLL).setVisibility(View.VISIBLE);
+        }
+        
         
         setButtonListener();
         updateChildView();
@@ -73,10 +87,35 @@ public class DetailAssetsInsuranceLayout extends DetailBaseLayout {
 
 		TextView tvMemo = (TextView)findViewById(R.id.TVInsuranceMemo);
 		tvMemo.setText(mInsurance.getMemo());
-		setPorgress();
-		updateDeleteBtnText();
 		
-		addInsurancePaymentList();
+		//완료된 자산에서 결산 보여 주기 위한
+		if (mInsurance.getState() == FinanceItem.STATE_COMPLEATE) {
+			
+			TextView tvOiriginalAmount = (TextView)findViewById(R.id.InsuranceOriginalAmount);
+			tvOiriginalAmount.setText(String.format("%,d원", mInsurance.getTotalAmount()));
+			
+			ArrayList<Integer> incomeItemID = DBMgr.getIncomeFromAssets(mInsurance.getID());
+			if (incomeItemID.isEmpty())
+    		{
+				TextView tvExpiryAmount = (TextView)findViewById(R.id.InsuranceExpiryAmount);
+				tvExpiryAmount.setText(String.format("%,d원", mInsurance.getTotalAmount()));
+				TextView tvGainAndLossAmount = (TextView)findViewById(R.id.InsuranceGainAndLossAmount);
+				tvGainAndLossAmount.setText("수익율 : 0%");
+    		} else {
+    			FinanceItem incomeItem = DBMgr.getItem(IncomeItem.TYPE,incomeItemID.get(0));
+    			
+    			TextView tvExpiryAmount = (TextView)findViewById(R.id.InsuranceExpiryAmount);
+    			tvExpiryAmount.setText(String.format("%,d원", incomeItem.getAmount()));
+    			
+    			TextView tvGainAndLossAmount = (TextView)findViewById(R.id.InsuranceGainAndLossAmount);
+    			tvGainAndLossAmount.setText(Revenue.getString(mInsurance.getAmount(), incomeItem.getAmount()));
+    		}
+		} else {
+			setPorgress();
+			updateDeleteBtnText();
+			
+			addInsurancePaymentList();
+		}		
 	}
 	
 	@Override
@@ -84,6 +123,11 @@ public class DetailAssetsInsuranceLayout extends DetailBaseLayout {
 		super.setTitleBtn();
 		
 		setTitle("보험 내역");
+		
+		//완료된 자산에서 결산 보여 주기 위한
+		if (mInsurance.getState() == FinanceItem.STATE_COMPLEATE) {
+			setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.INVISIBLE);
+		}
   	}
 
 	@Override

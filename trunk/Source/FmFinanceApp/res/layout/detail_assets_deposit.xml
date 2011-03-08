@@ -4,6 +4,8 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
   
+  	<ScrollView android:id="@+id/ScrollView01" android:layout_height="fill_parent" android:layout_width="fill_parent">
+  	<LinearLayout android:id="@+id/LinearLayout03" android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical">
   	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
 		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="상품명" android:id="@+id/TVDepositNameT" android:layout_width="95dp">
 		</TextView>
@@ -58,13 +60,35 @@
 		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/TVDepositMemo" android:textSize="18sp">
 		</TextView>
 	</LinearLayout>
-	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LLPrograss" android:visibility="gone" android:layout_marginTop="5dp" android:orientation="horizontal">
+	
+	<LinearLayout android:id="@+id/DepositOriginalAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="15dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="투자원금" android:id="@+id/DepositOriginalAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/DepositOriginalAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/DepositExpiryAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="만기금" android:id="@+id/DepositExpiryAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/DepositExpiryAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/DepositGainAndLossAmountLL" android:visibility="gone" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+		<TextView android:layout_height="wrap_content" android:textSize="18sp" android:text="손익" android:id="@+id/DepositGainAndLossAmountT" android:layout_width="95dp">
+		</TextView>
+		<TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/DepositGainAndLossAmount" android:textSize="18sp">
+		</TextView>
+	</LinearLayout>
+	
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/DepositPrograssLL" android:visibility="gone" android:layout_marginTop="5dp" android:orientation="horizontal">
 		<TextView android:layout_height="wrap_content" android:id="@+id/TVStatePrograss" android:layout_width="95dp" android:textSize="18sp"></TextView>
 		<ProgressBar style="?android:attr/progressBarStyleHorizontal" android:layout_height="wrap_content" android:id="@+id/PBState" android:layout_width="fill_parent" android:layout_marginRight="20dp"></ProgressBar>
 	</LinearLayout>
   
-	<LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginTop="5dp">
+	<LinearLayout android:id="@+id/DepositDeleteLL" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_marginTop="5dp">
 		<Button android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1" android:text="환매" android:id="@+id/BtnStateDelete"></Button>
-	</LinearLayout>
+	</LinearLayout>	
 
+</LinearLayout>
+</ScrollView>	
 </LinearLayout>
