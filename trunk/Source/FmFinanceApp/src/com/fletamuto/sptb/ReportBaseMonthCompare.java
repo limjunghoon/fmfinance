@@ -31,7 +31,7 @@ public abstract class ReportBaseMonthCompare extends ReportBaseCompare {
 	protected static final int VIEW_YEAR = 1;
 	
 	protected int mYear = Calendar.getInstance().get(Calendar.YEAR);
-	private Calendar mMonthCalendar = Calendar.getInstance();
+	protected Calendar mMonthCalendar = Calendar.getInstance();
 	protected ReportExpandableListAdapter mAdapterItem;
 	protected ArrayList<ArrayList<FinanceItem>> mChildItems = new ArrayList<ArrayList<FinanceItem>>();
 	protected ArrayList<String> mParentItems = new ArrayList<String>();

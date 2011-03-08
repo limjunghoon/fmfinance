@@ -1120,5 +1120,46 @@ public class LiabilityDBConnector extends BaseFinanceDBConnector {
 	public int updateSubCategory(int id, String name, int imgIndex) {
 		return 0;
 	}
+
+	/**
+	 * 입력된 금액중 달에 마지막에 입력된 금액을 얻는다. 
+	 * @param assetsID
+	 * @param year
+	 * @return
+	 */
+	public ArrayList<Long> getLastAmountMonthInYear(int id, int year, int month, int beforMonthCount) {
+		ArrayList<Long> amountArr = new ArrayList<Long>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		int targetMonth = month - beforMonthCount;
+		if (targetMonth <= 0) {
+			targetMonth += 12 + 1;
+			year--;
+		}
+		for (int index = 0; index < beforMonthCount; index++) {
+			long lastAmount = 0L;
+			
+			if (targetMonth > 12) {
+				targetMonth = 1;
+				year++;
+			}
+			
+			String[] params = {String.valueOf(id),  String.format("%d-%02d", year, targetMonth)};
+			String query = "SELECT amount FROM liability_change_amount WHERE liability_id=? AND strftime('%Y-%m', change_date)=? ORDER BY change_date DESC";
+			Cursor c = db.rawQuery(query, params);
+			
+			if (c.moveToFirst() != false) {
+				lastAmount = c.getLong(0);
+			}
+
+			amountArr.add(lastAmount);
+			c.close();
+			
+			targetMonth++;
+		}
+		
+		closeDatabase();
+		return amountArr;
+	}
 	
 }

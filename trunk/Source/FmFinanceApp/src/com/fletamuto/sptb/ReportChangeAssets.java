@@ -23,25 +23,28 @@ import com.fletamuto.sptb.ReportMonthOfYearCategoryLayout.MonthAmountItem;
 import com.fletamuto.sptb.ReportMonthOfYearCategoryLayout.ReportMonthlyItemAdapter;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
+import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.Revenue;
 
 public class ReportChangeAssets extends FmBaseActivity {
-	private LineGraph lg;
-//	private int mYear = Calendar.getInstance().get(Calendar.YEAR);
+	private static final int VIEW_ALL = 0;
+	private static final int VIEW_CATEGORY = 1;
+	private static final int VIEW_ITEM = 2;
+	
 	private Calendar mMonthCalendar = Calendar.getInstance();
 	private ArrayList<Long> mItemAmount = new ArrayList<Long>();
-	private long mTotalAmount = 0L;
-	private long mStartAmount = 0L;
-	ArrayList<String> mMonthArr = new ArrayList<String>();
-//	ArrayList<Long> mMonthCategoryAmount = new ArrayList<Long>();
-	private int mPeriodTerm = ItemDef.BASE_PERIOD_MONTH_TERM;
+//	private long mTotalAmount = 0L;
+	private ArrayList<String> mMonthArr = new ArrayList<String>();
 	private Category mMainCategory = null;
+	private FinanceItem mItem = null;
+	private int mViewMode = VIEW_ALL;
+	private int mItemType = AssetsItem.TYPE;
+	private int mPeriodTerm = ItemDef.BASE_PERIOD_MONTH_TERM;
 	
 	protected ReportMonthlyItemAdapter mMonthlyAdapter = null;
 	protected ArrayList<MonthAmountItem> mMonthlyItems = new ArrayList<MonthAmountItem>();
-	
 	
 	
     /** Called when the activity is first created. */
@@ -57,9 +60,10 @@ public class ReportChangeAssets extends FmBaseActivity {
         updateChildView(); 
     }
     
+    
+    
     protected void clearMonthAmount() {
-    	mStartAmount = 0L;
-    	mTotalAmount = 0L;
+//    	mTotalAmount = 0L;
     	mItemAmount.clear();
     	
     	for (int index = 0; index < mPeriodTerm; index++) {
@@ -69,30 +73,43 @@ public class ReportChangeAssets extends FmBaseActivity {
     
     private void getData() {
     	clearMonthAmount();
-    	ArrayList<Category> assetsCategory = DBMgr.getCategory(AssetsItem.TYPE);
-    	int size = assetsCategory.size();
     	
-    	// 속도 개선 필요 //////////
-    	for (int index = 0; index < size; index++) {
-    		long monthAmount = 0L;
-    		ArrayList<Long> categoryAmount = DBMgr.getLastAmountMonth(AssetsItem.TYPE, assetsCategory.get(index).getID(), mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+    	if (mViewMode == VIEW_ALL) {
+    		ArrayList<FinanceItem> Items = DBMgr.getAllItems(mItemType);
+        	int size = Items.size();
+        	
+        	// 속도 개선 필요 //////////
+        	for (int index = 0; index < size; index++) {
+        		ArrayList<Long> categoryAmount = DBMgr.getLastAmountMonth(mItemType, Items.get(index).getID(), mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+        		for (int month = 0; month < mPeriodTerm; month++){
+        			mItemAmount.set(month, mItemAmount.get(month)+categoryAmount.get(month));
+        		}
+        	}
+        	
+ //       	mTotalAmount = DBMgr.getTotalAmount(mItemType);
+    	}
+    	else if (mViewMode == VIEW_CATEGORY) {
+    		ArrayList<FinanceItem> Items = DBMgr.getItemsFromCategoryID(mItemType, mMainCategory.getID());
+        	int size = Items.size();
+        	
+        	// 속도 개선 필요 //////////
+        	for (int index = 0; index < size; index++) {
+        		ArrayList<Long> categoryAmount = DBMgr.getLastAmountMonth(mItemType, Items.get(index).getID(), mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+        		for (int month = 0; month < mPeriodTerm; month++){
+        			mItemAmount.set(month, mItemAmount.get(month)+categoryAmount.get(month));
+        		}
+        	}
+        	
+//        	mTotalAmount = DBMgr.getTotalMainCategoryAmount(mItemType, mMainCategory.getID());
+    	}
+    	else {
+    		ArrayList<Long> categoryAmount = DBMgr.getLastAmountMonth(mItemType, mItem.getID(), mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
     		for (int month = 0; month < mPeriodTerm; month++){
     			mItemAmount.set(month, mItemAmount.get(month)+categoryAmount.get(month));
     		}
     		
+//    		mTotalAmount = mItem.getAmount();
     	}
-    	
-//    	for (int month = 0; month < 12; month++){
-//    		mMonthCategoryAmount.add(mMonthAmount[month]);
-//    		
-//    		mMonthlyItems.add(new MonthAmountItem(mYear, month+1, mMonthAmount[month]));
-//    		
-//    		if (mStartAmount == 0L && mMonthAmount[month] != 0L) {
-//				mStartAmount = mMonthAmount[month];
-//			}
-//		}
-    	
-    	mTotalAmount = DBMgr.getTotalAmount(AssetsItem.TYPE);
 	}
     
     private void setMonthData() {
@@ -121,13 +138,36 @@ public class ReportChangeAssets extends FmBaseActivity {
 
 	@Override
     protected void initialize() {
+		mItemType = getIntent().getIntExtra(MsgDef.ExtraNames.ITEM_TYPE, AssetsItem.TYPE);
+		
+        int categoryID = getIntent().getIntExtra(MsgDef.ExtraNames.CATEGORY_ID, -1);
+        if (categoryID != -1) {
+        	mMainCategory = DBMgr.getCategoryFromID(mItemType, categoryID) ;
+        	mViewMode = VIEW_CATEGORY;
+        }
+        else {
+        	int itemID = getIntent().getIntExtra(MsgDef.ExtraNames.ITEM_ID, -1);
+        	if (itemID != -1) {
+        		mItem = DBMgr.getItem(mItemType, itemID);
+        		mViewMode = VIEW_ITEM;
+        	}
+        }
         
     	super.initialize();
     }
     
     @Override
     protected void setTitleBtn() {
-    	setTitle("자산변동 추이");
+    	if (mViewMode == VIEW_ALL) {
+    		setTitle("자산 변동내역");
+    	}
+    	else if (mViewMode == VIEW_CATEGORY) {
+    		setTitle(mMainCategory.getName() + " 변동내역");
+    	}
+    	else {
+    		setTitle(mItem.getTitle() + " 변동내역");
+    	}
+    	
     	super.setTitleBtn();
     }
     
@@ -192,7 +232,7 @@ public class ReportChangeAssets extends FmBaseActivity {
 	private void updateLineView() {
 		if (mItemAmount == null) return;
 		
-		lg = (LineGraph) findViewById (R.id.lgraph);
+		final LineGraph lg = (LineGraph) findViewById (R.id.lgraph);
 		lg.makeUserTypeGraph(mItemAmount, null, null, mMonthArr);
 		
 		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) lg.getLayoutParams();

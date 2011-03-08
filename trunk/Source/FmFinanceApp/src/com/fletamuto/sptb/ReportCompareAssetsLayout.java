@@ -1,24 +1,15 @@
 package com.fletamuto.sptb;
 
-import java.util.ArrayList;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 
-import com.fletamuto.sptb.ReportMonthOfYearCategoryLayout.MonthAmountItem;
-import com.fletamuto.sptb.ReportMonthOfYearCategoryLayout.ReportMonthlyItemAdapter;
 import com.fletamuto.sptb.data.AssetsItem;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.FinanceItem;
-import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.db.DBMgr;
-import com.fletamuto.sptb.util.LogTag;
 import com.fletamuto.sptb.view.FmBaseLayout;
 
 public class ReportCompareAssetsLayout extends ReportBaseCompare {
@@ -26,7 +17,6 @@ public class ReportCompareAssetsLayout extends ReportBaseCompare {
 	
 	/** 메인 분류 아이디 -1이면 전체분류*/
 	public Category mMainCategory = null;
-	
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -111,6 +101,13 @@ public class ReportCompareAssetsLayout extends ReportBaseCompare {
 		if (mMainCategory == null) {
 			Intent intent = new Intent(ReportCompareAssetsLayout.this, ReportCompareAssetsLayout.class);
 			intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, categoryAmount.getCategoryID());
+			intent.putExtra(MsgDef.ExtraNames.ITEM_TYPE, AssetsItem.TYPE);
+			startActivity(intent);
+		}
+		else {
+			Intent intent = new Intent(ReportCompareAssetsLayout.this, ReportChangeAssets.class);
+			intent.putExtra(MsgDef.ExtraNames.ITEM_ID, categoryAmount.getCategoryID());
+			intent.putExtra(MsgDef.ExtraNames.ITEM_TYPE, AssetsItem.TYPE);
 			startActivity(intent);
 		}
 		
@@ -121,6 +118,11 @@ public class ReportCompareAssetsLayout extends ReportBaseCompare {
 			
 			public void onClick(View v) {
 				Intent intent = new Intent(ReportCompareAssetsLayout.this, ReportChangeAssets.class);
+				intent.putExtra(MsgDef.ExtraNames.ITEM_TYPE, AssetsItem.TYPE);
+				if (mMainCategory != null) {
+					intent.putExtra(MsgDef.ExtraNames.CATEGORY_ID, mMainCategory.getID());
+				}
+				
 				startActivity(intent);
 			}
 		});
@@ -163,8 +165,5 @@ public class ReportCompareAssetsLayout extends ReportBaseCompare {
 				mCategoryAmount.put(item.getID(), categoryAmount);
 			}
 		}
-		
 	}
-	
-	
 }

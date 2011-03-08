@@ -445,7 +445,12 @@ public final class DBMgr {
 	}
 	
 	public static ArrayList<Long> getTotalTagAmountMonthInYear(int tagID, int year) {
-		return mInstance.mDBConnector.getBaseFinanceDBInstance(ExpenseItem.TYPE).getTotalTagAmountMonthInYear(tagID, year);
+		return getExpenseDBConnecter().getTotalTagAmountMonthInYear(tagID, year);
+	}
+	
+	public static ArrayList<Long> getTotalTagAmountMonth(int tagID, int year, int month, int periodTerm) {
+		
+		return getExpenseDBConnecter().getTotalTagAmountMonth(tagID, year, month, periodTerm);
 	}
 	
 	public static long getTotalAmountYear(int itemType, int year) {
@@ -784,12 +789,12 @@ public final class DBMgr {
 		return getAssetsDBConnecter().getLastAmountMonthInYear(assetsID, year);
 	}
 	
-	public static ArrayList<Long> getLastAmountMonth(int itemType, int assetsID, int year, int month, int priodTerm) {
+	public static ArrayList<Long> getLastAmountMonth(int itemType, int id, int year, int month, int priodTerm) {
 		if (itemType == AssetsItem.TYPE) {
-			return getAssetsDBConnecter().getLastAmountMonthInYear(assetsID, year, month, priodTerm);
+			return getAssetsDBConnecter().getLastAmountMonthInYear(id, year, month, priodTerm);
 		}
-		else if (itemType == AssetsItem.TYPE) {
-			return null;
+		else if (itemType == LiabilityItem.TYPE) {
+			return getLiabilityDBConnecter().getLastAmountMonthInYear(id, year, month, priodTerm);
 		}
 		else {
 			return null;
@@ -930,4 +935,6 @@ public final class DBMgr {
 			
 		return completionItems;
 	}
+
+	
 }

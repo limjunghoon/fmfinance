@@ -28,7 +28,7 @@ public class MainReportLayout extends FmBaseActivity {
         mReportActivityList.add(new ReportActivity(ReportMonthCompareExpenseLayout.class));
         mReportActivityList.add(new ReportActivity(ReportCompareAssetsLayout.class));
         mReportActivityList.add(new ReportActivity(ReportCategoryCompareLayout.class));
-        mReportActivityList.add(new ReportActivity(SelectTagLayout.class, MsgDef.ActRequest.ACT_TAG_SELECTED));
+        mReportActivityList.add(new ReportActivity(ReportMonthCompareTagLayout.class));
         mReportActivityList.add(new ReportActivity(ReportExpenseRateLayout.class));
     }
     
