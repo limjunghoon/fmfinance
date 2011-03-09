@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 
@@ -72,6 +73,8 @@ public class LineGraph extends View {
 	private RectF[] point3;
 	
 	private RectF[] pointArea; //터치 영역
+	
+	private boolean onlyAxisX = false; //X출만 그릴 때를 위해
 	
 		
 	/* =============================== 생성자 =================================*/
@@ -144,7 +147,7 @@ public class LineGraph extends View {
 		pointAndPointGap = point_And_Point_Gap;
 	}
 	
-	public void setBarWidth  (int line_Thickness) {
+	public void setLineThickness (int line_Thickness) {
 		lineThickness = line_Thickness;
 	}
 	public void setStandardAxisTitles  (ArrayList<String> standard_Axis_Titles ) {
@@ -324,6 +327,10 @@ public class LineGraph extends View {
 	public void setPointSize (int point_Size) {
 		pointSize = point_Size;
 	}
+	
+	public void setOnlyAxisX (boolean value) {
+		onlyAxisX = value;
+	}
 
 	/* =============================== GET Method =================================*/
 	public ArrayList<Integer> getAxisPositions () {
@@ -375,6 +382,10 @@ public class LineGraph extends View {
 		return getMeasuredHeight();
 	}
 	
+	public boolean getOnlyAxisX () {
+		return onlyAxisX;
+	}
+	
 	/* =============================== Methods =================================*/
 	
 	public void makeUserTypeGraph (ArrayList<Long> graph_Item_Values, ArrayList<Long> graph_Item_Values_2, 
@@ -388,6 +399,40 @@ public class LineGraph extends View {
 		
 		setStandardAxisTitles(standard_Axis_Titles);
 
+	}
+	
+	public String changeGradationTitles (long originalValue) {
+		String[] moneyUnits = {"천", "만", "십만", "백만", "천만", "억", "십억", "백억", "천억",
+				"조", "십조", "백조", "천조", "경"};
+		String changedValue = "";
+
+		int tmp = 1;
+		
+		if (originalValue == 0) {
+			return "0";
+		}
+		
+		if (originalValue / 1000 == 0) {
+			return changedValue;
+		}
+		
+		if (originalValue < 0) {
+			tmp = -1;
+		}
+		
+		for (int i = 0; i < 14; i++) {
+			if ((originalValue / (long)Math.pow(10,i+4)) == 0) {
+				if ((originalValue % (long)Math.pow(10,i+3)) != 0) {
+					changedValue = String.valueOf(originalValue/(long)Math.pow(10,i+3)) + "." 
+					+ String.valueOf((originalValue%(long)Math.pow(10,i+3)) / (long)Math.pow(10,i+2) * tmp) + moneyUnits[i];
+				} else {
+					changedValue = String.valueOf(originalValue/(long)Math.pow(10,i+3)) + moneyUnits[i];
+				}
+				break;
+			}
+		}
+
+		return changedValue;		
 	}
 
 	/* =============================== 그래프 그리기 =================================*/
@@ -433,6 +478,9 @@ public class LineGraph extends View {
 			if (i == 0) {
 				axisLine[i] = new RectF(lineGraphMargin, axisYLength + lineGraphMargin , axisXLength + lineGraphMargin, axisYLength + lineGraphMargin - axisThickness);
 			} else if (i == 1) {
+				if (onlyAxisX) {
+					break;
+				}
 				axisLine[i] = new RectF(lineGraphMargin, lineGraphMargin, lineGraphMargin + axisThickness, axisYLength + lineGraphMargin);
 			}
 		
@@ -560,10 +608,26 @@ public class LineGraph extends View {
 		//Y축 타이틀 그리기
 		Paint[] titleYPaint = new Paint[gradationCount];
 		
+		int textMaxWidth = 0;
+		int textWidth = 0;
+		
 		for (int i=0; i<gradationCount; i++) {
 			titleYPaint[i] = new Paint(Paint.ANTI_ALIAS_FLAG);
+			if (i == 0)
+				textMaxWidth = (int)titleYPaint[i].measureText(changeGradationTitles(gradationMax - ((gradationMax - gradationMin)/gradationCount) * i));
+			if (textMaxWidth < (int)titleYPaint[i].measureText(changeGradationTitles(gradationMax - ((gradationMax - gradationMin)/gradationCount) * i))) {
+				textMaxWidth = (int)titleYPaint[i].measureText(changeGradationTitles(gradationMax - ((gradationMax - gradationMin)/gradationCount) * i));
+			}
+		}
+
+		for (int i=0; i<gradationCount; i++) {
+//			titleYPaint[i] = new Paint(Paint.ANTI_ALIAS_FLAG);
 			titleYPaint[i].setColor(Color.WHITE);
-			canvas.drawText(String.valueOf(gradationMax - ((gradationMax - gradationMin)/gradationCount) * i), 2, 
+//			canvas.drawText(String.valueOf(gradationMax - ((gradationMax - gradationMin)/gradationCount) * i), 2, 
+//					((gradationYLength/(gradationCount)) * i) + lineGraphMargin + pointSize,titleYPaint[i]);
+			textWidth = (int)titleYPaint[i].measureText(changeGradationTitles(gradationMax - ((gradationMax - gradationMin)/gradationCount) * i));
+			
+			canvas.drawText(changeGradationTitles(gradationMax - ((gradationMax - gradationMin)/gradationCount) * i), 2 + textMaxWidth - textWidth, 
 					((gradationYLength/(gradationCount)) * i) + lineGraphMargin + pointSize,titleYPaint[i]);
 		}	
 
@@ -586,7 +650,8 @@ public class LineGraph extends View {
 			pointPaint[i].setColor(defaultGraphColors[0]); 
 			pointPaint[i].setStyle(Paint.Style.FILL);
 			
-			canvas.drawRect(point[i], pointPaint[i]);
+//			canvas.drawRect(point[i], pointPaint[i]);
+			canvas.drawCircle(point[i].centerX(), point[i].centerY(), pointSize, pointPaint[i]);
 			
 			if (i > 0) {
 				canvas.drawLine(point[i-1].centerX(), point[i-1].centerY(), point[i].centerX(), point[i].centerY(), pointPaint[i]);
@@ -612,7 +677,8 @@ public class LineGraph extends View {
 				pointPaint2[i].setColor(defaultGraphColors[1]); 
 				pointPaint2[i].setStyle(Paint.Style.FILL);
 				
-				canvas.drawRect(point2[i], pointPaint2[i]);
+//				canvas.drawRect(point2[i], pointPaint2[i]);
+				canvas.drawCircle(point2[i].centerX(), point2[i].centerY(), pointSize, pointPaint2[i]);
 				
 				if (i > 0) {
 					canvas.drawLine(point2[i-1].centerX(), point2[i-1].centerY(), point2[i].centerX(), point2[i].centerY(), pointPaint2[i]);
@@ -638,7 +704,8 @@ public class LineGraph extends View {
 				pointPaint3[i].setColor(defaultGraphColors[2]); 
 				pointPaint3[i].setStyle(Paint.Style.FILL);
 				
-				canvas.drawRect(point3[i], pointPaint3[i]);
+//				canvas.drawRect(point3[i], pointPaint3[i]);
+				canvas.drawCircle(point3[i].centerX(), point3[i].centerY(), pointSize, pointPaint3[i]);
 				
 				if (i > 0) {
 					canvas.drawLine(point3[i-1].centerX(), point3[i-1].centerY(), point3[i].centerX(), point3[i].centerY(), pointPaint3[i]);

@@ -176,6 +176,12 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 	private void updateLineView() {
 		mLineGraph = (LineGraph) findViewById (R.id.lgraph);
 		mLineGraph.makeUserTypeGraph(mItem1, mItem2, mItemDifference, mMonthName);
+		
+		//꺽은선 그래프 보정 작업
+		mLineGraph.setPointSize(4);
+		mLineGraph.setGradationThickness(0);
+		mLineGraph.setOnlyAxisX(true);
+		
 		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLineGraph.getLayoutParams();
 		
 		params.width = (320 > mLineGraph.getLineGraphWidth()) ? 320 : mLineGraph.getLineGraphWidth();

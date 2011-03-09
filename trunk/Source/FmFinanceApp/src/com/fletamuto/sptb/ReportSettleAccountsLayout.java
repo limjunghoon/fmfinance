@@ -274,7 +274,9 @@ public class ReportSettleAccountsLayout extends FmBaseActivity {
         bg.setbargroupAndBargroupGap(55);
         bg.setDetailedMoveAllBars(-40);
         bg.setDetailedMoveTitles(-23);
-        
+
+        //그래프 터치 막음
+        /*
         bg.setOnTouchListener(new View.OnTouchListener() {
 			
         	public boolean onTouch(View v, MotionEvent event) {
@@ -292,6 +294,7 @@ public class ReportSettleAccountsLayout extends FmBaseActivity {
 				return false;
 			}
 		});
+		*/
 	}
 	
 	public void setMoveViewMotionEvent(MotionEvent event) {
