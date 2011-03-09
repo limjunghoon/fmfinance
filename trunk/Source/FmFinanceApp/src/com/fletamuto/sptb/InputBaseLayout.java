@@ -111,10 +111,17 @@ public abstract class InputBaseLayout extends FmBaseActivity {
 				if (checkInputData() == true) {
 					saveItem();		
 					setResult(RESULT_OK, new Intent());
+					removeNotification();
 					finish();
 		    	}
 			}
 		 });
+    }
+    /**
+     * 알림을 종료 함
+     */
+    protected void removeNotification() {
+    	
     }
     
     /**

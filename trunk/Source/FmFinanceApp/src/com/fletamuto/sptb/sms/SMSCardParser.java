@@ -6,6 +6,8 @@ import java.util.StringTokenizer;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.fletamuto.sptb.data.AccountItem;
+import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.ExpenseItem;
 import com.fletamuto.sptb.data.PaymentCardMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
@@ -116,12 +118,13 @@ public class SMSCardParser {
 	
 	private ExpenseItem getExpenseData(long resultAmount, String resultInstallment, String resultShopName, SMSCardData smsCardData) {
 		ExpenseItem expenseItem = new ExpenseItem();
-		expenseItem.setCard(DBMgr.getCardItem(smsCardData.getCardId()));
+		CardItem cardItem = DBMgr.getCardItem(smsCardData.getCardId());
+		expenseItem.setCard(cardItem);
 		expenseItem.setAmount(resultAmount);
 		expenseItem.setMemo(resultShopName);
 		
 		PaymentCardMethod paymentCardMethod = new PaymentCardMethod();
-		paymentCardMethod.setCard(expenseItem.getCard());
+		paymentCardMethod.setCard(cardItem);
 		paymentCardMethod.setInstallmentPlan(getInstallment(resultInstallment));
 		paymentCardMethod.setType(PaymentMethod.CARD);
 		

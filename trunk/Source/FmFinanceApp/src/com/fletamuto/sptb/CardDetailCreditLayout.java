@@ -309,7 +309,7 @@ public class CardDetailCreditLayout extends CardDetailBaseLayout {
 //    			if(getIntent().getIntExtra("Action", ACTION_DEFAULT) == ACTION_NOTIFICATION_INTO)
 //    				return false;
     			setMoveViewMotionEvent(event);
-    			return true;
+    			return false;
     		}
     	});
 	}
