@@ -193,10 +193,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
      * 자식뷰 초기화
      */
     public void initChildView() {
-//    	if (mInputMode == InputMode.EDIT_MODE) {
-//    		findViewById(R.id.LLOption).setVisibility(View.VISIBLE);
-//    	}    	
-    	if(intentAction == ACTION_DEFAULT) {
+    	if (intentAction == ACTION_DEFAULT) {
     		findViewById(R.id.LLOption).setVisibility(View.VISIBLE);
     	}
     	
@@ -223,6 +220,10 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     	
     	if (mExpensItem.getCategory().getExtndType() == ItemDef.ExtendAssets.NONE) {
     		((View)findViewById(R.id.LLBookmarkSliding)).setVisibility(View.GONE);
+    	}
+    	
+    	if (mInputMode == InputMode.ADD_MODE) {
+    		((View)findViewById(R.id.LLOption)).setVisibility(View.GONE);
     	}
     	
     	if(intentAction == ACTION_SMS_RECEIVE) {
