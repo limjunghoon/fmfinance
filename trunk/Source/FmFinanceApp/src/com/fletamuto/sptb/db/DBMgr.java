@@ -752,6 +752,18 @@ public final class DBMgr {
 	public static BudgetItem getBudgetItem(int year, int month) {
 		return mInstance.mDBConnector.getBudgetDBConnector().getMainBudget(year, month);
 	}
+	
+	public static long getTotalBudget(int year) {
+		return mInstance.mDBConnector.getBudgetDBConnector().getTotalBudget(year);
+	}
+	
+	public static ArrayList<Long> getTotalBudgetAmountMonth(int year) {
+		return mInstance.mDBConnector.getBudgetDBConnector().getTotalBudgetAmountMonth(year);
+	}
+	
+	public static ArrayList<Long> getTotalBudgetAmountMonth(int year, int month, int beforMonthCount) {
+		return mInstance.mDBConnector.getBudgetDBConnector().getTotalBudgetAmountMonth(year, month, beforMonthCount);
+	}
 
 	public static long addBudget(BudgetItem item) {
 		return mInstance.mDBConnector.getBudgetDBConnector().addItem(item);

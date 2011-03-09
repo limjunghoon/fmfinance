@@ -82,6 +82,18 @@ public class ReportSettleAccountsLayout extends FmBaseActivity {
 			}
 		});
 		
+		findViewById(R.id.LLSettleBudget).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				if (mTouchMoveFlag == false) 
+					return;
+				
+				Intent intent = new Intent(ReportSettleAccountsLayout.this, ReportMonthOfYearLayout.class);
+				intent.putExtra(MsgDef.ExtraNames.VIEW_MODE, ReportMonthOfYearLayout.VIEW_BUDGET);
+				startActivity(intent);
+			}
+		});
+		
 		findViewById(R.id.LLSettleBudget).setOnTouchListener(new View.OnTouchListener() {
 			
 			public boolean onTouch(View v, MotionEvent event) {
@@ -150,6 +162,7 @@ public class ReportSettleAccountsLayout extends FmBaseActivity {
 		TextView tvIncomeExpenseDifference = (TextView) findViewById(R.id.TVSettleIncomeExpenseDifference);
 		tvIncomeExpenseDifference.setText(String.format("%,d원", mIncomeAmount - mExpenseAmount));
 		
+
 		TextView tvBudgetAmount = (TextView) findViewById(R.id.TVSettleBudgetAmount);
 		tvBudgetAmount.setText(String.format("%,d원", mBudgetAmount));
 		((ImageView) findViewById (R.id.IVsettleBudgetColor)).setBackgroundColor(bg.getDefaultGraphColors(2));
@@ -157,6 +170,7 @@ public class ReportSettleAccountsLayout extends FmBaseActivity {
 		TextView tvBudgetExpenseAmount = (TextView) findViewById(R.id.TVSettleBudgetExpeseAmount);
 		tvBudgetExpenseAmount.setText(String.format("%,d원", mExpenseAmount));
 		((ImageView) findViewById (R.id.IVsettleBudgetExpenseColor)).setBackgroundColor(bg.getDefaultGraphColors(3));
+		
 		
 		TextView tvBudgetBudgetDifference = (TextView) findViewById(R.id.TVSettleBudgetDifference);
 		tvBudgetBudgetDifference.setText(String.format("%,d원", mBudgetAmount - mExpenseAmount));
@@ -179,12 +193,14 @@ public class ReportSettleAccountsLayout extends FmBaseActivity {
 			mExpenseAmount = DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1);
 			mAssetsAmount = DBMgr.getTotalAmountMonth(AssetsItem.TYPE, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1);
 			mLiabilityAmount = DBMgr.getTotalAmountMonth(LiabilityItem.TYPE, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1);
+			mBudgetAmount = DBMgr.getBudgetItem(mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1).getAmount();
 		}
 		else {
 			mIncomeAmount = DBMgr.getTotalAmountYear(IncomeItem.TYPE, mYear);
 			mExpenseAmount = DBMgr.getTotalAmountYear(ExpenseItem.TYPE, mYear);
 			mAssetsAmount = DBMgr.getTotalAmountYear(AssetsItem.TYPE, mYear);
 			mLiabilityAmount = DBMgr.getTotalAmountYear(LiabilityItem.TYPE, mYear);
+			mBudgetAmount = DBMgr.getTotalBudget(mYear);
 		}
 		
 	}

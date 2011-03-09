@@ -2,6 +2,8 @@ package com.fletamuto.sptb;
 
 import java.util.ArrayList;
 
+import com.fletamuto.sptb.data.BudgetItem;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +16,8 @@ public class MainReportLayout extends FmBaseActivity {
 	private ArrayList<ReportActivity> mReportActivityList = new ArrayList<ReportActivity>();
 	private ArrayList<String> mReportList = new ArrayList<String>();
 	private ArrayAdapter<String> mReportAdapter;
+	protected ArrayList<BudgetItem> mBudgetItems = new ArrayList<BudgetItem>();
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,16 +27,45 @@ public class MainReportLayout extends FmBaseActivity {
         
         setRootView(true);
         setAdapterList();
+        setBtnClickListener();
       
         mReportActivityList.add(new ReportActivity(ReportSettleAccountsLayout.class));
         mReportActivityList.add(new ReportActivity(ReportMonthCompareExpenseLayout.class));
         mReportActivityList.add(new ReportActivity(ReportCompareAssetsLayout.class));
-        mReportActivityList.add(new ReportActivity(ReportCategoryCompareLayout.class));
+        mReportActivityList.add(new ReportActivity(ReportBudgetLayout.class));
         mReportActivityList.add(new ReportActivity(ReportMonthCompareTagLayout.class));
         mReportActivityList.add(new ReportActivity(ReportExpenseRateLayout.class));
     }
     
-    @Override
+    public View.OnClickListener mBtnClickListener = new View.OnClickListener() {
+		
+		public void onClick(View v) {
+			Class<?> className = null;
+			
+			if (v.getId() == R.id.BtnReportSettleAccount) className = ReportSettleAccountsLayout.class;
+			else if (v.getId() == R.id.BtnReportIncomeExpense) className = ReportMonthCompareExpenseLayout.class;
+			else if (v.getId() == R.id.BtnReportAssets) className = ReportCompareAssetsLayout.class;
+			else if (v.getId() == R.id.BtnReportBudget) className = ReportBudgetLayout.class;
+			else if (v.getId() == R.id.BtnReportTag) className = ReportMonthCompareTagLayout.class;
+			else if (v.getId() == R.id.BtnReportExpensePayment) className = ReportExpenseRateLayout.class;
+			else {
+				return;
+			}
+			Intent intent = new Intent(MainReportLayout.this, className);
+			startActivity(intent);
+		}
+	}; 
+    
+    protected void setBtnClickListener() {
+		findViewById(R.id.BtnReportSettleAccount).setOnClickListener(mBtnClickListener);
+		findViewById(R.id.BtnReportIncomeExpense).setOnClickListener(mBtnClickListener);
+		findViewById(R.id.BtnReportAssets).setOnClickListener(mBtnClickListener);
+		findViewById(R.id.BtnReportBudget).setOnClickListener(mBtnClickListener);
+		findViewById(R.id.BtnReportTag).setOnClickListener(mBtnClickListener);
+		findViewById(R.id.BtnReportExpensePayment).setOnClickListener(mBtnClickListener);
+	}
+
+	@Override
 	protected void setTitleBtn() {
 		setTitle("Ελ°θ");
 		super.setTitleBtn();

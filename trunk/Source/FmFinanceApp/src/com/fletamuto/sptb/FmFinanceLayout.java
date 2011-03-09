@@ -194,8 +194,6 @@ public class FmFinanceLayout extends FmBaseActivity {
 			else if (id == R.id.BtnCard) changeClass = CardLayout.class;
 			else if (id == R.id.BtnAccount) changeClass = AccountLayout.class;
 			else if (id == R.id.BtnBudget) changeClass = BudgetLayout.class;
-			else if (id == R.id.BtnPurpose) changeClass = PurposeLayout.class;
-			else if (id == R.id.BtnSearch) changeClass = SearchLayout.class;
 			else {
 				Log.e(LogTag.LAYOUT, "== unregistered event hander ");
 				return;

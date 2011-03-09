@@ -65,6 +65,10 @@ public class BudgetDBConnector extends BaseDBConnector {
 	public ArrayList<BudgetItem> getItems(final int year, final int month) {
 		ArrayList<BudgetItem> budgetItems = new ArrayList<BudgetItem>();
 		//BudgetItem budgetTotalItem = new BudgetItem(year, month);
+		
+		openDatabase(WRITE_MODE);
+		LOCK();
+		
 		BudgetItem budgetTotalItem = getMainBudget(year, month);
 		budgetItems.add(budgetTotalItem);
 		
@@ -78,6 +82,10 @@ public class BudgetDBConnector extends BaseDBConnector {
 			budgetItems.add(budgetItem);
 			
 		}
+		
+		UNLOCK();
+		closeDatabase();
+		
 		return budgetItems;
 	}
 	
@@ -98,6 +106,72 @@ public class BudgetDBConnector extends BaseDBConnector {
 		budget.setExpenseAmountMonth(DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, year, month));
 		return budget;
 	}
+	
+	
+	public long getTotalBudget(final int year) {
+		long amount = 0L;
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		String[] params = {String.format("%d", year)};
+		String query = "SELECT SUM(total_amount) FROM budget WHERE year=?";
+		Cursor c = db.rawQuery(query, params);
+		
+		if (c.moveToFirst() != false) {
+			amount = c.getLong(0);
+		}
+		c.close();
+		closeDatabase();
+		return amount;
+	}
+	
+	public ArrayList<Long> getTotalBudgetAmountMonth(int year) {
+		ArrayList<Long> amountMonthInYear = new ArrayList<Long>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		for (int month = 1; month <= 12; month++) {
+			String[] params = {String.format("%d", year), String.format("%d", month)};
+			String query = "SELECT SUM(total_amount) FROM budget WHERE year=? AND month=?";
+			Cursor c = db.rawQuery(query, params);
+			
+			if (c.moveToFirst() != false) {
+				amountMonthInYear.add(c.getLong(0));
+			}
+			c.close();
+		}
+		
+		closeDatabase();
+		return amountMonthInYear;
+	}
+	
+	public ArrayList<Long> getTotalBudgetAmountMonth(int year, int month, int beforMonthCount) {
+		ArrayList<Long> amountMonthInYear = new ArrayList<Long>();
+		SQLiteDatabase db = openDatabase(READ_MODE);
+		
+		int targetMonth = month - beforMonthCount;
+		if (targetMonth <= 0) {
+			targetMonth += 12 + 1;
+			year--;
+		}
+		for (int index = 0; index < beforMonthCount; index++) {
+			
+			if (targetMonth > 12) {
+				targetMonth = 1;
+				year++;
+			}
+			
+			String[] params = {String.format("%d", year), String.format("%d", targetMonth)};
+			String query = "SELECT SUM(total_amount) FROM budget WHERE year=? AND month=?";
+			Cursor c = db.rawQuery(query, params);
+			
+			if (c.moveToFirst() != false) {
+				amountMonthInYear.add(c.getLong(0));
+			}
+			targetMonth++;
+			c.close();
+		}
+		
+		closeDatabase();
+		return amountMonthInYear;
+	}
+	
 	
 	BudgetItem getCategoryBudget(final int year, final int month, final int categoryID) {
 		BudgetItem budget = null;

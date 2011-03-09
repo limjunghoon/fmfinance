@@ -49,11 +49,11 @@
 		<activity android:name=".ReportPrepaidCardLayout" android:label="선불카드 목록"></activity>
 		<activity android:name=".CardLayout" android:label="카드" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".AccountLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:name=".BudgetLayout"></activity>
-		<activity android:name=".SearchLayout"></activity>
+		<activity android:name=".BudgetLayout" android:theme="@android:style/Theme.NoTitleBar"></activity>
+		
 		<activity android:name=".SelectTagLayout" android:label="태그 선택" android:theme="@android:style/Theme.Translucent"></activity>
 		<activity android:name=".RepeatLayout" android:theme="@android:style/Theme.Translucent"></activity>
-		<activity android:name=".PurposeLayout"></activity>
+		
 		<activity android:name=".SelectCardLayout" android:theme="@android:style/Theme.Translucent" android:label="카드선택"></activity>
 <activity android:label="카드종류선택" android:name=".SelectInputCardLayout" android:theme="@android:style/Theme.Translucent"></activity>
 <activity android:name="EditSelecTagLayout"></activity>
@@ -139,6 +139,7 @@
 </receiver>
 
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportMonthCompareTagLayout"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportBudgetLayout"></activity>
 </application>
 
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
