@@ -5,17 +5,17 @@
   
 	<ListView android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/LVReportList" android:visibility="gone"></ListView>
 	<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
-		<LinearLayout android:id="@+id/LinearLayout04" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:layout_margin="5dp">
-			<Button android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:text="결산" android:textSize="25sp" android:id="@+id/BtnReportSettleAccount"></Button>
-			<Button android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/BtnReportIncomeExpense" android:text="수입/지출" android:textSize="25sp"></Button>
+		<LinearLayout android:id="@+id/LinearLayout04" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:layout_margin="7dp" android:paddingBottom="5dp">
+			<Button android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:text="결산" android:textSize="25sp" android:id="@+id/BtnReportSettleAccount" android:layout_marginRight="5dp"></Button>
+			<Button android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/BtnReportIncomeExpense" android:text="수입/지출" android:textSize="25sp" android:layout_marginLeft="5dp"></Button>
 		</LinearLayout>
-		<LinearLayout android:id="@+id/LinearLayout04" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1">
-			<Button android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/BtnReportAssets" android:text="자산" android:textSize="25sp"></Button>
-			<Button android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/BtnReportBudget" android:text="예산" android:textSize="25sp"></Button>
+		<LinearLayout android:id="@+id/LinearLayout04" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:layout_margin="7dp" android:paddingBottom="5dp">
+			<Button android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/BtnReportAssets" android:text="자산" android:textSize="25sp" android:layout_marginRight="5dp"></Button>
+			<Button android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/BtnReportBudget" android:text="예산" android:textSize="25sp" android:layout_marginLeft="5dp"></Button>
 		</LinearLayout>
-		<LinearLayout android:id="@+id/LinearLayout04" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1">
-			<Button android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/BtnReportTag" android:text="테그" android:textSize="25sp"></Button>
-			<Button android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/BtnReportExpensePayment" android:text="지불수단" android:textSize="25sp"></Button>
+		<LinearLayout android:id="@+id/LinearLayout04" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1" android:layout_margin="7dp" android:paddingBottom="5dp">
+			<Button android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/BtnReportTag" android:text="테그" android:textSize="25sp" android:layout_marginRight="5dp"></Button>
+			<Button android:layout_width="fill_parent" android:layout_weight="1" android:layout_height="fill_parent" android:id="@+id/BtnReportExpensePayment" android:text="지불수단" android:textSize="25sp" android:layout_marginLeft="5dp"></Button>
 		</LinearLayout>
 	</LinearLayout>
 </LinearLayout>

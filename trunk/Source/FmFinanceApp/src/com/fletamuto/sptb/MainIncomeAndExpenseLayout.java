@@ -26,9 +26,11 @@ import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.CardPayment;
 import com.fletamuto.sptb.data.CategoryAmount;
 import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.ExpenseSMS;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.IncomeItem;
 import com.fletamuto.sptb.data.ItemDef;
+import com.fletamuto.sptb.data.SMSParseItem;
 import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.util.FinanceCurrentDate;
 import com.fletamuto.sptb.util.FinanceDataFormat;
@@ -77,6 +79,7 @@ public class MainIncomeAndExpenseLayout extends FmBaseActivity {
             
             mDBInit = true;
         }
+        
         
         initAlarmView();
         setRootView(true);

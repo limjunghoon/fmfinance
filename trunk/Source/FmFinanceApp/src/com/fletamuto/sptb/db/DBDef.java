@@ -30,5 +30,6 @@ final class DBDef {
 		public static final int CARD_ITEM_INVAlID = 5;
 		public static final int ACCOUNT_ITEM_INVAlID = 6;
 		public static final int TRANS_ITEM_INVAlID = 7;
+		public static final int SMS_ITEM_INVAlID = 8;
 	}
 }

@@ -22,6 +22,7 @@ import com.fletamuto.sptb.data.CardItem;
 import com.fletamuto.sptb.data.CardPayment;
 import com.fletamuto.sptb.data.Category;
 import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.ExpenseSMS;
 import com.fletamuto.sptb.data.ExpenseTag;
 import com.fletamuto.sptb.data.FinanceItem;
 import com.fletamuto.sptb.data.FinancialCompany;
@@ -35,6 +36,7 @@ import com.fletamuto.sptb.data.LiabilityLoanItem;
 import com.fletamuto.sptb.data.LiabilityPersonLoanItem;
 import com.fletamuto.sptb.data.OpenUsedItem;
 import com.fletamuto.sptb.data.Repeat;
+import com.fletamuto.sptb.data.SMSParseItem;
 import com.fletamuto.sptb.data.TransferItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 import com.fletamuto.sptb.util.LogTag;
@@ -949,4 +951,43 @@ public final class DBMgr {
 	}
 
 	
+	public static int addSMSItem(ExpenseSMS expenseSMS) {
+		return mInstance.mDBConnector.getSMSDBConnector().addItem(expenseSMS);
+	}
+	
+	public static boolean updateSMSItem(ExpenseSMS expenseSMS) {
+		return mInstance.mDBConnector.getSMSDBConnector().updateItem(expenseSMS);
+	}
+	
+	public static int deleteSMSItem(int id) {
+		return mInstance.mDBConnector.getSMSDBConnector().deleteItem(id);
+	}
+	
+	public static ArrayList<ExpenseSMS> getSMSItems() {
+		return mInstance.mDBConnector.getSMSDBConnector().getAllItems();
+	}
+	
+	public static ExpenseSMS getSMSItem(int id) {
+		return mInstance.mDBConnector.getSMSDBConnector().getItem(id);
+	}
+	
+	public static int addSMSParseItem(SMSParseItem parse) {
+		return mInstance.mDBConnector.getSMSDBConnector().addParseItem(parse);
+	}
+	
+	public static boolean updateSMSParseItem(SMSParseItem parse) {
+		return mInstance.mDBConnector.getSMSDBConnector().updateParseSMSItem(parse);
+	}
+	
+	public static int deleteSMSParseItem(int id) {
+		return mInstance.mDBConnector.getSMSDBConnector().deleteParseSMSItem(id);
+	}
+	
+	public static ArrayList<SMSParseItem> getSMSParseItems() {
+		return mInstance.mDBConnector.getSMSDBConnector().getAllParseSMSItems();
+	}
+	
+	public static SMSParseItem getSMSParseItem(int id) {
+		return mInstance.mDBConnector.getSMSDBConnector().getParseSMSItem(id);
+	} 
 }
