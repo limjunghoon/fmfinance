@@ -14,9 +14,11 @@ import com.fletamuto.sptb.db.DBMgr;
 import com.fletamuto.sptb.view.FmBaseLayout;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +42,12 @@ public class ReportSettleAccountsLayout extends FmBaseActivity {
 	
 	private float mTouchMove;
 	private boolean mTouchMoveFlag = false;
+	
+	private BarGraph bg;
+	
+	private ArrayList<Long> iv = new ArrayList<Long>();
+	private ArrayList<Integer> ap = new ArrayList<Integer>();
+	private ArrayList<String> at = new ArrayList<String>();
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -129,23 +137,37 @@ public class ReportSettleAccountsLayout extends FmBaseActivity {
 			setTitleBtnText(FmBaseLayout.BTN_RIGTH_01, "월");
 		}
 		
+		
+				
 		TextView tvIncome = (TextView) findViewById(R.id.TVSettleIncomeAmount);
 		tvIncome.setText(String.format("%,d원", mIncomeAmount));
+		((ImageView) findViewById (R.id.IVsettleIncomeColor)).setBackgroundColor(bg.getDefaultGraphColors(0));
 		
 		TextView tvExpense = (TextView) findViewById(R.id.TVSettleExpenseAmount);
 		tvExpense.setText(String.format("%,d원", mExpenseAmount));
+		((ImageView) findViewById (R.id.IVsettleExpenseColor)).setBackgroundColor(bg.getDefaultGraphColors(1));
 		
 		TextView tvIncomeExpenseDifference = (TextView) findViewById(R.id.TVSettleIncomeExpenseDifference);
 		tvIncomeExpenseDifference.setText(String.format("%,d원", mIncomeAmount - mExpenseAmount));
 		
+		TextView tvBudgetAmount = (TextView) findViewById(R.id.TVSettleBudgetAmount);
+		tvBudgetAmount.setText(String.format("%,d원", mBudgetAmount));
+		((ImageView) findViewById (R.id.IVsettleBudgetColor)).setBackgroundColor(bg.getDefaultGraphColors(2));
+		
 		TextView tvBudgetExpenseAmount = (TextView) findViewById(R.id.TVSettleBudgetExpeseAmount);
 		tvBudgetExpenseAmount.setText(String.format("%,d원", mExpenseAmount));
+		((ImageView) findViewById (R.id.IVsettleBudgetExpenseColor)).setBackgroundColor(bg.getDefaultGraphColors(3));
+		
+		TextView tvBudgetBudgetDifference = (TextView) findViewById(R.id.TVSettleBudgetDifference);
+		tvBudgetBudgetDifference.setText(String.format("%,d원", mBudgetAmount - mExpenseAmount));
 		
 		TextView tvAssets = (TextView) findViewById(R.id.TVSettleAssetsAmount);
 		tvAssets.setText(String.format("%,d원", mAssetsAmount));
+		((ImageView) findViewById (R.id.IVsettleAssetsColor)).setBackgroundColor(bg.getDefaultGraphColors(4));
 		
 		TextView tvLiability = (TextView) findViewById(R.id.TVSettleLiabilityAmount);
 		tvLiability.setText(String.format("%,d원", mLiabilityAmount));
+		((ImageView) findViewById (R.id.IVsettleLiabilityColor)).setBackgroundColor(bg.getDefaultGraphColors(5));
 		
 		TextView tvAssetsLiabilityDifference = (TextView) findViewById(R.id.TVSettleAssetsLiabilityDifference);
 		tvAssetsLiabilityDifference.setText(String.format("%,d원", mAssetsAmount - mLiabilityAmount));
@@ -198,11 +220,12 @@ public class ReportSettleAccountsLayout extends FmBaseActivity {
 	}
 
 	private void updateBarGraph() {
-		final BarGraph bg;
+		//전역으로 이동
+//		final BarGraph bg;
 	
-		ArrayList<Long> iv = new ArrayList<Long>();
-		ArrayList<Integer> ap = new ArrayList<Integer>();
-		ArrayList<String> at = new ArrayList<String>();
+//		ArrayList<Long> iv = new ArrayList<Long>();
+//		ArrayList<Integer> ap = new ArrayList<Integer>();
+//		ArrayList<String> at = new ArrayList<String>();
 		
 		iv.add(mIncomeAmount);
 		iv.add(mExpenseAmount);
