@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,8 +21,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.fletamuto.common.control.InputAmountDialog;
+import com.fletamuto.sptb.MainIncomeAndExpenseLayout.ViewHolder;
 import com.fletamuto.sptb.data.BudgetItem;
+import com.fletamuto.sptb.data.ItemDef;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.util.LogTag;
 import com.fletamuto.sptb.view.FmBaseLayout;
 
 /**
@@ -29,15 +35,21 @@ import com.fletamuto.sptb.view.FmBaseLayout;
  * @version  1.0.0.1
  */
 public class BudgetLayout extends FmBaseActivity {  	
+	private static final int MOVE_SENSITIVITY = ItemDef.MOVE_SENSITIVITY;
+	
 	protected int mMonth = Calendar.getInstance().get(Calendar.MONTH)+1;
 	protected int mYear = Calendar.getInstance().get(Calendar.YEAR);
 	protected ArrayList<BudgetItem> mBudgetItems = new ArrayList<BudgetItem>();
 	protected BudgetItemAdapter mBudgetAdapter;
+	private int mSelectedPosition = -1;
+	
+	private float mTouchMove;
+	private boolean mTouchMoveFlag = false;
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_budget);
+        setContentView(R.layout.main_budget, true);
         
         setRootView(true);
         setButtonClickListener();
@@ -57,9 +69,8 @@ public class BudgetLayout extends FmBaseActivity {
 	@Override
 	protected void setTitleBtn() {
 		setTitle("예산");
-        setEditButtonListener();
-        setTitle(getResources().getString(R.string.btn_category_select));
-        setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
+//        setEditButtonListener();
+//        setTitleBtnVisibility(FmBaseLayout.BTN_RIGTH_01, View.VISIBLE);
         
 		super.setTitleBtn();
 	}
@@ -78,9 +89,6 @@ public class BudgetLayout extends FmBaseActivity {
 	}
     
     protected boolean getItemsFromDB() {
-    	if (mBudgetItems != null) {
-    		mBudgetItems.clear();
-    	}
     	mBudgetItems = DBMgr.getBudgetItems(mYear, mMonth);
 		
         if (mBudgetItems == null) {
@@ -150,48 +158,83 @@ public class BudgetLayout extends FmBaseActivity {
 
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-	//			onClickListItem(parent, view, position, id);
+				mSelectedPosition = position;
+				Intent intent = new Intent(BudgetLayout.this, InputAmountDialog.class);
+				startActivityForResult(intent, MsgDef.ActRequest.ACT_AMOUNT);
+			}
+		});
+    	
+    	listItem.setOnTouchListener(new View.OnTouchListener() {
+			
+			public boolean onTouch(View v, MotionEvent event) {
+				setMoveViewMotionEvent(event);
+		    	return false;
 			}
 		});
     }
 	
+	public static class ViewBudgetHolder {
+		TextView mTvBudgetCategory;
+		TextView mTvBudgetAmount;
+		TextView mTvExpenseCategoryAmount;
+		TextView mTvRemainAmount;
+		ProgressBar mPbBudget;
+		
+		public ViewBudgetHolder(TextView tvCategory, TextView tvAmount, TextView tvExpenseCategoryAmount, TextView tvRemainAmount,ProgressBar pbBudget) {
+			mTvBudgetCategory = tvCategory;
+			mTvBudgetAmount	= tvAmount;
+			mTvExpenseCategoryAmount = tvExpenseCategoryAmount;
+			mTvRemainAmount = tvRemainAmount;
+			mPbBudget = pbBudget;
+		}
+	}
+	
+	
 	public class BudgetItemAdapter extends ArrayAdapter<BudgetItem> {
-    	int resource;
+    	int mResource;
+    	private LayoutInflater mInflater;
 
 		public BudgetItemAdapter(Context context, int resource,
 				 List<BudgetItem> objects) {
 			super(context, resource, objects);
-			this.resource = resource;
+			
+			this.mResource = resource;
+			mInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			LinearLayout reportListView;
 			BudgetItem item = (BudgetItem)getItem(position);
 			
 			if (convertView == null) {
-				reportListView = new LinearLayout(getContext());
-				String inflater = Context.LAYOUT_INFLATER_SERVICE;
-				LayoutInflater li;
-				li = (LayoutInflater)getContext().getSystemService(inflater);
-				li.inflate(resource, reportListView, true);
-			}
-			else {
-				reportListView = (LinearLayout)convertView;
+				convertView = mInflater.inflate(mResource, parent, false);
+				
+				ViewBudgetHolder viewHolder = new ViewBudgetHolder(
+						(TextView)convertView.findViewById(R.id.TVBudgetCategory),
+						(TextView)convertView.findViewById(R.id.TVBudgetAmount), 
+						(TextView)convertView.findViewById(R.id.TVExpenseCategoryAmount), 
+						(TextView)convertView.findViewById(R.id.TVRemainAmount),
+						(ProgressBar)convertView.findViewById(R.id.PBBudget));
+				
+				convertView.setTag(viewHolder);
 			}
 			
-			setListChildViewText(item, reportListView);
 			
-			return reportListView;
+			setListChildViewText(item, convertView);
+			
+			return convertView;
 		}
     }
 	
 	void setListChildViewText(BudgetItem item, View convertView) {
+		
 		if (item == null || convertView == null) {
 			return;
 		}
 		
-		TextView tvTitle = (TextView)convertView.findViewById(R.id.TVBudgetCategory);
+		ViewBudgetHolder viewHolder = (ViewBudgetHolder) convertView.getTag();
+		
+		TextView tvTitle = viewHolder.mTvBudgetCategory;
 		if (item.getExpenseCategory() != null) {
 			tvTitle.setText(item.getExpenseCategory().getName());
 		}
@@ -199,15 +242,15 @@ public class BudgetLayout extends FmBaseActivity {
 			tvTitle.setText("총 예산");
 		}
 		
-		ProgressBar progress = (ProgressBar)convertView.findViewById(R.id.PBBudget);
+		ProgressBar progress = viewHolder.mPbBudget;
 		long budgetAmount = item.getAmount();
 		long expenseAmount = item.getExpenseAmountMonth();
 		long sumAmount = budgetAmount - expenseAmount;
 		 
-		TextView tvBudgetAmount = (TextView)convertView.findViewById(R.id.TVBudgetAmount);
+		TextView tvBudgetAmount = viewHolder.mTvBudgetAmount;
 		tvBudgetAmount.setText(String.format("%,d원", budgetAmount));
 		
-		TextView tvExpenseAmount = (TextView)convertView.findViewById(R.id.TVExpenseCategoryAmount);
+		TextView tvExpenseAmount = viewHolder.mTvExpenseCategoryAmount;
 		tvExpenseAmount.setTextColor(Color.RED);
 		if (expenseAmount == 0) {
 			tvExpenseAmount.setText(String.format("%,d원", expenseAmount));
@@ -216,9 +259,15 @@ public class BudgetLayout extends FmBaseActivity {
 			tvExpenseAmount.setText(String.format("-%,d원", expenseAmount));
 		}
 		
+		
+		TextView tvRemainAmount = viewHolder.mTvRemainAmount;
+		
+		
 		if (sumAmount < 0) {
 			progress.setMax(100);
 			progress.setProgress(5);
+			tvRemainAmount.setText(String.format("%,d원", sumAmount));
+			tvRemainAmount.setTextColor(Color.RED);
 		}
 		else {
 			// 테스트 코드
@@ -227,6 +276,9 @@ public class BudgetLayout extends FmBaseActivity {
 			
 			progress.setMax(max);
 			progress.setProgress(pos);
+			
+			tvRemainAmount.setText(String.format("%,d원", sumAmount));
+			tvRemainAmount.setTextColor(Color.BLUE);
 		}
 
 	}
@@ -240,7 +292,50 @@ public class BudgetLayout extends FmBaseActivity {
     	        setAdapterList();
     		}
     	}
+		else if (requestCode == MsgDef.ActRequest.ACT_AMOUNT) {
+    		if (resultCode == RESULT_OK) {
+    			updateBudgetAmount(data.getLongExtra(MsgDef.ExtraNames.AMOUNT, 0L));
+    		}
+    	}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
+	 
+	 private void updateBudgetAmount(long amount) {
+		if (mSelectedPosition == -1) {
+			return;
+		}
+		
+		BudgetItem item = mBudgetItems.get(mSelectedPosition);
+		item.setAmount(amount);
+		
+		if (item.getID() == -1) {
+			if (DBMgr.addBudget(item) == -1) {
+				Log.e(LogTag.LAYOUT, ":: FAIL TO ADD BUDGET");
+			}
+		}
+		else {
+			DBMgr.updateBudget(item);
+		}
+		mBudgetItems.set(mSelectedPosition, item);
+		mBudgetAdapter.notifyDataSetChanged();
+	}
+	 
+	 public void setMoveViewMotionEvent(MotionEvent event) {
+	    	if (event.getAction() == MotionEvent.ACTION_DOWN) {
+	    		mTouchMove = event.getX();
+	    		mTouchMoveFlag = true;
+	    	}
+	    	else if (event.getAction() == MotionEvent.ACTION_MOVE && mTouchMoveFlag == true) {
+	    		
+	    		if (mTouchMove-event.getX()< -MOVE_SENSITIVITY) {
+	    			mTouchMoveFlag = false;
+	    			moveNextMonth();
+	    		}
+	    		if (mTouchMove-event.getX()> MOVE_SENSITIVITY) {
+	    			mTouchMoveFlag = false;
+	    			movePreviousMonth();
+	    		}
+	    	}
+	    }
+
 }

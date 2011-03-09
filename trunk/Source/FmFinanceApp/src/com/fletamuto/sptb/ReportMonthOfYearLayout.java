@@ -22,10 +22,11 @@ import com.fletamuto.sptb.db.DBMgr;
 
 public class ReportMonthOfYearLayout extends FmBaseActivity {
 	private static final int MOVE_SENSITIVITY = ItemDef.MOVE_SENSITIVITY;
+	protected static final int VIEW_MONTH = 0;
+	protected static final int VIEW_YEAR = 1;
 	public static final int VIEW_INCOME_EXPENSE = 0;
 	public static final int VIEW_ASSETS = 1;
 	public static final int VIEW_BUDGET = 2;
-	
 	
 	private ArrayList<Long> mItem1 = new ArrayList<Long>();
 	private ArrayList<Long> mItem2 = new ArrayList<Long>();
@@ -33,12 +34,14 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 	private LineGraph mLineGraph;
 	private ArrayList<String> mMonthName = new ArrayList<String>();
 	
+	private int	mYear = Calendar.getInstance().get(Calendar.YEAR);
 	private Calendar mMonthCalendar = Calendar.getInstance();
-	private int mViewMode = VIEW_INCOME_EXPENSE;
+	private int mViewType = VIEW_INCOME_EXPENSE;
 	
 	private float mTouchMove;
 	private boolean mTouchMoveFlag = false;
 	private int mPeriodTerm = ItemDef.BASE_PERIOD_MONTH_TERM;
+	private int mViewMode = VIEW_MONTH;
 	
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -63,16 +66,16 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
     
     @Override
     protected void initialize() {
-    	mViewMode = getIntent().getIntExtra(MsgDef.ExtraNames.VIEW_MODE, VIEW_INCOME_EXPENSE);
+    	mViewType = getIntent().getIntExtra(MsgDef.ExtraNames.VIEW_MODE, VIEW_INCOME_EXPENSE);
     	super.initialize();
     }
     
 	@Override
 	protected void setTitleBtn() {
-		if (mViewMode == VIEW_ASSETS) {
+		if (mViewType == VIEW_ASSETS) {
 			setTitle("자산  변동추이");
 		}
-		else if (mViewMode == VIEW_BUDGET) {
+		else if (mViewType == VIEW_BUDGET) {
 			setTitle("예산 변동추이");
 		}
 		else {
@@ -103,27 +106,40 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 		
 		setMonthName();
 		
-		
-		if (mViewMode == VIEW_INCOME_EXPENSE) {
-//			mItem1 = DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear);
-//			mItem2 = DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear);
-			
-			mItem1 = DBMgr.getTotalAmount(IncomeItem.TYPE, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
-			mItem2 = DBMgr.getTotalAmount(ExpenseItem.TYPE, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+		if (mViewType == VIEW_INCOME_EXPENSE) {
+			if (mViewMode == VIEW_MONTH) {
+				mItem1 = DBMgr.getTotalAmount(IncomeItem.TYPE, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+				mItem2 = DBMgr.getTotalAmount(ExpenseItem.TYPE, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+			}
+			else {
+				mItem1 = DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mYear);
+				mItem2 = DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear);
+			}
 		} 
-		else if (mViewMode == VIEW_ASSETS) {
-			mItem1 = DBMgr.getTotalAmountMonth(AssetsItem.TYPE, mMonthCalendar.get(Calendar.YEAR));
-			mItem2 = DBMgr.getTotalAmountMonth(LiabilityItem.TYPE, mMonthCalendar.get(Calendar.YEAR));
+		else if (mViewType == VIEW_ASSETS) {
+			if (mViewMode == VIEW_MONTH) {
+				mItem1 = DBMgr.getTotalAmount(AssetsItem.TYPE, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+				mItem2 = DBMgr.getTotalAmount(LiabilityItem.TYPE, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+			}
+			else {
+				mItem1 = DBMgr.getTotalAmountMonth(AssetsItem.TYPE, mYear);
+				mItem2 = DBMgr.getTotalAmountMonth(LiabilityItem.TYPE, mYear);
+			}
 		}
-		else if (mViewMode == VIEW_BUDGET) {
-		//	mItem1 = DBMgr.getTotalAmountMonth(AssetsItem.TYPE, mYear);
-			//mItem2 = DBMgr.getTotalAmountMonth(LiabilityItem.TYPE, mYear);
+		else if (mViewType == VIEW_BUDGET) {
+			if (mViewMode == VIEW_MONTH) {
+				mItem1 = DBMgr.getTotalBudgetAmountMonth(mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+				mItem2 = DBMgr.getTotalAmount(ExpenseItem.TYPE, mMonthCalendar.get(Calendar.YEAR), mMonthCalendar.get(Calendar.MONTH)+1, mPeriodTerm);
+			}
+			else {
+				mItem1 = DBMgr.getTotalBudgetAmountMonth(mYear);
+				mItem2 = DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mYear);
+			}
 		}
 		else {
 			mItem1 = DBMgr.getTotalAmountMonth(IncomeItem.TYPE, mMonthCalendar.get(Calendar.YEAR));
 			mItem2 = DBMgr.getTotalAmountMonth(ExpenseItem.TYPE, mMonthCalendar.get(Calendar.YEAR));
 		}
-		
 		
 		int size = mItem1.size();
 		mItemDifference.clear();
@@ -200,21 +216,12 @@ public class ReportMonthOfYearLayout extends FmBaseActivity {
 	}
 
 	protected void setListViewText(LinearLayout llMember, final int index) {
-		if (mViewMode == VIEW_ASSETS) {
-			((TextView)llMember.findViewById(R.id.TVListLeftTop)).setText(mMonthName.get(index));
-			((TextView)llMember.findViewById(R.id.TVListRightTop)).setText(String.format("%,d원", mItemDifference.get(index)));
-			((TextView)llMember.findViewById(R.id.TVListLeftBottom)).setText(String.format("%,d원", mItem1.get(index)));
-			((TextView)llMember.findViewById(R.id.TVListRightBottom)).setText(String.format("%,d원", mItem2.get(index)));
-		}
-		else if (mViewMode == VIEW_BUDGET) {
-		}
-		else {
-			((TextView)llMember.findViewById(R.id.TVListLeftTop)).setText(mMonthName.get(index));
-			((TextView)llMember.findViewById(R.id.TVListRightTop)).setText(String.format("%,d원", mItemDifference.get(index)));
-			((TextView)llMember.findViewById(R.id.TVListLeftBottom)).setText(String.format("%,d원", mItem1.get(index)));
-			((TextView)llMember.findViewById(R.id.TVListRightBottom)).setText(String.format("%,d원", mItem2.get(index)));
-		}
-		
+
+		((TextView)llMember.findViewById(R.id.TVListLeftTop)).setText(mMonthName.get(index));
+		((TextView)llMember.findViewById(R.id.TVListRightTop)).setText(String.format("%,d원", mItemDifference.get(index)));
+		((TextView)llMember.findViewById(R.id.TVListLeftBottom)).setText(String.format("%,d원", mItem1.get(index)));
+		((TextView)llMember.findViewById(R.id.TVListRightBottom)).setText(String.format("%,d원", mItem2.get(index)));
+
 	}
 	
 	public void setMoveViewMotionEvent(MotionEvent event) {
