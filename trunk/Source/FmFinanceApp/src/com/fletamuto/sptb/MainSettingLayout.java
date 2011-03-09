@@ -27,6 +27,7 @@ public class MainSettingLayout extends FmBaseActivity {
 		((Button)findViewById(R.id.BtnSettingRegistration)).setOnClickListener(onClickListener);
         ((Button)findViewById(R.id.BtnSettingDBBackup)).setOnClickListener(onClickListener);
         ((Button)findViewById(R.id.BtnSettingXLSExport)).setOnClickListener(onClickListener);
+        ((Button)findViewById(R.id.BtnSettingSMSInfo)).setOnClickListener(onClickListener);
 	}
 	
 	View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -42,6 +43,10 @@ public class MainSettingLayout extends FmBaseActivity {
 				break;
 			case R.id.BtnSettingXLSExport:
 				mOutput.savePOI();
+				break;
+			case R.id.BtnSettingSMSInfo:
+				Intent intent2 = new Intent(MainSettingLayout.this, InputSMSActivity.class);
+				startActivity(intent2);
 				break;
 			}
 			

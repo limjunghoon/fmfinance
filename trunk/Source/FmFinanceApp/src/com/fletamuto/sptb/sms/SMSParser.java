@@ -38,12 +38,13 @@ public class SMSParser {
 							"<shop>";
 		parseText[3] = "롯데카드 홍길동님 <amount>원 <installment> 00/00 00:00 <shop>";
 		
-		//임시값
-		int typeId = 1, cardId = 1;
-		
-		//DB대신 사용할 값 입력 부분
-		for(int i = 0, size = parseText.length; i < size; i++)
-			smsCardParser.setParserData(String.valueOf(i), parseText[i], typeId, cardId);	//SMS 파싱을 위한 형식 저장 메소드 - DB에 저장	Integer.valueOf(msg) 테스트용
+		if(smsCardParser.getDbCount() == 0) {
+			//임시값
+			int typeId = 1, cardId = 1;
+			//DB대신 사용할 값 입력 부분
+			for(int i = 0, size = parseText.length; i < size; i++)
+				smsCardParser.setParserData(String.valueOf(i), parseText[i], typeId, cardId);	//SMS 파싱을 위한 형식 저장 메소드 - DB에 저장	Integer.valueOf(msg) 테스트용
+		}
 	}
 
 	/** 등록된 번호인지 확인 해주는 메소드 */
@@ -59,8 +60,8 @@ public class SMSParser {
 			return TYPE_NONE;
 	}
 
-	public ExpenseItem getParserData(String number, int typeCard, String inputText) {
-		switch(typeCard) {
+	public ExpenseItem getParserData(String number, int typeId, String inputText) {
+		switch(typeId) {
 		case TYPE_NONE:
 			return null;
 		case TYPE_CARD:

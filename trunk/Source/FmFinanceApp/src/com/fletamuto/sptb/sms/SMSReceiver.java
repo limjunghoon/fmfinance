@@ -15,6 +15,10 @@ import android.util.Log;
 
 import com.fletamuto.sptb.InputExpenseLayout;
 import com.fletamuto.sptb.R;
+import com.fletamuto.sptb.data.ExpenseSMS;
+import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.db.ExpenseDBConnector;
+import com.fletamuto.sptb.db.SMSDBConnector;
 
 public class SMSReceiver extends BroadcastReceiver {
 
@@ -22,19 +26,17 @@ public class SMSReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		Bundle bundle = intent.getExtras();
 		SmsMessage[] smsMessage = null;
-		String number = "";
-		String msg = "";
-		Date date = null;
-		
+		ExpenseSMS expenseSMS = new ExpenseSMS();
+				
 		if(!bundle.isEmpty()) {
 			Object[] pdus = (Object[]) bundle.get("pdus");
 			smsMessage = new SmsMessage[pdus.length];
 			
 			for(int i = 0, size = smsMessage.length; i < size; i++) {
 				smsMessage[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
-				number = smsMessage[i].getDisplayOriginatingAddress();
-				msg = smsMessage[i].getMessageBody().toString();
-				date = new Date(smsMessage[i].getTimestampMillis());
+				expenseSMS.setNmuber(smsMessage[i].getDisplayOriginatingAddress());
+				expenseSMS.setMessage(smsMessage[i].getMessageBody().toString());
+				expenseSMS.setCreateDate(new Date(smsMessage[i].getTimestampMillis()));
 			}
 		}
 		
@@ -63,27 +65,27 @@ public class SMSReceiver extends BroadcastReceiver {
 		
 		SMSParser smsParser = new SMSParser(context);
 		//저장된 번호인지 확인
-		if(smsParser.isNumber(number)) {
+		if(smsParser.isNumber(expenseSMS.getNmuber())) {
 			try {
-				switch(smsParser.getNumberType(number)) {
+				switch(smsParser.getNumberType(expenseSMS.getNmuber())) {
 				case SMSParser.TYPE_NONE:
 					break;
 				case SMSParser.TYPE_CARD:
 					//smsParser.getParserData(number, SMSParser.TYPE_CARD, inputText[Integer.valueOf(number)]);	//수신된 SMS를 파싱하고 ExpenseItem 객체를 돌려 받는다
-					// TODO 테스트
 					int notificationId = new Random(System.currentTimeMillis()).nextInt();
 					Intent sendIntent = new Intent(context, InputExpenseLayout.class);
 					sendIntent.putExtra("Action", InputExpenseLayout.ACTION_SMS_RECEIVE);
-					sendIntent.putExtra("SMS", smsParser.getParserData(number, SMSParser.TYPE_CARD, inputText[Integer.valueOf(number)]));
+					sendIntent.putExtra("SMS", smsParser.getParserData(expenseSMS.getNmuber(), SMSParser.TYPE_CARD, inputText[Integer.valueOf(expenseSMS.getNmuber())]));	//TODO 테스트용 - 파싱한 전화번호로 고쳐야 함. DB 입력 기능이 구현되면 수정 
 					sendIntent.putExtra("NotificationID", notificationId);
 
 					PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-					Notification notification = new Notification(R.drawable.category_001, "테스트", date.getTime());
-					notification.setLatestEventInfo(context, "테스트", msg, pendingIntent);
+					Notification notification = new Notification(R.drawable.category_001, "테스트", expenseSMS.getCreateDate().getTime().getTime());
+					notification.setLatestEventInfo(context, "테스트", expenseSMS.getMessage(), pendingIntent);
 					
 					NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 					manager.notify(notificationId, notification);
 					
+					DBMgr.addSMSItem(expenseSMS);
 					break;
 				}
 			} catch (Exception e) {

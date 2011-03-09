@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent" android:layout_width="fill_parent">
+	<RelativeLayout android:id="@+id/RLSMSTitle" android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true" android:layout_alignParentTop="true">
+		<Button android:layout_toRightOf="@+id/TVSMSTitle" android:layout_alignParentLeft="true" android:text="취소"
+			android:layout_height="40dp" android:id="@+id/BTSMSCancel"
+			android:layout_width="wrap_content" />
+		<TextView android:text="SMS 수신 정보 입력" android:layout_height="40dp"
+			android:id="@+id/TVSMSTitle" android:layout_width="wrap_content"
+			android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
+			android:gravity="center" android:textSize="20sp" />
+		<Button android:text="확인" android:layout_toLeftOf="@+id/TVSMSTitle" android:layout_alignParentRight="true"
+			android:layout_height="40dp" android:id="@+id/BTSMSOk"
+			android:layout_width="wrap_content" />
+	</RelativeLayout>
+	
+	<RelativeLayout android:id="@+id/RLSMSBody" android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_below="@+id/RLSMSTitle" android:layout_alignParentLeft="true" android:padding="5dp">
+		<TextView android:id="@+id/TVSMSNumberLabel" android:layout_width="80dp" android:layout_height="50dp"
+			android:gravity="right|center_vertical" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+			android:text="전화번호" android:textSize="18sp" android:layout_marginRight="5dp" />
+		<EditText android:id="@+id/ETSMSNumber" android:layout_width="fill_parent" android:layout_height="50dp"
+			android:layout_alignParentTop="true" android:layout_toRightOf="@+id/TVSMSNumberLabel" android:layout_alignParentRight="true"
+			android:hint="전화번호" android:textSize="18sp" android:layout_marginBottom="10dp" />
+			
+		<TextView android:id="@+id/TVSMSMethodLabel" android:layout_width="80dp" android:layout_height="50dp"
+			android:gravity="right|center_vertical" android:layout_below="@+id/ETSMSNumber" android:layout_alignParentLeft="true"
+			android:text="지출방법" android:textSize="18sp" android:layout_marginRight="5dp" />
+		<Spinner android:id="@+id/SPSMSType" android:layout_width="fill_parent" android:layout_height="50dp"
+			android:layout_below="@+id/ETSMSNumber" android:layout_toRightOf="@+id/TVSMSMethodLabel"
+			android:layout_alignParentRight="true" android:textSize="18sp" android:layout_marginBottom="10dp" />
+			
+		<TextView android:id="@+id/TVSMSRepLabel" android:layout_width="80dp" android:layout_height="50dp"
+			android:gravity="right|center_vertical" android:layout_below="@+id/SPSMSType" android:layout_alignParentLeft="true"
+			android:text="대표카드" android:textSize="18sp" android:layout_marginRight="5dp" />
+		<Button android:id="@+id/BTSMSRep" android:layout_width="fill_parent" android:layout_height="50dp"
+			android:layout_below="@+id/SPSMSType" android:layout_toRightOf="@+id/TVSMSRepLabel"
+			android:layout_alignParentRight="true" android:text="0000" android:textSize="18sp" android:layout_marginBottom="10dp" />
+	</RelativeLayout>
+	
+	<RelativeLayout android:id="@+id/RLSMSBottom" android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_below="@+id/RLSMSBody" android:layout_alignParentLeft="true">
+		<TextView android:id="@+id/TVSMSSourceLabel" android:layout_width="80dp" android:layout_height="50dp"
+			android:gravity="right|center_vertical" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+			android:text="SMS형식" android:textSize="18sp" />
+		<EditText android:id="@+id/ETSMSNumber" android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:layout_below="@+id/TVSMSSourceLabel" android:layout_alignParentLeft="true"
+			android:hint="..." android:textSize="18sp" android:gravity="top|left" android:minHeight="100dp" />
+	</RelativeLayout>
+</RelativeLayout>
