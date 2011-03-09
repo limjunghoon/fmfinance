@@ -11,7 +11,7 @@
 		<RelativeLayout android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:id="@+id/slideBar">
 			<LinearLayout android:layout_alignParentRight="true"
-				android:layout_width="48dp" android:layout_height="32dip" android:background="@drawable/go_top"/>
+				android:background="@drawable/go_top" android:layout_width="fill_parent" android:layout_height="25dip"/>
 		</RelativeLayout>
 
 		<LinearLayout android:layout_width="wrap_content"

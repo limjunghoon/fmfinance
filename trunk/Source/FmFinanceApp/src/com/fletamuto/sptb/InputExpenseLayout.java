@@ -1086,6 +1086,7 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 				public void onClick(DialogInterface dialog, int which) {
 					Intent intent = new Intent(InputExpenseLayout.this, InputAmountDialog.class);
 					intent.putExtra(MsgDef.ExtraNames.AMOUNT, account.getBalance());
+					intent.putExtra(MsgDef.ExtraNames.AMOUNT_TITLE, "ÀÜ¾× ¼öÁ¤");
 					startActivityForResult(intent, MsgDef.ActRequest.ACT_BALANCE_AFTER_CHCKE_ITEM);
 				}
 			})

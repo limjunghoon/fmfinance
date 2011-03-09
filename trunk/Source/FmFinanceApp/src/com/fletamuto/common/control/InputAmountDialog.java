@@ -11,9 +11,12 @@ import com.fletamuto.sptb.MsgDef;
 import com.fletamuto.sptb.R;
 
 public class InputAmountDialog extends BaseSlidingActivity {
-	private Long mAmount = 0L;
 	public final static int MAX_VALUE_DIGIT = 9;
-	public final static int NUMBER_SEPARATION = 4; 
+	public final static int NUMBER_SEPARATION = 4;
+	
+	private Long mAmount = 0L;
+	private boolean mFristInput = true;
+	 
 	
 	String mAmountChar[]  = {"¿µ", "ÀÏ", "ÀÌ", "»ï", "»ç", "¿À", "À°", "Ä¥", "ÆÈ", "±¸"}; 
 	String mAmountDigit[]  = {"½Ê", "¹é", "Ãµ"};
@@ -38,10 +41,21 @@ public class InputAmountDialog extends BaseSlidingActivity {
         ((TextView)findViewById(R.id.TVAmount)).setTextColor(Color.BLACK);
         ((TextView)findViewById(R.id.TVAmountChar)).setTextColor(Color.BLACK);
         mAmount = getIntent().getLongExtra(MsgDef.ExtraNames.AMOUNT, 0L);
+        setTitleName();
         
         displayAmount();
     }
-   
+    
+    public void setTitleName() {
+    	String title = getIntent().getStringExtra(MsgDef.ExtraNames.AMOUNT_TITLE);
+        TextView tvTitle = (TextView) findViewById(R.id.TVAmountTitle);
+        if (title == null) {
+        	tvTitle.setText("±Ý¾× ÀÔ·Â");
+        }
+        else {
+        	tvTitle.setText(title);
+        }
+    }
     
     private void setInputNumberListener() {
     	InputAmount inputAmount = new InputAmount();
@@ -82,8 +96,7 @@ public class InputAmountDialog extends BaseSlidingActivity {
     }
     
     private void setOkCancelListener() {
-    	Button btnOK = (Button)findViewById(R.id.BtnAmountOK);
-    	btnOK.setOnClickListener(new Button.OnClickListener() {
+    	findViewById(R.id.BtnAmountOK).setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
 				Intent intent = new Intent();
@@ -94,8 +107,7 @@ public class InputAmountDialog extends BaseSlidingActivity {
 			}
 		 });
     	
-    	Button btnCancel = (Button)findViewById(R.id.BtnAmountCancel);
-    	btnCancel.setOnClickListener(new Button.OnClickListener() {
+    	findViewById(R.id.BtnAmountCancel).setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
 				setResult(RESULT_CANCELED);
@@ -194,6 +206,10 @@ public class InputAmountDialog extends BaseSlidingActivity {
 	class InputAmount implements android.view.View.OnClickListener {
 
 		public void onClick(View arg0) {
+			if (mFristInput == true) {
+				mFristInput = false;
+				clear();
+			}
 			int inputNumber = 0;
 			
 			if (arg0.getId() == R.id.BtnAmount_1) inputNumber = 1;
