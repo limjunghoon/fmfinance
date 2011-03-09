@@ -97,14 +97,14 @@
 			<LinearLayout android:id="@+id/LLOption"
 				android:layout_height="wrap_content" android:layout_width="fill_parent"
 				android:layout_marginTop="5dp" android:visibility="gone" android:layout_marginLeft="15dp" android:layout_marginRight="15dp">
-			<Button android:id="@+id/BtnExpenseDelete"
+				<Button android:id="@+id/BtnExpenseDelete"
 				android:layout_height="wrap_content" android:text="삭제"
 				android:layout_weight="1" android:layout_width="fill_parent"></Button>
 				<Button android:id="@+id/BtnAddOpenUsedItem"
 				android:layout_height="wrap_content" android:text="즐겨찾기에 추가"
 				android:layout_weight="1" android:layout_width="fill_parent"></Button>
-		</LinearLayout>
-                </LinearLayout>
+			</LinearLayout>
+        </LinearLayout>
 
 		<include layout="@layout/input_income_expense_slide" />
 		<include layout="@layout/input_income_expense_drag" />

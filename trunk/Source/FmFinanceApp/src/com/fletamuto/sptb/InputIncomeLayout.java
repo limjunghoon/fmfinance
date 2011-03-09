@@ -96,6 +96,7 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.input_income, true);
         
+        initChildView();
         updateChildView();
         
         switch(getIntent().getIntExtra("Action", 0)) {
@@ -143,6 +144,20 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         }
         initWidget();
     }
+    
+    /**
+     * 자식뷰 초기화
+     */
+    public void initChildView() {
+//    	if (mInputMode == InputMode.EDIT_MODE) {
+//    		findViewById(R.id.LLOption).setVisibility(View.VISIBLE);
+//    	}    	
+    	if(intentAction == ACTION_DEFAULT) {
+    		findViewById(R.id.LLOption).setVisibility(View.VISIBLE);
+    	}
+    	
+    	updateChildViewState();
+	}
     
     /**
      * 인텐트에 담긴 액션에 따라서 화면에 보이는 위젯 개수를 변경하는 메소드 
@@ -195,7 +210,24 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         setRepeatBtnClickListener(R.id.BtnIncomeRepeat);
         setCategoryClickListener(R.id.BtnIncomeCategory);
         setReceiveToggleBtnClickListener();
+        
+        setSaveBtnClickListener(R.id.BtnAddOpenUsedItem);
 	}
+    
+    @Override
+    protected void setSaveBtnClickListener(int btnID) {
+    	findViewById(btnID).setOnClickListener(new Button.OnClickListener() {
+		
+			public void onClick(View v) {
+				updateItem();
+				
+				if (checkInputData() == true) {
+					saveItem();		
+					updateOpenUsedItem();
+		    	}
+			}
+		 });
+    }
     
     
     @Override
@@ -414,6 +446,9 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
 			else {
 				updateAccount(new AccountItem());
 			}
+		} else if(requestCode == MsgDef.ActRequest.ACT_OPEN_USED_ITEM) {
+			if(resultCode == RESULT_OK)
+				updateOpenUsedItem();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
