@@ -857,6 +857,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		try{
 			db.execSQL("CREATE TABLE sms_parse_data ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"number TEXT," +
 					"type_id INTEGER," +
 					"card_id INTEGER," +
 					"amount_row INTEGER," +

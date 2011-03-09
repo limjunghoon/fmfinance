@@ -6,14 +6,10 @@ import java.util.ArrayList;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
-import com.fletamuto.sptb.data.AccountItem;
-import com.fletamuto.sptb.data.CardCompanyName;
 import com.fletamuto.sptb.data.ExpenseSMS;
 import com.fletamuto.sptb.data.SMSParseItem;
-import com.fletamuto.sptb.data.TransferItem;
 import com.fletamuto.sptb.util.FinanceDataFormat;
 import com.fletamuto.sptb.util.LogTag;
 
@@ -122,6 +118,7 @@ public class SMSDBConnector extends BaseDBConnector {
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		
 		ContentValues rowItem = new ContentValues();
+		rowItem.put("number", parse.getNumber());
 		rowItem.put("type_id", parse.getTypeId());
 		rowItem.put("card_id", parse.getCardId());
 		rowItem.put("amount_row", parse.getAmountRow());
@@ -145,6 +142,7 @@ public class SMSDBConnector extends BaseDBConnector {
 		SQLiteDatabase db = openDatabase(WRITE_MODE);
 		ContentValues rowItem = new ContentValues();
 		
+		rowItem.put("number", parse.getNumber());
 		rowItem.put("type_id", parse.getTypeId());
 		rowItem.put("card_id", parse.getCardId());
 		rowItem.put("amount_row", parse.getAmountRow());
@@ -199,18 +197,19 @@ public class SMSDBConnector extends BaseDBConnector {
 		SMSParseItem parse = new SMSParseItem();
 		
 		parse.setID(c.getInt(0));
-		parse.setTypeId(c.getInt(1));
-		parse.setCardId(c.getInt(2));
-		parse.setAmountRow(c.getInt(3));
-		parse.setAmountStartPosition(c.getInt(4));
-		parse.setAmountEndText(c.getString(5));
-		parse.setInstallmentRow(c.getInt(6));
-		parse.setInstallmentStartPosition(c.getInt(7));
-		parse.setInstallmentEndText(c.getString(8));
-		parse.setShopRow(c.getInt(9));
-		parse.setShopStartPosition(c.getInt(10));
-		parse.setShopEndText(c.getString(11));
-		parse.setParseSource(c.getString(12));
+		parse.setNumber(c.getString(1));
+		parse.setTypeId(c.getInt(2));
+		parse.setCardId(c.getInt(3));
+		parse.setAmountRow(c.getInt(4));
+		parse.setAmountStartPosition(c.getInt(5));
+		parse.setAmountEndText(c.getString(6));
+		parse.setInstallmentRow(c.getInt(7));
+		parse.setInstallmentStartPosition(c.getInt(8));
+		parse.setInstallmentEndText(c.getString(9));
+		parse.setShopRow(c.getInt(10));
+		parse.setShopStartPosition(c.getInt(11));
+		parse.setShopEndText(c.getString(12));
+		parse.setParseSource(c.getString(13));
 		
 		return parse;
 	}

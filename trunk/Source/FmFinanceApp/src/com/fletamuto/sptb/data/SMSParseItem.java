@@ -4,6 +4,7 @@ package com.fletamuto.sptb.data;
 public class SMSParseItem extends BaseItem{
 	private static final long serialVersionUID = -431858797456300474L;
 	
+	private String mNumber;
 	private int mTypeId = -1;
 	private int mCardId = -1;
 	private int mAmountRow ;
@@ -111,5 +112,13 @@ public class SMSParseItem extends BaseItem{
 	
 	public String getParseSource() {
 		return mParseSource;
+	}
+
+	public void setNumber(String number) {
+		this.mNumber = number;
+	}
+
+	public String getNumber() {
+		return mNumber;
 	}
 }
