@@ -79,6 +79,10 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
      */
     private final static int ACTION_BOOMARK_EDIT_ACTIVITY = 3;
     /**
+     * ACTION_SMS_RECEIVE = 4, SMS 수신 메시지에 의한 실행
+     */
+    public final static int ACTION_SMS_RECEIVE = 4;
+    /**
      * 호출한 Intent의 상태 값 저장
      */
     private int intentAction = ACTION_DEFAULT;
@@ -148,6 +152,14 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			}
         	//inputIncomeOpenUsedItem();
         	break;
+        case ACTION_SMS_RECEIVE:
+        	intentAction = ACTION_SMS_RECEIVE;
+        	if(getIntent().getSerializableExtra("SMS") != null) {
+        		mExpensItem = (ExpenseItem) getIntent().getSerializableExtra("SMS");
+        		setItem(mExpensItem);
+        		updateChildView();	//TODO
+        	}
+        	break;
         }
         initWidget();
         
@@ -177,7 +189,10 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
      * 자식뷰 초기화
      */
     public void initChildView() {
-    	if (mInputMode == InputMode.EDIT_MODE) {
+//    	if (mInputMode == InputMode.EDIT_MODE) {
+//    		findViewById(R.id.LLOption).setVisibility(View.VISIBLE);
+//    	}    	
+    	if(intentAction == ACTION_DEFAULT) {
     		findViewById(R.id.LLOption).setVisibility(View.VISIBLE);
     	}
     	
@@ -249,7 +264,20 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         setTagButtonListener();
         setRepeatBtnClickListener(R.id.BtnExpenseRepeat);
         setDeleteBtnListener(R.id.BtnExpenseDelete);
+        
+        setSaveBtnClickListener(R.id.BtnAddOpenUsedItem);
 	}
+    
+//    protected void setSaveBtnClickListener(int btnID) {
+//    	findViewById(btnID).setOnClickListener(new Button.OnClickListener() {
+//
+//    		public void onClick(View v) {	//FIXME 오류남 - 저장시 Type이 저장되지 않아서 Null로 나옴
+//    			mExpensItem.setMemo(((EditText)findViewById(R.id.ETExpenseMemo)).getText().toString());
+//    			addOpenUsedItem(mExpensItem);
+//    			updateOpenUsedItem();
+//    		}
+//    	});
+//    }
     
     @Override
     protected void initialize() {
@@ -478,6 +506,9 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 			saveItem();		
 			setResult(RESULT_OK, new Intent());
 			finish();
+		} else if(requestCode == MsgDef.ActRequest.ACT_OPEN_USED_ITEM) {
+			if(resultCode == RESULT_OK)
+				updateOpenUsedItem();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

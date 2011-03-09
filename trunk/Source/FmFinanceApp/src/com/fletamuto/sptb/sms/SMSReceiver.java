@@ -2,12 +2,18 @@ package com.fletamuto.sptb.sms;
 
 import java.util.Date;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-import android.widget.Toast;
+import android.util.Log;
+
+import com.fletamuto.sptb.InputExpenseLayout;
+import com.fletamuto.sptb.R;
 
 public class SMSReceiver extends BroadcastReceiver {
 
@@ -62,14 +68,24 @@ public class SMSReceiver extends BroadcastReceiver {
 				case SMSParser.TYPE_NONE:
 					break;
 				case SMSParser.TYPE_CARD:
-					smsParser.getParserData(number, SMSParser.TYPE_CARD, inputText[Integer.valueOf(number)]);	//수신된 SMS를 파싱하기 위한 메소드
+					//smsParser.getParserData(number, SMSParser.TYPE_CARD, inputText[Integer.valueOf(number)]);	//수신된 SMS를 파싱하고 ExpenseItem 객체를 돌려 받는다
+					// TODO 테스트
+					Intent sendIntent = new Intent(context, InputExpenseLayout.class);
+					sendIntent.putExtra("Action", InputExpenseLayout.ACTION_SMS_RECEIVE);
+					sendIntent.putExtra("SMS", smsParser.getParserData(number, SMSParser.TYPE_CARD, inputText[Integer.valueOf(number)]));
+
+					PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+					Notification notification = new Notification(R.drawable.category_001, "테스트", date.getTime());
+					notification.setLatestEventInfo(context, "테스트", msg, pendingIntent);
+					
+					NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+					manager.notify(10001, notification);
+					
 					break;
 				}
-
-				//TODO 입력된 데이터로 expense_sms에 데이터를 채우는 메소드 구현
-				//set---(new Data(), number, msg);
 			} catch (Exception e) {
-
+				Log.e("SMSParser", e.getMessage());
+				Log.e("SMSParser", "SMS Parser Error");
 			}
 		}
 	}

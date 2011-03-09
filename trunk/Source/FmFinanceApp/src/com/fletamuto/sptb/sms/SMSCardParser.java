@@ -6,6 +6,11 @@ import java.util.StringTokenizer;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.fletamuto.sptb.data.ExpenseItem;
+import com.fletamuto.sptb.data.PaymentCardMethod;
+import com.fletamuto.sptb.data.PaymentMethod;
+import com.fletamuto.sptb.db.DBMgr;
+
 public class SMSCardParser {
 	static final String TAG_AMOUNT = "<amount>";
 	static final String TAG_INSTALLMENT = "<installment>";
@@ -37,7 +42,7 @@ public class SMSCardParser {
 		return (hashtable.get(number) != null);
 	}
 	
-	public boolean setParserData(String number, String parseText, int typeId, int companyId) {
+	public boolean setParserData(String number, String parseText, int typeId, int cardId) {
 		SMSCardData smsCardData = new SMSCardData();
 		
 		StringTokenizer stringTokenizer = new StringTokenizer(parseText, " \n/");
@@ -60,7 +65,7 @@ public class SMSCardParser {
 		}
 		smsCardData.setNumber(number);
 		smsCardData.setTypeId(typeId);
-		smsCardData.setCompanyId(companyId);
+		smsCardData.setCardId(cardId);
 		smsCardData.setParseSource(parseText);
 		
 		// TODO 위에서 얻은 데이터를 Set 하는 메소드를 추가 해야함
@@ -74,14 +79,14 @@ public class SMSCardParser {
 		return false;
 	}
 
-	public boolean getParserData(String number, String inputText) {	//inputText는 SMS에서 얻은 MessageBody
+	public ExpenseItem getParserData(String number, String inputText) {	//inputText는 SMS에서 얻은 MessageBody
 		SMSCardData smsCardData = getDB(number);	//DB에서 읽어오는 메소드
 		
 		int amountStartRow = smsCardData.getAmountStartRow(), installmentStartRow = smsCardData.getInstallmentStartRow(), shopStartRow = smsCardData.getShopStartRow();
 		String amountEndText = smsCardData.getAmountEndText(), installmentEndText = smsCardData.getInstallmentEndText(), shopEndText = smsCardData.getShopEndText();
 		
 		long resultAmount = 0;
-		String resultInstallment = "일시불";
+		String resultInstallment = "";
 		String resultShopName = "";
 		
 		StringTokenizer stringTokenizer = new StringTokenizer(inputText, " \n/");
@@ -106,6 +111,27 @@ public class SMSCardParser {
 
 		Toast.makeText(context, "금액 : " + resultAmount + "\n할부기간 : " + resultInstallment + "\n상호 : " + resultShopName, Toast.LENGTH_LONG).show();
 		
-		return false;
+		return getExpenseData(resultAmount, resultInstallment, resultShopName, smsCardData);
+	}
+	
+	private ExpenseItem getExpenseData(long resultAmount, String resultInstallment, String resultShopName, SMSCardData smsCardData) {
+		ExpenseItem expenseItem = new ExpenseItem();
+		expenseItem.setCard(DBMgr.getCardItem(smsCardData.getCardId()));
+		expenseItem.setAmount(resultAmount);
+		expenseItem.setMemo(resultShopName);
+		
+		PaymentCardMethod paymentCardMethod = new PaymentCardMethod();
+		paymentCardMethod.setCard(expenseItem.getCard());
+		paymentCardMethod.setInstallmentPlan(getInstallment(resultInstallment));
+		paymentCardMethod.setType(PaymentMethod.CARD);
+		
+		expenseItem.setPaymentMethod(paymentCardMethod);
+		
+		return expenseItem;
+	}
+	
+	private int getInstallment(String resultInstallment) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
