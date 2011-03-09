@@ -4,6 +4,8 @@ package com.fletamuto.sptb;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,6 +24,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.fletamuto.common.control.InputAmountDialog;
@@ -39,6 +42,7 @@ import com.fletamuto.sptb.data.PaymentCardMethod;
 import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.db.ExpenseDBConnector;
 /**
  * 새로운 지출을 입력하거나 기존의 지출정보를 수정할때 보여주는 레이아웃 창
  * @author yongbban
@@ -214,11 +218,24 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     		((View)findViewById(R.id.BtnExpenseRepeat)).setVisibility(View.GONE);
     		
     		((View)findViewById(R.id.LLBookmarkSliding)).setVisibility(View.GONE);
+    		((View)findViewById(R.id.LLOption)).setVisibility(View.GONE);
     	}
     	
     	if (mExpensItem.getCategory().getExtndType() == ItemDef.ExtendAssets.NONE) {
     		((View)findViewById(R.id.LLBookmarkSliding)).setVisibility(View.GONE);
     	}
+    	
+    	if(intentAction == ACTION_SMS_RECEIVE) {
+    		((View)findViewById(R.id.LLBookmarkSliding)).setVisibility(View.GONE);
+    		setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.INVISIBLE);
+    		setSaveBtnClickListener(R.id.BtnTitleRigth01);
+    	}
+    }
+    @Override
+    protected void removeNotification() {
+    	super.removeNotification();
+    	NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+		manager.cancel(getIntent().getIntExtra("NotificationID", 0));
     }
     /**
      * 편집으로 넘길 때 내용을 미리 채우기 위한 메소드
@@ -265,19 +282,21 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
         setRepeatBtnClickListener(R.id.BtnExpenseRepeat);
         setDeleteBtnListener(R.id.BtnExpenseDelete);
         
-        setSaveBtnClickListener(R.id.BtnAddOpenUsedItem);
+        setAddBtnClickListener(R.id.BtnAddOpenUsedItem);
 	}
     
-//    protected void setSaveBtnClickListener(int btnID) {
-//    	findViewById(btnID).setOnClickListener(new Button.OnClickListener() {
-//
-//    		public void onClick(View v) {	//FIXME 오류남 - 저장시 Type이 저장되지 않아서 Null로 나옴
-//    			mExpensItem.setMemo(((EditText)findViewById(R.id.ETExpenseMemo)).getText().toString());
-//    			addOpenUsedItem(mExpensItem);
-//    			updateOpenUsedItem();
-//    		}
-//    	});
-//    }
+    private void setAddBtnClickListener(int btnID) {
+    	findViewById(btnID).setOnClickListener(new Button.OnClickListener() {
+
+			public void onClick(View arg0) {
+				mExpensItem.setMemo(((EditText)findViewById(R.id.ETExpenseMemo)).getText().toString());
+				setItem(mExpensItem);
+				new ExpenseDBConnector().addItem(mExpensItem);
+    			addOpenUsedItem(mExpensItem);
+    			updateOpenUsedItem();
+			}
+    	});
+    }
     
     @Override
     protected void initialize() {
@@ -289,10 +308,9 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
     @Override
     protected void setTitleBtn() {
     	super.setTitleBtn();
-    	
     	if (mInputMode == InputMode.ADD_MODE) {
     		setTitleBtnText(FmTitleLayout.BTN_LEFT_01, "수입");
-            setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);
+    		setTitleBtnVisibility(FmTitleLayout.BTN_LEFT_01, View.VISIBLE);
     	}
     }
     
@@ -1099,6 +1117,4 @@ public class InputExpenseLayout extends InputFinanceItemBaseLayout {
 		
 		return account;
 	}
-
-	
 }

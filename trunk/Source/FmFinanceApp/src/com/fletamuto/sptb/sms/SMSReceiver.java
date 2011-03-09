@@ -1,6 +1,7 @@
 package com.fletamuto.sptb.sms;
 
 import java.util.Date;
+import java.util.Random;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -70,16 +71,18 @@ public class SMSReceiver extends BroadcastReceiver {
 				case SMSParser.TYPE_CARD:
 					//smsParser.getParserData(number, SMSParser.TYPE_CARD, inputText[Integer.valueOf(number)]);	//수신된 SMS를 파싱하고 ExpenseItem 객체를 돌려 받는다
 					// TODO 테스트
+					int notificationId = new Random(System.currentTimeMillis()).nextInt();
 					Intent sendIntent = new Intent(context, InputExpenseLayout.class);
 					sendIntent.putExtra("Action", InputExpenseLayout.ACTION_SMS_RECEIVE);
 					sendIntent.putExtra("SMS", smsParser.getParserData(number, SMSParser.TYPE_CARD, inputText[Integer.valueOf(number)]));
+					sendIntent.putExtra("NotificationID", notificationId);
 
 					PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, sendIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 					Notification notification = new Notification(R.drawable.category_001, "테스트", date.getTime());
 					notification.setLatestEventInfo(context, "테스트", msg, pendingIntent);
 					
 					NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-					manager.notify(10001, notification);
+					manager.notify(notificationId, notification);
 					
 					break;
 				}

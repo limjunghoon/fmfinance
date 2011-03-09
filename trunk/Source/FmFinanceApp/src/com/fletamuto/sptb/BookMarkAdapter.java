@@ -64,6 +64,7 @@ public class BookMarkAdapter extends ArrayAdapter<OpenUsedItem> {
 		}
 		
 		OpenUsedItem usedItem = bookMarkItemDatas.get(position);
+		int tmp = usedItem.getType();
 		if (usedItem.getType() == ExpenseItem.TYPE) {
 			final ExpenseItem expenseItem = (ExpenseItem) usedItem.getItem();
 			

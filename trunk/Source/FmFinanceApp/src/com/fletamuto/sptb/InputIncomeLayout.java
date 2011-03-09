@@ -32,6 +32,8 @@ import com.fletamuto.sptb.data.PaymentMethod;
 import com.fletamuto.sptb.data.ReceiveMethod;
 import com.fletamuto.sptb.data.Repeat;
 import com.fletamuto.sptb.db.DBMgr;
+import com.fletamuto.sptb.db.ExpenseDBConnector;
+import com.fletamuto.sptb.db.IncomeDBConnector;
 /**
  * 수입을 입력 또는 수정하는 화면을 제공한다.
  * @author yongbban
@@ -170,8 +172,13 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
     		((View)findViewById(R.id.TVIncomeRepeat)).setVisibility(View.GONE);
     		((View)findViewById(R.id.BtnIncomeRepeat)).setVisibility(View.GONE);
     		
-    		//((View)findViewById(R.id.LLBookmarkSliding)).setVisibility(View.GONE);
+    		((View)findViewById(R.id.LLOption)).setVisibility(View.GONE);
+    		((View)findViewById(R.id.LLBookmarkSliding)).setVisibility(View.GONE);
     	}
+    	((Button)findViewById(R.id.BTBookmarkIncome)).setBackgroundColor(Color.parseColor("#006600"));
+		((Button)findViewById(R.id.BTBookmarkIncome)).setTextColor(Color.parseColor("#ffffffff"));
+		((Button)findViewById(R.id.BTBookmarkExpense)).setBackgroundColor(Color.parseColor("#77ee77"));
+		((Button)findViewById(R.id.BTBookmarkExpense)).setTextColor(Color.parseColor("#44000000"));
     }
     private void fill() {
     	String fillText[] = getIntent().getStringArrayExtra("FillText");
@@ -211,20 +218,18 @@ public class InputIncomeLayout extends InputFinanceItemBaseLayout {
         setCategoryClickListener(R.id.BtnIncomeCategory);
         setReceiveToggleBtnClickListener();
         
-        setSaveBtnClickListener(R.id.BtnAddOpenUsedItem);
+        setAddBtnClickListener(R.id.BtnAddOpenUsedItem);
 	}
     
-    @Override
-    protected void setSaveBtnClickListener(int btnID) {
+    protected void setAddBtnClickListener(int btnID) {
     	findViewById(btnID).setOnClickListener(new Button.OnClickListener() {
 		
 			public void onClick(View v) {
-				updateItem();
-				
-				if (checkInputData() == true) {
-					saveItem();		
-					updateOpenUsedItem();
-		    	}
+				mIncomeItem.setMemo(((EditText)findViewById(R.id.ETExpenseMemo)).getText().toString());
+				setItem(mIncomeItem);
+				new IncomeDBConnector().addItem(mIncomeItem);
+    			addOpenUsedItem(mIncomeItem);
+    			updateOpenUsedItem();
 			}
 		 });
     }
