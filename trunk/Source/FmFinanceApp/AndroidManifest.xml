@@ -140,6 +140,7 @@
 
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportMonthCompareTagLayout"></activity>
 <activity android:theme="@android:style/Theme.NoTitleBar" android:name=".ReportBudgetLayout"></activity>
+<activity android:theme="@android:style/Theme.NoTitleBar" android:name=".InputSMSActivity"></activity>
 </application>
 
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
