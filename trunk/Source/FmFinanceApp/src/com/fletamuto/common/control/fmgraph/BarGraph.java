@@ -336,6 +336,14 @@ public class BarGraph extends View {
 	public int getDetailedMoveTitles () {
 		return detailedMoveTitles;
 	}
+	
+	//인덱스의 color 를 가져 온다.
+	public int getDefaultGraphColors (int index) {
+		if (index < 0 || index > defaultGraphColors.length) {
+			return defaultGraphColors[0];
+		}
+		return defaultGraphColors[index]; 
+	}
 	/* =============================== Methods =================================*/
 	
 	public void makeUserTypeGraph (ArrayList<Integer> axis_Positions, int standard_Axis, ArrayList<Long> graph_Item_Values, int bar_Group_Member_Count, 
