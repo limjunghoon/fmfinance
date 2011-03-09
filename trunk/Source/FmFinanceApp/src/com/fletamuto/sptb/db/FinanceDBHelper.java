@@ -57,6 +57,7 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 		createExpenseTagTable(db);
 		createPaymentMethodTable(db);
 		createExpenseSMSTable(db);
+		createSMSParseTable(db);
 		
 		createAssetsTable(db);
 		createChangeAssetsAmountTable(db);
@@ -839,10 +840,35 @@ public class FinanceDBHelper extends SQLiteOpenHelper {
 			db.execSQL("CREATE TABLE expense_sms ( " +
 					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 					"create_date DATE NOT NULL," +
-					"card INTEGER NOT NULL," +
-					"message INTEGER NOT NULL," +
+					"message TEXT NOT NULL," +
 					"done INTEGER," +
-					"receive_number INTEGER);");
+					"number TEXT);");
+					
+		} catch (SQLException e) {
+			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * SMS 정보 테이블을 만든다.
+	 * @param db Exposes methods to manage a SQLite database.
+	 */
+	private void createSMSParseTable(SQLiteDatabase db) {
+		try{
+			db.execSQL("CREATE TABLE sms_parse_data ( " +
+					"_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					"type_id INTEGER," +
+					"card_id INTEGER," +
+					"amount_row INTEGER," +
+					"amount_start_position INTEGER," +
+					"amount_end_text TEXT," +
+					"installment_row INTEGER," +
+					"installment_start_position INTEGER," +
+					"installment_end_text TEXT," +
+					"shop_row INTEGER," +
+					"shop_start_position INTEGER," +
+					"shop_end_text TEXT," +
+					"parse_source TEXT);");
 					
 		} catch (SQLException e) {
 			Log.e(LogTag.DB, "== SQLException : " + e.getMessage());
