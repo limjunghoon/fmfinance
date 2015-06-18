@@ -1,0 +1,39 @@
+# Introduction #
+
+<b>Elipse 처음 사용자를 위한 가이드</b>
+
+
+# Details #
+
+단축키
+
+<b>Shift + F2</b>
+
+도움말 보기 : 자바 API, 안드로이드 API 설명을 소스에서 간편하게 볼수 있는 방법
+
+<br>
+<b>Ctrl+F11</b>
+
+가상머신이 실행된 상태 : 안드로이드 가상머신 창 전환 : Horizontal, Vertical<br>
+<br>
+소스코드 : Run As(실행)<br>
+<br>
+<br>
+<b>F5</b>
+
+Step Into : 메소드 안으로 진입하기<br>
+<br>
+<br>
+<b>F8</b>
+
+Step Over<br>
+<br>
+<br>
+<b>F7</b>
+
+Step Return<br>
+<br>
+<br>
+<b>Ctrl+Shift+O</b>
+
+import문 정리 : 쓰이지 않은 import문들을 모두제거하고, 패키지가 아직 import되지 않은 클래스들이 있으면 적절한 import문을 자동으로 추가한다.
